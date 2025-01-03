@@ -49,7 +49,7 @@ Abstract class to set up and run belief propagation on target device using speci
 \end{DoxyTemplParams}
 
 
-Definition at line 91 of file Run\+Bp\+On\+Stereo\+Set.\+h.
+Definition at line 93 of file Run\+Bp\+On\+Stereo\+Set.\+h.
 
 
 
@@ -66,7 +66,7 @@ virtual std\+::string \mbox{\hyperlink{class_run_bp_on_stereo_set}{Run\+Bp\+On\+
 Pure virtual function to return run description corresponding to target acceleration. 
 
 \begin{DoxyReturn}{Returns}
-std\+::string 
+Description of run using specified acceleration 
 \end{DoxyReturn}
 
 
@@ -93,7 +93,7 @@ Pure virtual operator() overload that must be defined in child class.
 \hline
 \end{DoxyParams}
 \begin{DoxyReturn}{Returns}
-std\+::optional$<$beliefprop\+::\+Bp\+Run\+Output$>$ 
+Output from belief propagation run or null output if error 
 \end{DoxyReturn}
 
 
@@ -120,14 +120,13 @@ Protected function to set up, run, and evaluate bp processing on target device u
 \hline
 \end{DoxyParams}
 \begin{DoxyReturn}{Returns}
-std\+::optional$<$beliefprop\+::\+Bp\+Run\+Output$>$ 
+Output from running belief propagation on stereo set or null if error in run 
 \end{DoxyReturn}
 
 
-Definition at line 133 of file Run\+Bp\+On\+Stereo\+Set.\+h.
+Definition at line 138 of file Run\+Bp\+On\+Stereo\+Set.\+h.
 
-Here is the call graph for this function\+:
-\nopagebreak
+Here is the call graph for this function\+:\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode

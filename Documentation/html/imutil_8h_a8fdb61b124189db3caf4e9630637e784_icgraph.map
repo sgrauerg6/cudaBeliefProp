@@ -1,4 +1,5 @@
 <map id="threshold" name="threshold">
-<area shape="rect" id="node1" title=" " alt="" coords="232,13,315,39"/>
-<area shape="rect" id="node2" href="$class_disparity_map_evaluation.html#aa934545f3103a05db5d5d6a5233693c0" title="Retrieve evaluation results as RunData." alt="" coords="5,5,184,47"/>
+<area shape="rect" id="node1" title=" " alt="" coords="292,42,375,69"/>
+<area shape="rect" id="node2" href="$class_disparity_map_evaluation.html#aa934545f3103a05db5d5d6a5233693c0" title="Retrieve evaluation results as RunData." alt="" coords="35,5,214,47"/>
+<area shape="rect" id="node3" href="$class_disparity_map.html#a3428722b1a8edcf5261aa51cc5899ba4" title=" " alt="" coords="5,71,244,98"/>
 </map>

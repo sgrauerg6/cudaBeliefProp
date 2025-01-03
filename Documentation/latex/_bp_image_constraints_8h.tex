@@ -23,7 +23,7 @@ This graph shows which files directly or indirectly include this file\+:\nopageb
 \doxysubsection*{Variables}
 \begin{DoxyCompactItemize}
 \item 
-{\footnotesize template$<$typename T $>$ }\\concept \mbox{\hyperlink{_bp_image_constraints_8h_aafca89b27df0c9e1da6d8328b2e31c3d}{Bp\+Im\+Data\+\_\+t}} = std\+::is\+\_\+same\+\_\+v$<$T, float$>$ $\vert$$\vert$ std\+::is\+\_\+same\+\_\+v$<$T, unsigned int$>$
+{\footnotesize template$<$typename T $>$ }\\concept \mbox{\hyperlink{_bp_image_constraints_8h_aafca89b27df0c9e1da6d8328b2e31c3d}{Bp\+Im\+Data\+\_\+t}}
 \end{DoxyCompactItemize}
 
 
@@ -44,8 +44,15 @@ Copyright (c) 2024
 \index{BpImData\_t@{BpImData\_t}!BpImageConstraints.h@{BpImageConstraints.h}}
 \doxysubsubsection{\texorpdfstring{BpImData\_t}{BpImData\_t}}
 {\footnotesize\ttfamily template$<$typename T $>$ \\
-concept Bp\+Im\+Data\+\_\+t = std\+::is\+\_\+same\+\_\+v$<$T, float$>$ $\vert$$\vert$ std\+::is\+\_\+same\+\_\+v$<$T, unsigned int$>$}
+concept Bp\+Im\+Data\+\_\+t}
 
+{\bfseries Initial value\+:}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{=}
+\DoxyCodeLine{  std::is\_same\_v<T, float> ||}
+\DoxyCodeLine{  std::is\_same\_v<T, unsigned int>}
+
+\end{DoxyCode}
 
 
 Definition at line 35 of file Bp\+Image\+Constraints.\+h.

@@ -88,18 +88,21 @@ $(document).ready(function(){initNavTree('namespacesimd__processing.html',''); i
 </div><!--header-->
 <div class="contents">
 
-<p>General functions for processing using SIMD vector data types on CPU. Template specializations must be defined to support specific SIMD vector data types.  
+<p>General functions for processing using SIMD vector data types on CPU.<br  />
+ Template specializations must be defined to support specific SIMD vector data types.  
 <a href="namespacesimd__processing.html#details">More...</a></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
 <tr class="memitem:a2a7614fa42374dccf3f0e815115f8fcb"><td class="memTemplParams" colspan="2">template&lt;RunData_t T, RunDataVect_t U&gt; </td></tr>
 <tr class="memitem:a2a7614fa42374dccf3f0e815115f8fcb"><td class="memTemplItemLeft" align="right" valign="top">U&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacesimd__processing.html#a2a7614fa42374dccf3f0e815115f8fcb">LoadPackedDataAligned</a> (unsigned int x, unsigned int y, unsigned int current_disparity, const <a class="el" href="structbeliefprop_1_1_bp_level_properties.html">beliefprop::BpLevelProperties</a> &amp;current_bp_level, unsigned int numDispVals, const T *inData)</td></tr>
-<tr class="memdesc:a2a7614fa42374dccf3f0e815115f8fcb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Load multiple values of primitive type data from inData array to SIMD vector data type inData array must be aligned according to the rules of the specified SIMD type to use this operation.  <a href="namespacesimd__processing.html#a2a7614fa42374dccf3f0e815115f8fcb">More...</a><br /></td></tr>
+<tr class="memdesc:a2a7614fa42374dccf3f0e815115f8fcb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Load multiple values of primitive type data from inData array to SIMD vector data type<br  />
+ inData array must be aligned according to the rules of the specified SIMD type to use this operation.  <a href="namespacesimd__processing.html#a2a7614fa42374dccf3f0e815115f8fcb">More...</a><br /></td></tr>
 <tr class="separator:a2a7614fa42374dccf3f0e815115f8fcb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af79c7bdf81e24885bf49ab31e02006b2"><td class="memTemplParams" colspan="2">template&lt;RunData_t T, RunDataVect_t U&gt; </td></tr>
 <tr class="memitem:af79c7bdf81e24885bf49ab31e02006b2"><td class="memTemplItemLeft" align="right" valign="top">U&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacesimd__processing.html#af79c7bdf81e24885bf49ab31e02006b2">LoadPackedDataUnaligned</a> (unsigned int x, unsigned int y, unsigned int current_disparity, const <a class="el" href="structbeliefprop_1_1_bp_level_properties.html">beliefprop::BpLevelProperties</a> &amp;current_bp_level, unsigned int numDispVals, const T *inData)</td></tr>
-<tr class="memdesc:af79c7bdf81e24885bf49ab31e02006b2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Load multiple values of primitive type data from inData array to SIMD vector data type inData array does not need to be aligned to use this operation.  <a href="namespacesimd__processing.html#af79c7bdf81e24885bf49ab31e02006b2">More...</a><br /></td></tr>
+<tr class="memdesc:af79c7bdf81e24885bf49ab31e02006b2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Load multiple values of primitive type data from inData array to SIMD vector data type<br  />
+ inData array does not need to be aligned to use this operation.  <a href="namespacesimd__processing.html#af79c7bdf81e24885bf49ab31e02006b2">More...</a><br /></td></tr>
 <tr class="separator:af79c7bdf81e24885bf49ab31e02006b2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aaeec19fe6218fdfb2678e2d59533c30f"><td class="memTemplParams" colspan="2">template&lt;RunDataVect_t T&gt; </td></tr>
 <tr class="memitem:aaeec19fe6218fdfb2678e2d59533c30f"><td class="memTemplItemLeft" align="right" valign="top">T&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacesimd__processing.html#aaeec19fe6218fdfb2678e2d59533c30f">createSIMDVectorSameData</a> (float data)</td></tr>
@@ -107,7 +110,8 @@ Functions</h2></td></tr>
 <tr class="separator:aaeec19fe6218fdfb2678e2d59533c30f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aaadbdc6359524dd0a41eb8864dfde8d0"><td class="memTemplParams" colspan="2">template&lt;RunDataSingOrVect_t T, RunDataSingOrVect_t U, RunDataSingOrVect_t V&gt; </td></tr>
 <tr class="memitem:aaadbdc6359524dd0a41eb8864dfde8d0"><td class="memTemplItemLeft" align="right" valign="top">V&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacesimd__processing.html#aaadbdc6359524dd0a41eb8864dfde8d0">AddVals</a> (const T &amp;val1, const U &amp;val2)</td></tr>
-<tr class="memdesc:aaadbdc6359524dd0a41eb8864dfde8d0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Add values of specified types and return sum as specified type Define template specialization to support addition of specific SIMD vector types.  <a href="namespacesimd__processing.html#aaadbdc6359524dd0a41eb8864dfde8d0">More...</a><br /></td></tr>
+<tr class="memdesc:aaadbdc6359524dd0a41eb8864dfde8d0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Add values of specified types and return sum as specified type<br  />
+ Define template specialization to support addition of specific SIMD vector types.  <a href="namespacesimd__processing.html#aaadbdc6359524dd0a41eb8864dfde8d0">More...</a><br /></td></tr>
 <tr class="separator:aaadbdc6359524dd0a41eb8864dfde8d0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2be0ec2bf47c15b1307a1aab891bb445"><td class="memTemplParams" colspan="2">template&lt;RunDataSingOrVect_t T, RunDataSingOrVect_t U, RunDataSingOrVect_t V&gt; </td></tr>
 <tr class="memitem:a2be0ec2bf47c15b1307a1aab891bb445"><td class="memTemplItemLeft" align="right" valign="top">V&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacesimd__processing.html#a2be0ec2bf47c15b1307a1aab891bb445">SubtractVals</a> (const T &amp;val1, const U &amp;val2)</td></tr>
@@ -115,27 +119,33 @@ Functions</h2></td></tr>
 <tr class="separator:a2be0ec2bf47c15b1307a1aab891bb445"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad2142f4d30db099e1744b7a1ed37169e"><td class="memTemplParams" colspan="2">template&lt;RunDataSingOrVect_t T, RunDataSingOrVect_t U, RunDataSingOrVect_t V&gt; </td></tr>
 <tr class="memitem:ad2142f4d30db099e1744b7a1ed37169e"><td class="memTemplItemLeft" align="right" valign="top">V&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacesimd__processing.html#ad2142f4d30db099e1744b7a1ed37169e">divideVals</a> (const T &amp;val1, const U &amp;val2)</td></tr>
-<tr class="memdesc:ad2142f4d30db099e1744b7a1ed37169e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Divide values of specified types and return quotient as specified type Define template specialization to support division of specific SIMD vector types.  <a href="namespacesimd__processing.html#ad2142f4d30db099e1744b7a1ed37169e">More...</a><br /></td></tr>
+<tr class="memdesc:ad2142f4d30db099e1744b7a1ed37169e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Divide values of specified types and return quotient as specified type<br  />
+ Define template specialization to support division of specific SIMD vector types.  <a href="namespacesimd__processing.html#ad2142f4d30db099e1744b7a1ed37169e">More...</a><br /></td></tr>
 <tr class="separator:ad2142f4d30db099e1744b7a1ed37169e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1ca0c29fac8564f0cfa8f53360c8d7a8"><td class="memTemplParams" colspan="2">template&lt;RunDataSingOrVect_t T, RunDataSingOrVect_t V&gt; </td></tr>
 <tr class="memitem:a1ca0c29fac8564f0cfa8f53360c8d7a8"><td class="memTemplItemLeft" align="right" valign="top">T&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacesimd__processing.html#a1ca0c29fac8564f0cfa8f53360c8d7a8">ConvertValToDatatype</a> (V val)</td></tr>
-<tr class="memdesc:a1ca0c29fac8564f0cfa8f53360c8d7a8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convert value of specified type to value of another specified type Define template specialization to support conversion between specific types for SIMD vector processing.  <a href="namespacesimd__processing.html#a1ca0c29fac8564f0cfa8f53360c8d7a8">More...</a><br /></td></tr>
+<tr class="memdesc:a1ca0c29fac8564f0cfa8f53360c8d7a8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convert value of specified type to value of another specified type<br  />
+ Define template specialization to support conversion between specific types for SIMD vector processing.  <a href="namespacesimd__processing.html#a1ca0c29fac8564f0cfa8f53360c8d7a8">More...</a><br /></td></tr>
 <tr class="separator:a1ca0c29fac8564f0cfa8f53360c8d7a8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a835d8005e2daedbff1af05b4f07c165f"><td class="memTemplParams" colspan="2">template&lt;RunDataSingOrVect_t T&gt; </td></tr>
 <tr class="memitem:a835d8005e2daedbff1af05b4f07c165f"><td class="memTemplItemLeft" align="right" valign="top">T&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacesimd__processing.html#a835d8005e2daedbff1af05b4f07c165f">GetMinByElement</a> (const T &amp;val1, const T &amp;val2)</td></tr>
-<tr class="memdesc:a835d8005e2daedbff1af05b4f07c165f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get element-wise minimum of two inputs which may be of a SIMD vector type where corresponding values within the SIMD vector are compared Define template specialization to support function for specific vector type.  <a href="namespacesimd__processing.html#a835d8005e2daedbff1af05b4f07c165f">More...</a><br /></td></tr>
+<tr class="memdesc:a835d8005e2daedbff1af05b4f07c165f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get element-wise minimum of two inputs which may be of a SIMD vector type where corresponding values within the SIMD vector are compared<br  />
+ Define template specialization to support function for specific vector type.  <a href="namespacesimd__processing.html#a835d8005e2daedbff1af05b4f07c165f">More...</a><br /></td></tr>
 <tr class="separator:a835d8005e2daedbff1af05b4f07c165f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0a16d366a1b61fee56c90f376633e995"><td class="memTemplParams" colspan="2">template&lt;RunData_t T, RunDataVectProcess_t U&gt; </td></tr>
 <tr class="memitem:a0a16d366a1b61fee56c90f376633e995"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacesimd__processing.html#a0a16d366a1b61fee56c90f376633e995">StorePackedDataAligned</a> (unsigned int indexDataStore, T *locationDataStore, const U &amp;dataToStore)</td></tr>
-<tr class="memdesc:a0a16d366a1b61fee56c90f376633e995"><td class="mdescLeft">&#160;</td><td class="mdescRight">Write data in SIMD vector (or single element) to specified location in array Array that data is written to must be aligned according to the rules of the specified SIMD type to use this operation.  <a href="namespacesimd__processing.html#a0a16d366a1b61fee56c90f376633e995">More...</a><br /></td></tr>
+<tr class="memdesc:a0a16d366a1b61fee56c90f376633e995"><td class="mdescLeft">&#160;</td><td class="mdescRight">Write data in SIMD vector (or single element) to specified location in array<br  />
+ Array that data is written to must be aligned according to the rules of the specified SIMD type to use this operation.  <a href="namespacesimd__processing.html#a0a16d366a1b61fee56c90f376633e995">More...</a><br /></td></tr>
 <tr class="separator:a0a16d366a1b61fee56c90f376633e995"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0811351baf30e0e88704b3cc8ef6df1a"><td class="memTemplParams" colspan="2">template&lt;RunData_t T, RunDataVectProcess_t U&gt; </td></tr>
 <tr class="memitem:a0811351baf30e0e88704b3cc8ef6df1a"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacesimd__processing.html#a0811351baf30e0e88704b3cc8ef6df1a">StorePackedDataUnaligned</a> (unsigned int indexDataStore, T *locationDataStore, const U &amp;dataToStore)</td></tr>
-<tr class="memdesc:a0811351baf30e0e88704b3cc8ef6df1a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Write data in SIMD vector (or single element) to specified location in array Array that data is written does not need to be aligned to use this operation.  <a href="namespacesimd__processing.html#a0811351baf30e0e88704b3cc8ef6df1a">More...</a><br /></td></tr>
+<tr class="memdesc:a0811351baf30e0e88704b3cc8ef6df1a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Write data in SIMD vector (or single element) to specified location in array<br  />
+ Array that data is written does not need to be aligned to use this operation.  <a href="namespacesimd__processing.html#a0811351baf30e0e88704b3cc8ef6df1a">More...</a><br /></td></tr>
 <tr class="separator:a0811351baf30e0e88704b3cc8ef6df1a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>General functions for processing using SIMD vector data types on CPU. Template specializations must be defined to support specific SIMD vector data types. </p>
+<div class="textblock"><p>General functions for processing using SIMD vector data types on CPU.<br  />
+ Template specializations must be defined to support specific SIMD vector data types. </p>
 </div><h2 class="groupheader">Function Documentation</h2>
 <a id="aaadbdc6359524dd0a41eb8864dfde8d0"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#aaadbdc6359524dd0a41eb8864dfde8d0">&#9670;&nbsp;</a></span>AddVals()</h2>
@@ -165,7 +175,8 @@ template&lt;RunDataSingOrVect_t T, RunDataSingOrVect_t U, RunDataSingOrVect_t V&
       </table>
 </div><div class="memdoc">
 
-<p>Add values of specified types and return sum as specified type Define template specialization to support addition of specific SIMD vector types. </p>
+<p>Add values of specified types and return sum as specified type<br  />
+ Define template specialization to support addition of specific SIMD vector types. </p>
 <dl class="tparams"><dt>Template Parameters</dt><dd>
   <table class="tparams">
     <tr><td class="paramname">T</td><td></td></tr>
@@ -181,9 +192,9 @@ template&lt;RunDataSingOrVect_t T, RunDataSingOrVect_t U, RunDataSingOrVect_t V&
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>V </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>SIMD structure with sum of values </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_s_i_m_d_processing_8h_source.html#l00112">112</a> of file <a class="el" href="_s_i_m_d_processing_8h_source.html">SIMDProcessing.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_s_i_m_d_processing_8h_source.html#l00117">117</a> of file <a class="el" href="_s_i_m_d_processing_8h_source.html">SIMDProcessing.h</a>.</p>
 
 </div>
 </div>
@@ -205,7 +216,8 @@ template&lt;RunDataSingOrVect_t T, RunDataSingOrVect_t V&gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p>Convert value of specified type to value of another specified type Define template specialization to support conversion between specific types for SIMD vector processing. </p>
+<p>Convert value of specified type to value of another specified type<br  />
+ Define template specialization to support conversion between specific types for SIMD vector processing. </p>
 <dl class="tparams"><dt>Template Parameters</dt><dd>
   <table class="tparams">
     <tr><td class="paramname">T</td><td></td></tr>
@@ -219,9 +231,9 @@ template&lt;RunDataSingOrVect_t T, RunDataSingOrVect_t V&gt; </div>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>T </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>Value converted to specified type </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_s_i_m_d_processing_8h_source.html#l00153">153</a> of file <a class="el" href="_s_i_m_d_processing_8h_source.html">SIMDProcessing.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_s_i_m_d_processing_8h_source.html#l00158">158</a> of file <a class="el" href="_s_i_m_d_processing_8h_source.html">SIMDProcessing.h</a>.</p>
 
 </div>
 </div>
@@ -256,9 +268,9 @@ template&lt;RunDataVect_t T&gt; </div>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>T </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>SIMD structure with all elements containing the same data </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_s_i_m_d_processing_8h_source.html#l00095">95</a> of file <a class="el" href="_s_i_m_d_processing_8h_source.html">SIMDProcessing.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_s_i_m_d_processing_8h_source.html#l00100">100</a> of file <a class="el" href="_s_i_m_d_processing_8h_source.html">SIMDProcessing.h</a>.</p>
 
 </div>
 </div>
@@ -290,7 +302,8 @@ template&lt;RunDataSingOrVect_t T, RunDataSingOrVect_t U, RunDataSingOrVect_t V&
       </table>
 </div><div class="memdoc">
 
-<p>Divide values of specified types and return quotient as specified type Define template specialization to support division of specific SIMD vector types. </p>
+<p>Divide values of specified types and return quotient as specified type<br  />
+ Define template specialization to support division of specific SIMD vector types. </p>
 <dl class="tparams"><dt>Template Parameters</dt><dd>
   <table class="tparams">
     <tr><td class="paramname">T</td><td></td></tr>
@@ -306,9 +319,9 @@ template&lt;RunDataSingOrVect_t T, RunDataSingOrVect_t U, RunDataSingOrVect_t V&
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>V </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>SIMD structure with quotient of values </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_s_i_m_d_processing_8h_source.html#l00140">140</a> of file <a class="el" href="_s_i_m_d_processing_8h_source.html">SIMDProcessing.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_s_i_m_d_processing_8h_source.html#l00145">145</a> of file <a class="el" href="_s_i_m_d_processing_8h_source.html">SIMDProcessing.h</a>.</p>
 
 </div>
 </div>
@@ -340,7 +353,8 @@ template&lt;RunDataSingOrVect_t T&gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p>Get element-wise minimum of two inputs which may be of a SIMD vector type where corresponding values within the SIMD vector are compared Define template specialization to support function for specific vector type. </p>
+<p>Get element-wise minimum of two inputs which may be of a SIMD vector type where corresponding values within the SIMD vector are compared<br  />
+ Define template specialization to support function for specific vector type. </p>
 <dl class="tparams"><dt>Template Parameters</dt><dd>
   <table class="tparams">
     <tr><td class="paramname">T</td><td></td></tr>
@@ -354,9 +368,9 @@ template&lt;RunDataSingOrVect_t T&gt; </div>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>T </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>Element-wise minimum of two inputs (may be SIMD structures) </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_s_i_m_d_processing_8h_source.html#l00166">166</a> of file <a class="el" href="_s_i_m_d_processing_8h_source.html">SIMDProcessing.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_s_i_m_d_processing_8h_source.html#l00171">171</a> of file <a class="el" href="_s_i_m_d_processing_8h_source.html">SIMDProcessing.h</a>.</p>
 
 </div>
 </div>
@@ -412,7 +426,8 @@ template&lt;RunData_t T, RunDataVect_t U&gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p>Load multiple values of primitive type data from inData array to SIMD vector data type inData array must be aligned according to the rules of the specified SIMD type to use this operation. </p>
+<p>Load multiple values of primitive type data from inData array to SIMD vector data type<br  />
+ inData array must be aligned according to the rules of the specified SIMD type to use this operation. </p>
 <dl class="tparams"><dt>Template Parameters</dt><dd>
   <table class="tparams">
     <tr><td class="paramname">T</td><td></td></tr>
@@ -431,9 +446,9 @@ template&lt;RunData_t T, RunDataVect_t U&gt; </div>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>U </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>SIMD structure with data loaded </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_s_i_m_d_processing_8h_source.html#l00060">60</a> of file <a class="el" href="_s_i_m_d_processing_8h_source.html">SIMDProcessing.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_s_i_m_d_processing_8h_source.html#l00061">61</a> of file <a class="el" href="_s_i_m_d_processing_8h_source.html">SIMDProcessing.h</a>.</p>
 
 </div>
 </div>
@@ -489,7 +504,8 @@ template&lt;RunData_t T, RunDataVect_t U&gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p>Load multiple values of primitive type data from inData array to SIMD vector data type inData array does not need to be aligned to use this operation. </p>
+<p>Load multiple values of primitive type data from inData array to SIMD vector data type<br  />
+ inData array does not need to be aligned to use this operation. </p>
 <dl class="tparams"><dt>Template Parameters</dt><dd>
   <table class="tparams">
     <tr><td class="paramname">T</td><td></td></tr>
@@ -508,9 +524,9 @@ template&lt;RunData_t T, RunDataVect_t U&gt; </div>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>U </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>SIMD structure with data loaded </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_s_i_m_d_processing_8h_source.html#l00081">81</a> of file <a class="el" href="_s_i_m_d_processing_8h_source.html">SIMDProcessing.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_s_i_m_d_processing_8h_source.html#l00084">84</a> of file <a class="el" href="_s_i_m_d_processing_8h_source.html">SIMDProcessing.h</a>.</p>
 
 </div>
 </div>
@@ -548,7 +564,8 @@ template&lt;RunData_t T, RunDataVectProcess_t U&gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p>Write data in SIMD vector (or single element) to specified location in array Array that data is written to must be aligned according to the rules of the specified SIMD type to use this operation. </p>
+<p>Write data in SIMD vector (or single element) to specified location in array<br  />
+ Array that data is written to must be aligned according to the rules of the specified SIMD type to use this operation. </p>
 <dl class="tparams"><dt>Template Parameters</dt><dd>
   <table class="tparams">
     <tr><td class="paramname">T</td><td></td></tr>
@@ -565,7 +582,7 @@ template&lt;RunData_t T, RunDataVectProcess_t U&gt; </div>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="_s_i_m_d_processing_8h_source.html#l00180">180</a> of file <a class="el" href="_s_i_m_d_processing_8h_source.html">SIMDProcessing.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_s_i_m_d_processing_8h_source.html#l00186">186</a> of file <a class="el" href="_s_i_m_d_processing_8h_source.html">SIMDProcessing.h</a>.</p>
 
 </div>
 </div>
@@ -603,7 +620,8 @@ template&lt;RunData_t T, RunDataVectProcess_t U&gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p>Write data in SIMD vector (or single element) to specified location in array Array that data is written does not need to be aligned to use this operation. </p>
+<p>Write data in SIMD vector (or single element) to specified location in array<br  />
+ Array that data is written does not need to be aligned to use this operation. </p>
 <dl class="tparams"><dt>Template Parameters</dt><dd>
   <table class="tparams">
     <tr><td class="paramname">T</td><td></td></tr>
@@ -620,7 +638,7 @@ template&lt;RunData_t T, RunDataVectProcess_t U&gt; </div>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="_s_i_m_d_processing_8h_source.html#l00195">195</a> of file <a class="el" href="_s_i_m_d_processing_8h_source.html">SIMDProcessing.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_s_i_m_d_processing_8h_source.html#l00203">203</a> of file <a class="el" href="_s_i_m_d_processing_8h_source.html">SIMDProcessing.h</a>.</p>
 
 </div>
 </div>
@@ -668,9 +686,9 @@ template&lt;RunDataSingOrVect_t T, RunDataSingOrVect_t U, RunDataSingOrVect_t V&
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>V </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>SIMD structure with difference of values </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_s_i_m_d_processing_8h_source.html#l00126">126</a> of file <a class="el" href="_s_i_m_d_processing_8h_source.html">SIMDProcessing.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_s_i_m_d_processing_8h_source.html#l00131">131</a> of file <a class="el" href="_s_i_m_d_processing_8h_source.html">SIMDProcessing.h</a>.</p>
 
 </div>
 </div>

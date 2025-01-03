@@ -2,7 +2,8 @@
 \label{class_detailed_timings}\index{DetailedTimings$<$ T $>$@{DetailedTimings$<$ T $>$}}
 
 
-Class to store timings of one or more segments taken during the run(s) of an implementation or across multiple implementations. Index for timing segments must be enum type.  
+Class to store timings of one or more segments taken during the run(s) of an implementation or across multiple implementations.~\newline
+ Index for timing segments must be enum type.  
 
 
 
@@ -30,7 +31,8 @@ std\+::chrono\+::duration$<$ double $>$ \mbox{\hyperlink{class_detailed_timings_
 \subsubsection*{template$<$typename T$>$\newline
 class Detailed\+Timings$<$ T $>$}
 
-Class to store timings of one or more segments taken during the run(s) of an implementation or across multiple implementations. Index for timing segments must be enum type. 
+Class to store timings of one or more segments taken during the run(s) of an implementation or across multiple implementations.~\newline
+ Index for timing segments must be enum type. 
 
 
 \begin{DoxyTemplParams}{Template Parameters}
@@ -62,7 +64,7 @@ Construct a new \mbox{\hyperlink{class_detailed_timings}{Detailed\+Timings}} obj
 \end{DoxyParams}
 
 
-Definition at line 110 of file Detailed\+Timings.\+h.
+Definition at line 111 of file Detailed\+Timings.\+h.
 
 
 
@@ -89,7 +91,8 @@ Add timing by segment index.
 
 Definition at line 80 of file Detailed\+Timings.\+h.
 
-Here is the caller graph for this function\+:\nopagebreak
+Here is the caller graph for this function\+:
+\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
@@ -114,7 +117,7 @@ Add instance of \mbox{\hyperlink{class_detailed_timings}{Detailed\+Timings}} to 
 \end{DoxyParams}
 
 
-Definition at line 122 of file Detailed\+Timings.\+h.
+Definition at line 127 of file Detailed\+Timings.\+h.
 
 Here is the caller graph for this function\+:\nopagebreak
 \begin{figure}[H]
@@ -135,11 +138,11 @@ requires std\+::is\+\_\+enum\+\_\+v$<$ T $>$ \mbox{\hyperlink{class_run_data}{Ru
 Return current timing data as a \mbox{\hyperlink{class_run_data}{Run\+Data}} object for evaluation. 
 
 \begin{DoxyReturn}{Returns}
-\mbox{\hyperlink{class_run_data}{Run\+Data}} 
+\mbox{\hyperlink{class_run_data}{Run\+Data}} object containing timing data 
 \end{DoxyReturn}
 
 
-Definition at line 162 of file Detailed\+Timings.\+h.
+Definition at line 169 of file Detailed\+Timings.\+h.
 
 Here is the call graph for this function\+:\nopagebreak
 \begin{figure}[H]
@@ -172,13 +175,14 @@ Get median timing for a specified segment that may have been run multiple times.
 \hline
 \end{DoxyParams}
 \begin{DoxyReturn}{Returns}
-std\+::chrono\+::duration$<$double$>$ 
+Median timing of segment 
 \end{DoxyReturn}
 
 
-Definition at line 142 of file Detailed\+Timings.\+h.
+Definition at line 149 of file Detailed\+Timings.\+h.
 
-Here is the caller graph for this function\+:\nopagebreak
+Here is the caller graph for this function\+:
+\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode

@@ -12,27 +12,29 @@ Class with operator function to evaluate implementation runs across multiple arc
 \doxysubsection*{Public Member Functions}
 \begin{DoxyCompactItemize}
 \item 
-void \mbox{\hyperlink{class_evaluate_across_runs_a8e9d81f0baa20d5ed9d3e0699d8e62a3}{operator()}} (const std\+::filesystem\+::path \&imp\+\_\+results\+\_\+file\+\_\+path, const std\+::vector$<$ std\+::string $>$ \&eval\+\_\+across\+\_\+runs\+\_\+top\+\_\+text, const std\+::vector$<$ std\+::string $>$ \&eval\+\_\+across\+\_\+runs\+\_\+in\+\_\+params\+\_\+show, const std\+::vector$<$ std\+::string $>$ \&speedup\+\_\+headers) const
-\begin{DoxyCompactList}\small\item\em Evaluate all runs with results in specified file path and generate csv file with evaluation of results across runs generated file starts with specified top text and includes specified input parameters for each input as well as the optimized implementation runtime for each run on each input. \end{DoxyCompactList}\end{DoxyCompactItemize}
+void \mbox{\hyperlink{class_evaluate_across_runs_a6343ee728b3430154d1d3746bfe0914f}{operator()}} (const std\+::filesystem\+::path \&imp\+\_\+results\+\_\+file\+\_\+path, const std\+::vector$<$ std\+::string $>$ \&eval\+\_\+across\+\_\+runs\+\_\+top\+\_\+text, const std\+::vector$<$ std\+::string $>$ \&eval\+\_\+across\+\_\+runs\+\_\+in\+\_\+params\+\_\+show) const
+\begin{DoxyCompactList}\small\item\em Evaluate all runs with results in specified file path and generate csv file with evaluation of results across runs.~\newline
+ Generated file starts with specified top text and includes specified input parameters for each input as well as the optimized implementation runtime for each run on each input. \end{DoxyCompactList}\end{DoxyCompactItemize}
 
 
 \doxysubsection{Detailed Description}
 Class with operator function to evaluate implementation runs across multiple architectures. Outputs a file with speedup data on every run with the runs ordered from fastest to slowest. 
 
-Definition at line 42 of file Evaluate\+Across\+Runs.\+h.
+Definition at line 54 of file Evaluate\+Across\+Runs.\+h.
 
 
 
 \doxysubsection{Member Function Documentation}
-\mbox{\Hypertarget{class_evaluate_across_runs_a8e9d81f0baa20d5ed9d3e0699d8e62a3}\label{class_evaluate_across_runs_a8e9d81f0baa20d5ed9d3e0699d8e62a3}} 
+\mbox{\Hypertarget{class_evaluate_across_runs_a6343ee728b3430154d1d3746bfe0914f}\label{class_evaluate_across_runs_a6343ee728b3430154d1d3746bfe0914f}} 
 \index{EvaluateAcrossRuns@{EvaluateAcrossRuns}!operator()@{operator()}}
 \index{operator()@{operator()}!EvaluateAcrossRuns@{EvaluateAcrossRuns}}
 \doxysubsubsection{\texorpdfstring{operator()()}{operator()()}}
-{\footnotesize\ttfamily void Evaluate\+Across\+Runs\+::operator() (\begin{DoxyParamCaption}\item[{const std\+::filesystem\+::path \&}]{imp\+\_\+results\+\_\+file\+\_\+path,  }\item[{const std\+::vector$<$ std\+::string $>$ \&}]{eval\+\_\+across\+\_\+runs\+\_\+top\+\_\+text,  }\item[{const std\+::vector$<$ std\+::string $>$ \&}]{eval\+\_\+across\+\_\+runs\+\_\+in\+\_\+params\+\_\+show,  }\item[{const std\+::vector$<$ std\+::string $>$ \&}]{speedup\+\_\+headers }\end{DoxyParamCaption}) const}
+{\footnotesize\ttfamily void Evaluate\+Across\+Runs\+::operator() (\begin{DoxyParamCaption}\item[{const std\+::filesystem\+::path \&}]{imp\+\_\+results\+\_\+file\+\_\+path,  }\item[{const std\+::vector$<$ std\+::string $>$ \&}]{eval\+\_\+across\+\_\+runs\+\_\+top\+\_\+text,  }\item[{const std\+::vector$<$ std\+::string $>$ \&}]{eval\+\_\+across\+\_\+runs\+\_\+in\+\_\+params\+\_\+show }\end{DoxyParamCaption}) const}
 
 
 
-Evaluate all runs with results in specified file path and generate csv file with evaluation of results across runs generated file starts with specified top text and includes specified input parameters for each input as well as the optimized implementation runtime for each run on each input. 
+Evaluate all runs with results in specified file path and generate csv file with evaluation of results across runs.~\newline
+ Generated file starts with specified top text and includes specified input parameters for each input as well as the optimized implementation runtime for each run on each input. 
 
 
 \begin{DoxyParams}{Parameters}
@@ -41,8 +43,6 @@ Evaluate all runs with results in specified file path and generate csv file with
 {\em eval\+\_\+across\+\_\+runs\+\_\+top\+\_\+text} & \\
 \hline
 {\em eval\+\_\+across\+\_\+runs\+\_\+in\+\_\+params\+\_\+show} & \\
-\hline
-{\em speedup\+\_\+headers} & \\
 \hline
 \end{DoxyParams}
 

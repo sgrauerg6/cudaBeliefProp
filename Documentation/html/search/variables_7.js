@@ -1,6 +1,5 @@
 var searchData=
 [
-  ['max_5fdiff_5fcap_1171',['max_diff_cap',['../structbeliefprop_1_1_disparity_map_evaluation_params.html#a669289c72d5b49554f0d298f73bc31e9',1,'beliefprop::DisparityMapEvaluationParams']]],
-  ['mem_5fmanagement_5fbp_5frun_1172',['mem_management_bp_run',['../structbeliefprop_1_1_bp_on_device.html#a88f8f029a29fda375021a3c5fb71e8f9',1,'beliefprop::BpOnDevice']]],
-  ['mem_5fmanagement_5fimages_1173',['mem_management_images',['../structbeliefprop_1_1_bp_on_device.html#a151ef7b1777ed11cea9c28165af1eb7d',1,'beliefprop::BpOnDevice']]]
+  ['lambda_5fbp_1204',['lambda_bp',['../structbeliefprop_1_1_bp_settings.html#a4e4ec3770256b7f6ff96436bfbce6892',1,'beliefprop::BpSettings']]],
+  ['level_5fnum_5f_1205',['level_num_',['../structbeliefprop_1_1_bp_level_properties.html#abd70e8ec6d7b2fb6297b0d4c78cf03b5',1,'beliefprop::BpLevelProperties']]]
 ];

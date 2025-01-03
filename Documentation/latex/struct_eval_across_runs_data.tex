@@ -1,0 +1,77 @@
+\hypertarget{struct_eval_across_runs_data}{}\doxysection{Eval\+Across\+Runs\+Data Struct Reference}
+\label{struct_eval_across_runs_data}\index{EvalAcrossRunsData@{EvalAcrossRunsData}}
+
+
+Structure to store data with mappings for evaluating results across runs as well as speedup headers in order.  
+
+
+
+
+{\ttfamily \#include $<$Evaluate\+Across\+Runs.\+h$>$}
+
+\doxysubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+std\+::map$<$ std\+::string, std\+::map$<$ std\+::string, std\+::vector$<$ std\+::string $>$ $>$ $>$ \mbox{\hyperlink{struct_eval_across_runs_data_a5ffece752750104d926103bd11fb01a6}{speedup\+\_\+results\+\_\+name\+\_\+to\+\_\+data}}
+\item 
+std\+::map$<$ std\+::string, std\+::map$<$ \mbox{\hyperlink{class_input_signature}{Input\+Signature}}, std\+::string $>$ $>$ \mbox{\hyperlink{struct_eval_across_runs_data_a4c0b626859da5e56753744e3c8e07807}{input\+\_\+to\+\_\+runtime\+\_\+across\+\_\+archs}}
+\item 
+std\+::map$<$ \mbox{\hyperlink{class_input_signature}{Input\+Signature}}, std\+::vector$<$ std\+::string $>$ $>$ \mbox{\hyperlink{struct_eval_across_runs_data_a6d4b783540d17f2bd6a0233655e3c2e9}{inputs\+\_\+to\+\_\+params\+\_\+disp\+\_\+ordered}}
+\item 
+std\+::vector$<$ std\+::string $>$ \mbox{\hyperlink{struct_eval_across_runs_data_aa9d87d78b5140d682c1645a590ffae65}{speedup\+\_\+headers}}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Structure to store data with mappings for evaluating results across runs as well as speedup headers in order. 
+
+Definition at line 42 of file Evaluate\+Across\+Runs.\+h.
+
+
+
+\doxysubsection{Member Data Documentation}
+\mbox{\Hypertarget{struct_eval_across_runs_data_a4c0b626859da5e56753744e3c8e07807}\label{struct_eval_across_runs_data_a4c0b626859da5e56753744e3c8e07807}} 
+\index{EvalAcrossRunsData@{EvalAcrossRunsData}!input\_to\_runtime\_across\_archs@{input\_to\_runtime\_across\_archs}}
+\index{input\_to\_runtime\_across\_archs@{input\_to\_runtime\_across\_archs}!EvalAcrossRunsData@{EvalAcrossRunsData}}
+\doxysubsubsection{\texorpdfstring{input\_to\_runtime\_across\_archs}{input\_to\_runtime\_across\_archs}}
+{\footnotesize\ttfamily std\+::map$<$std\+::string, std\+::map$<$\mbox{\hyperlink{class_input_signature}{Input\+Signature}}, std\+::string$>$ $>$ Eval\+Across\+Runs\+Data\+::input\+\_\+to\+\_\+runtime\+\_\+across\+\_\+archs}
+
+
+
+Definition at line 44 of file Evaluate\+Across\+Runs.\+h.
+
+\mbox{\Hypertarget{struct_eval_across_runs_data_a6d4b783540d17f2bd6a0233655e3c2e9}\label{struct_eval_across_runs_data_a6d4b783540d17f2bd6a0233655e3c2e9}} 
+\index{EvalAcrossRunsData@{EvalAcrossRunsData}!inputs\_to\_params\_disp\_ordered@{inputs\_to\_params\_disp\_ordered}}
+\index{inputs\_to\_params\_disp\_ordered@{inputs\_to\_params\_disp\_ordered}!EvalAcrossRunsData@{EvalAcrossRunsData}}
+\doxysubsubsection{\texorpdfstring{inputs\_to\_params\_disp\_ordered}{inputs\_to\_params\_disp\_ordered}}
+{\footnotesize\ttfamily std\+::map$<$\mbox{\hyperlink{class_input_signature}{Input\+Signature}}, std\+::vector$<$std\+::string$>$ $>$ Eval\+Across\+Runs\+Data\+::inputs\+\_\+to\+\_\+params\+\_\+disp\+\_\+ordered}
+
+
+
+Definition at line 45 of file Evaluate\+Across\+Runs.\+h.
+
+\mbox{\Hypertarget{struct_eval_across_runs_data_aa9d87d78b5140d682c1645a590ffae65}\label{struct_eval_across_runs_data_aa9d87d78b5140d682c1645a590ffae65}} 
+\index{EvalAcrossRunsData@{EvalAcrossRunsData}!speedup\_headers@{speedup\_headers}}
+\index{speedup\_headers@{speedup\_headers}!EvalAcrossRunsData@{EvalAcrossRunsData}}
+\doxysubsubsection{\texorpdfstring{speedup\_headers}{speedup\_headers}}
+{\footnotesize\ttfamily std\+::vector$<$std\+::string$>$ Eval\+Across\+Runs\+Data\+::speedup\+\_\+headers}
+
+
+
+Definition at line 46 of file Evaluate\+Across\+Runs.\+h.
+
+\mbox{\Hypertarget{struct_eval_across_runs_data_a5ffece752750104d926103bd11fb01a6}\label{struct_eval_across_runs_data_a5ffece752750104d926103bd11fb01a6}} 
+\index{EvalAcrossRunsData@{EvalAcrossRunsData}!speedup\_results\_name\_to\_data@{speedup\_results\_name\_to\_data}}
+\index{speedup\_results\_name\_to\_data@{speedup\_results\_name\_to\_data}!EvalAcrossRunsData@{EvalAcrossRunsData}}
+\doxysubsubsection{\texorpdfstring{speedup\_results\_name\_to\_data}{speedup\_results\_name\_to\_data}}
+{\footnotesize\ttfamily std\+::map$<$std\+::string, std\+::map$<$std\+::string, std\+::vector$<$std\+::string$>$ $>$ $>$ Eval\+Across\+Runs\+Data\+::speedup\+\_\+results\+\_\+name\+\_\+to\+\_\+data}
+
+
+
+Definition at line 43 of file Evaluate\+Across\+Runs.\+h.
+
+
+
+The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+src/\+Run\+Eval/\mbox{\hyperlink{_evaluate_across_runs_8h}{Evaluate\+Across\+Runs.\+h}}\end{DoxyCompactItemize}

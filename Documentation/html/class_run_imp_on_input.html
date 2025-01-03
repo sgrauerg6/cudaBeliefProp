@@ -124,7 +124,8 @@ Protected Member Functions</h2></td></tr>
 <tr class="memdesc:a90b1b66d576a10fc4f5c4099e703a44e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get current run inputs and parameters in <a class="el" href="class_run_data.html" title="Class to store headers with data corresponding to current program run and evaluation.">RunData</a> structure.  <a href="class_run_imp_on_input.html#a90b1b66d576a10fc4f5c4099e703a44e">More...</a><br /></td></tr>
 <tr class="separator:a90b1b66d576a10fc4f5c4099e703a44e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac81fc1fb17b7c4127972746d232b87ef"><td class="memItemLeft" align="right" valign="top">MultRunData::mapped_type&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_run_imp_on_input.html#ac81fc1fb17b7c4127972746d232b87ef">RunEvalBenchmark</a> (const <a class="el" href="structrun__environment_1_1_run_imp_settings.html">run_environment::RunImpSettings</a> &amp;run_imp_settings, bool run_w_loop_iters_templated) const</td></tr>
-<tr class="memdesc:ac81fc1fb17b7c4127972746d232b87ef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Run optimized and single threaded implementations using multiple sets of parallel parameters in optimized implementation if set to optimize parallel parameters Returns data from runs using default and optimized parallel parameters.  <a href="class_run_imp_on_input.html#ac81fc1fb17b7c4127972746d232b87ef">More...</a><br /></td></tr>
+<tr class="memdesc:ac81fc1fb17b7c4127972746d232b87ef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Run optimized and single threaded implementations using multiple sets of parallel parameters in optimized implementation if set to optimize parallel parameters<br  />
+ Returns data from runs using default and optimized parallel parameters.  <a href="class_run_imp_on_input.html#ac81fc1fb17b7c4127972746d232b87ef">More...</a><br /></td></tr>
 <tr class="separator:ac81fc1fb17b7c4127972746d232b87ef"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
@@ -141,7 +142,7 @@ class RunImpOnInput&lt; T, OPT_IMP_ACCEL, NUM_INPUT &gt;</h3>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="_run_imp_on_input_8h_source.html#l00052">52</a> of file <a class="el" href="_run_imp_on_input_8h_source.html">RunImpOnInput.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_run_imp_on_input_8h_source.html#l00053">53</a> of file <a class="el" href="_run_imp_on_input_8h_source.html">RunImpOnInput.h</a>.</p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
 <a id="a34a6f5d3387c29607e2249786b725257"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a34a6f5d3387c29607e2249786b725257">&#9670;&nbsp;</a></span>InputAndParamsForCurrBenchmark()</h2>
@@ -176,7 +177,7 @@ template&lt;RunData_t T, run_environment::AccSetting OPT_IMP_ACCEL, unsigned int
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd><a class="el" href="class_run_data.html" title="Class to store headers with data corresponding to current program run and evaluation.">RunData</a> </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="class_run_data.html" title="Class to store headers with data corresponding to current program run and evaluation.">RunData</a> object with input data and parameter info about current benchmark </dd></dl>
 
 <p>Implemented in <a class="el" href="class_run_imp_on_input_bp.html#a724a02eefdc8ad233a294be38f396547">RunImpOnInputBp&lt; T, OPT_IMP_ACCEL, NUM_INPUT &gt;</a>.</p>
 <div class="dynheader">
@@ -224,9 +225,9 @@ template&lt;RunData_t T, run_environment::AccSetting OPT_IMP_ACCEL, unsigned int
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd><a class="el" href="class_run_data.html" title="Class to store headers with data corresponding to current program run and evaluation.">RunData</a> </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>Current run inputs and parameters in <a class="el" href="class_run_data.html" title="Class to store headers with data corresponding to current program run and evaluation.">RunData</a> structure </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_run_imp_on_input_8h_source.html#l00094">94</a> of file <a class="el" href="_run_imp_on_input_8h_source.html">RunImpOnInput.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_run_imp_on_input_8h_source.html#l00099">99</a> of file <a class="el" href="_run_imp_on_input_8h_source.html">RunImpOnInput.h</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -311,7 +312,8 @@ template&lt;RunData_t T, run_environment::AccSetting OPT_IMP_ACCEL, unsigned int
 </table>
 </div><div class="memdoc">
 
-<p>Run optimized and single threaded implementations using multiple sets of parallel parameters in optimized implementation if set to optimize parallel parameters Returns data from runs using default and optimized parallel parameters. </p>
+<p>Run optimized and single threaded implementations using multiple sets of parallel parameters in optimized implementation if set to optimize parallel parameters<br  />
+ Returns data from runs using default and optimized parallel parameters. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">run_imp_settings</td><td></td></tr>
@@ -319,9 +321,9 @@ template&lt;RunData_t T, run_environment::AccSetting OPT_IMP_ACCEL, unsigned int
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>MultRunData::mapped_type </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>Run results from running and evaluating benchmark </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_run_imp_on_input_8h_source.html#l00115">115</a> of file <a class="el" href="_run_imp_on_input_8h_source.html">RunImpOnInput.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_run_imp_on_input_8h_source.html#l00120">120</a> of file <a class="el" href="_run_imp_on_input_8h_source.html">RunImpOnInput.h</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -394,7 +396,7 @@ template&lt;RunData_t T, run_environment::AccSetting OPT_IMP_ACCEL, unsigned int
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>std::optional&lt;RunData&gt; </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>Restults of running and comparing implementations or null output if error in run </dd></dl>
 
 <p>Implemented in <a class="el" href="class_run_imp_on_input_bp.html#ae5914e5e25b86a0eaacd0c888dee9708">RunImpOnInputBp&lt; T, OPT_IMP_ACCEL, NUM_INPUT &gt;</a>.</p>
 <div class="dynheader">
@@ -442,7 +444,7 @@ template&lt;RunData_t T, run_environment::AccSetting OPT_IMP_ACCEL, unsigned int
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>std::shared_ptr&lt;ParallelParams&gt; </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>Shared pointer to parallel parameters as set up for run </dd></dl>
 
 <p>Implemented in <a class="el" href="class_run_imp_on_input_bp.html#af60f390436ced378f4aebbd5cd189da1">RunImpOnInputBp&lt; T, OPT_IMP_ACCEL, NUM_INPUT &gt;</a>.</p>
 <div class="dynheader">

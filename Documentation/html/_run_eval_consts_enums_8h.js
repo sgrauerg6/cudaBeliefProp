@@ -1,14 +1,22 @@
 var _run_eval_consts_enums_8h =
 [
+    [ "OutFileInfo", "structrun__eval_1_1_out_file_info.html", "structrun__eval_1_1_out_file_info" ],
     [ "MiddleValData", "_run_eval_consts_enums_8h.html#afde1aa77e63e966b5728eae080febcf2", [
       [ "kAverage", "_run_eval_consts_enums_8h.html#afde1aa77e63e966b5728eae080febcf2af87dddcff4e57dc718478e6ad9432ec5", null ],
       [ "kMedian", "_run_eval_consts_enums_8h.html#afde1aa77e63e966b5728eae080febcf2afc0c69ca269010f09ab0218150315477", null ]
+    ] ],
+    [ "OutResults", "_run_eval_consts_enums_8h.html#a8bab2154c9f69aee6f630dede1c230ca", [
+      [ "kDefaultPParams", "_run_eval_consts_enums_8h.html#a8bab2154c9f69aee6f630dede1c230caa0d4c807d12467d727754023fd796583a", null ],
+      [ "kOptPParams", "_run_eval_consts_enums_8h.html#a8bab2154c9f69aee6f630dede1c230caa4aa1cff924810a4c91826d97fb37b2f5", null ],
+      [ "kSpeedups", "_run_eval_consts_enums_8h.html#a8bab2154c9f69aee6f630dede1c230caa1b1672381d2f429dfe9c17a8cb9e9f27", null ],
+      [ "kOptWSpeedups", "_run_eval_consts_enums_8h.html#a8bab2154c9f69aee6f630dede1c230caa6b4de8247c2e65aac1cfd3c324f899ab", null ]
     ] ],
     [ "Status", "_run_eval_consts_enums_8h.html#aa8f06e41fdf48a118ecb84632df4b3cd", [
       [ "kNoError", "_run_eval_consts_enums_8h.html#aa8f06e41fdf48a118ecb84632df4b3cdafcd1af9ec66cb99f2d106d7fdc865c8b", null ],
       [ "kError", "_run_eval_consts_enums_8h.html#aa8f06e41fdf48a118ecb84632df4b3cdae3587c730cc1aa530fa4ddc9c4204e97", null ]
     ] ],
     [ "kAllRunsStr", "_run_eval_consts_enums_8h.html#a43472d99af1ea4cd938fdae0ff48d0a2", null ],
+    [ "kAltAccToSpeedupDesc", "_run_eval_consts_enums_8h.html#a28df5a9e705a23416bd11501cbc97f9b", null ],
     [ "kBoolValFalseTrueDispStr", "_run_eval_consts_enums_8h.html#aaaeaf61451f5f5f94c6cbcf1d550d9e8", null ],
     [ "kCsvFileExtension", "_run_eval_consts_enums_8h.html#a5c69e0c09678a48f6bcd5d46ac052096", null ],
     [ "kDatatypeHeader", "_run_eval_consts_enums_8h.html#a1bb38345922853340e189ff4e073bdf7", null ],
@@ -16,6 +24,7 @@ var _run_eval_consts_enums_8h =
     [ "kEvalAcrossRunsFileName", "_run_eval_consts_enums_8h.html#a229caf4f6150ca92d66eb06a150b9fa6", null ],
     [ "kImpResultsAcrossArchsFolderName", "_run_eval_consts_enums_8h.html#ac16a5475c8ba2869a579e2c1c2b8e902", null ],
     [ "kImpResultsFolderName", "_run_eval_consts_enums_8h.html#aeb9a999d42ab9a972522a36e2e2f9712", null ],
+    [ "kImpResultsRunDataAccFolderName", "_run_eval_consts_enums_8h.html#a2930e44c4ece9cbbe27fe260328e5be4", null ],
     [ "kImpResultsRunDataDefaultPParamsFolderName", "_run_eval_consts_enums_8h.html#a625a3bd1e0783741632501cd38ef6f46", null ],
     [ "kImpResultsRunDataFolderName", "_run_eval_consts_enums_8h.html#a12f0e50ca7718080a44f95b98512aad0", null ],
     [ "kImpResultsRunDataWSpeedupsFolderName", "_run_eval_consts_enums_8h.html#adc691a7675131728cd71a6fcc9fc3967", null ],
@@ -24,6 +33,8 @@ var _run_eval_consts_enums_8h =
     [ "kLoopItersTemplatedHeader", "_run_eval_consts_enums_8h.html#aef29ac0eb3ad8078a51bc7612ee6863b", null ],
     [ "kMedianOfTestRunsDesc", "_run_eval_consts_enums_8h.html#a68b6e7c080212e75c52102099564ec23", null ],
     [ "kOptimizedRuntimeHeader", "_run_eval_consts_enums_8h.html#aac082d24ce0fe2ac23fb63c994172981", null ],
+    [ "kOutResultsDesc", "_run_eval_consts_enums_8h.html#a3e00d0fb1dad1ac2f4e84ca002a35bd5", null ],
+    [ "kOutResultsFileInfo", "_run_eval_consts_enums_8h.html#ac686dfab340d406f91f8f6c5066da397", null ],
     [ "kRunAltOptimizedImps", "_run_eval_consts_enums_8h.html#ac8888f549eae1f06b02b580494fdf773", null ],
     [ "kRunInputDatatypeIdx", "_run_eval_consts_enums_8h.html#aa4dcdafffb130d2f183786bd93e23b9a", null ],
     [ "kRunInputLoopItersTemplatedIdx", "_run_eval_consts_enums_8h.html#a2be272bfc5ce93166901411313480403", null ],
@@ -35,11 +46,16 @@ var _run_eval_consts_enums_8h =
     [ "kRunResultsWSpeedupsDescFileName", "_run_eval_consts_enums_8h.html#a2b8f361a2c25b57782ad13ddbae045fc", null ],
     [ "kSingleThreadRuntimeHeader", "_run_eval_consts_enums_8h.html#a2fb349e0919edec1beb2ac3e891201f6", null ],
     [ "kSpeedupCPUVectorization", "_run_eval_consts_enums_8h.html#ad368b3398ba326c7e939936988061c95", null ],
-    [ "kSpeedupDouble", "_run_eval_consts_enums_8h.html#a53e8b6af9661ebb7bc6a99e97cf4f3a2", null ],
-    [ "kSpeedupHalf", "_run_eval_consts_enums_8h.html#aacb3f40d5df0b0422fe6173fcd4f7885", null ],
+    [ "kSpeedupDoubleHeader", "_run_eval_consts_enums_8h.html#a71e6b665ae9ac08b9c45769d637aef85", null ],
+    [ "kSpeedupHalfHeader", "_run_eval_consts_enums_8h.html#ad3fbe6f497846de8777e5f4e14ac934d", null ],
     [ "kSpeedupLoopItersCountTemplate", "_run_eval_consts_enums_8h.html#af964fa30f21da7faca4e5b2d56ac7bb3", null ],
     [ "kSpeedupOptParParamsHeader", "_run_eval_consts_enums_8h.html#ad93c0dd070cda950d788bd5f22c8f237", null ],
     [ "kSpeedupsDescFileName", "_run_eval_consts_enums_8h.html#a6f7327cf25d1b917872c8d98f9fd84f3", null ],
+    [ "kSpeedupVsAvx256F16Vectorization", "_run_eval_consts_enums_8h.html#acb7c6e108435ac56b06260f60cba8773", null ],
     [ "kSpeedupVsAvx256Vectorization", "_run_eval_consts_enums_8h.html#aca67196adcd344aa6f31a7a7521fd385", null ],
+    [ "kSpeedupVsAvx512F16Vectorization", "_run_eval_consts_enums_8h.html#a0dc7aa1de88568d5d58ac30512f5a5ad", null ],
+    [ "kSpeedupVsAvx512Vectorization", "_run_eval_consts_enums_8h.html#ac70af88f811dd78a258b60dfcb173a5b", null ],
+    [ "kSpeedupVsCUDAAcceleration", "_run_eval_consts_enums_8h.html#a587247239b6c7e3afc9fe6e26ce73559", null ],
+    [ "kSpeedupVsNEONVectorization", "_run_eval_consts_enums_8h.html#af0984cda4e104f90c052b63bcdda7da2", null ],
     [ "kTemplatedItersEvalSettings", "_run_eval_consts_enums_8h.html#a9c724309a03d12aa405c65a93c716bed", null ]
 ];

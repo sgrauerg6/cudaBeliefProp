@@ -129,175 +129,185 @@ $(document).ready(function(){initNavTree('_bp_level_8h_source.html',''); initRes
 <div class="line"><a name="l00059"></a><span class="lineno"><a class="line" href="class_bp_level.html">   59</a></span>&#160;<span class="keyword">class </span><a class="code" href="class_bp_level.html">BpLevel</a></div>
 <div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;{</div>
 <div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;<span class="keyword">public</span>:</div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;  <span class="keyword">explicit</span> <a class="code" href="class_bp_level.html#a369e556671f9e44ece9761086e4ccde4">BpLevel</a>(<span class="keyword">const</span> std::array&lt;unsigned int, 2&gt;&amp; width_height, std::size_t offset_into_arrays,</div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;    <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> level_num, <a class="code" href="namespacerun__environment.html#a2cd0a9de3e0ce6e4d99b35b89befb8bb">run_environment::AccSetting</a> acc_setting);</div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;  </div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;  <span class="keyword">explicit</span> <a class="code" href="class_bp_level.html#a369e556671f9e44ece9761086e4ccde4">BpLevel</a>(<span class="keyword">const</span> std::array&lt;unsigned int, 2&gt;&amp; width_height, std::size_t offset_into_arrays,</div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;    <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> level_num, <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> bytes_align_memory);</div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160; </div>
-<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;  <a class="code" href="class_bp_level.html">BpLevel</a> <a class="code" href="class_bp_level.html#ae46c656c6dd5d2fe0a8c398be9f54c07">NextBpLevel</a>(<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> num_disparity_values) <span class="keyword">const</span>;</div>
-<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160; </div>
-<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;  std::size_t <a class="code" href="class_bp_level.html#a4ecf8946b20a208c887bdec5d4104d6b">NumDataInBpArrays</a>(<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> num_disparity_values) <span class="keyword">const</span>;</div>
-<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160; </div>
-<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;  <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> <a class="code" href="class_bp_level.html#aa08d95e4ce0647439a38bee59cf68306">CheckerboardWidthTargetDevice</a>(<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> width_level) <span class="keyword">const</span>;</div>
-<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160; </div>
-<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;  <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> <a class="code" href="class_bp_level.html#ad5b1ae253d5d0089e5f7acca96d6c895">PaddedCheckerboardWidth</a>(<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> checkerboard_width) <span class="keyword">const</span>;</div>
-<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160; </div>
-<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;  std::size_t <a class="code" href="class_bp_level.html#ad6325cd5c3b66192ba6b4b3f489c9c2b">NumDataForAlignedMemoryAtLevel</a>(</div>
-<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;    <span class="keyword">const</span> std::array&lt;unsigned int, 2&gt;&amp; width_height_level,</div>
-<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;    <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> num_possible_disparities) <span class="keyword">const</span>;</div>
-<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160; </div>
-<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;  <span class="keyword">static</span> std::size_t <a class="code" href="class_bp_level.html#af1e5192e3172a6bfacb5eab0e79424bf">TotalDataForAlignedMemoryAllLevels</a>(</div>
-<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;    <span class="keyword">const</span> std::array&lt;unsigned int, 2&gt;&amp; width_height_bottom_level,</div>
-<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;    <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> num_possible_disparities,</div>
-<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;    <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> num_levels,</div>
-<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;    <a class="code" href="namespacerun__environment.html#a2cd0a9de3e0ce6e4d99b35b89befb8bb">run_environment::AccSetting</a> acceleration);</div>
-<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;  </div>
-<div class="line"><a name="l00124"></a><span class="lineno"><a class="line" href="class_bp_level.html#a546d96e0009d22fa05403845bec98d42">  124</a></span>&#160;  <span class="keyword">const</span> <a class="code" href="structbeliefprop_1_1_bp_level_properties.html">beliefprop::BpLevelProperties</a>&amp; <a class="code" href="class_bp_level.html#a546d96e0009d22fa05403845bec98d42">LevelProperties</a>()<span class="keyword"> const </span>{ <span class="keywordflow">return</span> level_properties_; }</div>
-<div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160; </div>
-<div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;<span class="keyword">private</span>:</div>
-<div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160;  <a class="code" href="structbeliefprop_1_1_bp_level_properties.html">beliefprop::BpLevelProperties</a> level_properties_;</div>
-<div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160;};</div>
-<div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160; </div>
-<div class="line"><a name="l00130"></a><span class="lineno">  130</span>&#160;<span class="keyword">template</span> &lt;RunData_t T&gt;</div>
-<div class="line"><a name="l00131"></a><span class="lineno"><a class="line" href="class_bp_level.html#a369e556671f9e44ece9761086e4ccde4">  131</a></span>&#160;<a class="code" href="class_bp_level.html#a369e556671f9e44ece9761086e4ccde4">BpLevel&lt;T&gt;::BpLevel</a>(</div>
-<div class="line"><a name="l00132"></a><span class="lineno">  132</span>&#160;  <span class="keyword">const</span> std::array&lt;unsigned int, 2&gt;&amp; width_height,</div>
-<div class="line"><a name="l00133"></a><span class="lineno">  133</span>&#160;  std::size_t offset_into_arrays,</div>
-<div class="line"><a name="l00134"></a><span class="lineno">  134</span>&#160;  <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> level_num,</div>
-<div class="line"><a name="l00135"></a><span class="lineno">  135</span>&#160;  <a class="code" href="namespacerun__environment.html#a2cd0a9de3e0ce6e4d99b35b89befb8bb">run_environment::AccSetting</a> acc_setting)</div>
-<div class="line"><a name="l00136"></a><span class="lineno">  136</span>&#160;{</div>
-<div class="line"><a name="l00137"></a><span class="lineno">  137</span>&#160;  level_properties_.width_level_ = width_height[0];</div>
-<div class="line"><a name="l00138"></a><span class="lineno">  138</span>&#160;  level_properties_.height_level_ = width_height[1];</div>
-<div class="line"><a name="l00139"></a><span class="lineno">  139</span>&#160;  level_properties_.level_num_ = level_num;</div>
-<div class="line"><a name="l00140"></a><span class="lineno">  140</span>&#160;  level_properties_.offset_into_arrays_=  offset_into_arrays;</div>
-<div class="line"><a name="l00141"></a><span class="lineno">  141</span>&#160;  level_properties_.bytes_align_memory_ = </div>
-<div class="line"><a name="l00142"></a><span class="lineno">  142</span>&#160;    <a class="code" href="namespacerun__environment.html#ac68b9fea12a8756652bce761d7a0cdda">run_environment::GetBytesAlignMemory</a>(acc_setting);</div>
-<div class="line"><a name="l00143"></a><span class="lineno">  143</span>&#160;  level_properties_.width_checkerboard_level_ =</div>
-<div class="line"><a name="l00144"></a><span class="lineno">  144</span>&#160;    CheckerboardWidthTargetDevice(level_properties_.width_level_);</div>
-<div class="line"><a name="l00145"></a><span class="lineno">  145</span>&#160;  level_properties_.padded_width_checkerboard_level_ =</div>
-<div class="line"><a name="l00146"></a><span class="lineno">  146</span>&#160;    PaddedCheckerboardWidth(level_properties_.width_checkerboard_level_);</div>
-<div class="line"><a name="l00147"></a><span class="lineno">  147</span>&#160;}</div>
-<div class="line"><a name="l00148"></a><span class="lineno">  148</span>&#160; </div>
-<div class="line"><a name="l00149"></a><span class="lineno">  149</span>&#160; </div>
-<div class="line"><a name="l00150"></a><span class="lineno">  150</span>&#160;<span class="keyword">template</span> &lt;RunData_t T&gt;</div>
-<div class="line"><a name="l00151"></a><span class="lineno"><a class="line" href="class_bp_level.html#a73f3194887faf215b056311601e06b18">  151</a></span>&#160;<a class="code" href="class_bp_level.html#a369e556671f9e44ece9761086e4ccde4">BpLevel&lt;T&gt;::BpLevel</a>(</div>
-<div class="line"><a name="l00152"></a><span class="lineno">  152</span>&#160;  <span class="keyword">const</span> std::array&lt;unsigned int, 2&gt;&amp; width_height,</div>
-<div class="line"><a name="l00153"></a><span class="lineno">  153</span>&#160;  std::size_t offset_into_arrays,</div>
-<div class="line"><a name="l00154"></a><span class="lineno">  154</span>&#160;  <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> level_num,</div>
-<div class="line"><a name="l00155"></a><span class="lineno">  155</span>&#160;  <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> bytes_align_memory)</div>
-<div class="line"><a name="l00156"></a><span class="lineno">  156</span>&#160;{</div>
-<div class="line"><a name="l00157"></a><span class="lineno">  157</span>&#160;  level_properties_.width_level_ = width_height[0];</div>
-<div class="line"><a name="l00158"></a><span class="lineno">  158</span>&#160;  level_properties_.height_level_ = width_height[1];</div>
-<div class="line"><a name="l00159"></a><span class="lineno">  159</span>&#160;  level_properties_.level_num_ = level_num;</div>
-<div class="line"><a name="l00160"></a><span class="lineno">  160</span>&#160;  level_properties_.offset_into_arrays_ = offset_into_arrays;</div>
-<div class="line"><a name="l00161"></a><span class="lineno">  161</span>&#160;  level_properties_.bytes_align_memory_ = bytes_align_memory;</div>
-<div class="line"><a name="l00162"></a><span class="lineno">  162</span>&#160;  level_properties_.width_checkerboard_level_ =</div>
-<div class="line"><a name="l00163"></a><span class="lineno">  163</span>&#160;    CheckerboardWidthTargetDevice(level_properties_.width_level_);</div>
-<div class="line"><a name="l00164"></a><span class="lineno">  164</span>&#160;  level_properties_.padded_width_checkerboard_level_ =</div>
-<div class="line"><a name="l00165"></a><span class="lineno">  165</span>&#160;    PaddedCheckerboardWidth(level_properties_.width_checkerboard_level_);</div>
-<div class="line"><a name="l00166"></a><span class="lineno">  166</span>&#160;}</div>
-<div class="line"><a name="l00167"></a><span class="lineno">  167</span>&#160; </div>
-<div class="line"><a name="l00168"></a><span class="lineno">  168</span>&#160;<span class="comment">//get bp level properties for next (higher) level in hierarchy that processes data with half width/height of current level</span></div>
-<div class="line"><a name="l00169"></a><span class="lineno">  169</span>&#160;<span class="keyword">template</span> &lt;RunData_t T&gt;</div>
-<div class="line"><a name="l00170"></a><span class="lineno"><a class="line" href="class_bp_level.html#ae46c656c6dd5d2fe0a8c398be9f54c07">  170</a></span>&#160;<a class="code" href="class_bp_level.html">BpLevel&lt;T&gt;</a> <a class="code" href="class_bp_level.html#ae46c656c6dd5d2fe0a8c398be9f54c07">BpLevel&lt;T&gt;::NextBpLevel</a>(<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> num_disparity_values)<span class="keyword"> const</span></div>
-<div class="line"><a name="l00171"></a><span class="lineno">  171</span>&#160;<span class="keyword"></span>{</div>
-<div class="line"><a name="l00172"></a><span class="lineno">  172</span>&#160;  <span class="keyword">const</span> std::size_t offset_next_level =</div>
-<div class="line"><a name="l00173"></a><span class="lineno">  173</span>&#160;    level_properties_.offset_into_arrays_ +</div>
-<div class="line"><a name="l00174"></a><span class="lineno">  174</span>&#160;    NumDataInBpArrays(num_disparity_values);</div>
-<div class="line"><a name="l00175"></a><span class="lineno">  175</span>&#160;  <span class="keywordflow">return</span> <a class="code" href="class_bp_level.html">BpLevel&lt;T&gt;</a>(</div>
-<div class="line"><a name="l00176"></a><span class="lineno">  176</span>&#160;    {(<span class="keywordtype">unsigned</span> int)std::ceil((<span class="keywordtype">float</span>)level_properties_.width_level_ / 2.0f),</div>
-<div class="line"><a name="l00177"></a><span class="lineno">  177</span>&#160;     (<span class="keywordtype">unsigned</span> int)std::ceil((<span class="keywordtype">float</span>)level_properties_.height_level_ / 2.0f)},</div>
-<div class="line"><a name="l00178"></a><span class="lineno">  178</span>&#160;    offset_next_level,</div>
-<div class="line"><a name="l00179"></a><span class="lineno">  179</span>&#160;    (level_properties_.level_num_ + 1),</div>
-<div class="line"><a name="l00180"></a><span class="lineno">  180</span>&#160;    level_properties_.bytes_align_memory_);</div>
-<div class="line"><a name="l00181"></a><span class="lineno">  181</span>&#160;}</div>
-<div class="line"><a name="l00182"></a><span class="lineno">  182</span>&#160; </div>
-<div class="line"><a name="l00183"></a><span class="lineno">  183</span>&#160;<span class="comment">//get the amount of data in each BP array (data cost/messages for each checkerboard) at the current level</span></div>
-<div class="line"><a name="l00184"></a><span class="lineno">  184</span>&#160;<span class="comment">//with the specified number of possible disparity values</span></div>
-<div class="line"><a name="l00185"></a><span class="lineno">  185</span>&#160;<span class="keyword">template</span> &lt;RunData_t T&gt;</div>
-<div class="line"><a name="l00186"></a><span class="lineno"><a class="line" href="class_bp_level.html#a4ecf8946b20a208c887bdec5d4104d6b">  186</a></span>&#160;std::size_t <a class="code" href="class_bp_level.html#a4ecf8946b20a208c887bdec5d4104d6b">BpLevel&lt;T&gt;::NumDataInBpArrays</a>(</div>
-<div class="line"><a name="l00187"></a><span class="lineno">  187</span>&#160;  <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> num_disparity_values)<span class="keyword"> const</span></div>
-<div class="line"><a name="l00188"></a><span class="lineno">  188</span>&#160;<span class="keyword"></span>{</div>
-<div class="line"><a name="l00189"></a><span class="lineno">  189</span>&#160;  <span class="keywordflow">return</span> NumDataForAlignedMemoryAtLevel(</div>
-<div class="line"><a name="l00190"></a><span class="lineno">  190</span>&#160;    {level_properties_.width_level_, level_properties_.height_level_},</div>
-<div class="line"><a name="l00191"></a><span class="lineno">  191</span>&#160;    num_disparity_values);</div>
-<div class="line"><a name="l00192"></a><span class="lineno">  192</span>&#160;}</div>
-<div class="line"><a name="l00193"></a><span class="lineno">  193</span>&#160; </div>
-<div class="line"><a name="l00194"></a><span class="lineno">  194</span>&#160;<span class="keyword">template</span> &lt;RunData_t T&gt;</div>
-<div class="line"><a name="l00195"></a><span class="lineno"><a class="line" href="class_bp_level.html#ad6325cd5c3b66192ba6b4b3f489c9c2b">  195</a></span>&#160;std::size_t <a class="code" href="class_bp_level.html#ad6325cd5c3b66192ba6b4b3f489c9c2b">BpLevel&lt;T&gt;::NumDataForAlignedMemoryAtLevel</a>(</div>
-<div class="line"><a name="l00196"></a><span class="lineno">  196</span>&#160;  <span class="keyword">const</span> std::array&lt;unsigned int, 2&gt;&amp; width_height_level,</div>
-<div class="line"><a name="l00197"></a><span class="lineno">  197</span>&#160;  <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> num_possible_disparities)<span class="keyword"> const</span></div>
-<div class="line"><a name="l00198"></a><span class="lineno">  198</span>&#160;<span class="keyword"></span>{</div>
-<div class="line"><a name="l00199"></a><span class="lineno">  199</span>&#160;  <span class="keyword">const</span> std::size_t numDataAtLevel =</div>
-<div class="line"><a name="l00200"></a><span class="lineno">  200</span>&#160;    (std::size_t)PaddedCheckerboardWidth(CheckerboardWidthTargetDevice(width_height_level[0])) *</div>
-<div class="line"><a name="l00201"></a><span class="lineno">  201</span>&#160;    ((std::size_t)width_height_level[1]) *</div>
-<div class="line"><a name="l00202"></a><span class="lineno">  202</span>&#160;    (std::size_t)num_possible_disparities;</div>
-<div class="line"><a name="l00203"></a><span class="lineno">  203</span>&#160;  std::size_t numBytesAtLevel = numDataAtLevel * <span class="keyword">sizeof</span>(T);</div>
-<div class="line"><a name="l00204"></a><span class="lineno">  204</span>&#160; </div>
-<div class="line"><a name="l00205"></a><span class="lineno">  205</span>&#160;  <span class="keywordflow">if</span> ((numBytesAtLevel % level_properties_.bytes_align_memory_) == 0) {</div>
-<div class="line"><a name="l00206"></a><span class="lineno">  206</span>&#160;    <span class="keywordflow">return</span> numDataAtLevel;</div>
-<div class="line"><a name="l00207"></a><span class="lineno">  207</span>&#160;  }</div>
-<div class="line"><a name="l00208"></a><span class="lineno">  208</span>&#160;  <span class="keywordflow">else</span> {</div>
-<div class="line"><a name="l00209"></a><span class="lineno">  209</span>&#160;    numBytesAtLevel +=</div>
-<div class="line"><a name="l00210"></a><span class="lineno">  210</span>&#160;      (level_properties_.bytes_align_memory_ -</div>
-<div class="line"><a name="l00211"></a><span class="lineno">  211</span>&#160;        (numBytesAtLevel % level_properties_.bytes_align_memory_));</div>
-<div class="line"><a name="l00212"></a><span class="lineno">  212</span>&#160;    <span class="keywordflow">return</span> (numBytesAtLevel / <span class="keyword">sizeof</span>(T));</div>
-<div class="line"><a name="l00213"></a><span class="lineno">  213</span>&#160;  }</div>
-<div class="line"><a name="l00214"></a><span class="lineno">  214</span>&#160;}</div>
-<div class="line"><a name="l00215"></a><span class="lineno">  215</span>&#160; </div>
-<div class="line"><a name="l00216"></a><span class="lineno">  216</span>&#160;<span class="keyword">template</span> &lt;RunData_t T&gt;</div>
-<div class="line"><a name="l00217"></a><span class="lineno"><a class="line" href="class_bp_level.html#aa08d95e4ce0647439a38bee59cf68306">  217</a></span>&#160;<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> <a class="code" href="class_bp_level.html#aa08d95e4ce0647439a38bee59cf68306">BpLevel&lt;T&gt;::CheckerboardWidthTargetDevice</a>(</div>
-<div class="line"><a name="l00218"></a><span class="lineno">  218</span>&#160;  <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> width_level)<span class="keyword"> const</span></div>
-<div class="line"><a name="l00219"></a><span class="lineno">  219</span>&#160;<span class="keyword"></span>{</div>
-<div class="line"><a name="l00220"></a><span class="lineno">  220</span>&#160;  <span class="keywordflow">return</span> (<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span>)std::ceil(((<span class="keywordtype">float</span>)width_level) / 2.0f);</div>
-<div class="line"><a name="l00221"></a><span class="lineno">  221</span>&#160;}</div>
-<div class="line"><a name="l00222"></a><span class="lineno">  222</span>&#160; </div>
-<div class="line"><a name="l00223"></a><span class="lineno">  223</span>&#160;<span class="keyword">template</span> &lt;RunData_t T&gt;</div>
-<div class="line"><a name="l00224"></a><span class="lineno"><a class="line" href="class_bp_level.html#ad5b1ae253d5d0089e5f7acca96d6c895">  224</a></span>&#160;<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> <a class="code" href="class_bp_level.html#ad5b1ae253d5d0089e5f7acca96d6c895">BpLevel&lt;T&gt;::PaddedCheckerboardWidth</a>(</div>
-<div class="line"><a name="l00225"></a><span class="lineno">  225</span>&#160;  <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> checkerboard_width)<span class="keyword"> const</span></div>
-<div class="line"><a name="l00226"></a><span class="lineno">  226</span>&#160;<span class="keyword"></span>{</div>
-<div class="line"><a name="l00227"></a><span class="lineno">  227</span>&#160;  <span class="keywordtype">size_t</span> num_data_align_width = level_properties_.bytes_align_memory_ / <span class="keyword">sizeof</span>(T); </div>
-<div class="line"><a name="l00228"></a><span class="lineno">  228</span>&#160;  <span class="comment">//add &quot;padding&quot; to checkerboard width if necessary for alignment</span></div>
-<div class="line"><a name="l00229"></a><span class="lineno">  229</span>&#160;  <span class="keywordflow">return</span> ((checkerboard_width % num_data_align_width) == 0) ?</div>
-<div class="line"><a name="l00230"></a><span class="lineno">  230</span>&#160;         checkerboard_width :</div>
-<div class="line"><a name="l00231"></a><span class="lineno">  231</span>&#160;         (checkerboard_width +</div>
-<div class="line"><a name="l00232"></a><span class="lineno">  232</span>&#160;           (num_data_align_width - (checkerboard_width % num_data_align_width)));</div>
-<div class="line"><a name="l00233"></a><span class="lineno">  233</span>&#160;}</div>
-<div class="line"><a name="l00234"></a><span class="lineno">  234</span>&#160; </div>
-<div class="line"><a name="l00235"></a><span class="lineno">  235</span>&#160;<span class="comment">//static function</span></div>
-<div class="line"><a name="l00236"></a><span class="lineno">  236</span>&#160;<span class="keyword">template</span> &lt;RunData_t T&gt;</div>
-<div class="line"><a name="l00237"></a><span class="lineno"><a class="line" href="class_bp_level.html#af1e5192e3172a6bfacb5eab0e79424bf">  237</a></span>&#160;std::size_t <a class="code" href="class_bp_level.html#af1e5192e3172a6bfacb5eab0e79424bf">BpLevel&lt;T&gt;::TotalDataForAlignedMemoryAllLevels</a>(</div>
-<div class="line"><a name="l00238"></a><span class="lineno">  238</span>&#160;  <span class="keyword">const</span> std::array&lt;unsigned int, 2&gt;&amp; width_height_bottom_level,</div>
-<div class="line"><a name="l00239"></a><span class="lineno">  239</span>&#160;  <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> num_possible_disparities,</div>
-<div class="line"><a name="l00240"></a><span class="lineno">  240</span>&#160;  <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> num_levels,</div>
-<div class="line"><a name="l00241"></a><span class="lineno">  241</span>&#160;  <a class="code" href="namespacerun__environment.html#a2cd0a9de3e0ce6e4d99b35b89befb8bb">run_environment::AccSetting</a> acceleration)</div>
-<div class="line"><a name="l00242"></a><span class="lineno">  242</span>&#160;{</div>
-<div class="line"><a name="l00243"></a><span class="lineno">  243</span>&#160;  <a class="code" href="class_bp_level.html">BpLevel&lt;T&gt;</a> curr_level_properties(width_height_bottom_level, 0, 0, acceleration);</div>
-<div class="line"><a name="l00244"></a><span class="lineno">  244</span>&#160;  std::size_t total_data =</div>
-<div class="line"><a name="l00245"></a><span class="lineno">  245</span>&#160;    curr_level_properties.<a class="code" href="class_bp_level.html#a4ecf8946b20a208c887bdec5d4104d6b">NumDataInBpArrays</a>(num_possible_disparities);</div>
-<div class="line"><a name="l00246"></a><span class="lineno">  246</span>&#160;  <span class="keywordflow">for</span> (<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> curr_level = 1; curr_level &lt; num_levels; curr_level++)</div>
-<div class="line"><a name="l00247"></a><span class="lineno">  247</span>&#160;  {</div>
-<div class="line"><a name="l00248"></a><span class="lineno">  248</span>&#160;    curr_level_properties = curr_level_properties.<a class="code" href="class_bp_level.html#ae46c656c6dd5d2fe0a8c398be9f54c07">NextBpLevel</a>(num_possible_disparities);</div>
-<div class="line"><a name="l00249"></a><span class="lineno">  249</span>&#160;    total_data += curr_level_properties.<a class="code" href="class_bp_level.html#a4ecf8946b20a208c887bdec5d4104d6b">NumDataInBpArrays</a>(num_possible_disparities);</div>
-<div class="line"><a name="l00250"></a><span class="lineno">  250</span>&#160;  }</div>
-<div class="line"><a name="l00251"></a><span class="lineno">  251</span>&#160; </div>
-<div class="line"><a name="l00252"></a><span class="lineno">  252</span>&#160;  <span class="keywordflow">return</span> total_data;</div>
-<div class="line"><a name="l00253"></a><span class="lineno">  253</span>&#160;}</div>
-<div class="line"><a name="l00254"></a><span class="lineno">  254</span>&#160; </div>
-<div class="line"><a name="l00255"></a><span class="lineno">  255</span>&#160;<span class="preprocessor">#endif </span><span class="comment">//BP_LEVEL_H_</span></div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;  <span class="keyword">explicit</span> <a class="code" href="class_bp_level.html#a369e556671f9e44ece9761086e4ccde4">BpLevel</a>(</div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;    <span class="keyword">const</span> std::array&lt;unsigned int, 2&gt;&amp; width_height,</div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;    std::size_t offset_into_arrays,</div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;    <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> level_num,</div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;    <a class="code" href="namespacerun__environment.html#a2cd0a9de3e0ce6e4d99b35b89befb8bb">run_environment::AccSetting</a> acc_setting);</div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;  </div>
+<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;  <span class="keyword">explicit</span> <a class="code" href="class_bp_level.html#a369e556671f9e44ece9761086e4ccde4">BpLevel</a>(</div>
+<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;    <span class="keyword">const</span> std::array&lt;unsigned int, 2&gt;&amp; width_height,</div>
+<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;    std::size_t offset_into_arrays,</div>
+<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;    <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> level_num,</div>
+<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;    <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> bytes_align_memory);</div>
+<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160; </div>
+<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;  <a class="code" href="class_bp_level.html">BpLevel</a> <a class="code" href="class_bp_level.html#ae46c656c6dd5d2fe0a8c398be9f54c07">NextBpLevel</a>(<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> num_disparity_values) <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160; </div>
+<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;  std::size_t <a class="code" href="class_bp_level.html#a4ecf8946b20a208c887bdec5d4104d6b">NumDataInBpArrays</a>(<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> num_disparity_values) <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160; </div>
+<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;  <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> <a class="code" href="class_bp_level.html#a8d11a0cb014c1839d2590ecc6017dbc6">CheckerboardWidth</a>(<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> width_level) <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160; </div>
+<div class="line"><a name="l00130"></a><span class="lineno">  130</span>&#160;  <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> <a class="code" href="class_bp_level.html#ad5b1ae253d5d0089e5f7acca96d6c895">PaddedCheckerboardWidth</a>(<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> checkerboard_width) <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00131"></a><span class="lineno">  131</span>&#160; </div>
+<div class="line"><a name="l00139"></a><span class="lineno">  139</span>&#160;  std::size_t <a class="code" href="class_bp_level.html#ad6325cd5c3b66192ba6b4b3f489c9c2b">NumDataForAlignedMemoryAtLevel</a>(</div>
+<div class="line"><a name="l00140"></a><span class="lineno">  140</span>&#160;    <span class="keyword">const</span> std::array&lt;unsigned int, 2&gt;&amp; width_height_level,</div>
+<div class="line"><a name="l00141"></a><span class="lineno">  141</span>&#160;    <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> num_possible_disparities) <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00142"></a><span class="lineno">  142</span>&#160; </div>
+<div class="line"><a name="l00153"></a><span class="lineno">  153</span>&#160;  <span class="keyword">static</span> std::size_t <a class="code" href="class_bp_level.html#af1e5192e3172a6bfacb5eab0e79424bf">TotalDataForAlignedMemoryAllLevels</a>(</div>
+<div class="line"><a name="l00154"></a><span class="lineno">  154</span>&#160;    <span class="keyword">const</span> std::array&lt;unsigned int, 2&gt;&amp; width_height_bottom_level,</div>
+<div class="line"><a name="l00155"></a><span class="lineno">  155</span>&#160;    <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> num_possible_disparities,</div>
+<div class="line"><a name="l00156"></a><span class="lineno">  156</span>&#160;    <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> num_levels,</div>
+<div class="line"><a name="l00157"></a><span class="lineno">  157</span>&#160;    <a class="code" href="namespacerun__environment.html#a2cd0a9de3e0ce6e4d99b35b89befb8bb">run_environment::AccSetting</a> acceleration);</div>
+<div class="line"><a name="l00158"></a><span class="lineno">  158</span>&#160;  </div>
+<div class="line"><a name="l00165"></a><span class="lineno"><a class="line" href="class_bp_level.html#a546d96e0009d22fa05403845bec98d42">  165</a></span>&#160;  <span class="keyword">const</span> <a class="code" href="structbeliefprop_1_1_bp_level_properties.html">beliefprop::BpLevelProperties</a>&amp; <a class="code" href="class_bp_level.html#a546d96e0009d22fa05403845bec98d42">LevelProperties</a>()<span class="keyword"> const </span>{</div>
+<div class="line"><a name="l00166"></a><span class="lineno">  166</span>&#160;    <span class="keywordflow">return</span> level_properties_;</div>
+<div class="line"><a name="l00167"></a><span class="lineno">  167</span>&#160;  }</div>
+<div class="line"><a name="l00168"></a><span class="lineno">  168</span>&#160; </div>
+<div class="line"><a name="l00169"></a><span class="lineno">  169</span>&#160;<span class="keyword">private</span>:</div>
+<div class="line"><a name="l00170"></a><span class="lineno">  170</span>&#160;  <a class="code" href="structbeliefprop_1_1_bp_level_properties.html">beliefprop::BpLevelProperties</a> level_properties_;</div>
+<div class="line"><a name="l00171"></a><span class="lineno">  171</span>&#160;};</div>
+<div class="line"><a name="l00172"></a><span class="lineno">  172</span>&#160; </div>
+<div class="line"><a name="l00173"></a><span class="lineno">  173</span>&#160;<span class="keyword">template</span> &lt;RunData_t T&gt;</div>
+<div class="line"><a name="l00174"></a><span class="lineno"><a class="line" href="class_bp_level.html#a369e556671f9e44ece9761086e4ccde4">  174</a></span>&#160;<a class="code" href="class_bp_level.html#a369e556671f9e44ece9761086e4ccde4">BpLevel&lt;T&gt;::BpLevel</a>(</div>
+<div class="line"><a name="l00175"></a><span class="lineno">  175</span>&#160;  <span class="keyword">const</span> std::array&lt;unsigned int, 2&gt;&amp; width_height,</div>
+<div class="line"><a name="l00176"></a><span class="lineno">  176</span>&#160;  std::size_t offset_into_arrays,</div>
+<div class="line"><a name="l00177"></a><span class="lineno">  177</span>&#160;  <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> level_num,</div>
+<div class="line"><a name="l00178"></a><span class="lineno">  178</span>&#160;  <a class="code" href="namespacerun__environment.html#a2cd0a9de3e0ce6e4d99b35b89befb8bb">run_environment::AccSetting</a> acc_setting)</div>
+<div class="line"><a name="l00179"></a><span class="lineno">  179</span>&#160;{</div>
+<div class="line"><a name="l00180"></a><span class="lineno">  180</span>&#160;  level_properties_.width_level_ = width_height[0];</div>
+<div class="line"><a name="l00181"></a><span class="lineno">  181</span>&#160;  level_properties_.height_level_ = width_height[1];</div>
+<div class="line"><a name="l00182"></a><span class="lineno">  182</span>&#160;  level_properties_.level_num_ = level_num;</div>
+<div class="line"><a name="l00183"></a><span class="lineno">  183</span>&#160;  level_properties_.offset_into_arrays_=  offset_into_arrays;</div>
+<div class="line"><a name="l00184"></a><span class="lineno">  184</span>&#160;  level_properties_.bytes_align_memory_ = </div>
+<div class="line"><a name="l00185"></a><span class="lineno">  185</span>&#160;    <a class="code" href="namespacerun__environment.html#ac68b9fea12a8756652bce761d7a0cdda">run_environment::GetBytesAlignMemory</a>(acc_setting);</div>
+<div class="line"><a name="l00186"></a><span class="lineno">  186</span>&#160;  level_properties_.width_checkerboard_level_ =</div>
+<div class="line"><a name="l00187"></a><span class="lineno">  187</span>&#160;    CheckerboardWidth(level_properties_.width_level_);</div>
+<div class="line"><a name="l00188"></a><span class="lineno">  188</span>&#160;  level_properties_.padded_width_checkerboard_level_ =</div>
+<div class="line"><a name="l00189"></a><span class="lineno">  189</span>&#160;    PaddedCheckerboardWidth(level_properties_.width_checkerboard_level_);</div>
+<div class="line"><a name="l00190"></a><span class="lineno">  190</span>&#160;}</div>
+<div class="line"><a name="l00191"></a><span class="lineno">  191</span>&#160; </div>
+<div class="line"><a name="l00192"></a><span class="lineno">  192</span>&#160; </div>
+<div class="line"><a name="l00193"></a><span class="lineno">  193</span>&#160;<span class="keyword">template</span> &lt;RunData_t T&gt;</div>
+<div class="line"><a name="l00194"></a><span class="lineno"><a class="line" href="class_bp_level.html#a73f3194887faf215b056311601e06b18">  194</a></span>&#160;<a class="code" href="class_bp_level.html#a369e556671f9e44ece9761086e4ccde4">BpLevel&lt;T&gt;::BpLevel</a>(</div>
+<div class="line"><a name="l00195"></a><span class="lineno">  195</span>&#160;  <span class="keyword">const</span> std::array&lt;unsigned int, 2&gt;&amp; width_height,</div>
+<div class="line"><a name="l00196"></a><span class="lineno">  196</span>&#160;  std::size_t offset_into_arrays,</div>
+<div class="line"><a name="l00197"></a><span class="lineno">  197</span>&#160;  <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> level_num,</div>
+<div class="line"><a name="l00198"></a><span class="lineno">  198</span>&#160;  <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> bytes_align_memory)</div>
+<div class="line"><a name="l00199"></a><span class="lineno">  199</span>&#160;{</div>
+<div class="line"><a name="l00200"></a><span class="lineno">  200</span>&#160;  level_properties_.width_level_ = width_height[0];</div>
+<div class="line"><a name="l00201"></a><span class="lineno">  201</span>&#160;  level_properties_.height_level_ = width_height[1];</div>
+<div class="line"><a name="l00202"></a><span class="lineno">  202</span>&#160;  level_properties_.level_num_ = level_num;</div>
+<div class="line"><a name="l00203"></a><span class="lineno">  203</span>&#160;  level_properties_.offset_into_arrays_ = offset_into_arrays;</div>
+<div class="line"><a name="l00204"></a><span class="lineno">  204</span>&#160;  level_properties_.bytes_align_memory_ = bytes_align_memory;</div>
+<div class="line"><a name="l00205"></a><span class="lineno">  205</span>&#160;  level_properties_.width_checkerboard_level_ =</div>
+<div class="line"><a name="l00206"></a><span class="lineno">  206</span>&#160;    CheckerboardWidth(level_properties_.width_level_);</div>
+<div class="line"><a name="l00207"></a><span class="lineno">  207</span>&#160;  level_properties_.padded_width_checkerboard_level_ =</div>
+<div class="line"><a name="l00208"></a><span class="lineno">  208</span>&#160;    PaddedCheckerboardWidth(level_properties_.width_checkerboard_level_);</div>
+<div class="line"><a name="l00209"></a><span class="lineno">  209</span>&#160;}</div>
+<div class="line"><a name="l00210"></a><span class="lineno">  210</span>&#160; </div>
+<div class="line"><a name="l00211"></a><span class="lineno">  211</span>&#160;<span class="comment">//get bp level properties for next (higher) level in hierarchy that processes</span></div>
+<div class="line"><a name="l00212"></a><span class="lineno">  212</span>&#160;<span class="comment">//data with half width/height of current level</span></div>
+<div class="line"><a name="l00213"></a><span class="lineno">  213</span>&#160;<span class="keyword">template</span> &lt;RunData_t T&gt;</div>
+<div class="line"><a name="l00214"></a><span class="lineno"><a class="line" href="class_bp_level.html#ae46c656c6dd5d2fe0a8c398be9f54c07">  214</a></span>&#160;<a class="code" href="class_bp_level.html">BpLevel&lt;T&gt;</a> <a class="code" href="class_bp_level.html#ae46c656c6dd5d2fe0a8c398be9f54c07">BpLevel&lt;T&gt;::NextBpLevel</a>(<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> num_disparity_values)<span class="keyword"> const</span></div>
+<div class="line"><a name="l00215"></a><span class="lineno">  215</span>&#160;<span class="keyword"></span>{</div>
+<div class="line"><a name="l00216"></a><span class="lineno">  216</span>&#160;  <span class="keyword">const</span> std::size_t offset_next_level =</div>
+<div class="line"><a name="l00217"></a><span class="lineno">  217</span>&#160;    level_properties_.offset_into_arrays_ +</div>
+<div class="line"><a name="l00218"></a><span class="lineno">  218</span>&#160;    NumDataInBpArrays(num_disparity_values);</div>
+<div class="line"><a name="l00219"></a><span class="lineno">  219</span>&#160;  <span class="keywordflow">return</span> <a class="code" href="class_bp_level.html">BpLevel&lt;T&gt;</a>(</div>
+<div class="line"><a name="l00220"></a><span class="lineno">  220</span>&#160;    {(<span class="keywordtype">unsigned</span> int)std::ceil((<span class="keywordtype">float</span>)level_properties_.width_level_ / 2.0f),</div>
+<div class="line"><a name="l00221"></a><span class="lineno">  221</span>&#160;     (<span class="keywordtype">unsigned</span> int)std::ceil((<span class="keywordtype">float</span>)level_properties_.height_level_ / 2.0f)},</div>
+<div class="line"><a name="l00222"></a><span class="lineno">  222</span>&#160;    offset_next_level,</div>
+<div class="line"><a name="l00223"></a><span class="lineno">  223</span>&#160;    (level_properties_.level_num_ + 1),</div>
+<div class="line"><a name="l00224"></a><span class="lineno">  224</span>&#160;    level_properties_.bytes_align_memory_);</div>
+<div class="line"><a name="l00225"></a><span class="lineno">  225</span>&#160;}</div>
+<div class="line"><a name="l00226"></a><span class="lineno">  226</span>&#160; </div>
+<div class="line"><a name="l00227"></a><span class="lineno">  227</span>&#160;<span class="comment">//get the amount of data in each BP array (data cost/messages for each</span></div>
+<div class="line"><a name="l00228"></a><span class="lineno">  228</span>&#160;<span class="comment">//checkerboard) at the current level with the specified number of possible</span></div>
+<div class="line"><a name="l00229"></a><span class="lineno">  229</span>&#160;<span class="comment">//disparity values</span></div>
+<div class="line"><a name="l00230"></a><span class="lineno">  230</span>&#160;<span class="keyword">template</span> &lt;RunData_t T&gt;</div>
+<div class="line"><a name="l00231"></a><span class="lineno"><a class="line" href="class_bp_level.html#a4ecf8946b20a208c887bdec5d4104d6b">  231</a></span>&#160;std::size_t <a class="code" href="class_bp_level.html#a4ecf8946b20a208c887bdec5d4104d6b">BpLevel&lt;T&gt;::NumDataInBpArrays</a>(</div>
+<div class="line"><a name="l00232"></a><span class="lineno">  232</span>&#160;  <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> num_disparity_values)<span class="keyword"> const</span></div>
+<div class="line"><a name="l00233"></a><span class="lineno">  233</span>&#160;<span class="keyword"></span>{</div>
+<div class="line"><a name="l00234"></a><span class="lineno">  234</span>&#160;  <span class="keywordflow">return</span> NumDataForAlignedMemoryAtLevel(</div>
+<div class="line"><a name="l00235"></a><span class="lineno">  235</span>&#160;    {level_properties_.width_level_, level_properties_.height_level_},</div>
+<div class="line"><a name="l00236"></a><span class="lineno">  236</span>&#160;    num_disparity_values);</div>
+<div class="line"><a name="l00237"></a><span class="lineno">  237</span>&#160;}</div>
+<div class="line"><a name="l00238"></a><span class="lineno">  238</span>&#160; </div>
+<div class="line"><a name="l00239"></a><span class="lineno">  239</span>&#160;<span class="keyword">template</span> &lt;RunData_t T&gt;</div>
+<div class="line"><a name="l00240"></a><span class="lineno"><a class="line" href="class_bp_level.html#ad6325cd5c3b66192ba6b4b3f489c9c2b">  240</a></span>&#160;std::size_t <a class="code" href="class_bp_level.html#ad6325cd5c3b66192ba6b4b3f489c9c2b">BpLevel&lt;T&gt;::NumDataForAlignedMemoryAtLevel</a>(</div>
+<div class="line"><a name="l00241"></a><span class="lineno">  241</span>&#160;  <span class="keyword">const</span> std::array&lt;unsigned int, 2&gt;&amp; width_height_level,</div>
+<div class="line"><a name="l00242"></a><span class="lineno">  242</span>&#160;  <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> num_possible_disparities)<span class="keyword"> const</span></div>
+<div class="line"><a name="l00243"></a><span class="lineno">  243</span>&#160;<span class="keyword"></span>{</div>
+<div class="line"><a name="l00244"></a><span class="lineno">  244</span>&#160;  <span class="keyword">const</span> std::size_t numDataAtLevel =</div>
+<div class="line"><a name="l00245"></a><span class="lineno">  245</span>&#160;    (std::size_t)PaddedCheckerboardWidth(CheckerboardWidth(width_height_level[0])) *</div>
+<div class="line"><a name="l00246"></a><span class="lineno">  246</span>&#160;    ((std::size_t)width_height_level[1]) *</div>
+<div class="line"><a name="l00247"></a><span class="lineno">  247</span>&#160;    (std::size_t)num_possible_disparities;</div>
+<div class="line"><a name="l00248"></a><span class="lineno">  248</span>&#160;  std::size_t numBytesAtLevel = numDataAtLevel * <span class="keyword">sizeof</span>(T);</div>
+<div class="line"><a name="l00249"></a><span class="lineno">  249</span>&#160; </div>
+<div class="line"><a name="l00250"></a><span class="lineno">  250</span>&#160;  <span class="keywordflow">if</span> ((numBytesAtLevel % level_properties_.bytes_align_memory_) == 0) {</div>
+<div class="line"><a name="l00251"></a><span class="lineno">  251</span>&#160;    <span class="keywordflow">return</span> numDataAtLevel;</div>
+<div class="line"><a name="l00252"></a><span class="lineno">  252</span>&#160;  }</div>
+<div class="line"><a name="l00253"></a><span class="lineno">  253</span>&#160;  <span class="keywordflow">else</span> {</div>
+<div class="line"><a name="l00254"></a><span class="lineno">  254</span>&#160;    numBytesAtLevel +=</div>
+<div class="line"><a name="l00255"></a><span class="lineno">  255</span>&#160;      (level_properties_.bytes_align_memory_ -</div>
+<div class="line"><a name="l00256"></a><span class="lineno">  256</span>&#160;        (numBytesAtLevel % level_properties_.bytes_align_memory_));</div>
+<div class="line"><a name="l00257"></a><span class="lineno">  257</span>&#160;    <span class="keywordflow">return</span> (numBytesAtLevel / <span class="keyword">sizeof</span>(T));</div>
+<div class="line"><a name="l00258"></a><span class="lineno">  258</span>&#160;  }</div>
+<div class="line"><a name="l00259"></a><span class="lineno">  259</span>&#160;}</div>
+<div class="line"><a name="l00260"></a><span class="lineno">  260</span>&#160; </div>
+<div class="line"><a name="l00261"></a><span class="lineno">  261</span>&#160;<span class="keyword">template</span> &lt;RunData_t T&gt;</div>
+<div class="line"><a name="l00262"></a><span class="lineno"><a class="line" href="class_bp_level.html#a8d11a0cb014c1839d2590ecc6017dbc6">  262</a></span>&#160;<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> <a class="code" href="class_bp_level.html#a8d11a0cb014c1839d2590ecc6017dbc6">BpLevel&lt;T&gt;::CheckerboardWidth</a>(</div>
+<div class="line"><a name="l00263"></a><span class="lineno">  263</span>&#160;  <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> width_level)<span class="keyword"> const</span></div>
+<div class="line"><a name="l00264"></a><span class="lineno">  264</span>&#160;<span class="keyword"></span>{</div>
+<div class="line"><a name="l00265"></a><span class="lineno">  265</span>&#160;  <span class="keywordflow">return</span> (<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span>)std::ceil(((<span class="keywordtype">float</span>)width_level) / 2.0f);</div>
+<div class="line"><a name="l00266"></a><span class="lineno">  266</span>&#160;}</div>
+<div class="line"><a name="l00267"></a><span class="lineno">  267</span>&#160; </div>
+<div class="line"><a name="l00268"></a><span class="lineno">  268</span>&#160;<span class="keyword">template</span> &lt;RunData_t T&gt;</div>
+<div class="line"><a name="l00269"></a><span class="lineno"><a class="line" href="class_bp_level.html#ad5b1ae253d5d0089e5f7acca96d6c895">  269</a></span>&#160;<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> <a class="code" href="class_bp_level.html#ad5b1ae253d5d0089e5f7acca96d6c895">BpLevel&lt;T&gt;::PaddedCheckerboardWidth</a>(</div>
+<div class="line"><a name="l00270"></a><span class="lineno">  270</span>&#160;  <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> checkerboard_width)<span class="keyword"> const</span></div>
+<div class="line"><a name="l00271"></a><span class="lineno">  271</span>&#160;<span class="keyword"></span>{</div>
+<div class="line"><a name="l00272"></a><span class="lineno">  272</span>&#160;  <span class="keywordtype">size_t</span> num_data_align_width = level_properties_.bytes_align_memory_ / <span class="keyword">sizeof</span>(T); </div>
+<div class="line"><a name="l00273"></a><span class="lineno">  273</span>&#160;  <span class="comment">//add &quot;padding&quot; to checkerboard width if necessary for alignment</span></div>
+<div class="line"><a name="l00274"></a><span class="lineno">  274</span>&#160;  <span class="keywordflow">return</span> ((checkerboard_width % num_data_align_width) == 0) ?</div>
+<div class="line"><a name="l00275"></a><span class="lineno">  275</span>&#160;         checkerboard_width :</div>
+<div class="line"><a name="l00276"></a><span class="lineno">  276</span>&#160;         (checkerboard_width +</div>
+<div class="line"><a name="l00277"></a><span class="lineno">  277</span>&#160;           (num_data_align_width - (checkerboard_width % num_data_align_width)));</div>
+<div class="line"><a name="l00278"></a><span class="lineno">  278</span>&#160;}</div>
+<div class="line"><a name="l00279"></a><span class="lineno">  279</span>&#160; </div>
+<div class="line"><a name="l00280"></a><span class="lineno">  280</span>&#160;<span class="comment">//static function</span></div>
+<div class="line"><a name="l00281"></a><span class="lineno">  281</span>&#160;<span class="keyword">template</span> &lt;RunData_t T&gt;</div>
+<div class="line"><a name="l00282"></a><span class="lineno"><a class="line" href="class_bp_level.html#af1e5192e3172a6bfacb5eab0e79424bf">  282</a></span>&#160;std::size_t <a class="code" href="class_bp_level.html#af1e5192e3172a6bfacb5eab0e79424bf">BpLevel&lt;T&gt;::TotalDataForAlignedMemoryAllLevels</a>(</div>
+<div class="line"><a name="l00283"></a><span class="lineno">  283</span>&#160;  <span class="keyword">const</span> std::array&lt;unsigned int, 2&gt;&amp; width_height_bottom_level,</div>
+<div class="line"><a name="l00284"></a><span class="lineno">  284</span>&#160;  <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> num_possible_disparities,</div>
+<div class="line"><a name="l00285"></a><span class="lineno">  285</span>&#160;  <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> num_levels,</div>
+<div class="line"><a name="l00286"></a><span class="lineno">  286</span>&#160;  <a class="code" href="namespacerun__environment.html#a2cd0a9de3e0ce6e4d99b35b89befb8bb">run_environment::AccSetting</a> acceleration)</div>
+<div class="line"><a name="l00287"></a><span class="lineno">  287</span>&#160;{</div>
+<div class="line"><a name="l00288"></a><span class="lineno">  288</span>&#160;  <a class="code" href="class_bp_level.html">BpLevel&lt;T&gt;</a> curr_level_properties(width_height_bottom_level, 0, 0, acceleration);</div>
+<div class="line"><a name="l00289"></a><span class="lineno">  289</span>&#160;  std::size_t total_data =</div>
+<div class="line"><a name="l00290"></a><span class="lineno">  290</span>&#160;    curr_level_properties.<a class="code" href="class_bp_level.html#a4ecf8946b20a208c887bdec5d4104d6b">NumDataInBpArrays</a>(num_possible_disparities);</div>
+<div class="line"><a name="l00291"></a><span class="lineno">  291</span>&#160;  <span class="keywordflow">for</span> (<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> curr_level = 1; curr_level &lt; num_levels; curr_level++)</div>
+<div class="line"><a name="l00292"></a><span class="lineno">  292</span>&#160;  {</div>
+<div class="line"><a name="l00293"></a><span class="lineno">  293</span>&#160;    curr_level_properties = curr_level_properties.<a class="code" href="class_bp_level.html#ae46c656c6dd5d2fe0a8c398be9f54c07">NextBpLevel</a>(num_possible_disparities);</div>
+<div class="line"><a name="l00294"></a><span class="lineno">  294</span>&#160;    total_data += curr_level_properties.<a class="code" href="class_bp_level.html#a4ecf8946b20a208c887bdec5d4104d6b">NumDataInBpArrays</a>(num_possible_disparities);</div>
+<div class="line"><a name="l00295"></a><span class="lineno">  295</span>&#160;  }</div>
+<div class="line"><a name="l00296"></a><span class="lineno">  296</span>&#160; </div>
+<div class="line"><a name="l00297"></a><span class="lineno">  297</span>&#160;  <span class="keywordflow">return</span> total_data;</div>
+<div class="line"><a name="l00298"></a><span class="lineno">  298</span>&#160;}</div>
+<div class="line"><a name="l00299"></a><span class="lineno">  299</span>&#160; </div>
+<div class="line"><a name="l00300"></a><span class="lineno">  300</span>&#160;<span class="preprocessor">#endif </span><span class="comment">//BP_LEVEL_H_</span></div>
 <div class="ttc" id="a_run_settings_8h_html"><div class="ttname"><a href="_run_settings_8h.html">RunSettings.h</a></div><div class="ttdoc">Declares and defines structure that stores settings for current implementation run as well as functio...</div></div>
 <div class="ttc" id="a_run_type_constraints_8h_html"><div class="ttname"><a href="_run_type_constraints_8h.html">RunTypeConstraints.h</a></div><div class="ttdoc">Define constraints for data type in processing.</div></div>
 <div class="ttc" id="aclass_bp_level_html"><div class="ttname"><a href="class_bp_level.html">BpLevel</a></div><div class="ttdoc">Class to store and retrieve properties of a bp processing level including a data type specified as a ...</div><div class="ttdef"><b>Definition:</b> <a href="_bp_level_8h_source.html#l00059">BpLevel.h:60</a></div></div>
-<div class="ttc" id="aclass_bp_level_html_a369e556671f9e44ece9761086e4ccde4"><div class="ttname"><a href="class_bp_level.html#a369e556671f9e44ece9761086e4ccde4">BpLevel::BpLevel</a></div><div class="ttdeci">BpLevel(const std::array&lt; unsigned int, 2 &gt; &amp;width_height, std::size_t offset_into_arrays, unsigned int level_num, run_environment::AccSetting acc_setting)</div><div class="ttdef"><b>Definition:</b> <a href="_bp_level_8h_source.html#l00131">BpLevel.h:131</a></div></div>
-<div class="ttc" id="aclass_bp_level_html_a4ecf8946b20a208c887bdec5d4104d6b"><div class="ttname"><a href="class_bp_level.html#a4ecf8946b20a208c887bdec5d4104d6b">BpLevel::NumDataInBpArrays</a></div><div class="ttdeci">std::size_t NumDataInBpArrays(unsigned int num_disparity_values) const</div><div class="ttdoc">Get the amount of data in each BP array (data cost/messages for each checkerboard) at the current lev...</div><div class="ttdef"><b>Definition:</b> <a href="_bp_level_8h_source.html#l00186">BpLevel.h:186</a></div></div>
-<div class="ttc" id="aclass_bp_level_html_a546d96e0009d22fa05403845bec98d42"><div class="ttname"><a href="class_bp_level.html#a546d96e0009d22fa05403845bec98d42">BpLevel::LevelProperties</a></div><div class="ttdeci">const beliefprop::BpLevelProperties &amp; LevelProperties() const</div><div class="ttdoc">Return level properties as const reference to avoid copying and not allow it to be modified.</div><div class="ttdef"><b>Definition:</b> <a href="_bp_level_8h_source.html#l00124">BpLevel.h:124</a></div></div>
-<div class="ttc" id="aclass_bp_level_html_aa08d95e4ce0647439a38bee59cf68306"><div class="ttname"><a href="class_bp_level.html#aa08d95e4ce0647439a38bee59cf68306">BpLevel::CheckerboardWidthTargetDevice</a></div><div class="ttdeci">unsigned int CheckerboardWidthTargetDevice(unsigned int width_level) const</div><div class="ttdef"><b>Definition:</b> <a href="_bp_level_8h_source.html#l00217">BpLevel.h:217</a></div></div>
-<div class="ttc" id="aclass_bp_level_html_ad5b1ae253d5d0089e5f7acca96d6c895"><div class="ttname"><a href="class_bp_level.html#ad5b1ae253d5d0089e5f7acca96d6c895">BpLevel::PaddedCheckerboardWidth</a></div><div class="ttdeci">unsigned int PaddedCheckerboardWidth(unsigned int checkerboard_width) const</div><div class="ttdef"><b>Definition:</b> <a href="_bp_level_8h_source.html#l00224">BpLevel.h:224</a></div></div>
-<div class="ttc" id="aclass_bp_level_html_ad6325cd5c3b66192ba6b4b3f489c9c2b"><div class="ttname"><a href="class_bp_level.html#ad6325cd5c3b66192ba6b4b3f489c9c2b">BpLevel::NumDataForAlignedMemoryAtLevel</a></div><div class="ttdeci">std::size_t NumDataForAlignedMemoryAtLevel(const std::array&lt; unsigned int, 2 &gt; &amp;width_height_level, unsigned int num_possible_disparities) const</div><div class="ttdoc">Get count of total data needed for bp processing at level.</div><div class="ttdef"><b>Definition:</b> <a href="_bp_level_8h_source.html#l00195">BpLevel.h:195</a></div></div>
-<div class="ttc" id="aclass_bp_level_html_ae46c656c6dd5d2fe0a8c398be9f54c07"><div class="ttname"><a href="class_bp_level.html#ae46c656c6dd5d2fe0a8c398be9f54c07">BpLevel::NextBpLevel</a></div><div class="ttdeci">BpLevel NextBpLevel(unsigned int num_disparity_values) const</div><div class="ttdoc">Get bp level properties for next (higher) level in hierarchy that processes data with half width/heig...</div><div class="ttdef"><b>Definition:</b> <a href="_bp_level_8h_source.html#l00170">BpLevel.h:170</a></div></div>
-<div class="ttc" id="aclass_bp_level_html_af1e5192e3172a6bfacb5eab0e79424bf"><div class="ttname"><a href="class_bp_level.html#af1e5192e3172a6bfacb5eab0e79424bf">BpLevel::TotalDataForAlignedMemoryAllLevels</a></div><div class="ttdeci">static std::size_t TotalDataForAlignedMemoryAllLevels(const std::array&lt; unsigned int, 2 &gt; &amp;width_height_bottom_level, unsigned int num_possible_disparities, unsigned int num_levels, run_environment::AccSetting acceleration)</div><div class="ttdoc">Static function to get count of total data needed for bp processing at all levels.</div><div class="ttdef"><b>Definition:</b> <a href="_bp_level_8h_source.html#l00237">BpLevel.h:237</a></div></div>
+<div class="ttc" id="aclass_bp_level_html_a369e556671f9e44ece9761086e4ccde4"><div class="ttname"><a href="class_bp_level.html#a369e556671f9e44ece9761086e4ccde4">BpLevel::BpLevel</a></div><div class="ttdeci">BpLevel(const std::array&lt; unsigned int, 2 &gt; &amp;width_height, std::size_t offset_into_arrays, unsigned int level_num, run_environment::AccSetting acc_setting)</div><div class="ttdoc">Construct a new BpLevel object with specified height/wdith, offset into data/message arrays,...</div><div class="ttdef"><b>Definition:</b> <a href="_bp_level_8h_source.html#l00174">BpLevel.h:174</a></div></div>
+<div class="ttc" id="aclass_bp_level_html_a4ecf8946b20a208c887bdec5d4104d6b"><div class="ttname"><a href="class_bp_level.html#a4ecf8946b20a208c887bdec5d4104d6b">BpLevel::NumDataInBpArrays</a></div><div class="ttdeci">std::size_t NumDataInBpArrays(unsigned int num_disparity_values) const</div><div class="ttdoc">Get the amount of data in each BP array (data cost/messages for each checkerboard) at the current lev...</div><div class="ttdef"><b>Definition:</b> <a href="_bp_level_8h_source.html#l00231">BpLevel.h:231</a></div></div>
+<div class="ttc" id="aclass_bp_level_html_a546d96e0009d22fa05403845bec98d42"><div class="ttname"><a href="class_bp_level.html#a546d96e0009d22fa05403845bec98d42">BpLevel::LevelProperties</a></div><div class="ttdeci">const beliefprop::BpLevelProperties &amp; LevelProperties() const</div><div class="ttdoc">Return level properties as const reference to avoid copying and not allow it to be modified.</div><div class="ttdef"><b>Definition:</b> <a href="_bp_level_8h_source.html#l00165">BpLevel.h:165</a></div></div>
+<div class="ttc" id="aclass_bp_level_html_a8d11a0cb014c1839d2590ecc6017dbc6"><div class="ttname"><a href="class_bp_level.html#a8d11a0cb014c1839d2590ecc6017dbc6">BpLevel::CheckerboardWidth</a></div><div class="ttdeci">unsigned int CheckerboardWidth(unsigned int width_level) const</div><div class="ttdoc">Get width of checkerboard to use in bp processing at level.  Checkerboard width is half of the width ...</div><div class="ttdef"><b>Definition:</b> <a href="_bp_level_8h_source.html#l00262">BpLevel.h:262</a></div></div>
+<div class="ttc" id="aclass_bp_level_html_ad5b1ae253d5d0089e5f7acca96d6c895"><div class="ttname"><a href="class_bp_level.html#ad5b1ae253d5d0089e5f7acca96d6c895">BpLevel::PaddedCheckerboardWidth</a></div><div class="ttdeci">unsigned int PaddedCheckerboardWidth(unsigned int checkerboard_width) const</div><div class="ttdoc">Get width of padded checkerboard to use in bp processing at level.  Padding can add additional width ...</div><div class="ttdef"><b>Definition:</b> <a href="_bp_level_8h_source.html#l00269">BpLevel.h:269</a></div></div>
+<div class="ttc" id="aclass_bp_level_html_ad6325cd5c3b66192ba6b4b3f489c9c2b"><div class="ttname"><a href="class_bp_level.html#ad6325cd5c3b66192ba6b4b3f489c9c2b">BpLevel::NumDataForAlignedMemoryAtLevel</a></div><div class="ttdeci">std::size_t NumDataForAlignedMemoryAtLevel(const std::array&lt; unsigned int, 2 &gt; &amp;width_height_level, unsigned int num_possible_disparities) const</div><div class="ttdoc">Get count of total data needed for bp processing at level.</div><div class="ttdef"><b>Definition:</b> <a href="_bp_level_8h_source.html#l00240">BpLevel.h:240</a></div></div>
+<div class="ttc" id="aclass_bp_level_html_ae46c656c6dd5d2fe0a8c398be9f54c07"><div class="ttname"><a href="class_bp_level.html#ae46c656c6dd5d2fe0a8c398be9f54c07">BpLevel::NextBpLevel</a></div><div class="ttdeci">BpLevel NextBpLevel(unsigned int num_disparity_values) const</div><div class="ttdoc">Get bp level properties for next (higher) level in hierarchy that processes data with half width/heig...</div><div class="ttdef"><b>Definition:</b> <a href="_bp_level_8h_source.html#l00214">BpLevel.h:214</a></div></div>
+<div class="ttc" id="aclass_bp_level_html_af1e5192e3172a6bfacb5eab0e79424bf"><div class="ttname"><a href="class_bp_level.html#af1e5192e3172a6bfacb5eab0e79424bf">BpLevel::TotalDataForAlignedMemoryAllLevels</a></div><div class="ttdeci">static std::size_t TotalDataForAlignedMemoryAllLevels(const std::array&lt; unsigned int, 2 &gt; &amp;width_height_bottom_level, unsigned int num_possible_disparities, unsigned int num_levels, run_environment::AccSetting acceleration)</div><div class="ttdoc">Static function to get count of total data needed for bp processing at all levels.</div><div class="ttdef"><b>Definition:</b> <a href="_bp_level_8h_source.html#l00282">BpLevel.h:282</a></div></div>
 <div class="ttc" id="anamespacebeliefprop_html"><div class="ttname"><a href="namespacebeliefprop.html">beliefprop</a></div><div class="ttdoc">Namespace for enums, constants, structures, and functions specific to belief propagation processing.</div><div class="ttdef"><b>Definition:</b> <a href="_bp_file_handling_consts_8h_source.html#l00035">BpFileHandlingConsts.h:36</a></div></div>
-<div class="ttc" id="anamespacerun__environment_html_a2cd0a9de3e0ce6e4d99b35b89befb8bb"><div class="ttname"><a href="namespacerun__environment.html#a2cd0a9de3e0ce6e4d99b35b89befb8bb">run_environment::AccSetting</a></div><div class="ttdeci">AccSetting</div><div class="ttdoc">Enum for acceleration setting.</div><div class="ttdef"><b>Definition:</b> <a href="_run_settings_consts_enums_8h_source.html#l00063">RunSettingsConstsEnums.h:63</a></div></div>
+<div class="ttc" id="anamespacerun__environment_html_a2cd0a9de3e0ce6e4d99b35b89befb8bb"><div class="ttname"><a href="namespacerun__environment.html#a2cd0a9de3e0ce6e4d99b35b89befb8bb">run_environment::AccSetting</a></div><div class="ttdeci">AccSetting</div><div class="ttdoc">Enum for acceleration setting.</div><div class="ttdef"><b>Definition:</b> <a href="_run_settings_consts_enums_8h_source.html#l00059">RunSettingsConstsEnums.h:59</a></div></div>
 <div class="ttc" id="anamespacerun__environment_html_ac68b9fea12a8756652bce761d7a0cdda"><div class="ttname"><a href="namespacerun__environment.html#ac68b9fea12a8756652bce761d7a0cdda">run_environment::GetBytesAlignMemory</a></div><div class="ttdeci">unsigned int GetBytesAlignMemory(AccSetting accel_setting)</div><div class="ttdef"><b>Definition:</b> <a href="_run_settings_8h_source.html#l00043">RunSettings.h:43</a></div></div>
 <div class="ttc" id="astructbeliefprop_1_1_bp_level_properties_html"><div class="ttname"><a href="structbeliefprop_1_1_bp_level_properties.html">beliefprop::BpLevelProperties</a></div><div class="ttdoc">POD struct to store bp level data. Struct can be passed to global CUDAs kernel so needs to take restr...</div><div class="ttdef"><b>Definition:</b> <a href="_bp_level_8h_source.html#l00042">BpLevel.h:42</a></div></div>
 <div class="ttc" id="astructbeliefprop_1_1_bp_level_properties_html_a90975be50a85868c2843905f661c2d57"><div class="ttname"><a href="structbeliefprop_1_1_bp_level_properties.html#a90975be50a85868c2843905f661c2d57">beliefprop::BpLevelProperties::height_level_</a></div><div class="ttdeci">unsigned int height_level_</div><div class="ttdef"><b>Definition:</b> <a href="_bp_level_8h_source.html#l00044">BpLevel.h:44</a></div></div>

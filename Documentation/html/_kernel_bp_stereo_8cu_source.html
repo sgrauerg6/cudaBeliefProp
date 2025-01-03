@@ -120,211 +120,211 @@ $(document).ready(function(){initNavTree('_kernel_bp_stereo_8cu_source.html','')
 <div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160; </div>
 <div class="line"><a name="l00048"></a><span class="lineno"><a class="line" href="namespacebeliefprop__cuda.html">   48</a></span>&#160;<span class="keyword">namespace </span><a class="code" href="namespacebeliefprop__cuda.html">beliefprop_cuda</a> {</div>
 <div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160; </div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;<span class="keyword">template</span>&lt;RunData_t T, <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> DISP_VALS&gt;</div>
-<div class="line"><a name="l00069"></a><span class="lineno"><a class="line" href="namespacebeliefprop__cuda.html#aa26f576e04e40f0a4f907772433d4ae0">   69</a></span>&#160;__global__ <span class="keywordtype">void</span> <a class="code" href="namespacebeliefprop__cuda.html#aa26f576e04e40f0a4f907772433d4ae0">InitializeBottomLevelData</a>(</div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;  <a class="code" href="structbeliefprop_1_1_bp_level_properties.html">beliefprop::BpLevelProperties</a> current_bp_level,</div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;  <span class="keywordtype">float</span>* image_1_pixels_device, <span class="keywordtype">float</span>* image_2_pixels_device,</div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;  T* data_cost_stereo_checkerboard_0, T* data_cost_stereo_checkerboard_1,</div>
-<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;  <span class="keywordtype">float</span> lambda_bp, <span class="keywordtype">float</span> data_k_bp, <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> bp_settings_disp_vals)</div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;{</div>
-<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;  <span class="comment">//get the x and y indices for the current CUDA thread</span></div>
-<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;  <span class="keyword">const</span> <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> x_val = blockIdx.x * blockDim.x + threadIdx.x;</div>
-<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;  <span class="keyword">const</span> <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> y_val = blockIdx.y * blockDim.y + threadIdx.y;</div>
-<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160; </div>
-<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;  <span class="comment">//get the x value within the current &quot;checkerboard&quot;</span></div>
-<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;  <span class="keyword">const</span> <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> x_checkerboard = x_val / 2;</div>
-<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160; </div>
-<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;  <span class="keywordflow">if</span> (<a class="code" href="namespacebeliefprop.html#aae2269b7359108e636eebcb74a557e7f">beliefprop::WithinImageBounds</a>(</div>
-<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;    x_checkerboard, y_val, current_bp_level.<a class="code" href="structbeliefprop_1_1_bp_level_properties.html#a9b4fed34770c1d019c90b974a7d28820">width_level_</a>, current_bp_level.<a class="code" href="structbeliefprop_1_1_bp_level_properties.html#a90975be50a85868c2843905f661c2d57">height_level_</a>))</div>
-<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;  {</div>
-<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;    beliefprop::InitializeBottomLevelDataPixel&lt;T, DISP_VALS&gt;(x_val, y_val,</div>
-<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;      current_bp_level, image_1_pixels_device,</div>
-<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;      image_2_pixels_device, data_cost_stereo_checkerboard_0,</div>
-<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;      data_cost_stereo_checkerboard_1, lambda_bp,</div>
-<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;      data_k_bp, bp_settings_disp_vals);</div>
-<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;  }</div>
-<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;}</div>
-<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160; </div>
-<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;<span class="keyword">template</span>&lt;RunData_t T, <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> DISP_VALS&gt;</div>
-<div class="line"><a name="l00110"></a><span class="lineno"><a class="line" href="namespacebeliefprop__cuda.html#aad53fa3d6b6ffbd594170ca738f41515">  110</a></span>&#160;__global__ <span class="keywordtype">void</span> <a class="code" href="namespacebeliefprop__cuda.html#aad53fa3d6b6ffbd594170ca738f41515">InitializeCurrentLevelData</a>(</div>
-<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;  <a class="code" href="namespacebeliefprop.html#a85dcfe709b354b19752ea8ae432f5af5">beliefprop::CheckerboardPart</a> checkerboard_part,</div>
-<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;  <a class="code" href="structbeliefprop_1_1_bp_level_properties.html">beliefprop::BpLevelProperties</a> current_bp_level,</div>
-<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;  <a class="code" href="structbeliefprop_1_1_bp_level_properties.html">beliefprop::BpLevelProperties</a> prev_bp_level, T* data_cost_checkerboard_0,</div>
-<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;  T* data_cost_checkerboard_1, T* data_cost_current_level,</div>
-<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;  <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> offset_num, <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> bp_settings_disp_vals)</div>
-<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;{</div>
-<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;  <span class="comment">//get the x and y indices for the current CUDA thread</span></div>
-<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;  <span class="keyword">const</span> <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> x_val = blockIdx.x * blockDim.x + threadIdx.x;</div>
-<div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;  <span class="keyword">const</span> <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> y_val = blockIdx.y * blockDim.y + threadIdx.y;</div>
-<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160; </div>
-<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;  <span class="keywordflow">if</span> (<a class="code" href="namespacebeliefprop.html#aae2269b7359108e636eebcb74a557e7f">beliefprop::WithinImageBounds</a>(</div>
-<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;    x_val, y_val, current_bp_level.<a class="code" href="structbeliefprop_1_1_bp_level_properties.html#a90eb9616e20b6f551e78f007a5a05c73">width_checkerboard_level_</a>, current_bp_level.<a class="code" href="structbeliefprop_1_1_bp_level_properties.html#a90975be50a85868c2843905f661c2d57">height_level_</a>))</div>
-<div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;  {</div>
-<div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;    beliefprop::InitializeCurrentLevelDataPixel&lt;T, T, DISP_VALS&gt;(</div>
-<div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;      x_val, y_val, checkerboard_part, current_bp_level, prev_bp_level,</div>
-<div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;      data_cost_checkerboard_0, data_cost_checkerboard_1, data_cost_current_level,</div>
-<div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160;      offset_num, bp_settings_disp_vals);</div>
-<div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160;  }</div>
-<div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160;}</div>
-<div class="line"><a name="l00130"></a><span class="lineno">  130</span>&#160; </div>
-<div class="line"><a name="l00148"></a><span class="lineno">  148</span>&#160;<span class="keyword">template</span>&lt;RunData_t T, <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> DISP_VALS&gt;</div>
-<div class="line"><a name="l00149"></a><span class="lineno"><a class="line" href="namespacebeliefprop__cuda.html#a319e93b6f471e7c43afbff1c9506882f">  149</a></span>&#160;__global__ <span class="keywordtype">void</span> <a class="code" href="namespacebeliefprop__cuda.html#a319e93b6f471e7c43afbff1c9506882f">InitializeMessageValsToDefaultKernel</a>(</div>
-<div class="line"><a name="l00150"></a><span class="lineno">  150</span>&#160;  <a class="code" href="structbeliefprop_1_1_bp_level_properties.html">beliefprop::BpLevelProperties</a> current_bp_level,</div>
-<div class="line"><a name="l00151"></a><span class="lineno">  151</span>&#160;  T* message_u_checkerboard_0, T* message_d_checkerboard_0,</div>
-<div class="line"><a name="l00152"></a><span class="lineno">  152</span>&#160;  T* message_l_checkerboard_0, T* message_r_checkerboard_0,</div>
-<div class="line"><a name="l00153"></a><span class="lineno">  153</span>&#160;  T* message_u_checkerboard_1, T* message_d_checkerboard_1,</div>
-<div class="line"><a name="l00154"></a><span class="lineno">  154</span>&#160;  T* message_l_checkerboard_1, T* message_r_checkerboard_1,</div>
-<div class="line"><a name="l00155"></a><span class="lineno">  155</span>&#160;  <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> bp_settings_disp_vals)</div>
-<div class="line"><a name="l00156"></a><span class="lineno">  156</span>&#160;{</div>
-<div class="line"><a name="l00157"></a><span class="lineno">  157</span>&#160;  <span class="comment">//get the x and y indices for the current CUDA thread</span></div>
-<div class="line"><a name="l00158"></a><span class="lineno">  158</span>&#160;  <span class="keyword">const</span> <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> x_val_in_checkerboard = blockIdx.x * blockDim.x + threadIdx.x;</div>
-<div class="line"><a name="l00159"></a><span class="lineno">  159</span>&#160;  <span class="keyword">const</span> <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> y_val = blockIdx.y * blockDim.y + threadIdx.y;</div>
-<div class="line"><a name="l00160"></a><span class="lineno">  160</span>&#160; </div>
-<div class="line"><a name="l00161"></a><span class="lineno">  161</span>&#160;  <span class="keywordflow">if</span> (<a class="code" href="namespacebeliefprop.html#aae2269b7359108e636eebcb74a557e7f">beliefprop::WithinImageBounds</a>(</div>
-<div class="line"><a name="l00162"></a><span class="lineno">  162</span>&#160;    x_val_in_checkerboard, y_val, current_bp_level.<a class="code" href="structbeliefprop_1_1_bp_level_properties.html#a90eb9616e20b6f551e78f007a5a05c73">width_checkerboard_level_</a>, current_bp_level.<a class="code" href="structbeliefprop_1_1_bp_level_properties.html#a90975be50a85868c2843905f661c2d57">height_level_</a>))</div>
-<div class="line"><a name="l00163"></a><span class="lineno">  163</span>&#160;  {</div>
-<div class="line"><a name="l00164"></a><span class="lineno">  164</span>&#160;    <span class="comment">//initialize message values in both checkerboards</span></div>
-<div class="line"><a name="l00165"></a><span class="lineno">  165</span>&#160;    beliefprop::InitializeMessageValsToDefaultKernelPixel&lt;T, DISP_VALS&gt;(</div>
-<div class="line"><a name="l00166"></a><span class="lineno">  166</span>&#160;      x_val_in_checkerboard,  y_val, current_bp_level,</div>
-<div class="line"><a name="l00167"></a><span class="lineno">  167</span>&#160;      message_u_checkerboard_0, message_d_checkerboard_0,</div>
-<div class="line"><a name="l00168"></a><span class="lineno">  168</span>&#160;      message_l_checkerboard_0, message_r_checkerboard_0,</div>
-<div class="line"><a name="l00169"></a><span class="lineno">  169</span>&#160;      message_u_checkerboard_1, message_d_checkerboard_1,</div>
-<div class="line"><a name="l00170"></a><span class="lineno">  170</span>&#160;      message_l_checkerboard_1, message_r_checkerboard_1,</div>
-<div class="line"><a name="l00171"></a><span class="lineno">  171</span>&#160;      bp_settings_disp_vals);</div>
-<div class="line"><a name="l00172"></a><span class="lineno">  172</span>&#160;  }</div>
-<div class="line"><a name="l00173"></a><span class="lineno">  173</span>&#160;}</div>
-<div class="line"><a name="l00174"></a><span class="lineno">  174</span>&#160; </div>
-<div class="line"><a name="l00200"></a><span class="lineno">  200</span>&#160;<span class="keyword">template</span>&lt;RunData_t T, <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> DISP_VALS&gt;</div>
-<div class="line"><a name="l00201"></a><span class="lineno"><a class="line" href="namespacebeliefprop__cuda.html#a316a4698e007f4722b4cc9bc4015c692">  201</a></span>&#160;__global__ <span class="keywordtype">void</span> <a class="code" href="namespacebeliefprop__cuda.html#a316a4698e007f4722b4cc9bc4015c692">RunBPIterationUsingCheckerboardUpdates</a>(</div>
-<div class="line"><a name="l00202"></a><span class="lineno">  202</span>&#160;  <a class="code" href="namespacebeliefprop.html#a85dcfe709b354b19752ea8ae432f5af5">beliefprop::CheckerboardPart</a> checkerboard_to_update, <a class="code" href="structbeliefprop_1_1_bp_level_properties.html">beliefprop::BpLevelProperties</a> current_bp_level,</div>
-<div class="line"><a name="l00203"></a><span class="lineno">  203</span>&#160;  T* data_cost_checkerboard_0, T* data_cost_checkerboard_1,</div>
-<div class="line"><a name="l00204"></a><span class="lineno">  204</span>&#160;  T* message_u_checkerboard_0, T* message_d_checkerboard_0,</div>
-<div class="line"><a name="l00205"></a><span class="lineno">  205</span>&#160;  T* message_l_checkerboard_0, T* message_r_checkerboard_0,</div>
-<div class="line"><a name="l00206"></a><span class="lineno">  206</span>&#160;  T* message_u_checkerboard_1, T* message_d_checkerboard_1,</div>
-<div class="line"><a name="l00207"></a><span class="lineno">  207</span>&#160;  T* message_l_checkerboard_1, T* message_r_checkerboard_1,</div>
-<div class="line"><a name="l00208"></a><span class="lineno">  208</span>&#160;  <span class="keywordtype">float</span> disc_k_bp, <span class="keywordtype">bool</span> data_aligned, <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> bp_settings_disp_vals)</div>
-<div class="line"><a name="l00209"></a><span class="lineno">  209</span>&#160;{</div>
-<div class="line"><a name="l00210"></a><span class="lineno">  210</span>&#160;  <span class="comment">//get the x and y indices for the current CUDA thread</span></div>
-<div class="line"><a name="l00211"></a><span class="lineno">  211</span>&#160;  <span class="keyword">const</span> <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> x_val = blockIdx.x * blockDim.x + threadIdx.x;</div>
-<div class="line"><a name="l00212"></a><span class="lineno">  212</span>&#160;  <span class="keyword">const</span> <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> y_val = blockIdx.y * blockDim.y + threadIdx.y;</div>
-<div class="line"><a name="l00213"></a><span class="lineno">  213</span>&#160; </div>
-<div class="line"><a name="l00214"></a><span class="lineno">  214</span>&#160;  <span class="keywordflow">if</span> (<a class="code" href="namespacebeliefprop.html#aae2269b7359108e636eebcb74a557e7f">beliefprop::WithinImageBounds</a>(</div>
-<div class="line"><a name="l00215"></a><span class="lineno">  215</span>&#160;    x_val, y_val, current_bp_level.<a class="code" href="structbeliefprop_1_1_bp_level_properties.html#a9b4fed34770c1d019c90b974a7d28820">width_level_</a>/2, current_bp_level.<a class="code" href="structbeliefprop_1_1_bp_level_properties.html#a90975be50a85868c2843905f661c2d57">height_level_</a>))</div>
-<div class="line"><a name="l00216"></a><span class="lineno">  216</span>&#160;  {</div>
-<div class="line"><a name="l00217"></a><span class="lineno">  217</span>&#160;    beliefprop::RunBPIterationUsingCheckerboardUpdatesKernel&lt;T, T, DISP_VALS&gt;(</div>
-<div class="line"><a name="l00218"></a><span class="lineno">  218</span>&#160;      x_val, y_val, checkerboard_to_update, current_bp_level,</div>
-<div class="line"><a name="l00219"></a><span class="lineno">  219</span>&#160;      data_cost_checkerboard_0, data_cost_checkerboard_1,</div>
-<div class="line"><a name="l00220"></a><span class="lineno">  220</span>&#160;      message_u_checkerboard_0, message_d_checkerboard_0,</div>
-<div class="line"><a name="l00221"></a><span class="lineno">  221</span>&#160;      message_l_checkerboard_0, message_r_checkerboard_0,</div>
-<div class="line"><a name="l00222"></a><span class="lineno">  222</span>&#160;      message_u_checkerboard_1, message_d_checkerboard_1,</div>
-<div class="line"><a name="l00223"></a><span class="lineno">  223</span>&#160;      message_l_checkerboard_1, message_r_checkerboard_1,</div>
-<div class="line"><a name="l00224"></a><span class="lineno">  224</span>&#160;      disc_k_bp, 0, data_aligned, bp_settings_disp_vals);</div>
-<div class="line"><a name="l00225"></a><span class="lineno">  225</span>&#160;  }</div>
-<div class="line"><a name="l00226"></a><span class="lineno">  226</span>&#160;}</div>
-<div class="line"><a name="l00227"></a><span class="lineno">  227</span>&#160; </div>
-<div class="line"><a name="l00256"></a><span class="lineno">  256</span>&#160;<span class="keyword">template</span>&lt;RunData_t T, <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> DISP_VALS&gt;</div>
-<div class="line"><a name="l00257"></a><span class="lineno"><a class="line" href="namespacebeliefprop__cuda.html#ae991742366ec63db54f1a4ec8c6c911c">  257</a></span>&#160;__global__ <span class="keywordtype">void</span> <a class="code" href="namespacebeliefprop__cuda.html#a316a4698e007f4722b4cc9bc4015c692">RunBPIterationUsingCheckerboardUpdates</a>(</div>
-<div class="line"><a name="l00258"></a><span class="lineno">  258</span>&#160;  <a class="code" href="namespacebeliefprop.html#a85dcfe709b354b19752ea8ae432f5af5">beliefprop::CheckerboardPart</a> checkerboard_to_update, <a class="code" href="structbeliefprop_1_1_bp_level_properties.html">beliefprop::BpLevelProperties</a> current_bp_level,</div>
-<div class="line"><a name="l00259"></a><span class="lineno">  259</span>&#160;  T* data_cost_checkerboard_0, T* data_cost_checkerboard_1,</div>
-<div class="line"><a name="l00260"></a><span class="lineno">  260</span>&#160;  T* message_u_checkerboard_0, T* message_d_checkerboard_0,</div>
-<div class="line"><a name="l00261"></a><span class="lineno">  261</span>&#160;  T* message_l_checkerboard_0, T* message_r_checkerboard_0,</div>
-<div class="line"><a name="l00262"></a><span class="lineno">  262</span>&#160;  T* message_u_checkerboard_1, T* message_d_checkerboard_1,</div>
-<div class="line"><a name="l00263"></a><span class="lineno">  263</span>&#160;  T* message_l_checkerboard_1, T* message_r_checkerboard_1,</div>
-<div class="line"><a name="l00264"></a><span class="lineno">  264</span>&#160;  <span class="keywordtype">float</span> disc_k_bp, <span class="keywordtype">bool</span> data_aligned, <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> bp_settings_disp_vals,</div>
-<div class="line"><a name="l00265"></a><span class="lineno">  265</span>&#160;  <span class="keywordtype">void</span>* dst_processing)</div>
-<div class="line"><a name="l00266"></a><span class="lineno">  266</span>&#160;{</div>
-<div class="line"><a name="l00267"></a><span class="lineno">  267</span>&#160;  <span class="comment">//get the x and y indices for the current CUDA thread</span></div>
-<div class="line"><a name="l00268"></a><span class="lineno">  268</span>&#160;  <span class="keyword">const</span> <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> x_val = blockIdx.x * blockDim.x + threadIdx.x;</div>
-<div class="line"><a name="l00269"></a><span class="lineno">  269</span>&#160;  <span class="keyword">const</span> <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> y_val = blockIdx.y * blockDim.y + threadIdx.y;</div>
-<div class="line"><a name="l00270"></a><span class="lineno">  270</span>&#160; </div>
-<div class="line"><a name="l00271"></a><span class="lineno">  271</span>&#160;  <span class="keywordflow">if</span> (<a class="code" href="namespacebeliefprop.html#aae2269b7359108e636eebcb74a557e7f">beliefprop::WithinImageBounds</a>(</div>
-<div class="line"><a name="l00272"></a><span class="lineno">  272</span>&#160;    x_val, y_val, current_bp_level.<a class="code" href="structbeliefprop_1_1_bp_level_properties.html#a9b4fed34770c1d019c90b974a7d28820">width_level_</a>/2, current_bp_level.<a class="code" href="structbeliefprop_1_1_bp_level_properties.html#a90975be50a85868c2843905f661c2d57">height_level_</a>))</div>
-<div class="line"><a name="l00273"></a><span class="lineno">  273</span>&#160;  {</div>
-<div class="line"><a name="l00274"></a><span class="lineno">  274</span>&#160;    beliefprop::RunBPIterationUsingCheckerboardUpdatesKernel&lt;T, T, DISP_VALS&gt;(</div>
-<div class="line"><a name="l00275"></a><span class="lineno">  275</span>&#160;      x_val, y_val, checkerboard_to_update, current_bp_level,</div>
-<div class="line"><a name="l00276"></a><span class="lineno">  276</span>&#160;      data_cost_checkerboard_0, data_cost_checkerboard_1,</div>
-<div class="line"><a name="l00277"></a><span class="lineno">  277</span>&#160;      message_u_checkerboard_0, message_d_checkerboard_0,</div>
-<div class="line"><a name="l00278"></a><span class="lineno">  278</span>&#160;      message_l_checkerboard_0, message_r_checkerboard_0,</div>
-<div class="line"><a name="l00279"></a><span class="lineno">  279</span>&#160;      message_u_checkerboard_1, message_d_checkerboard_1,</div>
-<div class="line"><a name="l00280"></a><span class="lineno">  280</span>&#160;      message_l_checkerboard_1, message_r_checkerboard_1,</div>
-<div class="line"><a name="l00281"></a><span class="lineno">  281</span>&#160;      disc_k_bp, 0, data_aligned, bp_settings_disp_vals, dst_processing);</div>
-<div class="line"><a name="l00282"></a><span class="lineno">  282</span>&#160;  }</div>
-<div class="line"><a name="l00283"></a><span class="lineno">  283</span>&#160;}</div>
-<div class="line"><a name="l00284"></a><span class="lineno">  284</span>&#160; </div>
-<div class="line"><a name="l00315"></a><span class="lineno">  315</span>&#160;<span class="keyword">template</span>&lt;RunData_t T, <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> DISP_VALS&gt;</div>
-<div class="line"><a name="l00316"></a><span class="lineno"><a class="line" href="namespacebeliefprop__cuda.html#a27664210a6760cfc437104ae51e806c0">  316</a></span>&#160;__global__ <span class="keywordtype">void</span> <a class="code" href="namespacebeliefprop__cuda.html#a27664210a6760cfc437104ae51e806c0">CopyMsgDataToNextLevel</a>(</div>
-<div class="line"><a name="l00317"></a><span class="lineno">  317</span>&#160;  <a class="code" href="namespacebeliefprop.html#a85dcfe709b354b19752ea8ae432f5af5">beliefprop::CheckerboardPart</a> checkerboard_part,</div>
-<div class="line"><a name="l00318"></a><span class="lineno">  318</span>&#160;  <a class="code" href="structbeliefprop_1_1_bp_level_properties.html">beliefprop::BpLevelProperties</a> current_bp_level,</div>
-<div class="line"><a name="l00319"></a><span class="lineno">  319</span>&#160;  <a class="code" href="structbeliefprop_1_1_bp_level_properties.html">beliefprop::BpLevelProperties</a> next_bp_level,</div>
-<div class="line"><a name="l00320"></a><span class="lineno">  320</span>&#160;  T* message_u_prev_checkerboard_0, T* message_d_prev_checkerboard_0,</div>
-<div class="line"><a name="l00321"></a><span class="lineno">  321</span>&#160;  T* message_l_prev_checkerboard_0, T* message_r_prev_checkerboard_0,</div>
-<div class="line"><a name="l00322"></a><span class="lineno">  322</span>&#160;  T* message_u_prev_checkerboard_1, T* message_d_prev_checkerboard_1,</div>
-<div class="line"><a name="l00323"></a><span class="lineno">  323</span>&#160;  T* message_l_prev_checkerboard_1, T* message_r_prev_checkerboard_1,</div>
-<div class="line"><a name="l00324"></a><span class="lineno">  324</span>&#160;  T* message_u_checkerboard_0, T* message_d_checkerboard_0,</div>
-<div class="line"><a name="l00325"></a><span class="lineno">  325</span>&#160;  T* message_l_checkerboard_0, T* message_r_checkerboard_0,</div>
-<div class="line"><a name="l00326"></a><span class="lineno">  326</span>&#160;  T* message_u_checkerboard_1, T* message_d_checkerboard_1,</div>
-<div class="line"><a name="l00327"></a><span class="lineno">  327</span>&#160;  T* message_l_checkerboard_1, T* message_r_checkerboard_1,</div>
-<div class="line"><a name="l00328"></a><span class="lineno">  328</span>&#160;  <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> bp_settings_disp_vals)</div>
-<div class="line"><a name="l00329"></a><span class="lineno">  329</span>&#160;{</div>
-<div class="line"><a name="l00330"></a><span class="lineno">  330</span>&#160;  <span class="comment">//get the x and y indices for the current CUDA thread</span></div>
-<div class="line"><a name="l00331"></a><span class="lineno">  331</span>&#160;  <span class="keyword">const</span> <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> x_val = blockIdx.x * blockDim.x + threadIdx.x;</div>
-<div class="line"><a name="l00332"></a><span class="lineno">  332</span>&#160;  <span class="keyword">const</span> <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> y_val = blockIdx.y * blockDim.y + threadIdx.y;</div>
-<div class="line"><a name="l00333"></a><span class="lineno">  333</span>&#160; </div>
-<div class="line"><a name="l00334"></a><span class="lineno">  334</span>&#160;  <span class="keywordflow">if</span> (<a class="code" href="namespacebeliefprop.html#aae2269b7359108e636eebcb74a557e7f">beliefprop::WithinImageBounds</a>(</div>
-<div class="line"><a name="l00335"></a><span class="lineno">  335</span>&#160;    x_val, y_val, current_bp_level.<a class="code" href="structbeliefprop_1_1_bp_level_properties.html#a90eb9616e20b6f551e78f007a5a05c73">width_checkerboard_level_</a>, current_bp_level.<a class="code" href="structbeliefprop_1_1_bp_level_properties.html#a90975be50a85868c2843905f661c2d57">height_level_</a>))</div>
-<div class="line"><a name="l00336"></a><span class="lineno">  336</span>&#160;  {</div>
-<div class="line"><a name="l00337"></a><span class="lineno">  337</span>&#160;    beliefprop::CopyMsgDataToNextLevelPixel&lt;T, DISP_VALS&gt;(x_val, y_val,</div>
-<div class="line"><a name="l00338"></a><span class="lineno">  338</span>&#160;      checkerboard_part, current_bp_level, next_bp_level,</div>
-<div class="line"><a name="l00339"></a><span class="lineno">  339</span>&#160;      message_u_prev_checkerboard_0, message_d_prev_checkerboard_0,</div>
-<div class="line"><a name="l00340"></a><span class="lineno">  340</span>&#160;      message_l_prev_checkerboard_0, message_r_prev_checkerboard_0,</div>
-<div class="line"><a name="l00341"></a><span class="lineno">  341</span>&#160;      message_u_prev_checkerboard_1, message_d_prev_checkerboard_1,</div>
-<div class="line"><a name="l00342"></a><span class="lineno">  342</span>&#160;      message_l_prev_checkerboard_1, message_r_prev_checkerboard_1,</div>
-<div class="line"><a name="l00343"></a><span class="lineno">  343</span>&#160;      message_u_checkerboard_0, message_d_checkerboard_0,</div>
-<div class="line"><a name="l00344"></a><span class="lineno">  344</span>&#160;      message_l_checkerboard_0, message_r_checkerboard_0,</div>
-<div class="line"><a name="l00345"></a><span class="lineno">  345</span>&#160;      message_u_checkerboard_1, message_d_checkerboard_1,</div>
-<div class="line"><a name="l00346"></a><span class="lineno">  346</span>&#160;      message_l_checkerboard_1, message_r_checkerboard_1,</div>
-<div class="line"><a name="l00347"></a><span class="lineno">  347</span>&#160;      bp_settings_disp_vals);</div>
-<div class="line"><a name="l00348"></a><span class="lineno">  348</span>&#160;  }</div>
-<div class="line"><a name="l00349"></a><span class="lineno">  349</span>&#160;}</div>
-<div class="line"><a name="l00350"></a><span class="lineno">  350</span>&#160; </div>
-<div class="line"><a name="l00371"></a><span class="lineno">  371</span>&#160;<span class="keyword">template</span>&lt;RunData_t T, <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> DISP_VALS&gt;</div>
-<div class="line"><a name="l00372"></a><span class="lineno"><a class="line" href="namespacebeliefprop__cuda.html#afa30b0a712350ea00fbf2c2e12c245ce">  372</a></span>&#160;__global__ <span class="keywordtype">void</span> <a class="code" href="namespacebeliefprop__cuda.html#afa30b0a712350ea00fbf2c2e12c245ce">RetrieveOutputDisparity</a>(</div>
-<div class="line"><a name="l00373"></a><span class="lineno">  373</span>&#160;  <a class="code" href="structbeliefprop_1_1_bp_level_properties.html">beliefprop::BpLevelProperties</a> current_bp_level,</div>
-<div class="line"><a name="l00374"></a><span class="lineno">  374</span>&#160;  T* data_cost_checkerboard_0, T* data_cost_checkerboard_1,</div>
-<div class="line"><a name="l00375"></a><span class="lineno">  375</span>&#160;  T* message_u_checkerboard_0, T* message_d_checkerboard_0,</div>
-<div class="line"><a name="l00376"></a><span class="lineno">  376</span>&#160;  T* message_l_checkerboard_0, T* message_r_checkerboard_0,</div>
-<div class="line"><a name="l00377"></a><span class="lineno">  377</span>&#160;  T* message_u_checkerboard_1, T* message_d_checkerboard_1,</div>
-<div class="line"><a name="l00378"></a><span class="lineno">  378</span>&#160;  T* message_l_checkerboard_1, T* message_r_checkerboard_1,</div>
-<div class="line"><a name="l00379"></a><span class="lineno">  379</span>&#160;  <span class="keywordtype">float</span>* disparity_between_images_device, <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> bp_settings_disp_vals)</div>
-<div class="line"><a name="l00380"></a><span class="lineno">  380</span>&#160;{</div>
-<div class="line"><a name="l00381"></a><span class="lineno">  381</span>&#160;  <span class="comment">//get x and y indices for the current CUDA thread</span></div>
-<div class="line"><a name="l00382"></a><span class="lineno">  382</span>&#160;  <span class="keyword">const</span> <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> x_val = blockIdx.x * blockDim.x + threadIdx.x;</div>
-<div class="line"><a name="l00383"></a><span class="lineno">  383</span>&#160;  <span class="keyword">const</span> <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> y_val = blockIdx.y * blockDim.y + threadIdx.y;</div>
-<div class="line"><a name="l00384"></a><span class="lineno">  384</span>&#160; </div>
-<div class="line"><a name="l00385"></a><span class="lineno">  385</span>&#160;  <span class="keywordflow">if</span> (<a class="code" href="namespacebeliefprop.html#aae2269b7359108e636eebcb74a557e7f">beliefprop::WithinImageBounds</a>(</div>
-<div class="line"><a name="l00386"></a><span class="lineno">  386</span>&#160;    x_val, y_val, current_bp_level.<a class="code" href="structbeliefprop_1_1_bp_level_properties.html#a90eb9616e20b6f551e78f007a5a05c73">width_checkerboard_level_</a>, current_bp_level.<a class="code" href="structbeliefprop_1_1_bp_level_properties.html#a90975be50a85868c2843905f661c2d57">height_level_</a>))</div>
-<div class="line"><a name="l00387"></a><span class="lineno">  387</span>&#160;  {</div>
-<div class="line"><a name="l00388"></a><span class="lineno">  388</span>&#160;    beliefprop::RetrieveOutputDisparityPixel&lt;T, T, DISP_VALS&gt;(</div>
-<div class="line"><a name="l00389"></a><span class="lineno">  389</span>&#160;      x_val, y_val, current_bp_level,</div>
-<div class="line"><a name="l00390"></a><span class="lineno">  390</span>&#160;      data_cost_checkerboard_0, data_cost_checkerboard_1,</div>
-<div class="line"><a name="l00391"></a><span class="lineno">  391</span>&#160;      message_u_checkerboard_0, message_d_checkerboard_0,</div>
-<div class="line"><a name="l00392"></a><span class="lineno">  392</span>&#160;      message_l_checkerboard_0, message_r_checkerboard_0,</div>
-<div class="line"><a name="l00393"></a><span class="lineno">  393</span>&#160;      message_u_checkerboard_1, message_d_checkerboard_1,</div>
-<div class="line"><a name="l00394"></a><span class="lineno">  394</span>&#160;      message_l_checkerboard_1, message_r_checkerboard_1,</div>
-<div class="line"><a name="l00395"></a><span class="lineno">  395</span>&#160;      disparity_between_images_device, bp_settings_disp_vals);</div>
-<div class="line"><a name="l00396"></a><span class="lineno">  396</span>&#160;  }</div>
-<div class="line"><a name="l00397"></a><span class="lineno">  397</span>&#160;}</div>
-<div class="line"><a name="l00398"></a><span class="lineno">  398</span>&#160; </div>
-<div class="line"><a name="l00399"></a><span class="lineno">  399</span>&#160;};</div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;<span class="keyword">template</span>&lt;RunData_t T, <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> DISP_VALS&gt;</div>
+<div class="line"><a name="l00068"></a><span class="lineno"><a class="line" href="namespacebeliefprop__cuda.html#aa26f576e04e40f0a4f907772433d4ae0">   68</a></span>&#160;__global__ <span class="keywordtype">void</span> <a class="code" href="namespacebeliefprop__cuda.html#aa26f576e04e40f0a4f907772433d4ae0">InitializeBottomLevelData</a>(</div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;  <a class="code" href="structbeliefprop_1_1_bp_level_properties.html">beliefprop::BpLevelProperties</a> current_bp_level,</div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;  <span class="keywordtype">float</span>* image_1_pixels_device, <span class="keywordtype">float</span>* image_2_pixels_device,</div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;  T* data_cost_stereo_checkerboard_0, T* data_cost_stereo_checkerboard_1,</div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;  <span class="keywordtype">float</span> lambda_bp, <span class="keywordtype">float</span> data_k_bp, <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> bp_settings_disp_vals)</div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;{</div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;  <span class="comment">//get the x and y indices for the current CUDA thread</span></div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;  <span class="keyword">const</span> <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> x_val = blockIdx.x * blockDim.x + threadIdx.x;</div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;  <span class="keyword">const</span> <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> y_val = blockIdx.y * blockDim.y + threadIdx.y;</div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160; </div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;  <span class="comment">//get the x value within the current &quot;checkerboard&quot;</span></div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;  <span class="keyword">const</span> <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> x_checkerboard = x_val / 2;</div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160; </div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;  <span class="keywordflow">if</span> (<a class="code" href="namespacebeliefprop.html#aae2269b7359108e636eebcb74a557e7f">beliefprop::WithinImageBounds</a>(</div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;    x_checkerboard, y_val, current_bp_level.<a class="code" href="structbeliefprop_1_1_bp_level_properties.html#a9b4fed34770c1d019c90b974a7d28820">width_level_</a>, current_bp_level.<a class="code" href="structbeliefprop_1_1_bp_level_properties.html#a90975be50a85868c2843905f661c2d57">height_level_</a>))</div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;  {</div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;    beliefprop::InitializeBottomLevelDataPixel&lt;T, DISP_VALS&gt;(x_val, y_val,</div>
+<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;      current_bp_level, image_1_pixels_device,</div>
+<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;      image_2_pixels_device, data_cost_stereo_checkerboard_0,</div>
+<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;      data_cost_stereo_checkerboard_1, lambda_bp,</div>
+<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;      data_k_bp, bp_settings_disp_vals);</div>
+<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;  }</div>
+<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;}</div>
+<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160; </div>
+<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;<span class="keyword">template</span>&lt;RunData_t T, <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> DISP_VALS&gt;</div>
+<div class="line"><a name="l00108"></a><span class="lineno"><a class="line" href="namespacebeliefprop__cuda.html#aad53fa3d6b6ffbd594170ca738f41515">  108</a></span>&#160;__global__ <span class="keywordtype">void</span> <a class="code" href="namespacebeliefprop__cuda.html#aad53fa3d6b6ffbd594170ca738f41515">InitializeCurrentLevelData</a>(</div>
+<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;  <a class="code" href="namespacebeliefprop.html#a85dcfe709b354b19752ea8ae432f5af5">beliefprop::CheckerboardPart</a> checkerboard_part,</div>
+<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;  <a class="code" href="structbeliefprop_1_1_bp_level_properties.html">beliefprop::BpLevelProperties</a> current_bp_level,</div>
+<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;  <a class="code" href="structbeliefprop_1_1_bp_level_properties.html">beliefprop::BpLevelProperties</a> prev_bp_level, T* data_cost_checkerboard_0,</div>
+<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;  T* data_cost_checkerboard_1, T* data_cost_current_level,</div>
+<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;  <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> offset_num, <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> bp_settings_disp_vals)</div>
+<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;{</div>
+<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;  <span class="comment">//get the x and y indices for the current CUDA thread</span></div>
+<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;  <span class="keyword">const</span> <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> x_val = blockIdx.x * blockDim.x + threadIdx.x;</div>
+<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;  <span class="keyword">const</span> <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> y_val = blockIdx.y * blockDim.y + threadIdx.y;</div>
+<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160; </div>
+<div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;  <span class="keywordflow">if</span> (<a class="code" href="namespacebeliefprop.html#aae2269b7359108e636eebcb74a557e7f">beliefprop::WithinImageBounds</a>(</div>
+<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;    x_val, y_val, current_bp_level.<a class="code" href="structbeliefprop_1_1_bp_level_properties.html#a90eb9616e20b6f551e78f007a5a05c73">width_checkerboard_level_</a>, current_bp_level.<a class="code" href="structbeliefprop_1_1_bp_level_properties.html#a90975be50a85868c2843905f661c2d57">height_level_</a>))</div>
+<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;  {</div>
+<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;    beliefprop::InitializeCurrentLevelDataPixel&lt;T, T, DISP_VALS&gt;(</div>
+<div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;      x_val, y_val, checkerboard_part, current_bp_level, prev_bp_level,</div>
+<div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;      data_cost_checkerboard_0, data_cost_checkerboard_1, data_cost_current_level,</div>
+<div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;      offset_num, bp_settings_disp_vals);</div>
+<div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;  }</div>
+<div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160;}</div>
+<div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160; </div>
+<div class="line"><a name="l00145"></a><span class="lineno">  145</span>&#160;<span class="keyword">template</span>&lt;RunData_t T, <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> DISP_VALS&gt;</div>
+<div class="line"><a name="l00146"></a><span class="lineno"><a class="line" href="namespacebeliefprop__cuda.html#a319e93b6f471e7c43afbff1c9506882f">  146</a></span>&#160;__global__ <span class="keywordtype">void</span> <a class="code" href="namespacebeliefprop__cuda.html#a319e93b6f471e7c43afbff1c9506882f">InitializeMessageValsToDefaultKernel</a>(</div>
+<div class="line"><a name="l00147"></a><span class="lineno">  147</span>&#160;  <a class="code" href="structbeliefprop_1_1_bp_level_properties.html">beliefprop::BpLevelProperties</a> current_bp_level,</div>
+<div class="line"><a name="l00148"></a><span class="lineno">  148</span>&#160;  T* message_u_checkerboard_0, T* message_d_checkerboard_0,</div>
+<div class="line"><a name="l00149"></a><span class="lineno">  149</span>&#160;  T* message_l_checkerboard_0, T* message_r_checkerboard_0,</div>
+<div class="line"><a name="l00150"></a><span class="lineno">  150</span>&#160;  T* message_u_checkerboard_1, T* message_d_checkerboard_1,</div>
+<div class="line"><a name="l00151"></a><span class="lineno">  151</span>&#160;  T* message_l_checkerboard_1, T* message_r_checkerboard_1,</div>
+<div class="line"><a name="l00152"></a><span class="lineno">  152</span>&#160;  <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> bp_settings_disp_vals)</div>
+<div class="line"><a name="l00153"></a><span class="lineno">  153</span>&#160;{</div>
+<div class="line"><a name="l00154"></a><span class="lineno">  154</span>&#160;  <span class="comment">//get the x and y indices for the current CUDA thread</span></div>
+<div class="line"><a name="l00155"></a><span class="lineno">  155</span>&#160;  <span class="keyword">const</span> <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> x_val_in_checkerboard = blockIdx.x * blockDim.x + threadIdx.x;</div>
+<div class="line"><a name="l00156"></a><span class="lineno">  156</span>&#160;  <span class="keyword">const</span> <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> y_val = blockIdx.y * blockDim.y + threadIdx.y;</div>
+<div class="line"><a name="l00157"></a><span class="lineno">  157</span>&#160; </div>
+<div class="line"><a name="l00158"></a><span class="lineno">  158</span>&#160;  <span class="keywordflow">if</span> (<a class="code" href="namespacebeliefprop.html#aae2269b7359108e636eebcb74a557e7f">beliefprop::WithinImageBounds</a>(</div>
+<div class="line"><a name="l00159"></a><span class="lineno">  159</span>&#160;    x_val_in_checkerboard, y_val, current_bp_level.<a class="code" href="structbeliefprop_1_1_bp_level_properties.html#a90eb9616e20b6f551e78f007a5a05c73">width_checkerboard_level_</a>, current_bp_level.<a class="code" href="structbeliefprop_1_1_bp_level_properties.html#a90975be50a85868c2843905f661c2d57">height_level_</a>))</div>
+<div class="line"><a name="l00160"></a><span class="lineno">  160</span>&#160;  {</div>
+<div class="line"><a name="l00161"></a><span class="lineno">  161</span>&#160;    <span class="comment">//initialize message values in both checkerboards</span></div>
+<div class="line"><a name="l00162"></a><span class="lineno">  162</span>&#160;    beliefprop::InitializeMessageValsToDefaultKernelPixel&lt;T, DISP_VALS&gt;(</div>
+<div class="line"><a name="l00163"></a><span class="lineno">  163</span>&#160;      x_val_in_checkerboard,  y_val, current_bp_level,</div>
+<div class="line"><a name="l00164"></a><span class="lineno">  164</span>&#160;      message_u_checkerboard_0, message_d_checkerboard_0,</div>
+<div class="line"><a name="l00165"></a><span class="lineno">  165</span>&#160;      message_l_checkerboard_0, message_r_checkerboard_0,</div>
+<div class="line"><a name="l00166"></a><span class="lineno">  166</span>&#160;      message_u_checkerboard_1, message_d_checkerboard_1,</div>
+<div class="line"><a name="l00167"></a><span class="lineno">  167</span>&#160;      message_l_checkerboard_1, message_r_checkerboard_1,</div>
+<div class="line"><a name="l00168"></a><span class="lineno">  168</span>&#160;      bp_settings_disp_vals);</div>
+<div class="line"><a name="l00169"></a><span class="lineno">  169</span>&#160;  }</div>
+<div class="line"><a name="l00170"></a><span class="lineno">  170</span>&#160;}</div>
+<div class="line"><a name="l00171"></a><span class="lineno">  171</span>&#160; </div>
+<div class="line"><a name="l00196"></a><span class="lineno">  196</span>&#160;<span class="keyword">template</span>&lt;RunData_t T, <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> DISP_VALS&gt;</div>
+<div class="line"><a name="l00197"></a><span class="lineno"><a class="line" href="namespacebeliefprop__cuda.html#a316a4698e007f4722b4cc9bc4015c692">  197</a></span>&#160;__global__ <span class="keywordtype">void</span> <a class="code" href="namespacebeliefprop__cuda.html#a316a4698e007f4722b4cc9bc4015c692">RunBPIterationUsingCheckerboardUpdates</a>(</div>
+<div class="line"><a name="l00198"></a><span class="lineno">  198</span>&#160;  <a class="code" href="namespacebeliefprop.html#a85dcfe709b354b19752ea8ae432f5af5">beliefprop::CheckerboardPart</a> checkerboard_to_update, <a class="code" href="structbeliefprop_1_1_bp_level_properties.html">beliefprop::BpLevelProperties</a> current_bp_level,</div>
+<div class="line"><a name="l00199"></a><span class="lineno">  199</span>&#160;  T* data_cost_checkerboard_0, T* data_cost_checkerboard_1,</div>
+<div class="line"><a name="l00200"></a><span class="lineno">  200</span>&#160;  T* message_u_checkerboard_0, T* message_d_checkerboard_0,</div>
+<div class="line"><a name="l00201"></a><span class="lineno">  201</span>&#160;  T* message_l_checkerboard_0, T* message_r_checkerboard_0,</div>
+<div class="line"><a name="l00202"></a><span class="lineno">  202</span>&#160;  T* message_u_checkerboard_1, T* message_d_checkerboard_1,</div>
+<div class="line"><a name="l00203"></a><span class="lineno">  203</span>&#160;  T* message_l_checkerboard_1, T* message_r_checkerboard_1,</div>
+<div class="line"><a name="l00204"></a><span class="lineno">  204</span>&#160;  <span class="keywordtype">float</span> disc_k_bp, <span class="keywordtype">bool</span> data_aligned, <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> bp_settings_disp_vals)</div>
+<div class="line"><a name="l00205"></a><span class="lineno">  205</span>&#160;{</div>
+<div class="line"><a name="l00206"></a><span class="lineno">  206</span>&#160;  <span class="comment">//get the x and y indices for the current CUDA thread</span></div>
+<div class="line"><a name="l00207"></a><span class="lineno">  207</span>&#160;  <span class="keyword">const</span> <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> x_val = blockIdx.x * blockDim.x + threadIdx.x;</div>
+<div class="line"><a name="l00208"></a><span class="lineno">  208</span>&#160;  <span class="keyword">const</span> <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> y_val = blockIdx.y * blockDim.y + threadIdx.y;</div>
+<div class="line"><a name="l00209"></a><span class="lineno">  209</span>&#160; </div>
+<div class="line"><a name="l00210"></a><span class="lineno">  210</span>&#160;  <span class="keywordflow">if</span> (<a class="code" href="namespacebeliefprop.html#aae2269b7359108e636eebcb74a557e7f">beliefprop::WithinImageBounds</a>(</div>
+<div class="line"><a name="l00211"></a><span class="lineno">  211</span>&#160;    x_val, y_val, current_bp_level.<a class="code" href="structbeliefprop_1_1_bp_level_properties.html#a9b4fed34770c1d019c90b974a7d28820">width_level_</a>/2, current_bp_level.<a class="code" href="structbeliefprop_1_1_bp_level_properties.html#a90975be50a85868c2843905f661c2d57">height_level_</a>))</div>
+<div class="line"><a name="l00212"></a><span class="lineno">  212</span>&#160;  {</div>
+<div class="line"><a name="l00213"></a><span class="lineno">  213</span>&#160;    beliefprop::RunBPIterationUsingCheckerboardUpdatesKernel&lt;T, T, DISP_VALS&gt;(</div>
+<div class="line"><a name="l00214"></a><span class="lineno">  214</span>&#160;      x_val, y_val, checkerboard_to_update, current_bp_level,</div>
+<div class="line"><a name="l00215"></a><span class="lineno">  215</span>&#160;      data_cost_checkerboard_0, data_cost_checkerboard_1,</div>
+<div class="line"><a name="l00216"></a><span class="lineno">  216</span>&#160;      message_u_checkerboard_0, message_d_checkerboard_0,</div>
+<div class="line"><a name="l00217"></a><span class="lineno">  217</span>&#160;      message_l_checkerboard_0, message_r_checkerboard_0,</div>
+<div class="line"><a name="l00218"></a><span class="lineno">  218</span>&#160;      message_u_checkerboard_1, message_d_checkerboard_1,</div>
+<div class="line"><a name="l00219"></a><span class="lineno">  219</span>&#160;      message_l_checkerboard_1, message_r_checkerboard_1,</div>
+<div class="line"><a name="l00220"></a><span class="lineno">  220</span>&#160;      disc_k_bp, 0, data_aligned, bp_settings_disp_vals);</div>
+<div class="line"><a name="l00221"></a><span class="lineno">  221</span>&#160;  }</div>
+<div class="line"><a name="l00222"></a><span class="lineno">  222</span>&#160;}</div>
+<div class="line"><a name="l00223"></a><span class="lineno">  223</span>&#160; </div>
+<div class="line"><a name="l00251"></a><span class="lineno">  251</span>&#160;<span class="keyword">template</span>&lt;RunData_t T, <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> DISP_VALS&gt;</div>
+<div class="line"><a name="l00252"></a><span class="lineno"><a class="line" href="namespacebeliefprop__cuda.html#ae991742366ec63db54f1a4ec8c6c911c">  252</a></span>&#160;__global__ <span class="keywordtype">void</span> <a class="code" href="namespacebeliefprop__cuda.html#a316a4698e007f4722b4cc9bc4015c692">RunBPIterationUsingCheckerboardUpdates</a>(</div>
+<div class="line"><a name="l00253"></a><span class="lineno">  253</span>&#160;  <a class="code" href="namespacebeliefprop.html#a85dcfe709b354b19752ea8ae432f5af5">beliefprop::CheckerboardPart</a> checkerboard_to_update, <a class="code" href="structbeliefprop_1_1_bp_level_properties.html">beliefprop::BpLevelProperties</a> current_bp_level,</div>
+<div class="line"><a name="l00254"></a><span class="lineno">  254</span>&#160;  T* data_cost_checkerboard_0, T* data_cost_checkerboard_1,</div>
+<div class="line"><a name="l00255"></a><span class="lineno">  255</span>&#160;  T* message_u_checkerboard_0, T* message_d_checkerboard_0,</div>
+<div class="line"><a name="l00256"></a><span class="lineno">  256</span>&#160;  T* message_l_checkerboard_0, T* message_r_checkerboard_0,</div>
+<div class="line"><a name="l00257"></a><span class="lineno">  257</span>&#160;  T* message_u_checkerboard_1, T* message_d_checkerboard_1,</div>
+<div class="line"><a name="l00258"></a><span class="lineno">  258</span>&#160;  T* message_l_checkerboard_1, T* message_r_checkerboard_1,</div>
+<div class="line"><a name="l00259"></a><span class="lineno">  259</span>&#160;  <span class="keywordtype">float</span> disc_k_bp, <span class="keywordtype">bool</span> data_aligned, <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> bp_settings_disp_vals,</div>
+<div class="line"><a name="l00260"></a><span class="lineno">  260</span>&#160;  <span class="keywordtype">void</span>* dst_processing)</div>
+<div class="line"><a name="l00261"></a><span class="lineno">  261</span>&#160;{</div>
+<div class="line"><a name="l00262"></a><span class="lineno">  262</span>&#160;  <span class="comment">//get the x and y indices for the current CUDA thread</span></div>
+<div class="line"><a name="l00263"></a><span class="lineno">  263</span>&#160;  <span class="keyword">const</span> <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> x_val = blockIdx.x * blockDim.x + threadIdx.x;</div>
+<div class="line"><a name="l00264"></a><span class="lineno">  264</span>&#160;  <span class="keyword">const</span> <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> y_val = blockIdx.y * blockDim.y + threadIdx.y;</div>
+<div class="line"><a name="l00265"></a><span class="lineno">  265</span>&#160; </div>
+<div class="line"><a name="l00266"></a><span class="lineno">  266</span>&#160;  <span class="keywordflow">if</span> (<a class="code" href="namespacebeliefprop.html#aae2269b7359108e636eebcb74a557e7f">beliefprop::WithinImageBounds</a>(</div>
+<div class="line"><a name="l00267"></a><span class="lineno">  267</span>&#160;    x_val, y_val, current_bp_level.<a class="code" href="structbeliefprop_1_1_bp_level_properties.html#a9b4fed34770c1d019c90b974a7d28820">width_level_</a>/2, current_bp_level.<a class="code" href="structbeliefprop_1_1_bp_level_properties.html#a90975be50a85868c2843905f661c2d57">height_level_</a>))</div>
+<div class="line"><a name="l00268"></a><span class="lineno">  268</span>&#160;  {</div>
+<div class="line"><a name="l00269"></a><span class="lineno">  269</span>&#160;    beliefprop::RunBPIterationUsingCheckerboardUpdatesKernel&lt;T, T, DISP_VALS&gt;(</div>
+<div class="line"><a name="l00270"></a><span class="lineno">  270</span>&#160;      x_val, y_val, checkerboard_to_update, current_bp_level,</div>
+<div class="line"><a name="l00271"></a><span class="lineno">  271</span>&#160;      data_cost_checkerboard_0, data_cost_checkerboard_1,</div>
+<div class="line"><a name="l00272"></a><span class="lineno">  272</span>&#160;      message_u_checkerboard_0, message_d_checkerboard_0,</div>
+<div class="line"><a name="l00273"></a><span class="lineno">  273</span>&#160;      message_l_checkerboard_0, message_r_checkerboard_0,</div>
+<div class="line"><a name="l00274"></a><span class="lineno">  274</span>&#160;      message_u_checkerboard_1, message_d_checkerboard_1,</div>
+<div class="line"><a name="l00275"></a><span class="lineno">  275</span>&#160;      message_l_checkerboard_1, message_r_checkerboard_1,</div>
+<div class="line"><a name="l00276"></a><span class="lineno">  276</span>&#160;      disc_k_bp, 0, data_aligned, bp_settings_disp_vals, dst_processing);</div>
+<div class="line"><a name="l00277"></a><span class="lineno">  277</span>&#160;  }</div>
+<div class="line"><a name="l00278"></a><span class="lineno">  278</span>&#160;}</div>
+<div class="line"><a name="l00279"></a><span class="lineno">  279</span>&#160; </div>
+<div class="line"><a name="l00309"></a><span class="lineno">  309</span>&#160;<span class="keyword">template</span>&lt;RunData_t T, <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> DISP_VALS&gt;</div>
+<div class="line"><a name="l00310"></a><span class="lineno"><a class="line" href="namespacebeliefprop__cuda.html#a27664210a6760cfc437104ae51e806c0">  310</a></span>&#160;__global__ <span class="keywordtype">void</span> <a class="code" href="namespacebeliefprop__cuda.html#a27664210a6760cfc437104ae51e806c0">CopyMsgDataToNextLevel</a>(</div>
+<div class="line"><a name="l00311"></a><span class="lineno">  311</span>&#160;  <a class="code" href="namespacebeliefprop.html#a85dcfe709b354b19752ea8ae432f5af5">beliefprop::CheckerboardPart</a> checkerboard_part,</div>
+<div class="line"><a name="l00312"></a><span class="lineno">  312</span>&#160;  <a class="code" href="structbeliefprop_1_1_bp_level_properties.html">beliefprop::BpLevelProperties</a> current_bp_level,</div>
+<div class="line"><a name="l00313"></a><span class="lineno">  313</span>&#160;  <a class="code" href="structbeliefprop_1_1_bp_level_properties.html">beliefprop::BpLevelProperties</a> next_bp_level,</div>
+<div class="line"><a name="l00314"></a><span class="lineno">  314</span>&#160;  T* message_u_prev_checkerboard_0, T* message_d_prev_checkerboard_0,</div>
+<div class="line"><a name="l00315"></a><span class="lineno">  315</span>&#160;  T* message_l_prev_checkerboard_0, T* message_r_prev_checkerboard_0,</div>
+<div class="line"><a name="l00316"></a><span class="lineno">  316</span>&#160;  T* message_u_prev_checkerboard_1, T* message_d_prev_checkerboard_1,</div>
+<div class="line"><a name="l00317"></a><span class="lineno">  317</span>&#160;  T* message_l_prev_checkerboard_1, T* message_r_prev_checkerboard_1,</div>
+<div class="line"><a name="l00318"></a><span class="lineno">  318</span>&#160;  T* message_u_checkerboard_0, T* message_d_checkerboard_0,</div>
+<div class="line"><a name="l00319"></a><span class="lineno">  319</span>&#160;  T* message_l_checkerboard_0, T* message_r_checkerboard_0,</div>
+<div class="line"><a name="l00320"></a><span class="lineno">  320</span>&#160;  T* message_u_checkerboard_1, T* message_d_checkerboard_1,</div>
+<div class="line"><a name="l00321"></a><span class="lineno">  321</span>&#160;  T* message_l_checkerboard_1, T* message_r_checkerboard_1,</div>
+<div class="line"><a name="l00322"></a><span class="lineno">  322</span>&#160;  <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> bp_settings_disp_vals)</div>
+<div class="line"><a name="l00323"></a><span class="lineno">  323</span>&#160;{</div>
+<div class="line"><a name="l00324"></a><span class="lineno">  324</span>&#160;  <span class="comment">//get the x and y indices for the current CUDA thread</span></div>
+<div class="line"><a name="l00325"></a><span class="lineno">  325</span>&#160;  <span class="keyword">const</span> <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> x_val = blockIdx.x * blockDim.x + threadIdx.x;</div>
+<div class="line"><a name="l00326"></a><span class="lineno">  326</span>&#160;  <span class="keyword">const</span> <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> y_val = blockIdx.y * blockDim.y + threadIdx.y;</div>
+<div class="line"><a name="l00327"></a><span class="lineno">  327</span>&#160; </div>
+<div class="line"><a name="l00328"></a><span class="lineno">  328</span>&#160;  <span class="keywordflow">if</span> (<a class="code" href="namespacebeliefprop.html#aae2269b7359108e636eebcb74a557e7f">beliefprop::WithinImageBounds</a>(</div>
+<div class="line"><a name="l00329"></a><span class="lineno">  329</span>&#160;    x_val, y_val, current_bp_level.<a class="code" href="structbeliefprop_1_1_bp_level_properties.html#a90eb9616e20b6f551e78f007a5a05c73">width_checkerboard_level_</a>, current_bp_level.<a class="code" href="structbeliefprop_1_1_bp_level_properties.html#a90975be50a85868c2843905f661c2d57">height_level_</a>))</div>
+<div class="line"><a name="l00330"></a><span class="lineno">  330</span>&#160;  {</div>
+<div class="line"><a name="l00331"></a><span class="lineno">  331</span>&#160;    beliefprop::CopyMsgDataToNextLevelPixel&lt;T, DISP_VALS&gt;(x_val, y_val,</div>
+<div class="line"><a name="l00332"></a><span class="lineno">  332</span>&#160;      checkerboard_part, current_bp_level, next_bp_level,</div>
+<div class="line"><a name="l00333"></a><span class="lineno">  333</span>&#160;      message_u_prev_checkerboard_0, message_d_prev_checkerboard_0,</div>
+<div class="line"><a name="l00334"></a><span class="lineno">  334</span>&#160;      message_l_prev_checkerboard_0, message_r_prev_checkerboard_0,</div>
+<div class="line"><a name="l00335"></a><span class="lineno">  335</span>&#160;      message_u_prev_checkerboard_1, message_d_prev_checkerboard_1,</div>
+<div class="line"><a name="l00336"></a><span class="lineno">  336</span>&#160;      message_l_prev_checkerboard_1, message_r_prev_checkerboard_1,</div>
+<div class="line"><a name="l00337"></a><span class="lineno">  337</span>&#160;      message_u_checkerboard_0, message_d_checkerboard_0,</div>
+<div class="line"><a name="l00338"></a><span class="lineno">  338</span>&#160;      message_l_checkerboard_0, message_r_checkerboard_0,</div>
+<div class="line"><a name="l00339"></a><span class="lineno">  339</span>&#160;      message_u_checkerboard_1, message_d_checkerboard_1,</div>
+<div class="line"><a name="l00340"></a><span class="lineno">  340</span>&#160;      message_l_checkerboard_1, message_r_checkerboard_1,</div>
+<div class="line"><a name="l00341"></a><span class="lineno">  341</span>&#160;      bp_settings_disp_vals);</div>
+<div class="line"><a name="l00342"></a><span class="lineno">  342</span>&#160;  }</div>
+<div class="line"><a name="l00343"></a><span class="lineno">  343</span>&#160;}</div>
+<div class="line"><a name="l00344"></a><span class="lineno">  344</span>&#160; </div>
+<div class="line"><a name="l00364"></a><span class="lineno">  364</span>&#160;<span class="keyword">template</span>&lt;RunData_t T, <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> DISP_VALS&gt;</div>
+<div class="line"><a name="l00365"></a><span class="lineno"><a class="line" href="namespacebeliefprop__cuda.html#afa30b0a712350ea00fbf2c2e12c245ce">  365</a></span>&#160;__global__ <span class="keywordtype">void</span> <a class="code" href="namespacebeliefprop__cuda.html#afa30b0a712350ea00fbf2c2e12c245ce">RetrieveOutputDisparity</a>(</div>
+<div class="line"><a name="l00366"></a><span class="lineno">  366</span>&#160;  <a class="code" href="structbeliefprop_1_1_bp_level_properties.html">beliefprop::BpLevelProperties</a> current_bp_level,</div>
+<div class="line"><a name="l00367"></a><span class="lineno">  367</span>&#160;  T* data_cost_checkerboard_0, T* data_cost_checkerboard_1,</div>
+<div class="line"><a name="l00368"></a><span class="lineno">  368</span>&#160;  T* message_u_checkerboard_0, T* message_d_checkerboard_0,</div>
+<div class="line"><a name="l00369"></a><span class="lineno">  369</span>&#160;  T* message_l_checkerboard_0, T* message_r_checkerboard_0,</div>
+<div class="line"><a name="l00370"></a><span class="lineno">  370</span>&#160;  T* message_u_checkerboard_1, T* message_d_checkerboard_1,</div>
+<div class="line"><a name="l00371"></a><span class="lineno">  371</span>&#160;  T* message_l_checkerboard_1, T* message_r_checkerboard_1,</div>
+<div class="line"><a name="l00372"></a><span class="lineno">  372</span>&#160;  <span class="keywordtype">float</span>* disparity_between_images_device, <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> bp_settings_disp_vals)</div>
+<div class="line"><a name="l00373"></a><span class="lineno">  373</span>&#160;{</div>
+<div class="line"><a name="l00374"></a><span class="lineno">  374</span>&#160;  <span class="comment">//get x and y indices for the current CUDA thread</span></div>
+<div class="line"><a name="l00375"></a><span class="lineno">  375</span>&#160;  <span class="keyword">const</span> <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> x_val = blockIdx.x * blockDim.x + threadIdx.x;</div>
+<div class="line"><a name="l00376"></a><span class="lineno">  376</span>&#160;  <span class="keyword">const</span> <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> y_val = blockIdx.y * blockDim.y + threadIdx.y;</div>
+<div class="line"><a name="l00377"></a><span class="lineno">  377</span>&#160; </div>
+<div class="line"><a name="l00378"></a><span class="lineno">  378</span>&#160;  <span class="keywordflow">if</span> (<a class="code" href="namespacebeliefprop.html#aae2269b7359108e636eebcb74a557e7f">beliefprop::WithinImageBounds</a>(</div>
+<div class="line"><a name="l00379"></a><span class="lineno">  379</span>&#160;    x_val, y_val, current_bp_level.<a class="code" href="structbeliefprop_1_1_bp_level_properties.html#a90eb9616e20b6f551e78f007a5a05c73">width_checkerboard_level_</a>, current_bp_level.<a class="code" href="structbeliefprop_1_1_bp_level_properties.html#a90975be50a85868c2843905f661c2d57">height_level_</a>))</div>
+<div class="line"><a name="l00380"></a><span class="lineno">  380</span>&#160;  {</div>
+<div class="line"><a name="l00381"></a><span class="lineno">  381</span>&#160;    beliefprop::RetrieveOutputDisparityPixel&lt;T, T, DISP_VALS&gt;(</div>
+<div class="line"><a name="l00382"></a><span class="lineno">  382</span>&#160;      x_val, y_val, current_bp_level,</div>
+<div class="line"><a name="l00383"></a><span class="lineno">  383</span>&#160;      data_cost_checkerboard_0, data_cost_checkerboard_1,</div>
+<div class="line"><a name="l00384"></a><span class="lineno">  384</span>&#160;      message_u_checkerboard_0, message_d_checkerboard_0,</div>
+<div class="line"><a name="l00385"></a><span class="lineno">  385</span>&#160;      message_l_checkerboard_0, message_r_checkerboard_0,</div>
+<div class="line"><a name="l00386"></a><span class="lineno">  386</span>&#160;      message_u_checkerboard_1, message_d_checkerboard_1,</div>
+<div class="line"><a name="l00387"></a><span class="lineno">  387</span>&#160;      message_l_checkerboard_1, message_r_checkerboard_1,</div>
+<div class="line"><a name="l00388"></a><span class="lineno">  388</span>&#160;      disparity_between_images_device, bp_settings_disp_vals);</div>
+<div class="line"><a name="l00389"></a><span class="lineno">  389</span>&#160;  }</div>
+<div class="line"><a name="l00390"></a><span class="lineno">  390</span>&#160;}</div>
+<div class="line"><a name="l00391"></a><span class="lineno">  391</span>&#160; </div>
+<div class="line"><a name="l00392"></a><span class="lineno">  392</span>&#160;};</div>
 <div class="ttc" id="a_kernel_bp_stereo_half_8cu_html"><div class="ttname"><a href="_kernel_bp_stereo_half_8cu.html">KernelBpStereoHalf.cu</a></div><div class="ttdoc">This file defines the template specialization to perform belief propagation using half precision for ...</div></div>
 <div class="ttc" id="a_shared_bp_processing_functs_8h_html"><div class="ttname"><a href="_shared_bp_processing_functs_8h.html">SharedBpProcessingFuncts.h</a></div><div class="ttdoc">Functions for belief propagation processing that are used in both optimized CPU and CUDA implementati...</div></div>
 <div class="ttc" id="anamespacebeliefprop__cuda_html"><div class="ttname"><a href="namespacebeliefprop__cuda.html">beliefprop_cuda</a></div><div class="ttdoc">Namespace to define global kernel functions for parallel belief propagation processing using CUDA.</div><div class="ttdef"><b>Definition:</b> <a href="_kernel_bp_stereo_8cu_source.html#l00048">KernelBpStereo.cu:48</a></div></div>
-<div class="ttc" id="anamespacebeliefprop__cuda_html_a27664210a6760cfc437104ae51e806c0"><div class="ttname"><a href="namespacebeliefprop__cuda.html#a27664210a6760cfc437104ae51e806c0">beliefprop_cuda::CopyMsgDataToNextLevel</a></div><div class="ttdeci">__global__ void CopyMsgDataToNextLevel(beliefprop::CheckerboardPart checkerboard_part, beliefprop::BpLevelProperties current_bp_level, beliefprop::BpLevelProperties next_bp_level, T *message_u_prev_checkerboard_0, T *message_d_prev_checkerboard_0, T *message_l_prev_checkerboard_0, T *message_r_prev_checkerboard_0, T *message_u_prev_checkerboard_1, T *message_d_prev_checkerboard_1, T *message_l_prev_checkerboard_1, T *message_r_prev_checkerboard_1, T *message_u_checkerboard_0, T *message_d_checkerboard_0, T *message_l_checkerboard_0, T *message_r_checkerboard_0, T *message_u_checkerboard_1, T *message_d_checkerboard_1, T *message_l_checkerboard_1, T *message_r_checkerboard_1, unsigned int bp_settings_disp_vals)</div><div class="ttdoc">Kernel to copy the computed BP message values at the current level to the corresponding locations at ...</div><div class="ttdef"><b>Definition:</b> <a href="_kernel_bp_stereo_8cu_source.html#l00316">KernelBpStereo.cu:316</a></div></div>
-<div class="ttc" id="anamespacebeliefprop__cuda_html_a316a4698e007f4722b4cc9bc4015c692"><div class="ttname"><a href="namespacebeliefprop__cuda.html#a316a4698e007f4722b4cc9bc4015c692">beliefprop_cuda::RunBPIterationUsingCheckerboardUpdates</a></div><div class="ttdeci">__global__ void RunBPIterationUsingCheckerboardUpdates(beliefprop::CheckerboardPart checkerboard_to_update, beliefprop::BpLevelProperties current_bp_level, T *data_cost_checkerboard_0, T *data_cost_checkerboard_1, T *message_u_checkerboard_0, T *message_d_checkerboard_0, T *message_l_checkerboard_0, T *message_r_checkerboard_0, T *message_u_checkerboard_1, T *message_d_checkerboard_1, T *message_l_checkerboard_1, T *message_r_checkerboard_1, float disc_k_bp, bool data_aligned, unsigned int bp_settings_disp_vals)</div><div class="ttdoc">Kernel function to run the current iteration of belief propagation in parallel using the checkerboard...</div><div class="ttdef"><b>Definition:</b> <a href="_kernel_bp_stereo_8cu_source.html#l00201">KernelBpStereo.cu:201</a></div></div>
-<div class="ttc" id="anamespacebeliefprop__cuda_html_a319e93b6f471e7c43afbff1c9506882f"><div class="ttname"><a href="namespacebeliefprop__cuda.html#a319e93b6f471e7c43afbff1c9506882f">beliefprop_cuda::InitializeMessageValsToDefaultKernel</a></div><div class="ttdeci">__global__ void InitializeMessageValsToDefaultKernel(beliefprop::BpLevelProperties current_bp_level, T *message_u_checkerboard_0, T *message_d_checkerboard_0, T *message_l_checkerboard_0, T *message_r_checkerboard_0, T *message_u_checkerboard_1, T *message_d_checkerboard_1, T *message_l_checkerboard_1, T *message_r_checkerboard_1, unsigned int bp_settings_disp_vals)</div><div class="ttdoc">Initialize the message values at each pixel of the current level to the default value.</div><div class="ttdef"><b>Definition:</b> <a href="_kernel_bp_stereo_8cu_source.html#l00149">KernelBpStereo.cu:149</a></div></div>
-<div class="ttc" id="anamespacebeliefprop__cuda_html_aa26f576e04e40f0a4f907772433d4ae0"><div class="ttname"><a href="namespacebeliefprop__cuda.html#aa26f576e04e40f0a4f907772433d4ae0">beliefprop_cuda::InitializeBottomLevelData</a></div><div class="ttdeci">__global__ void InitializeBottomLevelData(beliefprop::BpLevelProperties current_bp_level, float *image_1_pixels_device, float *image_2_pixels_device, T *data_cost_stereo_checkerboard_0, T *data_cost_stereo_checkerboard_1, float lambda_bp, float data_k_bp, unsigned int bp_settings_disp_vals)</div><div class="ttdoc">Initialize the &quot;data cost&quot; for each possible disparity between the two full-sized input images (&quot;bott...</div><div class="ttdef"><b>Definition:</b> <a href="_kernel_bp_stereo_8cu_source.html#l00069">KernelBpStereo.cu:69</a></div></div>
-<div class="ttc" id="anamespacebeliefprop__cuda_html_aad53fa3d6b6ffbd594170ca738f41515"><div class="ttname"><a href="namespacebeliefprop__cuda.html#aad53fa3d6b6ffbd594170ca738f41515">beliefprop_cuda::InitializeCurrentLevelData</a></div><div class="ttdeci">__global__ void InitializeCurrentLevelData(beliefprop::CheckerboardPart checkerboard_part, beliefprop::BpLevelProperties current_bp_level, beliefprop::BpLevelProperties prev_bp_level, T *data_cost_checkerboard_0, T *data_cost_checkerboard_1, T *data_cost_current_level, unsigned int offset_num, unsigned int bp_settings_disp_vals)</div><div class="ttdoc">Initialize the data costs at the &quot;next&quot; level up in the pyramid given that the data at the lower has ...</div><div class="ttdef"><b>Definition:</b> <a href="_kernel_bp_stereo_8cu_source.html#l00110">KernelBpStereo.cu:110</a></div></div>
-<div class="ttc" id="anamespacebeliefprop__cuda_html_afa30b0a712350ea00fbf2c2e12c245ce"><div class="ttname"><a href="namespacebeliefprop__cuda.html#afa30b0a712350ea00fbf2c2e12c245ce">beliefprop_cuda::RetrieveOutputDisparity</a></div><div class="ttdeci">__global__ void RetrieveOutputDisparity(beliefprop::BpLevelProperties current_bp_level, T *data_cost_checkerboard_0, T *data_cost_checkerboard_1, T *message_u_checkerboard_0, T *message_d_checkerboard_0, T *message_l_checkerboard_0, T *message_r_checkerboard_0, T *message_u_checkerboard_1, T *message_d_checkerboard_1, T *message_l_checkerboard_1, T *message_r_checkerboard_1, float *disparity_between_images_device, unsigned int bp_settings_disp_vals)</div><div class="ttdoc">Retrieve the best disparity estimate from image 1 to image 2 for each pixel in parallel.</div><div class="ttdef"><b>Definition:</b> <a href="_kernel_bp_stereo_8cu_source.html#l00372">KernelBpStereo.cu:372</a></div></div>
+<div class="ttc" id="anamespacebeliefprop__cuda_html_a27664210a6760cfc437104ae51e806c0"><div class="ttname"><a href="namespacebeliefprop__cuda.html#a27664210a6760cfc437104ae51e806c0">beliefprop_cuda::CopyMsgDataToNextLevel</a></div><div class="ttdeci">__global__ void CopyMsgDataToNextLevel(beliefprop::CheckerboardPart checkerboard_part, beliefprop::BpLevelProperties current_bp_level, beliefprop::BpLevelProperties next_bp_level, T *message_u_prev_checkerboard_0, T *message_d_prev_checkerboard_0, T *message_l_prev_checkerboard_0, T *message_r_prev_checkerboard_0, T *message_u_prev_checkerboard_1, T *message_d_prev_checkerboard_1, T *message_l_prev_checkerboard_1, T *message_r_prev_checkerboard_1, T *message_u_checkerboard_0, T *message_d_checkerboard_0, T *message_l_checkerboard_0, T *message_r_checkerboard_0, T *message_u_checkerboard_1, T *message_d_checkerboard_1, T *message_l_checkerboard_1, T *message_r_checkerboard_1, unsigned int bp_settings_disp_vals)</div><div class="ttdoc">Kernel to copy the computed BP message values at the current level to the corresponding locations at ...</div><div class="ttdef"><b>Definition:</b> <a href="_kernel_bp_stereo_8cu_source.html#l00310">KernelBpStereo.cu:310</a></div></div>
+<div class="ttc" id="anamespacebeliefprop__cuda_html_a316a4698e007f4722b4cc9bc4015c692"><div class="ttname"><a href="namespacebeliefprop__cuda.html#a316a4698e007f4722b4cc9bc4015c692">beliefprop_cuda::RunBPIterationUsingCheckerboardUpdates</a></div><div class="ttdeci">__global__ void RunBPIterationUsingCheckerboardUpdates(beliefprop::CheckerboardPart checkerboard_to_update, beliefprop::BpLevelProperties current_bp_level, T *data_cost_checkerboard_0, T *data_cost_checkerboard_1, T *message_u_checkerboard_0, T *message_d_checkerboard_0, T *message_l_checkerboard_0, T *message_r_checkerboard_0, T *message_u_checkerboard_1, T *message_d_checkerboard_1, T *message_l_checkerboard_1, T *message_r_checkerboard_1, float disc_k_bp, bool data_aligned, unsigned int bp_settings_disp_vals)</div><div class="ttdoc">Kernel function to run the current iteration of belief propagation in parallel using the checkerboard...</div><div class="ttdef"><b>Definition:</b> <a href="_kernel_bp_stereo_8cu_source.html#l00197">KernelBpStereo.cu:197</a></div></div>
+<div class="ttc" id="anamespacebeliefprop__cuda_html_a319e93b6f471e7c43afbff1c9506882f"><div class="ttname"><a href="namespacebeliefprop__cuda.html#a319e93b6f471e7c43afbff1c9506882f">beliefprop_cuda::InitializeMessageValsToDefaultKernel</a></div><div class="ttdeci">__global__ void InitializeMessageValsToDefaultKernel(beliefprop::BpLevelProperties current_bp_level, T *message_u_checkerboard_0, T *message_d_checkerboard_0, T *message_l_checkerboard_0, T *message_r_checkerboard_0, T *message_u_checkerboard_1, T *message_d_checkerboard_1, T *message_l_checkerboard_1, T *message_r_checkerboard_1, unsigned int bp_settings_disp_vals)</div><div class="ttdoc">Initialize the message values at each pixel of the current level to the default value.</div><div class="ttdef"><b>Definition:</b> <a href="_kernel_bp_stereo_8cu_source.html#l00146">KernelBpStereo.cu:146</a></div></div>
+<div class="ttc" id="anamespacebeliefprop__cuda_html_aa26f576e04e40f0a4f907772433d4ae0"><div class="ttname"><a href="namespacebeliefprop__cuda.html#aa26f576e04e40f0a4f907772433d4ae0">beliefprop_cuda::InitializeBottomLevelData</a></div><div class="ttdeci">__global__ void InitializeBottomLevelData(beliefprop::BpLevelProperties current_bp_level, float *image_1_pixels_device, float *image_2_pixels_device, T *data_cost_stereo_checkerboard_0, T *data_cost_stereo_checkerboard_1, float lambda_bp, float data_k_bp, unsigned int bp_settings_disp_vals)</div><div class="ttdoc">Initialize the &quot;data cost&quot; for each possible disparity between the two full-sized input images (&quot;bott...</div><div class="ttdef"><b>Definition:</b> <a href="_kernel_bp_stereo_8cu_source.html#l00068">KernelBpStereo.cu:68</a></div></div>
+<div class="ttc" id="anamespacebeliefprop__cuda_html_aad53fa3d6b6ffbd594170ca738f41515"><div class="ttname"><a href="namespacebeliefprop__cuda.html#aad53fa3d6b6ffbd594170ca738f41515">beliefprop_cuda::InitializeCurrentLevelData</a></div><div class="ttdeci">__global__ void InitializeCurrentLevelData(beliefprop::CheckerboardPart checkerboard_part, beliefprop::BpLevelProperties current_bp_level, beliefprop::BpLevelProperties prev_bp_level, T *data_cost_checkerboard_0, T *data_cost_checkerboard_1, T *data_cost_current_level, unsigned int offset_num, unsigned int bp_settings_disp_vals)</div><div class="ttdoc">Initialize the data costs at the &quot;next&quot; level up in the pyramid given that the data at the lower has ...</div><div class="ttdef"><b>Definition:</b> <a href="_kernel_bp_stereo_8cu_source.html#l00108">KernelBpStereo.cu:108</a></div></div>
+<div class="ttc" id="anamespacebeliefprop__cuda_html_afa30b0a712350ea00fbf2c2e12c245ce"><div class="ttname"><a href="namespacebeliefprop__cuda.html#afa30b0a712350ea00fbf2c2e12c245ce">beliefprop_cuda::RetrieveOutputDisparity</a></div><div class="ttdeci">__global__ void RetrieveOutputDisparity(beliefprop::BpLevelProperties current_bp_level, T *data_cost_checkerboard_0, T *data_cost_checkerboard_1, T *message_u_checkerboard_0, T *message_d_checkerboard_0, T *message_l_checkerboard_0, T *message_r_checkerboard_0, T *message_u_checkerboard_1, T *message_d_checkerboard_1, T *message_l_checkerboard_1, T *message_r_checkerboard_1, float *disparity_between_images_device, unsigned int bp_settings_disp_vals)</div><div class="ttdoc">Retrieve the best disparity estimate from image 1 to image 2 for each pixel in parallel.</div><div class="ttdef"><b>Definition:</b> <a href="_kernel_bp_stereo_8cu_source.html#l00365">KernelBpStereo.cu:365</a></div></div>
 <div class="ttc" id="anamespacebeliefprop_html_a85dcfe709b354b19752ea8ae432f5af5"><div class="ttname"><a href="namespacebeliefprop.html#a85dcfe709b354b19752ea8ae432f5af5">beliefprop::CheckerboardPart</a></div><div class="ttdeci">CheckerboardPart</div><div class="ttdoc">Define the two checkerboard &quot;parts&quot; that the image is divided into.</div><div class="ttdef"><b>Definition:</b> <a href="_bp_consts_enums_aliases_8h_source.html#l00041">BpConstsEnumsAliases.h:41</a></div></div>
 <div class="ttc" id="anamespacebeliefprop_html_aae2269b7359108e636eebcb74a557e7f"><div class="ttname"><a href="namespacebeliefprop.html#aae2269b7359108e636eebcb74a557e7f">beliefprop::WithinImageBounds</a></div><div class="ttdeci">ARCHITECTURE_ADDITION bool WithinImageBounds(unsigned int x_val, unsigned int y_val, unsigned int width, unsigned int height)</div><div class="ttdoc">Checks if the current point is within the image bounds Assumed that input x/y vals are above zero sin...</div><div class="ttdef"><b>Definition:</b> <a href="_shared_bp_util_functs_8h_source.html#l00052">SharedBpUtilFuncts.h:52</a></div></div>
 <div class="ttc" id="astructbeliefprop_1_1_bp_level_properties_html"><div class="ttname"><a href="structbeliefprop_1_1_bp_level_properties.html">beliefprop::BpLevelProperties</a></div><div class="ttdoc">POD struct to store bp level data. Struct can be passed to global CUDAs kernel so needs to take restr...</div><div class="ttdef"><b>Definition:</b> <a href="_bp_level_8h_source.html#l00042">BpLevel.h:42</a></div></div>

@@ -1,5 +1,5 @@
 <map id="RunImpOnInputBp::RunImpsAndCompare" name="RunImpOnInputBp::RunImpsAndCompare">
-<area shape="rect" id="node1" title="Run and compare output disparity maps using the given optimized and single&#45;threaded stereo implementa..." alt="" coords="5,191,211,233"/>
+<area shape="rect" id="node1" title="Run and compare output disparity maps using the given optimized and single&#45;threaded bp implementation..." alt="" coords="5,191,211,233"/>
 <area shape="rect" id="node2" href="$class_run_data.html#ae2642121388bb8f32b95eeeb498c7401" title="Add string data with header describing added data." alt="" coords="573,5,776,32"/>
 <area shape="rect" id="node3" href="$class_run_data.html#a938dd181b583b343480ad9294efff7fb" title="Append current RunData with input RunData." alt="" coords="309,107,475,133"/>
 <area shape="rect" id="node9" href="$class_bp_file_handling.html#ada8952d9e4fb33bc83ae2f763ab6bfb2" title="Return path to use for current output disparity and then increment (to support multiple computed outp..." alt="" coords="259,158,525,199"/>

@@ -13,8 +13,7 @@ Include dependency graph for Run\+Type\+Constraints.\+h\+:\nopagebreak
 \includegraphics[width=262pt]{_run_type_constraints_8h__incl}
 \end{center}
 \end{figure}
-This graph shows which files directly or indirectly include this file\+:
-\nopagebreak
+This graph shows which files directly or indirectly include this file\+:\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
@@ -24,7 +23,7 @@ This graph shows which files directly or indirectly include this file\+:
 \doxysubsection*{Variables}
 \begin{DoxyCompactItemize}
 \item 
-{\footnotesize template$<$typename T $>$ }\\concept \mbox{\hyperlink{_run_type_constraints_8h_a378c0f42f400de5ad6fffbe9f7626027}{Run\+Data\+\_\+ptr}} = std\+::is\+\_\+pointer\+\_\+v$<$T$>$ \&\& Run\+Data\+\_\+t$<$std\+::remove\+\_\+pointer\+\_\+t$<$T$>$$>$
+{\footnotesize template$<$typename T $>$ }\\concept \mbox{\hyperlink{_run_type_constraints_8h_a378c0f42f400de5ad6fffbe9f7626027}{Run\+Data\+\_\+ptr}}
 \end{DoxyCompactItemize}
 
 
@@ -45,9 +44,16 @@ Copyright (c) 2024
 \index{RunData\_ptr@{RunData\_ptr}!RunTypeConstraints.h@{RunTypeConstraints.h}}
 \doxysubsubsection{\texorpdfstring{RunData\_ptr}{RunData\_ptr}}
 {\footnotesize\ttfamily template$<$typename T $>$ \\
-concept Run\+Data\+\_\+ptr = std\+::is\+\_\+pointer\+\_\+v$<$T$>$ \&\& Run\+Data\+\_\+t$<$std\+::remove\+\_\+pointer\+\_\+t$<$T$>$$>$}
+concept Run\+Data\+\_\+ptr}
+
+{\bfseries Initial value\+:}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{=}
+\DoxyCodeLine{  std::is\_pointer\_v<T> \&\&}
+\DoxyCodeLine{  RunData\_t<std::remove\_pointer\_t<T>>}
+
+\end{DoxyCode}
 
 
-
-Definition at line 146 of file Run\+Type\+Constraints.\+h.
+Definition at line 237 of file Run\+Type\+Constraints.\+h.
 

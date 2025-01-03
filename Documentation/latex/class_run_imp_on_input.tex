@@ -35,7 +35,8 @@ virtual std\+::optional$<$ \mbox{\hyperlink{class_run_data}{Run\+Data}} $>$ \mbo
 \mbox{\hyperlink{class_run_data}{Run\+Data}} \mbox{\hyperlink{class_run_imp_on_input_a90b1b66d576a10fc4f5c4099e703a44e}{Input\+And\+Params\+Run\+Data}} (bool loop\+\_\+iters\+\_\+templated) const
 \begin{DoxyCompactList}\small\item\em Get current run inputs and parameters in \mbox{\hyperlink{class_run_data}{Run\+Data}} structure. \end{DoxyCompactList}\item 
 Mult\+Run\+Data\+::mapped\+\_\+type \mbox{\hyperlink{class_run_imp_on_input_ac81fc1fb17b7c4127972746d232b87ef}{Run\+Eval\+Benchmark}} (const \mbox{\hyperlink{structrun__environment_1_1_run_imp_settings}{run\+\_\+environment\+::\+Run\+Imp\+Settings}} \&run\+\_\+imp\+\_\+settings, bool run\+\_\+w\+\_\+loop\+\_\+iters\+\_\+templated) const
-\begin{DoxyCompactList}\small\item\em Run optimized and single threaded implementations using multiple sets of parallel parameters in optimized implementation if set to optimize parallel parameters Returns data from runs using default and optimized parallel parameters. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\begin{DoxyCompactList}\small\item\em Run optimized and single threaded implementations using multiple sets of parallel parameters in optimized implementation if set to optimize parallel parameters~\newline
+ Returns data from runs using default and optimized parallel parameters. \end{DoxyCompactList}\end{DoxyCompactItemize}
 
 
 \doxysubsection{Detailed Description}
@@ -55,7 +56,7 @@ Virtual class to run and evaluate implementation on a input specified by index n
 \end{DoxyTemplParams}
 
 
-Definition at line 52 of file Run\+Imp\+On\+Input.\+h.
+Definition at line 53 of file Run\+Imp\+On\+Input.\+h.
 
 
 
@@ -77,7 +78,7 @@ Retrieve input and parameters for run of current benchmark.
 \hline
 \end{DoxyParams}
 \begin{DoxyReturn}{Returns}
-\mbox{\hyperlink{class_run_data}{Run\+Data}} 
+\mbox{\hyperlink{class_run_data}{Run\+Data}} object with input data and parameter info about current benchmark 
 \end{DoxyReturn}
 
 
@@ -107,11 +108,11 @@ Get current run inputs and parameters in \mbox{\hyperlink{class_run_data}{Run\+D
 \hline
 \end{DoxyParams}
 \begin{DoxyReturn}{Returns}
-\mbox{\hyperlink{class_run_data}{Run\+Data}} 
+Current run inputs and parameters in \mbox{\hyperlink{class_run_data}{Run\+Data}} structure 
 \end{DoxyReturn}
 
 
-Definition at line 94 of file Run\+Imp\+On\+Input.\+h.
+Definition at line 99 of file Run\+Imp\+On\+Input.\+h.
 
 Here is the call graph for this function\+:\nopagebreak
 \begin{figure}[H]
@@ -140,7 +141,8 @@ Mult\+Run\+Data\+::mapped\+\_\+type \mbox{\hyperlink{class_run_imp_on_input}{Run
 
 
 
-Run optimized and single threaded implementations using multiple sets of parallel parameters in optimized implementation if set to optimize parallel parameters Returns data from runs using default and optimized parallel parameters. 
+Run optimized and single threaded implementations using multiple sets of parallel parameters in optimized implementation if set to optimize parallel parameters~\newline
+ Returns data from runs using default and optimized parallel parameters. 
 
 
 \begin{DoxyParams}{Parameters}
@@ -150,11 +152,11 @@ Run optimized and single threaded implementations using multiple sets of paralle
 \hline
 \end{DoxyParams}
 \begin{DoxyReturn}{Returns}
-Mult\+Run\+Data\+::mapped\+\_\+type 
+Run results from running and evaluating benchmark 
 \end{DoxyReturn}
 
 
-Definition at line 115 of file Run\+Imp\+On\+Input.\+h.
+Definition at line 120 of file Run\+Imp\+On\+Input.\+h.
 
 Here is the call graph for this function\+:\nopagebreak
 \begin{figure}[H]
@@ -184,7 +186,7 @@ Run one or two implementations of benchmark and compare results if running multi
 \hline
 \end{DoxyParams}
 \begin{DoxyReturn}{Returns}
-std\+::optional$<$\+Run\+Data$>$ 
+Restults of running and comparing implementations or null output if error in run 
 \end{DoxyReturn}
 
 
@@ -214,7 +216,7 @@ Set up parallel parameters for benchmark.
 \hline
 \end{DoxyParams}
 \begin{DoxyReturn}{Returns}
-std\+::shared\+\_\+ptr$<$\+Parallel\+Params$>$ 
+Shared pointer to parallel parameters as set up for run 
 \end{DoxyReturn}
 
 

@@ -17,7 +17,9 @@ Class defines input signature for evaluation run that contains evaluation set nu
 \mbox{\hyperlink{class_input_signature_aa98ce4cd19ff01ae7820255f167a7dbd}{Input\+Signature}} (std\+::optional$<$ unsigned int $>$ data\+\_\+type\+\_\+size, std\+::optional$<$ unsigned int $>$ eval\+\_\+set\+\_\+num, std\+::optional$<$ bool $>$ use\+\_\+templated\+\_\+loop\+\_\+iters)
 \begin{DoxyCompactList}\small\item\em Constructor to generate evaluation input signature from parameters corresponding to each part. \end{DoxyCompactList}\item 
 bool \mbox{\hyperlink{class_input_signature_ab7068c172488696c06dda2fc629ba663}{operator$<$}} (const \mbox{\hyperlink{class_input_signature}{Input\+Signature}} \&rhs) const
-\begin{DoxyCompactList}\small\item\em Less than operator for comparing evaluation input signatures so they can be ordered Operator needed to support ordering since input signature is used as std\+::map key and also for evaluation output order If any \mbox{\hyperlink{class_input_signature}{Input\+Signature}} member is \char`\"{}no value\char`\"{} that property is considered \char`\"{}any\char`\"{} and is ignored in the comparison. \end{DoxyCompactList}\item 
+\begin{DoxyCompactList}\small\item\em Less than operator for comparing evaluation input signatures so they can be ordered~\newline
+ Operator needed to support ordering since input signature is used as std\+::map key and also for evaluation output order~\newline
+ If any \mbox{\hyperlink{class_input_signature}{Input\+Signature}} member is \char`\"{}no value\char`\"{} that property is considered \char`\"{}any\char`\"{} and is ignored in the comparison. \end{DoxyCompactList}\item 
 bool \mbox{\hyperlink{class_input_signature_a4be7ab943ae1a76a160fda8b531aabb6}{operator==}} (const \mbox{\hyperlink{class_input_signature}{Input\+Signature}} \&rhs) const
 \begin{DoxyCompactList}\small\item\em Equality operator for comparing evaluation input signatures. \end{DoxyCompactList}\item 
 bool \mbox{\hyperlink{class_input_signature_aed356bb0df9d778d71cb383dab9cd8bf}{Equals\+Using\+Any}} (const \mbox{\hyperlink{class_input_signature}{Input\+Signature}} \&rhs) const
@@ -46,7 +48,7 @@ std\+::ostream \& \mbox{\hyperlink{class_input_signature_aa0f2219d09d758b6b6b0a2
 \doxysubsection{Detailed Description}
 Class defines input signature for evaluation run that contains evaluation set number, data type, and whether or not to use templated loop iteration count. 
 
-Definition at line 43 of file Input\+Signature.\+h.
+Definition at line 44 of file Input\+Signature.\+h.
 
 
 
@@ -104,7 +106,7 @@ Definition at line 53 of file Input\+Signature.\+cpp.
 
 
 
-Definition at line 100 of file Input\+Signature.\+h.
+Definition at line 102 of file Input\+Signature.\+h.
 
 \mbox{\Hypertarget{class_input_signature_aed356bb0df9d778d71cb383dab9cd8bf}\label{class_input_signature_aed356bb0df9d778d71cb383dab9cd8bf}} 
 \index{InputSignature@{InputSignature}!EqualsUsingAny@{EqualsUsingAny}}
@@ -122,9 +124,7 @@ Alternate \char`\"{}equal\char`\"{} operator where an attribute is considered \c
 \hline
 \end{DoxyParams}
 \begin{DoxyReturn}{Returns}
-true 
-
-false 
+true if current input signature is same as rhs input signature where an attribute is considered \char`\"{}equal\char`\"{} in cases where one side is \char`\"{}\+ANY\char`\"{} for the attribute 
 \end{DoxyReturn}
 
 
@@ -138,7 +138,7 @@ Definition at line 107 of file Input\+Signature.\+cpp.
 
 
 
-Definition at line 125 of file Input\+Signature.\+h.
+Definition at line 127 of file Input\+Signature.\+h.
 
 \mbox{\Hypertarget{class_input_signature_a5af9a3c2037dc34e8ae16a0721212740}\label{class_input_signature_a5af9a3c2037dc34e8ae16a0721212740}} 
 \index{InputSignature@{InputSignature}!EvalSetNumStr@{EvalSetNumStr}}
@@ -148,7 +148,7 @@ Definition at line 125 of file Input\+Signature.\+h.
 
 
 
-Definition at line 116 of file Input\+Signature.\+h.
+Definition at line 118 of file Input\+Signature.\+h.
 
 \mbox{\Hypertarget{class_input_signature_ab7068c172488696c06dda2fc629ba663}\label{class_input_signature_ab7068c172488696c06dda2fc629ba663}} 
 \index{InputSignature@{InputSignature}!operator$<$@{operator$<$}}
@@ -158,7 +158,9 @@ Definition at line 116 of file Input\+Signature.\+h.
 
 
 
-Less than operator for comparing evaluation input signatures so they can be ordered Operator needed to support ordering since input signature is used as std\+::map key and also for evaluation output order If any \mbox{\hyperlink{class_input_signature}{Input\+Signature}} member is \char`\"{}no value\char`\"{} that property is considered \char`\"{}any\char`\"{} and is ignored in the comparison. 
+Less than operator for comparing evaluation input signatures so they can be ordered~\newline
+ Operator needed to support ordering since input signature is used as std\+::map key and also for evaluation output order~\newline
+ If any \mbox{\hyperlink{class_input_signature}{Input\+Signature}} member is \char`\"{}no value\char`\"{} that property is considered \char`\"{}any\char`\"{} and is ignored in the comparison. 
 
 
 \begin{DoxyParams}{Parameters}
@@ -166,9 +168,7 @@ Less than operator for comparing evaluation input signatures so they can be orde
 \hline
 \end{DoxyParams}
 \begin{DoxyReturn}{Returns}
-true 
-
-false 
+true if current input signature is less than rhs input signature, false otherwise 
 \end{DoxyReturn}
 
 
@@ -190,9 +190,7 @@ Equality operator for comparing evaluation input signatures.
 \hline
 \end{DoxyParams}
 \begin{DoxyReturn}{Returns}
-true 
-
-false 
+true if current input signature is same as rhs input signature, false otherwise 
 \end{DoxyReturn}
 
 
@@ -210,7 +208,7 @@ Remove data type setting and change it to \char`\"{}any\char`\"{}.
 
 
 
-Definition at line 153 of file Input\+Signature.\+h.
+Definition at line 155 of file Input\+Signature.\+h.
 
 \mbox{\Hypertarget{class_input_signature_a3a007aac5945d55c4cc95b7a3863032d}\label{class_input_signature_a3a007aac5945d55c4cc95b7a3863032d}} 
 \index{InputSignature@{InputSignature}!RemoveTemplatedLoopIterSetting@{RemoveTemplatedLoopIterSetting}}
@@ -224,7 +222,7 @@ Remove templated loop iter setting and change it to \char`\"{}any\char`\"{}.
 
 
 
-Definition at line 146 of file Input\+Signature.\+h.
+Definition at line 148 of file Input\+Signature.\+h.
 
 \mbox{\Hypertarget{class_input_signature_a76db85485e63fb4d4cf54ecc6d7d1054}\label{class_input_signature_a76db85485e63fb4d4cf54ecc6d7d1054}} 
 \index{InputSignature@{InputSignature}!TemplatedLoopIters@{TemplatedLoopIters}}
@@ -234,7 +232,7 @@ Definition at line 146 of file Input\+Signature.\+h.
 
 
 
-Definition at line 157 of file Input\+Signature.\+h.
+Definition at line 159 of file Input\+Signature.\+h.
 
 \mbox{\Hypertarget{class_input_signature_a4af40056d43ffd5c0bcb4fb03e395856}\label{class_input_signature_a4af40056d43ffd5c0bcb4fb03e395856}} 
 \index{InputSignature@{InputSignature}!UseTemplatedLoopItersStr@{UseTemplatedLoopItersStr}}
@@ -244,7 +242,7 @@ Definition at line 157 of file Input\+Signature.\+h.
 
 
 
-Definition at line 134 of file Input\+Signature.\+h.
+Definition at line 136 of file Input\+Signature.\+h.
 
 
 
@@ -267,11 +265,11 @@ Overloaded $<$$<$ operator to write \mbox{\hyperlink{class_input_signature}{Inpu
 \hline
 \end{DoxyParams}
 \begin{DoxyReturn}{Returns}
-std\+::ostream\& 
+Output stream with \mbox{\hyperlink{class_input_signature}{Input\+Signature}} object written to it 
 \end{DoxyReturn}
 
 
-Definition at line 177 of file Input\+Signature.\+h.
+Definition at line 181 of file Input\+Signature.\+h.
 
 
 

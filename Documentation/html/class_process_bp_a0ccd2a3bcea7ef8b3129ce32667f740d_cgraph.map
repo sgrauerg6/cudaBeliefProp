@@ -1,5 +1,5 @@
 <map id="ProcessBp::operator()" name="ProcessBp::operator()">
-<area shape="rect" id="node1" title="Run the belief propagation algorithm with on a set of stereo images to generate a disparity map input..." alt="" coords="5,56,168,83"/>
+<area shape="rect" id="node1" title="Run belief propagation implementation with on a set of stereo images to generate a disparity map...." alt="" coords="5,56,168,83"/>
 <area shape="rect" id="node2" href="$class_detailed_timings.html#ade899fc5c569139d6109f5c2bd0727b8" title="Add timing by segment index." alt="" coords="228,5,435,32"/>
 <area shape="rect" id="node3" href="$class_detailed_timings.html#a158238eb5d20564311ed04423769d542" title="Get median timing for a specified segment that may have been run multiple times." alt="" coords="216,56,447,83"/>
 <area shape="rect" id="node4" href="$namespacebeliefprop__cpu.html#aefc3512e6ee1730e923a897554504685" title=" " alt="" coords="241,107,422,149"/>

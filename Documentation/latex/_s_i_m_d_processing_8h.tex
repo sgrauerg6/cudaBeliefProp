@@ -13,16 +13,14 @@ Contains general functions for processing using SIMD vector data types on CPU.
 {\ttfamily \#include \char`\"{}Run\+Imp\+CPU/\+Run\+CPUSettings.\+h\char`\"{}}\newline
 {\ttfamily \#include \char`\"{}AVXTemplate\+Sp\+Functs.\+h\char`\"{}}\newline
 {\ttfamily \#include \char`\"{}AVX256\+Template\+Sp\+Functs.\+h\char`\"{}}\newline
-Include dependency graph for SIMDProcessing.\+h\+:
-\nopagebreak
+Include dependency graph for SIMDProcessing.\+h\+:\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
 \includegraphics[width=350pt]{_s_i_m_d_processing_8h__incl}
 \end{center}
 \end{figure}
-This graph shows which files directly or indirectly include this file\+:
-\nopagebreak
+This graph shows which files directly or indirectly include this file\+:\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
@@ -33,30 +31,39 @@ This graph shows which files directly or indirectly include this file\+:
 \begin{DoxyCompactItemize}
 \item 
  \mbox{\hyperlink{namespacesimd__processing}{simd\+\_\+processing}}
-\begin{DoxyCompactList}\small\item\em General functions for processing using SIMD vector data types on CPU. Template specializations must be defined to support specific SIMD vector data types. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\begin{DoxyCompactList}\small\item\em General functions for processing using SIMD vector data types on CPU.~\newline
+ Template specializations must be defined to support specific SIMD vector data types. \end{DoxyCompactList}\end{DoxyCompactItemize}
 \doxysubsection*{Functions}
 \begin{DoxyCompactItemize}
 \item 
 {\footnotesize template$<$Run\+Data\+\_\+t T, Run\+Data\+Vect\+\_\+t U$>$ }\\U \mbox{\hyperlink{namespacesimd__processing_a2a7614fa42374dccf3f0e815115f8fcb}{simd\+\_\+processing\+::\+Load\+Packed\+Data\+Aligned}} (unsigned int x, unsigned int y, unsigned int current\+\_\+disparity, const \mbox{\hyperlink{structbeliefprop_1_1_bp_level_properties}{beliefprop\+::\+Bp\+Level\+Properties}} \&current\+\_\+bp\+\_\+level, unsigned int num\+Disp\+Vals, const T $\ast$in\+Data)
-\begin{DoxyCompactList}\small\item\em Load multiple values of primitive type data from in\+Data array to SIMD vector data type in\+Data array must be aligned according to the rules of the specified SIMD type to use this operation. \end{DoxyCompactList}\item 
+\begin{DoxyCompactList}\small\item\em Load multiple values of primitive type data from in\+Data array to SIMD vector data type~\newline
+ in\+Data array must be aligned according to the rules of the specified SIMD type to use this operation. \end{DoxyCompactList}\item 
 {\footnotesize template$<$Run\+Data\+\_\+t T, Run\+Data\+Vect\+\_\+t U$>$ }\\U \mbox{\hyperlink{namespacesimd__processing_af79c7bdf81e24885bf49ab31e02006b2}{simd\+\_\+processing\+::\+Load\+Packed\+Data\+Unaligned}} (unsigned int x, unsigned int y, unsigned int current\+\_\+disparity, const \mbox{\hyperlink{structbeliefprop_1_1_bp_level_properties}{beliefprop\+::\+Bp\+Level\+Properties}} \&current\+\_\+bp\+\_\+level, unsigned int num\+Disp\+Vals, const T $\ast$in\+Data)
-\begin{DoxyCompactList}\small\item\em Load multiple values of primitive type data from in\+Data array to SIMD vector data type in\+Data array does not need to be aligned to use this operation. \end{DoxyCompactList}\item 
+\begin{DoxyCompactList}\small\item\em Load multiple values of primitive type data from in\+Data array to SIMD vector data type~\newline
+ in\+Data array does not need to be aligned to use this operation. \end{DoxyCompactList}\item 
 {\footnotesize template$<$Run\+Data\+Vect\+\_\+t T$>$ }\\T \mbox{\hyperlink{namespacesimd__processing_aaeec19fe6218fdfb2678e2d59533c30f}{simd\+\_\+processing\+::create\+SIMDVector\+Same\+Data}} (float data)
 \begin{DoxyCompactList}\small\item\em Create a SIMD vector of the specified type with all elements containing the same data. \end{DoxyCompactList}\item 
 {\footnotesize template$<$Run\+Data\+Sing\+Or\+Vect\+\_\+t T, Run\+Data\+Sing\+Or\+Vect\+\_\+t U, Run\+Data\+Sing\+Or\+Vect\+\_\+t V$>$ }\\V \mbox{\hyperlink{namespacesimd__processing_aaadbdc6359524dd0a41eb8864dfde8d0}{simd\+\_\+processing\+::\+Add\+Vals}} (const T \&val1, const U \&val2)
-\begin{DoxyCompactList}\small\item\em Add values of specified types and return sum as specified type Define template specialization to support addition of specific SIMD vector types. \end{DoxyCompactList}\item 
+\begin{DoxyCompactList}\small\item\em Add values of specified types and return sum as specified type~\newline
+ Define template specialization to support addition of specific SIMD vector types. \end{DoxyCompactList}\item 
 {\footnotesize template$<$Run\+Data\+Sing\+Or\+Vect\+\_\+t T, Run\+Data\+Sing\+Or\+Vect\+\_\+t U, Run\+Data\+Sing\+Or\+Vect\+\_\+t V$>$ }\\V \mbox{\hyperlink{namespacesimd__processing_a2be0ec2bf47c15b1307a1aab891bb445}{simd\+\_\+processing\+::\+Subtract\+Vals}} (const T \&val1, const U \&val2)
 \begin{DoxyCompactList}\small\item\em Subtract values of specified types and return difference as specified type Define template specialization to support subtraction of specific SIMD vector types. \end{DoxyCompactList}\item 
 {\footnotesize template$<$Run\+Data\+Sing\+Or\+Vect\+\_\+t T, Run\+Data\+Sing\+Or\+Vect\+\_\+t U, Run\+Data\+Sing\+Or\+Vect\+\_\+t V$>$ }\\V \mbox{\hyperlink{namespacesimd__processing_ad2142f4d30db099e1744b7a1ed37169e}{simd\+\_\+processing\+::divide\+Vals}} (const T \&val1, const U \&val2)
-\begin{DoxyCompactList}\small\item\em Divide values of specified types and return quotient as specified type Define template specialization to support division of specific SIMD vector types. \end{DoxyCompactList}\item 
+\begin{DoxyCompactList}\small\item\em Divide values of specified types and return quotient as specified type~\newline
+ Define template specialization to support division of specific SIMD vector types. \end{DoxyCompactList}\item 
 {\footnotesize template$<$Run\+Data\+Sing\+Or\+Vect\+\_\+t T, Run\+Data\+Sing\+Or\+Vect\+\_\+t V$>$ }\\T \mbox{\hyperlink{namespacesimd__processing_a1ca0c29fac8564f0cfa8f53360c8d7a8}{simd\+\_\+processing\+::\+Convert\+Val\+To\+Datatype}} (V val)
-\begin{DoxyCompactList}\small\item\em Convert value of specified type to value of another specified type Define template specialization to support conversion between specific types for SIMD vector processing. \end{DoxyCompactList}\item 
+\begin{DoxyCompactList}\small\item\em Convert value of specified type to value of another specified type~\newline
+ Define template specialization to support conversion between specific types for SIMD vector processing. \end{DoxyCompactList}\item 
 {\footnotesize template$<$Run\+Data\+Sing\+Or\+Vect\+\_\+t T$>$ }\\T \mbox{\hyperlink{namespacesimd__processing_a835d8005e2daedbff1af05b4f07c165f}{simd\+\_\+processing\+::\+Get\+Min\+By\+Element}} (const T \&val1, const T \&val2)
-\begin{DoxyCompactList}\small\item\em Get element-\/wise minimum of two inputs which may be of a SIMD vector type where corresponding values within the SIMD vector are compared Define template specialization to support function for specific vector type. \end{DoxyCompactList}\item 
+\begin{DoxyCompactList}\small\item\em Get element-\/wise minimum of two inputs which may be of a SIMD vector type where corresponding values within the SIMD vector are compared~\newline
+ Define template specialization to support function for specific vector type. \end{DoxyCompactList}\item 
 {\footnotesize template$<$Run\+Data\+\_\+t T, Run\+Data\+Vect\+Process\+\_\+t U$>$ }\\void \mbox{\hyperlink{namespacesimd__processing_a0a16d366a1b61fee56c90f376633e995}{simd\+\_\+processing\+::\+Store\+Packed\+Data\+Aligned}} (unsigned int index\+Data\+Store, T $\ast$location\+Data\+Store, const U \&data\+To\+Store)
-\begin{DoxyCompactList}\small\item\em Write data in SIMD vector (or single element) to specified location in array Array that data is written to must be aligned according to the rules of the specified SIMD type to use this operation. \end{DoxyCompactList}\item 
+\begin{DoxyCompactList}\small\item\em Write data in SIMD vector (or single element) to specified location in array~\newline
+ Array that data is written to must be aligned according to the rules of the specified SIMD type to use this operation. \end{DoxyCompactList}\item 
 {\footnotesize template$<$Run\+Data\+\_\+t T, Run\+Data\+Vect\+Process\+\_\+t U$>$ }\\void \mbox{\hyperlink{namespacesimd__processing_a0811351baf30e0e88704b3cc8ef6df1a}{simd\+\_\+processing\+::\+Store\+Packed\+Data\+Unaligned}} (unsigned int index\+Data\+Store, T $\ast$location\+Data\+Store, const U \&data\+To\+Store)
-\begin{DoxyCompactList}\small\item\em Write data in SIMD vector (or single element) to specified location in array Array that data is written does not need to be aligned to use this operation. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\begin{DoxyCompactList}\small\item\em Write data in SIMD vector (or single element) to specified location in array~\newline
+ Array that data is written does not need to be aligned to use this operation. \end{DoxyCompactList}\end{DoxyCompactItemize}
 
 
 \doxysubsection{Detailed Description}

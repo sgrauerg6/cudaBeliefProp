@@ -3,7 +3,7 @@ var searchData=
   ['check_5fbound_79',['check_bound',['../namespacebp__single__thread__imp.html#a27e1461a190dbec530433270ca35822f',1,'bp_single_thread_imp']]],
   ['checkerboardmessages_80',['CheckerboardMessages',['../namespacebeliefprop.html#acef942066296774fdf5d9839ac48abfd',1,'beliefprop']]],
   ['checkerboardpart_81',['CheckerboardPart',['../namespacebeliefprop.html#a85dcfe709b354b19752ea8ae432f5af5',1,'beliefprop']]],
-  ['checkerboardwidthtargetdevice_82',['CheckerboardWidthTargetDevice',['../class_bp_level.html#aa08d95e4ce0647439a38bee59cf68306',1,'BpLevel']]],
+  ['checkerboardwidth_82',['CheckerboardWidth',['../class_bp_level.html#a8d11a0cb014c1839d2590ecc6017dbc6',1,'BpLevel']]],
   ['convertunsignedintimagetofloat_83',['convertUnsignedIntImageToFloat',['../namespacebeliefprop__cuda.html#a7b60234dbc9be14aad8591e3a6a9bce0',1,'beliefprop_cuda::convertUnsignedIntImageToFloat(const unsigned int *uint_image_pixels, float *float_image_pixels, unsigned int width_images, unsigned int height_images)'],['../namespacebeliefprop__cuda.html#ac53d5d96410244e46aa762ef124a2ab8',1,'beliefprop_cuda::convertUnsignedIntImageToFloat(unsigned int *uint_image_pixels, float *float_image_pixels, unsigned int width_images, unsigned int height_images)']]],
   ['convertvaltodatatype_84',['ConvertValToDatatype',['../namespacesimd__processing.html#a1ca0c29fac8564f0cfa8f53360c8d7a8',1,'simd_processing']]],
   ['convertvaltodifferentdatatypeifneeded_85',['ConvertValToDifferentDataTypeIfNeeded',['../namespaceutil__functs.html#a6a1aba89f14c521198e0f8a0640f7e00',1,'util_functs']]],

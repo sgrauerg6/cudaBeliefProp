@@ -1,6 +1,6 @@
 <map id="run_environment::GetBytesAlignMemory" name="run_environment::GetBytesAlignMemory">
 <area shape="rect" id="node1" title=" " alt="" coords="276,64,477,105"/>
 <area shape="rect" id="node2" href="$class_memory_management.html#a46cf20a44494da312f5872d62c53a2db" title=" " alt="" coords="5,5,228,47"/>
-<area shape="rect" id="node3" href="$class_bp_level.html#a369e556671f9e44ece9761086e4ccde4" title=" " alt="" coords="49,71,184,98"/>
+<area shape="rect" id="node3" href="$class_bp_level.html#a369e556671f9e44ece9761086e4ccde4" title="Construct a new BpLevel object with specified height/wdith, offset into data/message arrays,..." alt="" coords="49,71,184,98"/>
 <area shape="rect" id="node4" href="$namespacerun__environment.html#a9639034960aa9cbd5836e5320f1a2a35" title="Generate RunData object that contains description header with corresponding value for each run settin..." alt="" coords="7,122,226,149"/>
 </map>

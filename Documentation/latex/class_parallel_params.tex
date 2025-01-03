@@ -2,7 +2,8 @@
 \label{class_parallel_params}\index{ParallelParams@{ParallelParams}}
 
 
-Abstract class for holding and processing parallelization parameters. Child class(es) specific to implementation(s) must be defined.  
+Abstract class for holding and processing parallelization parameters.~\newline
+ Child class(es) specific to implementation(s) must be defined.  
 
 
 
@@ -11,7 +12,8 @@ Abstract class for holding and processing parallelization parameters. Child clas
 
 
 
-Inheritance diagram for Parallel\+Params\+:\nopagebreak
+Inheritance diagram for Parallel\+Params\+:
+\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
@@ -34,9 +36,10 @@ virtual std\+::array$<$ unsigned int, 2 $>$ \mbox{\hyperlink{class_parallel_para
 
 
 \doxysubsection{Detailed Description}
-Abstract class for holding and processing parallelization parameters. Child class(es) specific to implementation(s) must be defined. 
+Abstract class for holding and processing parallelization parameters.~\newline
+ Child class(es) specific to implementation(s) must be defined. 
 
-Definition at line 38 of file Parallel\+Params.\+h.
+Definition at line 39 of file Parallel\+Params.\+h.
 
 
 
@@ -73,7 +76,7 @@ Implemented in \mbox{\hyperlink{class_parallel_params_bp_a05aaeeee3a08d2228074e6
 Retrieve current parallel parameters as \mbox{\hyperlink{class_run_data}{Run\+Data}} type. 
 
 \begin{DoxyReturn}{Returns}
-\mbox{\hyperlink{class_run_data}{Run\+Data}} 
+Current parallel parameters data 
 \end{DoxyReturn}
 
 
@@ -95,7 +98,7 @@ Get optimized parallel parameters for parallel processing kernel for kernel that
 \hline
 \end{DoxyParams}
 \begin{DoxyReturn}{Returns}
-std\+::array$<$unsigned int, 2$>$ 
+Optimized parallel parameters for indexed kernel 
 \end{DoxyReturn}
 
 

@@ -109,7 +109,7 @@ Collaboration diagram for ProcessBpCUDA&lt; T, DISP_VALS, ACCELERATION &gt;:</di
 <map name="a_process_bp_c_u_d_a_3_01_t_00_01_d_i_s_p___v_a_l_s_00_01_a_c_c_e_l_e_r_a_t_i_o_n_01_4_coll__map" id="a_process_bp_c_u_d_a_3_01_t_00_01_d_i_s_p___v_a_l_s_00_01_a_c_c_e_l_e_r_a_t_i_o_n_01_4_coll__map">
 <area shape="rect" title="Child class of ProcessBp that define functions used in processing bp in the CUDA implementation." alt="" coords="5,185,193,227"/>
 <area shape="rect" href="class_process_bp.html" title="Abstract class to run belief propagation on target device. Some of the class functions need to be ove..." alt="" coords="8,95,191,136"/>
-<area shape="rect" href="class_parallel_params.html" title="Abstract class for holding and processing parallelization parameters. Child class(es) specific to imp..." alt="" coords="40,5,159,32"/>
+<area shape="rect" href="class_parallel_params.html" title="Abstract class for holding and processing parallelization parameters. &#160;Child class(es) specific to im..." alt="" coords="40,5,159,32"/>
 </map>
 <center><span class="legend">[<a target="top" href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
@@ -121,7 +121,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a222abd86e8786a73f62056d9337f2a54 inherit pub_methods_class_process_bp"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_process_bp.html#a222abd86e8786a73f62056d9337f2a54">ProcessBp</a> (const <a class="el" href="class_parallel_params.html">ParallelParams</a> &amp;parallel_params)</td></tr>
 <tr class="separator:a222abd86e8786a73f62056d9337f2a54 inherit pub_methods_class_process_bp"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0ccd2a3bcea7ef8b3129ce32667f740d inherit pub_methods_class_process_bp"><td class="memItemLeft" align="right" valign="top">std::optional&lt; std::pair&lt; float *, <a class="el" href="class_detailed_timings.html">DetailedTimings</a>&lt; <a class="el" href="namespacebeliefprop.html#aec799311905a37226da8b05f8375d951">beliefprop::Runtime_Type</a> &gt; &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_process_bp.html#a0ccd2a3bcea7ef8b3129ce32667f740d">operator()</a> (const std::array&lt; float *, 2 &gt; &amp;images_target_device, const <a class="el" href="structbeliefprop_1_1_bp_settings.html">beliefprop::BpSettings</a> &amp;alg_settings, const std::array&lt; unsigned int, 2 &gt; &amp;width_height_images, T *allocated_mem_bp_processing, T *allocated_memory, const std::unique_ptr&lt; <a class="el" href="class_memory_management.html">MemoryManagement</a>&lt; T &gt;&gt; &amp;mem_management_bp_run) const</td></tr>
-<tr class="memdesc:a0ccd2a3bcea7ef8b3129ce32667f740d inherit pub_methods_class_process_bp"><td class="mdescLeft">&#160;</td><td class="mdescRight">Run the belief propagation algorithm with on a set of stereo images to generate a disparity map input is images image1Pixels and image1Pixels output is resultingDisparityMap.  <a href="class_process_bp.html#a0ccd2a3bcea7ef8b3129ce32667f740d">More...</a><br /></td></tr>
+<tr class="memdesc:a0ccd2a3bcea7ef8b3129ce32667f740d inherit pub_methods_class_process_bp"><td class="mdescLeft">&#160;</td><td class="mdescRight">Run belief propagation implementation with on a set of stereo images to generate a disparity map.<br  />
+ Input is images image1Pixels and image1Pixels<br  />
+ Output is resultingDisparityMap.  <a href="class_process_bp.html#a0ccd2a3bcea7ef8b3129ce32667f740d">More...</a><br /></td></tr>
 <tr class="separator:a0ccd2a3bcea7ef8b3129ce32667f740d inherit pub_methods_class_process_bp"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="inherited"></a>

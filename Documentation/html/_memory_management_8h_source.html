@@ -111,70 +111,70 @@ $(document).ready(function(){initNavTree('_memory_management_8h_source.html','')
 <div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="_run_settings_8h.html">RunSettingsParams/RunSettings.h</a>&quot;</span></div>
 <div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="_run_type_constraints_8h.html">RunEval/RunTypeConstraints.h</a>&quot;</span></div>
 <div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160; </div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;<span class="keyword">template</span> &lt;RunData_t T&gt;</div>
-<div class="line"><a name="l00044"></a><span class="lineno"><a class="line" href="class_memory_management.html">   44</a></span>&#160;<span class="keyword">class </span><a class="code" href="class_memory_management.html">MemoryManagement</a></div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;{</div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;<span class="keyword">public</span>:</div>
-<div class="line"><a name="l00047"></a><span class="lineno"><a class="line" href="class_memory_management.html#a6aa75de1d5a7749a8cce7f4378a98d3c">   47</a></span>&#160;  <span class="keyword">virtual</span> T* <a class="code" href="class_memory_management.html#a6aa75de1d5a7749a8cce7f4378a98d3c">AllocateMemoryOnDevice</a>(std::size_t numData)<span class="keyword"> const </span>{</div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;    <span class="keywordflow">return</span> (<span class="keyword">new</span> T[numData]);</div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;  }</div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160; </div>
-<div class="line"><a name="l00051"></a><span class="lineno"><a class="line" href="class_memory_management.html#ae5421bee769043e15b28e339a2589f62">   51</a></span>&#160;  <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="class_memory_management.html#ae5421bee769043e15b28e339a2589f62">FreeMemoryOnDevice</a>(T* array_to_free)<span class="keyword"> const </span>{</div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;    <span class="keyword">delete</span> [] array_to_free;</div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;  }</div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160; </div>
-<div class="line"><a name="l00055"></a><span class="lineno"><a class="line" href="class_memory_management.html#a46cf20a44494da312f5872d62c53a2db">   55</a></span>&#160;  <span class="keyword">virtual</span> T* <a class="code" href="class_memory_management.html#a46cf20a44494da312f5872d62c53a2db">AllocateAlignedMemoryOnDevice</a>(</div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;    std::size_t numData,</div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;    <a class="code" href="namespacerun__environment.html#a2cd0a9de3e0ce6e4d99b35b89befb8bb">run_environment::AccSetting</a> acc_setting)<span class="keyword"> const</span></div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;<span class="keyword">  </span>{</div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;<span class="preprocessor">#ifdef _WIN32</span></div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;    T* memoryData = <span class="keyword">static_cast&lt;</span>T*<span class="keyword">&gt;</span>(_aligned_malloc(</div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;      numData * <span class="keyword">sizeof</span>(T), <a class="code" href="namespacerun__environment.html#ac68b9fea12a8756652bce761d7a0cdda">run_environment::GetBytesAlignMemory</a>(acc_setting)));</div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;    <span class="keywordflow">return</span> memoryData;</div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;<span class="preprocessor">#else</span></div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;    T* memoryData = <span class="keyword">static_cast&lt;</span>T*<span class="keyword">&gt;</span>(std::aligned_alloc(</div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;      <a class="code" href="namespacerun__environment.html#ac68b9fea12a8756652bce761d7a0cdda">run_environment::GetBytesAlignMemory</a>(acc_setting), numData * <span class="keyword">sizeof</span>(T)));</div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;    <span class="keywordflow">return</span> memoryData;</div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;<span class="preprocessor">#endif</span></div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;  }</div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160; </div>
-<div class="line"><a name="l00070"></a><span class="lineno"><a class="line" href="class_memory_management.html#aec50b4bb3048839df9efacb032947036">   70</a></span>&#160;  <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="class_memory_management.html#aec50b4bb3048839df9efacb032947036">FreeAlignedMemoryOnDevice</a>(T* memory_to_free)<span class="keyword"> const</span></div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;<span class="keyword">  </span>{</div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;<span class="preprocessor">#ifdef _WIN32</span></div>
-<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;    _aligned_free(memory_to_free);</div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;<span class="preprocessor">#else</span></div>
-<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;    free(memory_to_free);</div>
-<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;<span class="preprocessor">#endif</span></div>
-<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;  }</div>
-<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160; </div>
-<div class="line"><a name="l00079"></a><span class="lineno"><a class="line" href="class_memory_management.html#aab09c0b137fc68646ffe341b383d65fb">   79</a></span>&#160;  <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="class_memory_management.html#aab09c0b137fc68646ffe341b383d65fb">TransferDataFromDeviceToHost</a>(</div>
-<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;    T* dest_array,</div>
-<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;    <span class="keyword">const</span> T* in_array,</div>
-<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;    std::size_t num_data_transfer)<span class="keyword"> const</span></div>
-<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;<span class="keyword">  </span>{</div>
-<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;    std::ranges::copy(in_array, in_array + num_data_transfer, dest_array);</div>
-<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;  }</div>
-<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160; </div>
-<div class="line"><a name="l00087"></a><span class="lineno"><a class="line" href="class_memory_management.html#a826115cf54e69b4727133c9b61584018">   87</a></span>&#160;  <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="class_memory_management.html#a826115cf54e69b4727133c9b61584018">TransferDataFromHostToDevice</a>(</div>
-<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;    T* dest_array,</div>
-<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;    <span class="keyword">const</span> T* in_array,</div>
-<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;    std::size_t num_data_transfer)<span class="keyword"> const</span></div>
-<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;<span class="keyword">  </span>{</div>
-<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;    std::ranges::copy(in_array, in_array + num_data_transfer, dest_array);</div>
-<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;  }</div>
-<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;};</div>
-<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160; </div>
-<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;<span class="preprocessor">#endif </span><span class="comment">//MEMORY_MANAGEMENT_H_</span></div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;<span class="keyword">template</span> &lt;RunData_t T&gt;</div>
+<div class="line"><a name="l00046"></a><span class="lineno"><a class="line" href="class_memory_management.html">   46</a></span>&#160;<span class="keyword">class </span><a class="code" href="class_memory_management.html">MemoryManagement</a></div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;{</div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;<span class="keyword">public</span>:</div>
+<div class="line"><a name="l00049"></a><span class="lineno"><a class="line" href="class_memory_management.html#a6aa75de1d5a7749a8cce7f4378a98d3c">   49</a></span>&#160;  <span class="keyword">virtual</span> T* <a class="code" href="class_memory_management.html#a6aa75de1d5a7749a8cce7f4378a98d3c">AllocateMemoryOnDevice</a>(std::size_t numData)<span class="keyword"> const </span>{</div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;    <span class="keywordflow">return</span> (<span class="keyword">new</span> T[numData]);</div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;  }</div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160; </div>
+<div class="line"><a name="l00053"></a><span class="lineno"><a class="line" href="class_memory_management.html#ae5421bee769043e15b28e339a2589f62">   53</a></span>&#160;  <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="class_memory_management.html#ae5421bee769043e15b28e339a2589f62">FreeMemoryOnDevice</a>(T* array_to_free)<span class="keyword"> const </span>{</div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;    <span class="keyword">delete</span> [] array_to_free;</div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;  }</div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160; </div>
+<div class="line"><a name="l00057"></a><span class="lineno"><a class="line" href="class_memory_management.html#a46cf20a44494da312f5872d62c53a2db">   57</a></span>&#160;  <span class="keyword">virtual</span> T* <a class="code" href="class_memory_management.html#a46cf20a44494da312f5872d62c53a2db">AllocateAlignedMemoryOnDevice</a>(</div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;    std::size_t numData,</div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;    <a class="code" href="namespacerun__environment.html#a2cd0a9de3e0ce6e4d99b35b89befb8bb">run_environment::AccSetting</a> acc_setting)<span class="keyword"> const</span></div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;<span class="keyword">  </span>{</div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;<span class="preprocessor">#ifdef _WIN32</span></div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;    T* memoryData = <span class="keyword">static_cast&lt;</span>T*<span class="keyword">&gt;</span>(_aligned_malloc(</div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;      numData * <span class="keyword">sizeof</span>(T), <a class="code" href="namespacerun__environment.html#ac68b9fea12a8756652bce761d7a0cdda">run_environment::GetBytesAlignMemory</a>(acc_setting)));</div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;    <span class="keywordflow">return</span> memoryData;</div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;<span class="preprocessor">#else</span></div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;    T* memoryData = <span class="keyword">static_cast&lt;</span>T*<span class="keyword">&gt;</span>(std::aligned_alloc(</div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;      <a class="code" href="namespacerun__environment.html#ac68b9fea12a8756652bce761d7a0cdda">run_environment::GetBytesAlignMemory</a>(acc_setting), numData * <span class="keyword">sizeof</span>(T)));</div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;    <span class="keywordflow">return</span> memoryData;</div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;  }</div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160; </div>
+<div class="line"><a name="l00072"></a><span class="lineno"><a class="line" href="class_memory_management.html#aec50b4bb3048839df9efacb032947036">   72</a></span>&#160;  <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="class_memory_management.html#aec50b4bb3048839df9efacb032947036">FreeAlignedMemoryOnDevice</a>(T* memory_to_free)<span class="keyword"> const</span></div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;<span class="keyword">  </span>{</div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;<span class="preprocessor">#ifdef _WIN32</span></div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;    _aligned_free(memory_to_free);</div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;<span class="preprocessor">#else</span></div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;    free(memory_to_free);</div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;  }</div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160; </div>
+<div class="line"><a name="l00081"></a><span class="lineno"><a class="line" href="class_memory_management.html#aab09c0b137fc68646ffe341b383d65fb">   81</a></span>&#160;  <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="class_memory_management.html#aab09c0b137fc68646ffe341b383d65fb">TransferDataFromDeviceToHost</a>(</div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;    T* dest_array,</div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;    <span class="keyword">const</span> T* in_array,</div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;    std::size_t num_data_transfer)<span class="keyword"> const</span></div>
+<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;<span class="keyword">  </span>{</div>
+<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;    std::ranges::copy(in_array, in_array + num_data_transfer, dest_array);</div>
+<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;  }</div>
+<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160; </div>
+<div class="line"><a name="l00089"></a><span class="lineno"><a class="line" href="class_memory_management.html#a826115cf54e69b4727133c9b61584018">   89</a></span>&#160;  <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="class_memory_management.html#a826115cf54e69b4727133c9b61584018">TransferDataFromHostToDevice</a>(</div>
+<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;    T* dest_array,</div>
+<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;    <span class="keyword">const</span> T* in_array,</div>
+<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;    std::size_t num_data_transfer)<span class="keyword"> const</span></div>
+<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;<span class="keyword">  </span>{</div>
+<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;    std::ranges::copy(in_array, in_array + num_data_transfer, dest_array);</div>
+<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;  }</div>
+<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;};</div>
+<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160; </div>
+<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;<span class="preprocessor">#endif </span><span class="comment">//MEMORY_MANAGEMENT_H_</span></div>
 <div class="ttc" id="a_run_settings_8h_html"><div class="ttname"><a href="_run_settings_8h.html">RunSettings.h</a></div><div class="ttdoc">Declares and defines structure that stores settings for current implementation run as well as functio...</div></div>
 <div class="ttc" id="a_run_type_constraints_8h_html"><div class="ttname"><a href="_run_type_constraints_8h.html">RunTypeConstraints.h</a></div><div class="ttdoc">Define constraints for data type in processing.</div></div>
-<div class="ttc" id="aclass_memory_management_html"><div class="ttname"><a href="class_memory_management.html">MemoryManagement</a></div><div class="ttdoc">Class for memory management with functions defined for standard memory allocation using CPU....</div><div class="ttdef"><b>Definition:</b> <a href="_memory_management_8h_source.html#l00044">MemoryManagement.h:45</a></div></div>
-<div class="ttc" id="aclass_memory_management_html_a46cf20a44494da312f5872d62c53a2db"><div class="ttname"><a href="class_memory_management.html#a46cf20a44494da312f5872d62c53a2db">MemoryManagement::AllocateAlignedMemoryOnDevice</a></div><div class="ttdeci">virtual T * AllocateAlignedMemoryOnDevice(std::size_t numData, run_environment::AccSetting acc_setting) const</div><div class="ttdef"><b>Definition:</b> <a href="_memory_management_8h_source.html#l00055">MemoryManagement.h:55</a></div></div>
-<div class="ttc" id="aclass_memory_management_html_a6aa75de1d5a7749a8cce7f4378a98d3c"><div class="ttname"><a href="class_memory_management.html#a6aa75de1d5a7749a8cce7f4378a98d3c">MemoryManagement::AllocateMemoryOnDevice</a></div><div class="ttdeci">virtual T * AllocateMemoryOnDevice(std::size_t numData) const</div><div class="ttdef"><b>Definition:</b> <a href="_memory_management_8h_source.html#l00047">MemoryManagement.h:47</a></div></div>
-<div class="ttc" id="aclass_memory_management_html_a826115cf54e69b4727133c9b61584018"><div class="ttname"><a href="class_memory_management.html#a826115cf54e69b4727133c9b61584018">MemoryManagement::TransferDataFromHostToDevice</a></div><div class="ttdeci">virtual void TransferDataFromHostToDevice(T *dest_array, const T *in_array, std::size_t num_data_transfer) const</div><div class="ttdef"><b>Definition:</b> <a href="_memory_management_8h_source.html#l00087">MemoryManagement.h:87</a></div></div>
-<div class="ttc" id="aclass_memory_management_html_aab09c0b137fc68646ffe341b383d65fb"><div class="ttname"><a href="class_memory_management.html#aab09c0b137fc68646ffe341b383d65fb">MemoryManagement::TransferDataFromDeviceToHost</a></div><div class="ttdeci">virtual void TransferDataFromDeviceToHost(T *dest_array, const T *in_array, std::size_t num_data_transfer) const</div><div class="ttdef"><b>Definition:</b> <a href="_memory_management_8h_source.html#l00079">MemoryManagement.h:79</a></div></div>
-<div class="ttc" id="aclass_memory_management_html_ae5421bee769043e15b28e339a2589f62"><div class="ttname"><a href="class_memory_management.html#ae5421bee769043e15b28e339a2589f62">MemoryManagement::FreeMemoryOnDevice</a></div><div class="ttdeci">virtual void FreeMemoryOnDevice(T *array_to_free) const</div><div class="ttdef"><b>Definition:</b> <a href="_memory_management_8h_source.html#l00051">MemoryManagement.h:51</a></div></div>
-<div class="ttc" id="aclass_memory_management_html_aec50b4bb3048839df9efacb032947036"><div class="ttname"><a href="class_memory_management.html#aec50b4bb3048839df9efacb032947036">MemoryManagement::FreeAlignedMemoryOnDevice</a></div><div class="ttdeci">virtual void FreeAlignedMemoryOnDevice(T *memory_to_free) const</div><div class="ttdef"><b>Definition:</b> <a href="_memory_management_8h_source.html#l00070">MemoryManagement.h:70</a></div></div>
-<div class="ttc" id="anamespacerun__environment_html_a2cd0a9de3e0ce6e4d99b35b89befb8bb"><div class="ttname"><a href="namespacerun__environment.html#a2cd0a9de3e0ce6e4d99b35b89befb8bb">run_environment::AccSetting</a></div><div class="ttdeci">AccSetting</div><div class="ttdoc">Enum for acceleration setting.</div><div class="ttdef"><b>Definition:</b> <a href="_run_settings_consts_enums_8h_source.html#l00063">RunSettingsConstsEnums.h:63</a></div></div>
+<div class="ttc" id="aclass_memory_management_html"><div class="ttname"><a href="class_memory_management.html">MemoryManagement</a></div><div class="ttdoc">Class for memory management with functions defined for standard memory allocation using CPU....</div><div class="ttdef"><b>Definition:</b> <a href="_memory_management_8h_source.html#l00046">MemoryManagement.h:47</a></div></div>
+<div class="ttc" id="aclass_memory_management_html_a46cf20a44494da312f5872d62c53a2db"><div class="ttname"><a href="class_memory_management.html#a46cf20a44494da312f5872d62c53a2db">MemoryManagement::AllocateAlignedMemoryOnDevice</a></div><div class="ttdeci">virtual T * AllocateAlignedMemoryOnDevice(std::size_t numData, run_environment::AccSetting acc_setting) const</div><div class="ttdef"><b>Definition:</b> <a href="_memory_management_8h_source.html#l00057">MemoryManagement.h:57</a></div></div>
+<div class="ttc" id="aclass_memory_management_html_a6aa75de1d5a7749a8cce7f4378a98d3c"><div class="ttname"><a href="class_memory_management.html#a6aa75de1d5a7749a8cce7f4378a98d3c">MemoryManagement::AllocateMemoryOnDevice</a></div><div class="ttdeci">virtual T * AllocateMemoryOnDevice(std::size_t numData) const</div><div class="ttdef"><b>Definition:</b> <a href="_memory_management_8h_source.html#l00049">MemoryManagement.h:49</a></div></div>
+<div class="ttc" id="aclass_memory_management_html_a826115cf54e69b4727133c9b61584018"><div class="ttname"><a href="class_memory_management.html#a826115cf54e69b4727133c9b61584018">MemoryManagement::TransferDataFromHostToDevice</a></div><div class="ttdeci">virtual void TransferDataFromHostToDevice(T *dest_array, const T *in_array, std::size_t num_data_transfer) const</div><div class="ttdef"><b>Definition:</b> <a href="_memory_management_8h_source.html#l00089">MemoryManagement.h:89</a></div></div>
+<div class="ttc" id="aclass_memory_management_html_aab09c0b137fc68646ffe341b383d65fb"><div class="ttname"><a href="class_memory_management.html#aab09c0b137fc68646ffe341b383d65fb">MemoryManagement::TransferDataFromDeviceToHost</a></div><div class="ttdeci">virtual void TransferDataFromDeviceToHost(T *dest_array, const T *in_array, std::size_t num_data_transfer) const</div><div class="ttdef"><b>Definition:</b> <a href="_memory_management_8h_source.html#l00081">MemoryManagement.h:81</a></div></div>
+<div class="ttc" id="aclass_memory_management_html_ae5421bee769043e15b28e339a2589f62"><div class="ttname"><a href="class_memory_management.html#ae5421bee769043e15b28e339a2589f62">MemoryManagement::FreeMemoryOnDevice</a></div><div class="ttdeci">virtual void FreeMemoryOnDevice(T *array_to_free) const</div><div class="ttdef"><b>Definition:</b> <a href="_memory_management_8h_source.html#l00053">MemoryManagement.h:53</a></div></div>
+<div class="ttc" id="aclass_memory_management_html_aec50b4bb3048839df9efacb032947036"><div class="ttname"><a href="class_memory_management.html#aec50b4bb3048839df9efacb032947036">MemoryManagement::FreeAlignedMemoryOnDevice</a></div><div class="ttdeci">virtual void FreeAlignedMemoryOnDevice(T *memory_to_free) const</div><div class="ttdef"><b>Definition:</b> <a href="_memory_management_8h_source.html#l00072">MemoryManagement.h:72</a></div></div>
+<div class="ttc" id="anamespacerun__environment_html_a2cd0a9de3e0ce6e4d99b35b89befb8bb"><div class="ttname"><a href="namespacerun__environment.html#a2cd0a9de3e0ce6e4d99b35b89befb8bb">run_environment::AccSetting</a></div><div class="ttdeci">AccSetting</div><div class="ttdoc">Enum for acceleration setting.</div><div class="ttdef"><b>Definition:</b> <a href="_run_settings_consts_enums_8h_source.html#l00059">RunSettingsConstsEnums.h:59</a></div></div>
 <div class="ttc" id="anamespacerun__environment_html_ac68b9fea12a8756652bce761d7a0cdda"><div class="ttname"><a href="namespacerun__environment.html#ac68b9fea12a8756652bce761d7a0cdda">run_environment::GetBytesAlignMemory</a></div><div class="ttdeci">unsigned int GetBytesAlignMemory(AccSetting accel_setting)</div><div class="ttdef"><b>Definition:</b> <a href="_run_settings_8h_source.html#l00043">RunSettings.h:43</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->

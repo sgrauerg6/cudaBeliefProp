@@ -15,9 +15,10 @@ Class to load and store run results data including speedups from evaluation.
 \mbox{\hyperlink{class_run_results_speedups_abfaa82cd1582d3eed0c866c832cbae78}{Run\+Results\+Speedups}} (const std\+::filesystem\+::path \&imp\+\_\+results\+\_\+file\+\_\+path, const std\+::string \&run\+\_\+name)
 \begin{DoxyCompactList}\small\item\em Constructor that takes in implementation file path and run name and retrieves run results and speedup evaluation for the run if available. \end{DoxyCompactList}\item 
 \mbox{\hyperlink{class_run_results_speedups_a52486d67f4880ceff3c8b86944e2df04}{Run\+Results\+Speedups}} (const std\+::filesystem\+::path \&run\+\_\+results\+\_\+file\+\_\+path)
-\begin{DoxyCompactList}\small\item\em Constructor that takes in run results path and processes run results speedups not available when using this constructor. \end{DoxyCompactList}\item 
+\begin{DoxyCompactList}\small\item\em Constructor that takes in run results path and processes run results~\newline
+ Speedups not available when using this constructor. \end{DoxyCompactList}\item 
 std\+::map$<$ std\+::string, std\+::vector$<$ std\+::string $>$ $>$ \mbox{\hyperlink{class_run_results_speedups_af16114eb72a5997f72d8f84bdcc8d279}{Speedups}} () const
-\begin{DoxyCompactList}\small\item\em Return speedups from evaluation across all runs on an architecture. \end{DoxyCompactList}\item 
+\begin{DoxyCompactList}\small\item\em Return speedups from run results data with speedups. \end{DoxyCompactList}\item 
 std\+::vector$<$ std\+::string $>$ \mbox{\hyperlink{class_run_results_speedups_a2e0c77627269d9e30411a822dd4fe871}{Speedup\+Headers\+Order}} () const
 \begin{DoxyCompactList}\small\item\em Return order of speedup headers. \end{DoxyCompactList}\item 
 std\+::map$<$ \mbox{\hyperlink{class_input_signature}{Input\+Signature}}, std\+::string $>$ \mbox{\hyperlink{class_run_results_speedups_ac40c246ed0b8535ce88f300b120e8e0f}{Inputs\+To\+Key\+Val}} (std\+::string\+\_\+view key) const
@@ -29,7 +30,7 @@ std\+::map$<$ std\+::string, std\+::string $>$ \mbox{\hyperlink{class_run_result
 \doxysubsection{Detailed Description}
 Class to load and store run results data including speedups from evaluation. 
 
-Definition at line 41 of file Run\+Results\+Speedups.\+h.
+Definition at line 42 of file Run\+Results\+Speedups.\+h.
 
 
 
@@ -63,7 +64,8 @@ Definition at line 34 of file Run\+Results\+Speedups.\+cpp.
 
 
 
-Constructor that takes in run results path and processes run results speedups not available when using this constructor. 
+Constructor that takes in run results path and processes run results~\newline
+ Speedups not available when using this constructor. 
 
 
 \begin{DoxyParams}{Parameters}
@@ -72,7 +74,7 @@ Constructor that takes in run results path and processes run results speedups no
 \end{DoxyParams}
 
 
-Definition at line 64 of file Run\+Results\+Speedups.\+cpp.
+Definition at line 74 of file Run\+Results\+Speedups.\+cpp.
 
 
 
@@ -93,11 +95,11 @@ Return data for specified input signature.
 \hline
 \end{DoxyParams}
 \begin{DoxyReturn}{Returns}
-std\+::map$<$std\+::string, std\+::string$>$ 
+Data for run corresponding to input signature 
 \end{DoxyReturn}
 
 
-Definition at line 95 of file Run\+Results\+Speedups.\+h.
+Definition at line 97 of file Run\+Results\+Speedups.\+h.
 
 \mbox{\Hypertarget{class_run_results_speedups_ac40c246ed0b8535ce88f300b120e8e0f}\label{class_run_results_speedups_ac40c246ed0b8535ce88f300b120e8e0f}} 
 \index{RunResultsSpeedups@{RunResultsSpeedups}!InputsToKeyVal@{InputsToKeyVal}}
@@ -115,11 +117,11 @@ Get mapping of run input signature to value corresponding to input key for each 
 \hline
 \end{DoxyParams}
 \begin{DoxyReturn}{Returns}
-std\+::map$<$\+Input\+Signature, std\+::string$>$ 
+Mapping of run input signature to value corresponding to input key 
 \end{DoxyReturn}
 
 
-Definition at line 112 of file Run\+Results\+Speedups.\+cpp.
+Definition at line 134 of file Run\+Results\+Speedups.\+cpp.
 
 \mbox{\Hypertarget{class_run_results_speedups_a2e0c77627269d9e30411a822dd4fe871}\label{class_run_results_speedups_a2e0c77627269d9e30411a822dd4fe871}} 
 \index{RunResultsSpeedups@{RunResultsSpeedups}!SpeedupHeadersOrder@{SpeedupHeadersOrder}}
@@ -132,11 +134,11 @@ Definition at line 112 of file Run\+Results\+Speedups.\+cpp.
 Return order of speedup headers. 
 
 \begin{DoxyReturn}{Returns}
-std\+::vector$<$std\+::string$>$ 
+Speedup headers in order 
 \end{DoxyReturn}
 
 
-Definition at line 76 of file Run\+Results\+Speedups.\+h.
+Definition at line 78 of file Run\+Results\+Speedups.\+h.
 
 \mbox{\Hypertarget{class_run_results_speedups_af16114eb72a5997f72d8f84bdcc8d279}\label{class_run_results_speedups_af16114eb72a5997f72d8f84bdcc8d279}} 
 \index{RunResultsSpeedups@{RunResultsSpeedups}!Speedups@{Speedups}}
@@ -146,14 +148,14 @@ Definition at line 76 of file Run\+Results\+Speedups.\+h.
 
 
 
-Return speedups from evaluation across all runs on an architecture. 
+Return speedups from run results data with speedups. 
 
 \begin{DoxyReturn}{Returns}
-std\+::map$<$std\+::string, std\+::vector$<$std\+::string$>$$>$ 
+Speedups from run results data with speedups 
 \end{DoxyReturn}
 
 
-Definition at line 67 of file Run\+Results\+Speedups.\+h.
+Definition at line 69 of file Run\+Results\+Speedups.\+h.
 
 
 

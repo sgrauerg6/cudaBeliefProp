@@ -14,7 +14,7 @@ const unsigned int \mbox{\hyperlink{namespacerun__cpu_a364fc4a944fba970d5f4342ef
 \begin{DoxyCompactList}\small\item\em Constant corresponding to number of threads on CPU. \end{DoxyCompactList}\item 
 const unsigned int \mbox{\hyperlink{namespacerun__cpu_a3d0449e82d8c4c3e48aee42f8bbea0ca}{k\+Min\+Num\+Threads\+Run}} \{std\+::min(\mbox{\hyperlink{namespacerun__cpu_a364fc4a944fba970d5f4342ef1efaf40}{k\+Num\+Threads\+CPU}}, 4u)\}
 \begin{DoxyCompactList}\small\item\em Minimum number of threads to allow for any parallel parameters setting on CPU. \end{DoxyCompactList}\item 
-const std\+::array$<$ unsigned int, 2 $>$ \mbox{\hyperlink{namespacerun__cpu_a3698d5e3de4cfbfc919051e75813686b}{k\+Parallel\+Params\+Default}} \{\{\mbox{\hyperlink{namespacerun__cpu_a364fc4a944fba970d5f4342ef1efaf40}{k\+Num\+Threads\+CPU}}, 1\}\}
+const std\+::array$<$ unsigned int, 2 $>$ \mbox{\hyperlink{namespacerun__cpu_a3698d5e3de4cfbfc919051e75813686b}{k\+Parallel\+Params\+Default}}
 \begin{DoxyCompactList}\small\item\em Default parallel parameters setting on CPU. \end{DoxyCompactList}\item 
 const std\+::set$<$ std\+::array$<$ unsigned int, 2 $>$ $>$ \mbox{\hyperlink{namespacerun__cpu_af770fe096fb6d05fb88fd6ce2ce18915}{k\+Parallel\+Parameter\+Alt\+Options}}
 \begin{DoxyCompactList}\small\item\em Parallel parameters options that are tested in order to find optimized configuration in run. OK to include default option but not required. \end{DoxyCompactList}\end{DoxyCompactItemize}
@@ -36,7 +36,7 @@ Minimum number of threads to allow for any parallel parameters setting on CPU.
 
 
 
-Definition at line 79 of file Run\+CPUSettings.\+h.
+Definition at line 80 of file Run\+CPUSettings.\+h.
 
 \mbox{\Hypertarget{namespacerun__cpu_a364fc4a944fba970d5f4342ef1efaf40}\label{namespacerun__cpu_a364fc4a944fba970d5f4342ef1efaf40}} 
 \index{run\_cpu@{run\_cpu}!kNumThreadsCPU@{kNumThreadsCPU}}
@@ -50,7 +50,7 @@ Constant corresponding to number of threads on CPU.
 
 
 
-Definition at line 75 of file Run\+CPUSettings.\+h.
+Definition at line 76 of file Run\+CPUSettings.\+h.
 
 \mbox{\Hypertarget{namespacerun__cpu_af770fe096fb6d05fb88fd6ce2ce18915}\label{namespacerun__cpu_af770fe096fb6d05fb88fd6ce2ce18915}} 
 \index{run\_cpu@{run\_cpu}!kParallelParameterAltOptions@{kParallelParameterAltOptions}}
@@ -61,8 +61,11 @@ Definition at line 75 of file Run\+CPUSettings.\+h.
 {\bfseries Initial value\+:}
 \begin{DoxyCode}{0}
 \DoxyCodeLine{\{}
-\DoxyCodeLine{  \{ \mbox{\hyperlink{namespacerun__cpu_a364fc4a944fba970d5f4342ef1efaf40}{kNumThreadsCPU}}, 1\}, \{ (3 * \mbox{\hyperlink{namespacerun__cpu_a364fc4a944fba970d5f4342ef1efaf40}{kNumThreadsCPU}}) / 4 , 1\}, \{ \mbox{\hyperlink{namespacerun__cpu_a364fc4a944fba970d5f4342ef1efaf40}{kNumThreadsCPU}} / 2, 1\},}
-\DoxyCodeLine{  \{ \mbox{\hyperlink{namespacerun__cpu_a364fc4a944fba970d5f4342ef1efaf40}{kNumThreadsCPU}} / 4, 1\}, \{ \mbox{\hyperlink{namespacerun__cpu_a364fc4a944fba970d5f4342ef1efaf40}{kNumThreadsCPU}} / 8, 1\}\}}
+\DoxyCodeLine{  \{ \mbox{\hyperlink{namespacerun__cpu_a364fc4a944fba970d5f4342ef1efaf40}{kNumThreadsCPU}}, 1\}, }
+\DoxyCodeLine{  \{ (3 * \mbox{\hyperlink{namespacerun__cpu_a364fc4a944fba970d5f4342ef1efaf40}{kNumThreadsCPU}}) / 4 , 1\}, }
+\DoxyCodeLine{  \{ \mbox{\hyperlink{namespacerun__cpu_a364fc4a944fba970d5f4342ef1efaf40}{kNumThreadsCPU}} / 2, 1\},}
+\DoxyCodeLine{  \{ \mbox{\hyperlink{namespacerun__cpu_a364fc4a944fba970d5f4342ef1efaf40}{kNumThreadsCPU}} / 4, 1\},}
+\DoxyCodeLine{  \{ \mbox{\hyperlink{namespacerun__cpu_a364fc4a944fba970d5f4342ef1efaf40}{kNumThreadsCPU}} / 8, 1\}\}}
 
 \end{DoxyCode}
 
@@ -71,21 +74,27 @@ Parallel parameters options that are tested in order to find optimized configura
 
 
 
-Definition at line 101 of file Run\+CPUSettings.\+h.
+Definition at line 105 of file Run\+CPUSettings.\+h.
 
 \mbox{\Hypertarget{namespacerun__cpu_a3698d5e3de4cfbfc919051e75813686b}\label{namespacerun__cpu_a3698d5e3de4cfbfc919051e75813686b}} 
 \index{run\_cpu@{run\_cpu}!kParallelParamsDefault@{kParallelParamsDefault}}
 \index{kParallelParamsDefault@{kParallelParamsDefault}!run\_cpu@{run\_cpu}}
 \doxysubsubsection{\texorpdfstring{kParallelParamsDefault}{kParallelParamsDefault}}
-{\footnotesize\ttfamily const std\+::array$<$unsigned int, 2$>$ run\+\_\+cpu\+::k\+Parallel\+Params\+Default \{\{\mbox{\hyperlink{namespacerun__cpu_a364fc4a944fba970d5f4342ef1efaf40}{k\+Num\+Threads\+CPU}}, 1\}\}}
+{\footnotesize\ttfamily const std\+::array$<$unsigned int, 2$>$ run\+\_\+cpu\+::k\+Parallel\+Params\+Default}
 
+{\bfseries Initial value\+:}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\{}
+\DoxyCodeLine{  \{\mbox{\hyperlink{namespacerun__cpu_a364fc4a944fba970d5f4342ef1efaf40}{kNumThreadsCPU}}, 1\}\}}
+
+\end{DoxyCode}
 
 
 Default parallel parameters setting on CPU. 
 
 
 
-Definition at line 82 of file Run\+CPUSettings.\+h.
+Definition at line 83 of file Run\+CPUSettings.\+h.
 
 \mbox{\Hypertarget{namespacerun__cpu_a24d7f23c61507a9913b16cbac984f031}\label{namespacerun__cpu_a24d7f23c61507a9913b16cbac984f031}} 
 \index{run\_cpu@{run\_cpu}!kSimulateSingleCPU@{kSimulateSingleCPU}}
@@ -99,5 +108,5 @@ Constant that specifies that run is simulating single CPU on a dual-\/\+CPU syst
 
 
 
-Definition at line 72 of file Run\+CPUSettings.\+h.
+Definition at line 73 of file Run\+CPUSettings.\+h.
 

@@ -163,6 +163,6 @@ var namespacebeliefprop =
     [ "kStereoSetsToProcess", "namespacebeliefprop.html#ade9084f410319841c34418be4a556df4", null ],
     [ "kTestImageName", "namespacebeliefprop.html#acfd2acd7ff3e70ef11cedaea3e28fd68", null ],
     [ "kTimingNames", "namespacebeliefprop.html#a790873cf6727591d5674d7fafa90c497", null ],
-    [ "kUseOptGPUMemManagement", "namespacebeliefprop.html#a242b1649163c9f2d3c26b4dad2b84c08", null ],
+    [ "kUseOptMemManagement", "namespacebeliefprop.html#a7ca7cb7ceef3b9c99b07bdb2e920aca8", null ],
     [ "kUseWeightedRGBToGrayscaleConversion", "namespacebeliefprop.html#a8672e8f5c1e0869b532fb037df9abc26", null ]
 ];

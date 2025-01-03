@@ -82,6 +82,7 @@ $(document).ready(function(){initNavTree('_run_eval_consts_enums_8h.html',''); i
 
 <div class="header">
   <div class="summary">
+<a href="#nested-classes">Classes</a> &#124;
 <a href="#namespaces">Namespaces</a> &#124;
 <a href="#enum-members">Enumerations</a> &#124;
 <a href="#var-members">Variables</a>  </div>
@@ -94,17 +95,20 @@ $(document).ready(function(){initNavTree('_run_eval_consts_enums_8h.html',''); i
 <a href="#details">More...</a></p>
 <div class="textblock"><code>#include &lt;array&gt;</code><br />
 <code>#include &lt;string_view&gt;</code><br />
+<code>#include &lt;map&gt;</code><br />
+<code>#include &lt;filesystem&gt;</code><br />
 <code>#include &quot;<a class="el" href="_run_settings_consts_enums_8h_source.html">RunSettingsParams/RunSettingsConstsEnums.h</a>&quot;</code><br />
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for RunEvalConstsEnums.h:</div>
 <div class="dyncontent">
 <div class="center"><img src="_run_eval_consts_enums_8h__incl.png" border="0" usemap="#asrc_2_run_eval_2_run_eval_consts_enums_8h" alt=""/></div>
 <map name="asrc_2_run_eval_2_run_eval_consts_enums_8h" id="asrc_2_run_eval_2_run_eval_consts_enums_8h">
-<area shape="rect" title="Contains namespace with enums and constants for implementation run evaluation." alt="" coords="5,5,204,47"/>
-<area shape="rect" title=" " alt="" coords="11,102,67,129"/>
-<area shape="rect" title=" " alt="" coords="84,184,181,211"/>
-<area shape="rect" href="_run_settings_consts_enums_8h.html" title="Contains namespace with constants and enums related to run environment and settings for run." alt="" coords="143,95,373,136"/>
-<area shape="rect" title=" " alt="" coords="233,184,283,211"/>
+<area shape="rect" title="Contains namespace with enums and constants for implementation run evaluation." alt="" coords="153,5,351,47"/>
+<area shape="rect" title=" " alt="" coords="5,102,61,129"/>
+<area shape="rect" title=" " alt="" coords="141,184,238,211"/>
+<area shape="rect" title=" " alt="" coords="289,184,340,211"/>
+<area shape="rect" title=" " alt="" coords="392,102,483,129"/>
+<area shape="rect" href="_run_settings_consts_enums_8h.html" title="Contains namespace with constants and enums related to run environment and settings for run." alt="" coords="137,95,367,136"/>
 </map>
 </div>
 </div><div class="textblock"><div class="dynheader">
@@ -112,61 +116,66 @@ This graph shows which files directly or indirectly include this file:</div>
 <div class="dyncontent">
 <div class="center"><img src="_run_eval_consts_enums_8h__dep__incl.png" border="0" usemap="#asrc_2_run_eval_2_run_eval_consts_enums_8hdep" alt=""/></div>
 <map name="asrc_2_run_eval_2_run_eval_consts_enums_8hdep" id="asrc_2_run_eval_2_run_eval_consts_enums_8hdep">
-<area shape="rect" title="Contains namespace with enums and constants for implementation run evaluation." alt="" coords="2042,5,2241,47"/>
-<area shape="rect" href="_process_bp_optimized_c_p_u_8h.html" title="Declares child class of ProcessBp that defines functions used in processing bp in the optimized CPU i..." alt="" coords="2375,660,2601,701"/>
-<area shape="rect" href="_process_bp_c_u_d_a_8cpp.html" title="Defines the functions to run the CUDA implementation of 2D Stereo estimation using BP." alt="" coords="3046,571,3242,612"/>
-<area shape="rect" href="_process_bp_c_u_d_a_8h.html" title=" " alt="" coords="2577,474,2767,515"/>
-<area shape="rect" href="_evaluate_imp_results_bp_8h.html" title="Declares child class of EvaluateImpResults that defines member functions for belief propagation evalu..." alt="" coords="1187,377,1442,419"/>
-<area shape="rect" href="_run_imp_on_input_bp_8h.html" title=" " alt="" coords="630,660,815,701"/>
-<area shape="rect" href="_process_bp_8h.html" title="Declares abstract class to run belief propagation on target device. Some of the class functions need ..." alt="" coords="1973,377,2200,419"/>
-<area shape="rect" href="_run_bp_on_stereo_set_8h.html" title="Declares abstract class to set up and run belief propagation on target device using specified acceler..." alt="" coords="1771,474,1997,515"/>
-<area shape="rect" href="_evaluate_across_runs_8h.html" title="Declares class with operator function to evaluate implementation runs across multiple architectures...." alt="" coords="3227,184,3429,225"/>
-<area shape="rect" href="_evaluate_imp_aliases_8h.html" title="Header for defining aliases for storing run results and evaluating implementations." alt="" coords="483,191,725,218"/>
-<area shape="rect" href="_run_imp_mult_inputs_8h.html" title="Declares base class for running and evaluating multiple runs of an implementation that may be optimiz..." alt="" coords="645,385,875,411"/>
-<area shape="rect" href="_run_imp_mult_types_accels_8h.html" title="Declares class to run and evaluate implementation(s) of an algorithm using multiple settings includin..." alt="" coords="927,474,1142,515"/>
-<area shape="rect" href="_run_imp_on_input_8h.html" title="Declares child class of RunImpOnInput to run and evaluate belief propagation implementation on a spec..." alt="" coords="109,288,321,315"/>
-<area shape="rect" href="_run_data_8cpp.html" title="Implementation of functions in RunData class." alt="" coords="3622,102,3807,129"/>
-<area shape="rect" href="_run_results_speedups_8cpp.html" title=" " alt="" coords="3179,288,3445,315"/>
-<area shape="rect" href="_input_signature_8h.html" title="Declares class for defining input signature for evaluation run that consists of evaluation set number..." alt="" coords="1732,95,1903,136"/>
-<area shape="rect" href="_detailed_timings_8h.html" title="Declares class to store timings of one or more segments taken during the run(s) of an implementation ..." alt="" coords="2270,281,2474,322"/>
-<area shape="rect" href="_process_bp_optimized_c_p_u_8cpp.html" title="Defines the functions to run the CUDA implementation of 2&#45;D Stereo estimation using BP." alt="" coords="2367,757,2609,798"/>
-<area shape="rect" href="_run_bp_on_stereo_set_optimized_c_p_u_8h.html" title="Declares child class of RunBpOnStereoSet to run optimized CPU implementation of belief propagation on..." alt="" coords="1964,757,2247,798"/>
-<area shape="rect" href="_run_bp_on_stereo_set_optimized_c_p_u_8cpp.html" title=" " alt="" coords="1957,853,2254,895"/>
-<area shape="rect" href="_driver_bp_stereo_c_p_u__custom_run_8cpp.html" title="File with main() function to run optimized belief propagation implementation on CPU on an input stere..." alt="" coords="1187,853,1445,895"/>
-<area shape="rect" href="_run_bp_on_stereo_set_c_u_d_a_8h.html" title="Declares child class of RunBpOnStereoSet to run CUDA implementation of belief propagation on a given ..." alt="" coords="2061,571,2299,612"/>
-<area shape="rect" href="_run_bp_on_stereo_set_c_u_d_a_8cpp.html" title="Defines the methods to run BP Stereo implementation on a series of images using various options." alt="" coords="2047,660,2299,701"/>
-<area shape="rect" href="_driver_bp_stereo_c_u_d_a__custom_run_8cpp.html" title="File with main() function to run optimized CUDA belief propagation implementation on CPU on an input ..." alt="" coords="1121,749,1284,805"/>
-<area shape="rect" href="_evaluate_imp_results_bp_8cpp.html" title="Function definition for class to evaluate belief propagation implementation results." alt="" coords="1166,467,1391,523"/>
-<area shape="rect" href="_driver_bp_stereo_c_p_u_8cpp.html" title="Contains the main() function that drives the optimized CPU belief propgation implementation evaluatio..." alt="" coords="992,571,1171,612"/>
-<area shape="rect" href="_driver_cuda_bp_8cpp.html" title="Contains the main() function that drives the optimized CUDA belief propagation implementation evaluat..." alt="" coords="1195,571,1341,612"/>
-<area shape="rect" href="_run_imp_mult_inputs_bp_8cpp.html" title=" " alt="" coords="486,757,701,798"/>
-<area shape="rect" href="_run_imp_on_input_bp_8cpp.html" title=" " alt="" coords="725,757,921,798"/>
-<area shape="rect" href="_process_bp_8cpp.html" title=" " alt="" coords="2173,474,2400,515"/>
-<area shape="rect" href="_run_bp_on_stereo_set_8cpp.html" title=" " alt="" coords="1760,571,1987,612"/>
-<area shape="rect" href="stereo_8h.html" title=" " alt="" coords="1417,571,1634,612"/>
-<area shape="rect" href="stereo_8cpp.html" title=" " alt="" coords="1315,660,1533,701"/>
-<area shape="rect" href="_evaluate_across_runs_8cpp.html" title="Definition of functions in class for evaluating results across multiple runs, potentially on differen..." alt="" coords="2952,281,3155,322"/>
-<area shape="rect" href="_evaluate_imp_results_8cpp.html" title="Function definitions for class to evaluate implementation results." alt="" coords="3024,385,3283,411"/>
-<area shape="rect" href="_run_imp_mult_inputs_bp_8h.html" title="Declares child class of RunImpMultInputs to run specified belief propagation implementation on a numb..." alt="" coords="705,474,903,515"/>
-<area shape="rect" href="_evaluate_imp_results_8h.html" title="Declares class with operator function to evaluate implementations of the same algorithm across differ..." alt="" coords="977,288,1221,315"/>
-<area shape="rect" href="_run_imp_mult_types_accels_8cpp.html" title=" " alt="" coords="486,571,701,612"/>
-<area shape="rect" href="_run_imp_mult_inputs_8cpp.html" title=" " alt="" coords="435,481,680,508"/>
-<area shape="rect" href="_run_imp_on_input_8cpp.html" title=" " alt="" coords="93,385,320,411"/>
-<area shape="rect" href="_bp_evaluation_stereo_sets_8h.html" title="Header file that contains information about the stereo sets used for evaluation of the bp implementat..." alt="" coords="1973,273,2195,329"/>
-<area shape="rect" href="_bp_settings_8h.html" title="Declares structure to store the belief propagation settings including the number of levels and iterat..." alt="" coords="1592,184,1819,225"/>
-<area shape="rect" href="_run_results_speedups_8h.html" title="Declares class to load and store run results data including speedups from evaluation." alt="" coords="2901,191,3152,218"/>
-<area shape="rect" href="_input_signature_8cpp.html" title="Function definitions for class for defining input signature for evaluation run that consists of evalu..." alt="" coords="1843,184,2013,225"/>
-<area shape="rect" href="_run_settings_8h.html" title="Declares and defines structure that stores settings for current implementation run as well as functio..." alt="" coords="1397,184,1568,225"/>
-<area shape="rect" href="_kernel_bp_stereo_c_p_u_8h.html" title="This header declares the kernel functions to run optimized belief propagation on CPU." alt="" coords="2525,571,2717,612"/>
-<area shape="rect" href="_shared_bp_processing_functs_8h.html" title="Functions for belief propagation processing that are used in both optimized CPU and CUDA implementati..." alt="" coords="2792,474,3011,515"/>
-<area shape="rect" href="_shared_bp_util_functs_8h.html" title="Utility functions for belief propagation processing that are used in both optimized CPU and CUDA impl..." alt="" coords="2605,377,2824,419"/>
-<area shape="rect" href="_bp_level_8h.html" title="Declares class to store and retrieve properties of a bp processing level." alt="" coords="2549,281,2776,322"/>
-<area shape="rect" href="_detailed_timings_8cpp.html" title=" " alt="" coords="2377,377,2581,419"/>
+<area shape="rect" title="Contains namespace with enums and constants for implementation run evaluation." alt="" coords="1699,5,1898,47"/>
+<area shape="rect" href="_process_bp_optimized_c_p_u_8h.html" title="Declares child class of ProcessBp that defines functions used in processing bp in the optimized CPU i..." alt="" coords="2469,660,2696,701"/>
+<area shape="rect" href="_process_bp_c_u_d_a_8cpp.html" title="Defines the functions to run the CUDA implementation of 2D Stereo estimation using BP." alt="" coords="3459,571,3655,612"/>
+<area shape="rect" href="_process_bp_c_u_d_a_8h.html" title=" " alt="" coords="3354,474,3545,515"/>
+<area shape="rect" href="_evaluate_imp_results_bp_8h.html" title="Declares child class of EvaluateImpResults that defines member functions for belief propagation evalu..." alt="" coords="1667,377,1922,419"/>
+<area shape="rect" href="_run_imp_on_input_bp_8h.html" title=" " alt="" coords="639,660,825,701"/>
+<area shape="rect" href="_process_bp_8h.html" title="Declares abstract class to run belief propagation on target device. Some of the class functions need ..." alt="" coords="3101,377,3328,419"/>
+<area shape="rect" href="_run_bp_on_stereo_set_8h.html" title="Declares abstract class to set up and run belief propagation on target device using specified acceler..." alt="" coords="2700,474,2927,515"/>
+<area shape="rect" href="_evaluate_across_runs_8h.html" title="Declares class with operator function to evaluate implementation runs across multiple architectures...." alt="" coords="483,281,685,322"/>
+<area shape="rect" href="_evaluate_imp_aliases_8h.html" title="Header for defining aliases for storing run results and evaluating implementations." alt="" coords="289,191,532,218"/>
+<area shape="rect" href="_run_imp_mult_inputs_8h.html" title="Declares base class for running and evaluating multiple runs of an implementation that may be optimiz..." alt="" coords="1057,385,1287,411"/>
+<area shape="rect" href="_run_imp_mult_types_accels_8h.html" title="Declares class to run and evaluate implementation(s) of an algorithm using multiple settings includin..." alt="" coords="1326,474,1541,515"/>
+<area shape="rect" href="_run_imp_on_input_8h.html" title="Declares child class of RunImpOnInput to run and evaluate belief propagation implementation on a spec..." alt="" coords="95,288,307,315"/>
+<area shape="rect" href="_run_data_8cpp.html" title="Implementation of functions in RunData class." alt="" coords="3621,102,3806,129"/>
+<area shape="rect" href="_run_results_speedups_8cpp.html" title=" " alt="" coords="811,288,1077,315"/>
+<area shape="rect" href="_input_signature_8h.html" title="Declares class for defining input signature for evaluation run that consists of evaluation set number..." alt="" coords="1256,95,1427,136"/>
+<area shape="rect" href="_detailed_timings_8h.html" title="Declares class to store timings of one or more segments taken during the run(s) of an implementation ..." alt="" coords="2846,281,3050,322"/>
+<area shape="rect" href="_process_bp_optimized_c_p_u_8cpp.html" title="Defines the functions to run the CUDA implementation of 2&#45;D Stereo estimation using BP." alt="" coords="2454,757,2695,798"/>
+<area shape="rect" href="_run_bp_on_stereo_set_optimized_c_p_u_8h.html" title="Declares child class of RunBpOnStereoSet to run optimized CPU implementation of belief propagation on..." alt="" coords="2824,757,3107,798"/>
+<area shape="rect" href="_run_bp_on_stereo_set_optimized_c_p_u_8cpp.html" title=" " alt="" coords="2817,853,3114,895"/>
+<area shape="rect" href="_driver_bp_stereo_c_p_u__custom_run_8cpp.html" title="File with main() function to run optimized belief propagation implementation on CPU on an input stere..." alt="" coords="1603,853,1861,895"/>
+<area shape="rect" href="_run_bp_on_stereo_set_c_u_d_a_8h.html" title="Declares child class of RunBpOnStereoSet to run CUDA implementation of belief propagation on a given ..." alt="" coords="3123,571,3360,612"/>
+<area shape="rect" href="_run_bp_on_stereo_set_c_u_d_a_8cpp.html" title="Defines the methods to run BP Stereo implementation on a series of images using various options." alt="" coords="3107,660,3359,701"/>
+<area shape="rect" href="_driver_bp_stereo_c_u_d_a__custom_run_8cpp.html" title="File with main() function to run optimized CUDA belief propagation implementation on CPU on an input ..." alt="" coords="1520,749,1683,805"/>
+<area shape="rect" href="_evaluate_imp_results_bp_8cpp.html" title="Function definition for class to evaluate belief propagation implementation results." alt="" coords="1767,467,1993,523"/>
+<area shape="rect" href="_driver_bp_stereo_c_p_u_8cpp.html" title="Contains the main() function that drives the optimized CPU belief propgation implementation evaluatio..." alt="" coords="1560,571,1739,612"/>
+<area shape="rect" href="_driver_cuda_bp_8cpp.html" title="Contains the main() function that drives the optimized CUDA belief propagation implementation evaluat..." alt="" coords="1763,571,1909,612"/>
+<area shape="rect" href="_run_imp_mult_inputs_bp_8cpp.html" title=" " alt="" coords="878,757,1093,798"/>
+<area shape="rect" href="_run_imp_on_input_bp_8cpp.html" title=" " alt="" coords="658,757,854,798"/>
+<area shape="rect" href="_process_bp_8cpp.html" title=" " alt="" coords="2951,474,3177,515"/>
+<area shape="rect" href="_run_bp_on_stereo_set_8cpp.html" title=" " alt="" coords="2771,571,2997,612"/>
+<area shape="rect" href="stereo_8h.html" title=" " alt="" coords="1934,571,2151,612"/>
+<area shape="rect" href="stereo_8cpp.html" title=" " alt="" coords="1787,660,2005,701"/>
+<area shape="rect" href="_evaluate_across_runs_8cpp.html" title="Definitions of functions in class for evaluating results across multiple runs, potentially on differe..." alt="" coords="496,377,699,419"/>
+<area shape="rect" href="_evaluate_imp_results_8cpp.html" title="Function definitions for class to evaluate implementation results." alt="" coords="723,385,981,411"/>
+<area shape="rect" href="_run_imp_mult_inputs_bp_8h.html" title="Declares child class of RunImpMultInputs to run specified belief propagation implementation on a numb..." alt="" coords="1103,474,1302,515"/>
+<area shape="rect" href="_evaluate_imp_results_8h.html" title="Declares class with operator function to evaluate implementations of the same algorithm across differ..." alt="" coords="1203,288,1447,315"/>
+<area shape="rect" href="_run_imp_mult_types_accels_8cpp.html" title=" " alt="" coords="1169,571,1383,612"/>
+<area shape="rect" href="_run_imp_mult_inputs_8cpp.html" title=" " alt="" coords="784,481,1029,508"/>
+<area shape="rect" href="_run_imp_on_input_8cpp.html" title=" " alt="" coords="144,385,371,411"/>
+<area shape="rect" href="_bp_evaluation_stereo_sets_8h.html" title="Header file that contains information about the stereo sets used for evaluation of the bp implementat..." alt="" coords="2097,273,2319,329"/>
+<area shape="rect" href="_bp_settings_8h.html" title="Declares structure to store the belief propagation settings including the number of levels and iterat..." alt="" coords="1757,184,1984,225"/>
+<area shape="rect" href="_run_results_speedups_8h.html" title="Declares class to load and store run results data including speedups from evaluation." alt="" coords="691,191,941,218"/>
+<area shape="rect" href="_input_signature_8cpp.html" title="Function definitions for class for defining input signature for evaluation run that consists of evalu..." alt="" coords="1317,184,1488,225"/>
+<area shape="rect" href="_run_settings_8h.html" title="Declares and defines structure that stores settings for current implementation run as well as functio..." alt="" coords="1563,184,1733,225"/>
+<area shape="rect" href="_kernel_bp_stereo_c_p_u_8h.html" title="This header declares the kernel functions to run optimized belief propagation on CPU." alt="" coords="2301,571,2493,612"/>
+<area shape="rect" href="_shared_bp_processing_functs_8h.html" title="Functions for belief propagation processing that are used in both optimized CPU and CUDA implementati..." alt="" coords="2173,474,2392,515"/>
+<area shape="rect" href="_shared_bp_util_functs_8h.html" title="Utility functions for belief propagation processing that are used in both optimized CPU and CUDA impl..." alt="" coords="2099,377,2317,419"/>
+<area shape="rect" href="_bp_level_8h.html" title="Declares class to store and retrieve properties of a bp processing level." alt="" coords="2344,281,2571,322"/>
+<area shape="rect" href="_detailed_timings_8cpp.html" title=" " alt="" coords="2873,377,3077,419"/>
 </map>
 </div>
 </div>
 <p><a href="_run_eval_consts_enums_8h_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
+Classes</h2></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structrun__eval_1_1_out_file_info.html">run_eval::OutFileInfo</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="namespaces"></a>
 Namespaces</h2></td></tr>
 <tr class="memitem:namespacerun__eval"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacerun__eval.html">run_eval</a></td></tr>
@@ -185,10 +194,16 @@ Enumerations</h2></td></tr>
  }</td></tr>
 <tr class="memdesc:afde1aa77e63e966b5728eae080febcf2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Enum to specify average or median for "middle" value in data.  <a href="namespacerun__eval.html#afde1aa77e63e966b5728eae080febcf2">More...</a><br /></td></tr>
 <tr class="separator:afde1aa77e63e966b5728eae080febcf2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8bab2154c9f69aee6f630dede1c230ca"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacerun__eval.html#a8bab2154c9f69aee6f630dede1c230ca">run_eval::OutResults</a> { <a class="el" href="namespacerun__eval.html#a8bab2154c9f69aee6f630dede1c230caa0d4c807d12467d727754023fd796583a">run_eval::kDefaultPParams</a>
+, <a class="el" href="namespacerun__eval.html#a8bab2154c9f69aee6f630dede1c230caa4aa1cff924810a4c91826d97fb37b2f5">run_eval::kOptPParams</a>
+, <a class="el" href="namespacerun__eval.html#a8bab2154c9f69aee6f630dede1c230caa1b1672381d2f429dfe9c17a8cb9e9f27">run_eval::kSpeedups</a>
+, <a class="el" href="namespacerun__eval.html#a8bab2154c9f69aee6f630dede1c230caa6b4de8247c2e65aac1cfd3c324f899ab">run_eval::kOptWSpeedups</a>
+ }</td></tr>
+<tr class="separator:a8bab2154c9f69aee6f630dede1c230ca"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="var-members"></a>
 Variables</h2></td></tr>
-<tr class="memitem:ade2de03079235e85054acc531e3f2350"><td class="memItemLeft" align="right" valign="top">constexpr std::array&lt; size_t, 3 &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacerun__eval.html#ade2de03079235e85054acc531e3f2350">run_eval::kDataTypesEvalSizes</a> {sizeof(float), sizeof(double), sizeof(<a class="el" href="_run_c_u_d_a_settings_8h.html#ae0ec76c243989a7b368bb78677ff6b30">halftype</a>)}</td></tr>
+<tr class="memitem:ade2de03079235e85054acc531e3f2350"><td class="memItemLeft" align="right" valign="top">constexpr std::array&lt; size_t, 3 &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacerun__eval.html#ade2de03079235e85054acc531e3f2350">run_eval::kDataTypesEvalSizes</a></td></tr>
 <tr class="separator:ade2de03079235e85054acc531e3f2350"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac8888f549eae1f06b02b580494fdf773"><td class="memItemLeft" align="right" valign="top">constexpr bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacerun__eval.html#ac8888f549eae1f06b02b580494fdf773">run_eval::kRunAltOptimizedImps</a> {true}</td></tr>
 <tr class="separator:ac8888f549eae1f06b02b580494fdf773"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -229,16 +244,28 @@ Variables</h2></td></tr>
 <tr class="separator:a2fb349e0919edec1beb2ac3e891201f6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad93c0dd070cda950d788bd5f22c8f237"><td class="memItemLeft" align="right" valign="top">constexpr std::string_view&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacerun__eval.html#ad93c0dd070cda950d788bd5f22c8f237">run_eval::kSpeedupOptParParamsHeader</a> {&quot;Speedup Over Default OMP Thread Count / CUDA Thread Block Dimensions&quot;}</td></tr>
 <tr class="separator:ad93c0dd070cda950d788bd5f22c8f237"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a53e8b6af9661ebb7bc6a99e97cf4f3a2"><td class="memItemLeft" align="right" valign="top">constexpr std::string_view&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacerun__eval.html#a53e8b6af9661ebb7bc6a99e97cf4f3a2">run_eval::kSpeedupDouble</a> {&quot;Speedup using double-precision relative to float (actually slowdown)&quot;}</td></tr>
-<tr class="separator:a53e8b6af9661ebb7bc6a99e97cf4f3a2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aacb3f40d5df0b0422fe6173fcd4f7885"><td class="memItemLeft" align="right" valign="top">constexpr std::string_view&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacerun__eval.html#aacb3f40d5df0b0422fe6173fcd4f7885">run_eval::kSpeedupHalf</a> {&quot;Speedup using half-precision relative to float&quot;}</td></tr>
-<tr class="separator:aacb3f40d5df0b0422fe6173fcd4f7885"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af964fa30f21da7faca4e5b2d56ac7bb3"><td class="memItemLeft" align="right" valign="top">constexpr std::string_view&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacerun__eval.html#af964fa30f21da7faca4e5b2d56ac7bb3">run_eval::kSpeedupLoopItersCountTemplate</a> {&quot;Speedup w/ templated disparity count (known at compile-time)&quot;}</td></tr>
+<tr class="memitem:a71e6b665ae9ac08b9c45769d637aef85"><td class="memItemLeft" align="right" valign="top">constexpr std::string_view&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacerun__eval.html#a71e6b665ae9ac08b9c45769d637aef85">run_eval::kSpeedupDoubleHeader</a> {&quot;Speedup using double-precision relative to float (actually slowdown)&quot;}</td></tr>
+<tr class="separator:a71e6b665ae9ac08b9c45769d637aef85"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad3fbe6f497846de8777e5f4e14ac934d"><td class="memItemLeft" align="right" valign="top">constexpr std::string_view&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacerun__eval.html#ad3fbe6f497846de8777e5f4e14ac934d">run_eval::kSpeedupHalfHeader</a> {&quot;Speedup using half-precision relative to float&quot;}</td></tr>
+<tr class="separator:ad3fbe6f497846de8777e5f4e14ac934d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af964fa30f21da7faca4e5b2d56ac7bb3"><td class="memItemLeft" align="right" valign="top">constexpr std::string_view&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacerun__eval.html#af964fa30f21da7faca4e5b2d56ac7bb3">run_eval::kSpeedupLoopItersCountTemplate</a> {&quot;Speedup w/ templated loop iteration count (known at compile-time)&quot;}</td></tr>
 <tr class="separator:af964fa30f21da7faca4e5b2d56ac7bb3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad368b3398ba326c7e939936988061c95"><td class="memItemLeft" align="right" valign="top">constexpr std::string_view&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacerun__eval.html#ad368b3398ba326c7e939936988061c95">run_eval::kSpeedupCPUVectorization</a> {&quot;Speedup using CPU vectorization&quot;}</td></tr>
+<tr class="memitem:ad368b3398ba326c7e939936988061c95"><td class="memItemLeft" align="right" valign="top">constexpr std::string_view&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacerun__eval.html#ad368b3398ba326c7e939936988061c95">run_eval::kSpeedupCPUVectorization</a> {&quot;Speedup over no CPU vectorization&quot;}</td></tr>
 <tr class="separator:ad368b3398ba326c7e939936988061c95"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aca67196adcd344aa6f31a7a7521fd385"><td class="memItemLeft" align="right" valign="top">constexpr std::string_view&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacerun__eval.html#aca67196adcd344aa6f31a7a7521fd385">run_eval::kSpeedupVsAvx256Vectorization</a> {&quot;Speedup over AVX256 CPU vectorization&quot;}</td></tr>
 <tr class="separator:aca67196adcd344aa6f31a7a7521fd385"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acb7c6e108435ac56b06260f60cba8773"><td class="memItemLeft" align="right" valign="top">constexpr std::string_view&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacerun__eval.html#acb7c6e108435ac56b06260f60cba8773">run_eval::kSpeedupVsAvx256F16Vectorization</a> {&quot;Speedup over AVX256 (w/ float16) CPU vectorization&quot;}</td></tr>
+<tr class="separator:acb7c6e108435ac56b06260f60cba8773"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac70af88f811dd78a258b60dfcb173a5b"><td class="memItemLeft" align="right" valign="top">constexpr std::string_view&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacerun__eval.html#ac70af88f811dd78a258b60dfcb173a5b">run_eval::kSpeedupVsAvx512Vectorization</a> {&quot;Speedup over AVX512 CPU vectorization&quot;}</td></tr>
+<tr class="separator:ac70af88f811dd78a258b60dfcb173a5b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0dc7aa1de88568d5d58ac30512f5a5ad"><td class="memItemLeft" align="right" valign="top">constexpr std::string_view&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacerun__eval.html#a0dc7aa1de88568d5d58ac30512f5a5ad">run_eval::kSpeedupVsAvx512F16Vectorization</a> {&quot;Speedup over AVX512 (w/ float16) CPU vectorization&quot;}</td></tr>
+<tr class="separator:a0dc7aa1de88568d5d58ac30512f5a5ad"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af0984cda4e104f90c052b63bcdda7da2"><td class="memItemLeft" align="right" valign="top">constexpr std::string_view&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacerun__eval.html#af0984cda4e104f90c052b63bcdda7da2">run_eval::kSpeedupVsNEONVectorization</a> {&quot;Speedup over NEON CPU vectorization&quot;}</td></tr>
+<tr class="separator:af0984cda4e104f90c052b63bcdda7da2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a587247239b6c7e3afc9fe6e26ce73559"><td class="memItemLeft" align="right" valign="top">constexpr std::string_view&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacerun__eval.html#a587247239b6c7e3afc9fe6e26ce73559">run_eval::kSpeedupVsCUDAAcceleration</a> {&quot;Speedup over CUDA acceleration&quot;}</td></tr>
+<tr class="separator:a587247239b6c7e3afc9fe6e26ce73559"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a28df5a9e705a23416bd11501cbc97f9b"><td class="memItemLeft" align="right" valign="top">const std::map&lt; <a class="el" href="namespacerun__environment.html#a2cd0a9de3e0ce6e4d99b35b89befb8bb">run_environment::AccSetting</a>, const std::string_view &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacerun__eval.html#a28df5a9e705a23416bd11501cbc97f9b">run_eval::kAltAccToSpeedupDesc</a></td></tr>
+<tr class="separator:a28df5a9e705a23416bd11501cbc97f9b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aeb9a999d42ab9a972522a36e2e2f9712"><td class="memItemLeft" align="right" valign="top">constexpr std::string_view&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacerun__eval.html#aeb9a999d42ab9a972522a36e2e2f9712">run_eval::kImpResultsFolderName</a> {&quot;ImpResults&quot;}</td></tr>
 <tr class="separator:aeb9a999d42ab9a972522a36e2e2f9712"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a12f0e50ca7718080a44f95b98512aad0"><td class="memItemLeft" align="right" valign="top">constexpr std::string_view&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacerun__eval.html#a12f0e50ca7718080a44f95b98512aad0">run_eval::kImpResultsRunDataFolderName</a> {&quot;RunResults&quot;}</td></tr>
@@ -251,6 +278,8 @@ Variables</h2></td></tr>
 <tr class="separator:ad2e81e462dc5a1a39da8b7bd3d6d533c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac16a5475c8ba2869a579e2c1c2b8e902"><td class="memItemLeft" align="right" valign="top">constexpr std::string_view&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacerun__eval.html#ac16a5475c8ba2869a579e2c1c2b8e902">run_eval::kImpResultsAcrossArchsFolderName</a> {&quot;ResultsAcrossArchitectures&quot;}</td></tr>
 <tr class="separator:ac16a5475c8ba2869a579e2c1c2b8e902"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2930e44c4ece9cbbe27fe260328e5be4"><td class="memItemLeft" align="right" valign="top">constexpr std::string_view&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacerun__eval.html#a2930e44c4ece9cbbe27fe260328e5be4">run_eval::kImpResultsRunDataAccFolderName</a> {&quot;RunResultsAcc&quot;}</td></tr>
+<tr class="separator:a2930e44c4ece9cbbe27fe260328e5be4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad0935c80dfec9802bd4f781abfd97162"><td class="memItemLeft" align="right" valign="top">constexpr std::array&lt; std::string_view, 3 &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacerun__eval.html#ad0935c80dfec9802bd4f781abfd97162">run_eval::kRunInputSigHeaders</a></td></tr>
 <tr class="separator:ad0935c80dfec9802bd4f781abfd97162"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a126425883abbf68f7c49e9634419bf8b"><td class="memItemLeft" align="right" valign="top">constexpr std::size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacerun__eval.html#a126425883abbf68f7c49e9634419bf8b">run_eval::kRunInputNumInputIdx</a> {0}</td></tr>
@@ -259,6 +288,10 @@ Variables</h2></td></tr>
 <tr class="separator:aa4dcdafffb130d2f183786bd93e23b9a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2be272bfc5ce93166901411313480403"><td class="memItemLeft" align="right" valign="top">constexpr std::size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacerun__eval.html#a2be272bfc5ce93166901411313480403">run_eval::kRunInputLoopItersTemplatedIdx</a> {2}</td></tr>
 <tr class="separator:a2be272bfc5ce93166901411313480403"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac686dfab340d406f91f8f6c5066da397"><td class="memItemLeft" align="right" valign="top">const std::map&lt; OutResults, const OutFileInfo &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacerun__eval.html#ac686dfab340d406f91f8f6c5066da397">run_eval::kOutResultsFileInfo</a></td></tr>
+<tr class="separator:ac686dfab340d406f91f8f6c5066da397"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3e00d0fb1dad1ac2f4e84ca002a35bd5"><td class="memItemLeft" align="right" valign="top">const std::map&lt; OutResults, const std::string_view &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacerun__eval.html#a3e00d0fb1dad1ac2f4e84ca002a35bd5">run_eval::kOutResultsDesc</a></td></tr>
+<tr class="separator:a3e00d0fb1dad1ac2f4e84ca002a35bd5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Contains namespace with enums and constants for implementation run evaluation. </p>

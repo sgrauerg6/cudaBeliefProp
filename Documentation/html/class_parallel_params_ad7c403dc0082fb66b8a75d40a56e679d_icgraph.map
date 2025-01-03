@@ -9,5 +9,5 @@
 <area shape="rect" id="node9" href="$namespacebeliefprop__cpu.html#aa83687bc3259c02910351a8f280f912c" title=" " alt="" coords="255,384,487,425"/>
 <area shape="rect" id="node10" href="$namespacebeliefprop__cpu.html#abb3848c046c62e840da41161a1168fde" title=" " alt="" coords="238,450,503,506"/>
 <area shape="rect" id="node11" href="$namespacebeliefprop__cpu.html#a95f8e5cb8763210eb634cea8ff8c93a2" title=" " alt="" coords="216,530,525,586"/>
-<area shape="rect" id="node8" href="$class_process_bp.html#a0ccd2a3bcea7ef8b3129ce32667f740d" title="Run the belief propagation algorithm with on a set of stereo images to generate a disparity map input..." alt="" coords="5,326,168,353"/>
+<area shape="rect" id="node8" href="$class_process_bp.html#a0ccd2a3bcea7ef8b3129ce32667f740d" title="Run belief propagation implementation with on a set of stereo images to generate a disparity map...." alt="" coords="5,326,168,353"/>
 </map>

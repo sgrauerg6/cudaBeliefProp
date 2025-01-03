@@ -1,3 +1,4 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="node1" href="$class_input_signature.html" title="Class defines input signature for evaluation run that contains evaluation set number,..." alt="" coords="5,5,123,32"/>
+<area shape="rect" id="node1" href="$class_evaluate_imp_results.html" title="Class with operator function to evaluate implementations of the same algorithm across different data ..." alt="" coords="5,5,157,32"/>
+<area shape="rect" id="node2" href="$class_evaluate_imp_results_bp.html" title="Child class of EvaluateImpResults that defines member functions for belief propagation evaluation whi..." alt="" coords="205,5,375,32"/>
 </map>

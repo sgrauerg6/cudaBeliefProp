@@ -1,5 +1,4 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="node1" href="$class_smooth_image.html" title="Class for smoothing the images before running BP. Smoothing image always uses float data type." alt="" coords="5,31,119,57"/>
-<area shape="rect" id="node2" href="$class_smooth_image_c_p_u.html" title="Child class of SmoothImage for smoothing images in the optimized CPU implementation." alt="" coords="172,5,312,32"/>
-<area shape="rect" id="node3" href="$class_smooth_image_c_u_d_a.html" title="Child class of SmoothImage for smoothing images in the CUDA implementation." alt="" coords="167,56,317,83"/>
+<area shape="rect" id="node1" href="$class_run_imp_on_input.html" title="Virtual class to run and evaluate implementation on a input specified by index number." alt="" coords="5,13,209,54"/>
+<area shape="rect" id="node2" href="$class_run_imp_on_input_bp.html" title="Child class of RunImpOnInput to run and evaluate belief propagation implementation on a specified inp..." alt="" coords="257,5,429,61"/>
 </map>

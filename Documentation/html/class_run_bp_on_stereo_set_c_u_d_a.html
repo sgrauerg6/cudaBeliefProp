@@ -115,7 +115,7 @@ Collaboration diagram for RunBpOnStereoSetCUDA&lt; T, DISP_VALS, ACCELERATION &g
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:a089aaf8fb93fb15283c75171b6c4792e"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_run_bp_on_stereo_set_c_u_d_a.html#a089aaf8fb93fb15283c75171b6c4792e">BpRunDescription</a> () const override</td></tr>
-<tr class="memdesc:a089aaf8fb93fb15283c75171b6c4792e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Pure virtual function to return run description corresponding to target acceleration.  <a href="class_run_bp_on_stereo_set_c_u_d_a.html#a089aaf8fb93fb15283c75171b6c4792e">More...</a><br /></td></tr>
+<tr class="memdesc:a089aaf8fb93fb15283c75171b6c4792e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns description of bp implementation using CUDA.  <a href="class_run_bp_on_stereo_set_c_u_d_a.html#a089aaf8fb93fb15283c75171b6c4792e">More...</a><br /></td></tr>
 <tr class="separator:a089aaf8fb93fb15283c75171b6c4792e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:adbc8134aa5f34a8f396778fc1e73af7d"><td class="memItemLeft" align="right" valign="top">std::optional&lt; <a class="el" href="structbeliefprop_1_1_bp_run_output.html">beliefprop::BpRunOutput</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_run_bp_on_stereo_set_c_u_d_a.html#adbc8134aa5f34a8f396778fc1e73af7d">operator()</a> (const std::array&lt; std::string, 2 &gt; &amp;ref_test_image_path, const <a class="el" href="structbeliefprop_1_1_bp_settings.html">beliefprop::BpSettings</a> &amp;alg_settings, const <a class="el" href="class_parallel_params.html">ParallelParams</a> &amp;parallel_params) const override</td></tr>
 <tr class="memdesc:adbc8134aa5f34a8f396778fc1e73af7d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Run the disparity map estimation BP on a set of stereo images and save the results between each set of images.  <a href="class_run_bp_on_stereo_set_c_u_d_a.html#adbc8134aa5f34a8f396778fc1e73af7d">More...</a><br /></td></tr>
@@ -142,7 +142,7 @@ class RunBpOnStereoSetCUDA&lt; T, DISP_VALS, ACCELERATION &gt;</h3>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="_run_bp_on_stereo_set_c_u_d_a_8h_source.html#l00051">51</a> of file <a class="el" href="_run_bp_on_stereo_set_c_u_d_a_8h_source.html">RunBpOnStereoSetCUDA.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_run_bp_on_stereo_set_c_u_d_a_8h_source.html#l00052">52</a> of file <a class="el" href="_run_bp_on_stereo_set_c_u_d_a_8h_source.html">RunBpOnStereoSetCUDA.h</a>.</p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
 <a id="a089aaf8fb93fb15283c75171b6c4792e"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a089aaf8fb93fb15283c75171b6c4792e">&#9670;&nbsp;</a></span>BpRunDescription()</h2>
@@ -169,12 +169,12 @@ template&lt;RunData_t T, unsigned int DISP_VALS, run_environment::AccSetting ACC
 </table>
 </div><div class="memdoc">
 
-<p>Pure virtual function to return run description corresponding to target acceleration. </p>
-<dl class="section return"><dt>Returns</dt><dd>std::string </dd></dl>
+<p>Returns description of bp implementation using CUDA. </p>
+<dl class="section return"><dt>Returns</dt><dd>Description of BP implementation using CUDA </dd></dl>
 
 <p>Implements <a class="el" href="class_run_bp_on_stereo_set.html#a6c70f066d355522c0c01f896d12b3970">RunBpOnStereoSet&lt; T, DISP_VALS, ACCELERATION &gt;</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_run_bp_on_stereo_set_c_u_d_a_8h_source.html#l00054">54</a> of file <a class="el" href="_run_bp_on_stereo_set_c_u_d_a_8h_source.html">RunBpOnStereoSetCUDA.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_run_bp_on_stereo_set_c_u_d_a_8h_source.html#l00059">59</a> of file <a class="el" href="_run_bp_on_stereo_set_c_u_d_a_8h_source.html">RunBpOnStereoSetCUDA.h</a>.</p>
 
 </div>
 </div>
@@ -229,11 +229,11 @@ template&lt;RunData_t T, unsigned int DISP_VALS, run_environment::AccSetting ACC
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>std::optional&lt;beliefprop::BpRunOutput&gt; </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>Output from BP implementation run using CUDA or null of error in run </dd></dl>
 
 <p>Implements <a class="el" href="class_run_bp_on_stereo_set.html#a7aceac573cf31e0ddc18b43e18aa3c0b">RunBpOnStereoSet&lt; T, DISP_VALS, ACCELERATION &gt;</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_run_bp_on_stereo_set_c_u_d_a_8h_source.html#l00066">66</a> of file <a class="el" href="_run_bp_on_stereo_set_c_u_d_a_8h_source.html">RunBpOnStereoSetCUDA.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_run_bp_on_stereo_set_c_u_d_a_8h_source.html#l00072">72</a> of file <a class="el" href="_run_bp_on_stereo_set_c_u_d_a_8h_source.html">RunBpOnStereoSetCUDA.h</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">

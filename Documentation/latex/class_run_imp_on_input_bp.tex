@@ -40,7 +40,8 @@ std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{class_parallel_params}{Parallel\+Para
 \mbox{\hyperlink{class_run_data}{Run\+Data}} \mbox{\hyperlink{class_run_imp_on_input_bp_a724a02eefdc8ad233a294be38f396547}{Input\+And\+Params\+For\+Curr\+Benchmark}} (bool loop\+\_\+iters\+\_\+templated) const override
 \begin{DoxyCompactList}\small\item\em Get input data and parameter info about current benchmark (belief propagation in this case) and return as \mbox{\hyperlink{class_run_data}{Run\+Data}} type. \end{DoxyCompactList}\item 
 std\+::optional$<$ \mbox{\hyperlink{class_run_data}{Run\+Data}} $>$ \mbox{\hyperlink{class_run_imp_on_input_bp_ae5914e5e25b86a0eaacd0c888dee9708}{Run\+Imps\+And\+Compare}} (std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{class_parallel_params}{Parallel\+Params}} $>$ parallel\+\_\+params, bool run\+\_\+opt\+\_\+imp\+\_\+only, bool run\+\_\+imp\+\_\+templated\+\_\+loop\+\_\+iters) const override
-\begin{DoxyCompactList}\small\item\em Run and compare output disparity maps using the given optimized and single-\/threaded stereo implementations on the reference and test images specified by NUM\+\_\+\+INPUT given as class template integral constant parameter. Run only optimized implementation if run\+\_\+opt\+\_\+imp\+\_\+only is true. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\begin{DoxyCompactList}\small\item\em Run and compare output disparity maps using the given optimized and single-\/threaded bp implementations on the reference and test images specified by NUM\+\_\+\+INPUT given as class template integral constant parameter.~\newline
+ Run only optimized implementation if run\+\_\+opt\+\_\+imp\+\_\+only is true. \end{DoxyCompactList}\end{DoxyCompactItemize}
 
 
 \doxysubsection{Detailed Description}
@@ -82,7 +83,7 @@ Get input data and parameter info about current benchmark (belief propagation in
 \hline
 \end{DoxyParams}
 \begin{DoxyReturn}{Returns}
-\mbox{\hyperlink{class_run_data}{Run\+Data}} 
+\mbox{\hyperlink{class_run_data}{Run\+Data}} object containing input data and parameters for current benchmark 
 \end{DoxyReturn}
 
 
@@ -90,7 +91,7 @@ Implements \mbox{\hyperlink{class_run_imp_on_input_a34a6f5d3387c29607e2249786b72
 
 
 
-Definition at line 226 of file Run\+Imp\+On\+Input\+Bp.\+h.
+Definition at line 262 of file Run\+Imp\+On\+Input\+Bp.\+h.
 
 Here is the call graph for this function\+:\nopagebreak
 \begin{figure}[H]
@@ -116,7 +117,7 @@ Run and evaluate optimized belief propagation implementation on evaluation stere
 \hline
 \end{DoxyParams}
 \begin{DoxyReturn}{Returns}
-Mult\+Run\+Data 
+Run results from running and evaluating optimized belief propagation implementation 
 \end{DoxyReturn}
 
 
@@ -124,7 +125,7 @@ Implements \mbox{\hyperlink{class_run_imp_on_input_a8170bbd7503d68c37125350df0b3
 
 
 
-Definition at line 175 of file Run\+Imp\+On\+Input\+Bp.\+h.
+Definition at line 184 of file Run\+Imp\+On\+Input\+Bp.\+h.
 
 \mbox{\Hypertarget{class_run_imp_on_input_bp_ae5914e5e25b86a0eaacd0c888dee9708}\label{class_run_imp_on_input_bp_ae5914e5e25b86a0eaacd0c888dee9708}} 
 \index{RunImpOnInputBp$<$ T, OPT\_IMP\_ACCEL, NUM\_INPUT $>$@{RunImpOnInputBp$<$ T, OPT\_IMP\_ACCEL, NUM\_INPUT $>$}!RunImpsAndCompare@{RunImpsAndCompare}}
@@ -135,7 +136,8 @@ std\+::optional$<$ \mbox{\hyperlink{class_run_data}{Run\+Data}} $>$ \mbox{\hyper
 
 
 
-Run and compare output disparity maps using the given optimized and single-\/threaded stereo implementations on the reference and test images specified by NUM\+\_\+\+INPUT given as class template integral constant parameter. Run only optimized implementation if run\+\_\+opt\+\_\+imp\+\_\+only is true. 
+Run and compare output disparity maps using the given optimized and single-\/threaded bp implementations on the reference and test images specified by NUM\+\_\+\+INPUT given as class template integral constant parameter.~\newline
+ Run only optimized implementation if run\+\_\+opt\+\_\+imp\+\_\+only is true. 
 
 
 \begin{DoxyParams}{Parameters}
@@ -147,7 +149,7 @@ Run and compare output disparity maps using the given optimized and single-\/thr
 \hline
 \end{DoxyParams}
 \begin{DoxyReturn}{Returns}
-std\+::optional$<$\+Run\+Data$>$ 
+Run data from running optimized and single-\/threaded bp implementations 
 \end{DoxyReturn}
 
 
@@ -155,9 +157,10 @@ Implements \mbox{\hyperlink{class_run_imp_on_input_a2bb42e69ca28f0ddfab281739c81
 
 
 
-Definition at line 242 of file Run\+Imp\+On\+Input\+Bp.\+h.
+Definition at line 280 of file Run\+Imp\+On\+Input\+Bp.\+h.
 
-Here is the call graph for this function\+:\nopagebreak
+Here is the call graph for this function\+:
+\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
@@ -181,7 +184,7 @@ Set up parallel parameters for running belief propagation in parallel on CPU or 
 \hline
 \end{DoxyParams}
 \begin{DoxyReturn}{Returns}
-std\+::shared\+\_\+ptr$<$\+Parallel\+Params$>$ 
+Shared pointer to parallel parameters as set up for run 
 \end{DoxyReturn}
 
 
@@ -189,7 +192,7 @@ Implements \mbox{\hyperlink{class_run_imp_on_input_a302212627bed8c6dd60d59fad0b0
 
 
 
-Definition at line 214 of file Run\+Imp\+On\+Input\+Bp.\+h.
+Definition at line 248 of file Run\+Imp\+On\+Input\+Bp.\+h.
 
 
 

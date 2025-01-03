@@ -16,6 +16,7 @@ var hierarchy =
     [ "DetailedTimings< T >", "class_detailed_timings.html", null ],
     [ "DisparityMapEvaluation", "class_disparity_map_evaluation.html", null ],
     [ "beliefprop::DisparityMapEvaluationParams", "structbeliefprop_1_1_disparity_map_evaluation_params.html", null ],
+    [ "EvalAcrossRunsData", "struct_eval_across_runs_data.html", null ],
     [ "EvaluateAcrossRuns", "class_evaluate_across_runs.html", null ],
     [ "EvaluateImpResults", "class_evaluate_imp_results.html", [
       [ "EvaluateImpResultsBp", "class_evaluate_imp_results_bp.html", null ]
@@ -26,6 +27,7 @@ var hierarchy =
     [ "MemoryManagement< T >", "class_memory_management.html", [
       [ "MemoryManagementCUDA< T >", "class_memory_management_c_u_d_a.html", null ]
     ] ],
+    [ "run_eval::OutFileInfo", "structrun__eval_1_1_out_file_info.html", null ],
     [ "ParallelParams", "class_parallel_params.html", [
       [ "ParallelParamsBp", "class_parallel_params_bp.html", null ]
     ] ],

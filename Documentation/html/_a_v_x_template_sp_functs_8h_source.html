@@ -120,19 +120,19 @@ $(document).ready(function(){initNavTree('_a_v_x_template_sp_functs_8h_source.ht
 <div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;<span class="comment">//used code from https://github.com/microsoft/DirectXMath/blob/master/Extensions/DirectXMathF16C.h</span></div>
 <div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;<span class="comment">//for the values conversion on Windows since _cvtsh_ss and _cvtss_sh not supported in Visual Studio</span></div>
 <div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;<span class="keyword">template</span>&lt;&gt; <span class="keyword">inline</span></div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;<a class="code" href="_run_c_u_d_a_settings_8h.html#ae0ec76c243989a7b368bb78677ff6b30">halftype</a> util_functs::ZeroVal&lt;halftype&gt;()</div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;<span class="keywordtype">short</span> util_functs::ZeroVal&lt;short&gt;()</div>
 <div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;{</div>
 <div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;<span class="preprocessor">#ifdef _WIN32</span></div>
 <div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;  __m128 dataInAvxReg = _mm_set_ss(0.0);</div>
 <div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;  __m128i convertedData = _mm_cvtps_ph(dataInAvxReg, 0);</div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;  <span class="keywordflow">return</span> ((<a class="code" href="_run_c_u_d_a_settings_8h.html#ae0ec76c243989a7b368bb78677ff6b30">halftype</a>*)&amp; convertedData)[0];</div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;  <span class="keywordflow">return</span> ((<span class="keywordtype">short</span>*)&amp; convertedData)[0];</div>
 <div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;<span class="preprocessor">#else</span></div>
 <div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;  <span class="keywordflow">return</span> _cvtss_sh(0.0f, 0);</div>
 <div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;<span class="preprocessor">#endif</span></div>
 <div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;}</div>
 <div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160; </div>
 <div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;<span class="keyword">template</span>&lt;&gt; <span class="keyword">inline</span></div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;<span class="keywordtype">float</span> util_functs::ConvertValToDifferentDataTypeIfNeeded&lt;halftype, float&gt;(<a class="code" href="_run_c_u_d_a_settings_8h.html#ae0ec76c243989a7b368bb78677ff6b30">halftype</a> data)</div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;<span class="keywordtype">float</span> util_functs::ConvertValToDifferentDataTypeIfNeeded&lt;short, float&gt;(<span class="keywordtype">short</span> data)</div>
 <div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;{</div>
 <div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;<span class="preprocessor">#ifdef _WIN32</span></div>
 <div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;  __m128i dataInAvxReg = _mm_cvtsi32_si128(<span class="keyword">static_cast&lt;</span><span class="keywordtype">int</span><span class="keyword">&gt;</span>(data));</div>
@@ -144,19 +144,18 @@ $(document).ready(function(){initNavTree('_a_v_x_template_sp_functs_8h_source.ht
 <div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;}</div>
 <div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160; </div>
 <div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;<span class="keyword">template</span>&lt;&gt; <span class="keyword">inline</span></div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;<a class="code" href="_run_c_u_d_a_settings_8h.html#ae0ec76c243989a7b368bb78677ff6b30">halftype</a> util_functs::ConvertValToDifferentDataTypeIfNeeded&lt;float, halftype&gt;(<span class="keywordtype">float</span> data)</div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;<span class="keywordtype">short</span> util_functs::ConvertValToDifferentDataTypeIfNeeded&lt;float, short&gt;(<span class="keywordtype">float</span> data)</div>
 <div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;{</div>
 <div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;<span class="preprocessor">#ifdef _WIN32</span></div>
 <div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;  __m128 dataInAvxReg = _mm_set_ss(data);</div>
 <div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;  __m128i convertedData = _mm_cvtps_ph(dataInAvxReg, 0);</div>
-<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;  <span class="keywordflow">return</span> ((<a class="code" href="_run_c_u_d_a_settings_8h.html#ae0ec76c243989a7b368bb78677ff6b30">halftype</a>*)&amp;convertedData)[0];</div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;  <span class="keywordflow">return</span> ((<span class="keywordtype">short</span>*)&amp;convertedData)[0];</div>
 <div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;<span class="preprocessor">#else</span></div>
 <div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;  <span class="keywordflow">return</span> _cvtss_sh(data, 0);</div>
 <div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;<span class="preprocessor">#endif</span></div>
 <div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;}</div>
 <div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160; </div>
 <div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;<span class="preprocessor">#endif </span><span class="comment">//AVXTEMPLATESPFUNCTS_H_</span></div>
-<div class="ttc" id="a_run_c_u_d_a_settings_8h_html_ae0ec76c243989a7b368bb78677ff6b30"><div class="ttname"><a href="_run_c_u_d_a_settings_8h.html#ae0ec76c243989a7b368bb78677ff6b30">halftype</a></div><div class="ttdeci">half halftype</div><div class="ttdef"><b>Definition:</b> <a href="_run_c_u_d_a_settings_8h_source.html#l00043">RunCUDASettings.h:43</a></div></div>
 <div class="ttc" id="a_run_settings_consts_enums_8h_html"><div class="ttname"><a href="_run_settings_consts_enums_8h.html">RunSettingsConstsEnums.h</a></div><div class="ttdoc">Contains namespace with constants and enums related to run environment and settings for run.</div></div>
 <div class="ttc" id="a_utility_functs_8h_html"><div class="ttname"><a href="_utility_functs_8h.html">UtilityFuncts.h</a></div><div class="ttdoc">Contains namespace with utility functions for implementation.</div></div>
 </div><!-- fragment --></div><!-- contents -->

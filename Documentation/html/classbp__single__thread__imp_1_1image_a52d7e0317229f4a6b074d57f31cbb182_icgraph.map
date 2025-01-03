@@ -1,11 +1,12 @@
 <map id="bp_single_thread_imp::image::width" name="bp_single_thread_imp::image::width">
-<area shape="rect" id="node1" title=" " alt="" coords="477,188,643,229"/>
-<area shape="rect" id="node2" href="$classbp__single__thread__imp_1_1_convolve.html#ab940c54f1eb8cac684081a53f7b77640" title=" " alt="" coords="232,5,429,47"/>
-<area shape="rect" id="node3" href="$classbp__single__thread__imp_1_1_filter_image.html#a8c9fecb95bf215288137eb699c32cb35" title=" " alt="" coords="12,35,177,76"/>
-<area shape="rect" id="node4" href="$classbp__single__thread__imp_1_1_convolve.html#ab0a67fbe2340437289fdf92f9b0ac5ce" title=" " alt="" coords="236,123,425,164"/>
-<area shape="rect" id="node5" href="$classbp__single__thread__imp_1_1_filter_image.html#a038ea31213e1224c38ebc0185a552e7c" title=" " alt="" coords="245,188,416,229"/>
-<area shape="rect" id="node6" href="$imutil_8h.html#ae734dfebeb97565789aa5a0d561359e6" title=" " alt="" coords="289,254,372,281"/>
-<area shape="rect" id="node7" href="$pnmfile_8h.html#a9e97e5938200b377d44472455cd734c8" title=" " alt="" coords="280,305,381,331"/>
-<area shape="rect" id="node8" href="$imutil_8h.html#a8fdb61b124189db3caf4e9630637e784" title=" " alt="" coords="289,355,372,382"/>
-<area shape="rect" id="node9" href="$class_disparity_map_evaluation.html#aa934545f3103a05db5d5d6a5233693c0" title="Retrieve evaluation results as RunData." alt="" coords="5,348,184,389"/>
+<area shape="rect" id="node1" title=" " alt="" coords="537,188,703,229"/>
+<area shape="rect" id="node2" href="$classbp__single__thread__imp_1_1_convolve.html#ab940c54f1eb8cac684081a53f7b77640" title=" " alt="" coords="292,5,489,47"/>
+<area shape="rect" id="node3" href="$classbp__single__thread__imp_1_1_filter_image.html#a8c9fecb95bf215288137eb699c32cb35" title=" " alt="" coords="42,35,207,76"/>
+<area shape="rect" id="node4" href="$classbp__single__thread__imp_1_1_convolve.html#ab0a67fbe2340437289fdf92f9b0ac5ce" title=" " alt="" coords="296,123,485,164"/>
+<area shape="rect" id="node5" href="$classbp__single__thread__imp_1_1_filter_image.html#a038ea31213e1224c38ebc0185a552e7c" title=" " alt="" coords="305,188,476,229"/>
+<area shape="rect" id="node6" href="$imutil_8h.html#ae734dfebeb97565789aa5a0d561359e6" title=" " alt="" coords="349,254,432,281"/>
+<area shape="rect" id="node7" href="$pnmfile_8h.html#a9e97e5938200b377d44472455cd734c8" title=" " alt="" coords="340,305,441,331"/>
+<area shape="rect" id="node8" href="$imutil_8h.html#a8fdb61b124189db3caf4e9630637e784" title=" " alt="" coords="349,355,432,382"/>
+<area shape="rect" id="node9" href="$class_disparity_map_evaluation.html#aa934545f3103a05db5d5d6a5233693c0" title="Retrieve evaluation results as RunData." alt="" coords="35,319,214,360"/>
+<area shape="rect" id="node10" href="$class_disparity_map.html#a3428722b1a8edcf5261aa51cc5899ba4" title=" " alt="" coords="5,385,244,411"/>
 </map>

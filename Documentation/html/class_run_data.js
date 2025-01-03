@@ -6,7 +6,6 @@ var class_run_data =
     [ "AddDataWHeader", "class_run_data.html#acad41433dc602ca28d38f578fe93d67c", null ],
     [ "AddDataWHeader", "class_run_data.html#a4b8772e460a7cc3b4dd0ebc3569a6832", null ],
     [ "AppendData", "class_run_data.html#a938dd181b583b343480ad9294efff7fb", null ],
-    [ "GetAllData", "class_run_data.html#a4725943bb65e991fe7ef3884d36eaa82", null ],
     [ "GetDataAsBool", "class_run_data.html#afbe69aa62856cc330c3848b712e32ea7", null ],
     [ "GetDataAsDouble", "class_run_data.html#af19b921e7fc7f0d30f78a3a4bf813197", null ],
     [ "GetDataAsStr", "class_run_data.html#addf651aed946231dfc30634e42b3050c", null ],

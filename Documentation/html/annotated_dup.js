@@ -18,6 +18,9 @@ var annotated_dup =
     [ "run_environment", "namespacerun__environment.html", [
       [ "RunImpSettings", "structrun__environment_1_1_run_imp_settings.html", "structrun__environment_1_1_run_imp_settings" ]
     ] ],
+    [ "run_eval", "namespacerun__eval.html", [
+      [ "OutFileInfo", "structrun__eval_1_1_out_file_info.html", "structrun__eval_1_1_out_file_info" ]
+    ] ],
     [ "BpFileHandling", "class_bp_file_handling.html", "class_bp_file_handling" ],
     [ "BpImage", "class_bp_image.html", "class_bp_image" ],
     [ "BpLevel", "class_bp_level.html", "class_bp_level" ],
@@ -25,6 +28,7 @@ var annotated_dup =
     [ "DetailedTimings", "class_detailed_timings.html", "class_detailed_timings" ],
     [ "DisparityMap", "class_disparity_map.html", "class_disparity_map" ],
     [ "DisparityMapEvaluation", "class_disparity_map_evaluation.html", "class_disparity_map_evaluation" ],
+    [ "EvalAcrossRunsData", "struct_eval_across_runs_data.html", "struct_eval_across_runs_data" ],
     [ "EvaluateAcrossRuns", "class_evaluate_across_runs.html", "class_evaluate_across_runs" ],
     [ "EvaluateImpResults", "class_evaluate_imp_results.html", "class_evaluate_imp_results" ],
     [ "EvaluateImpResultsBp", "class_evaluate_imp_results_bp.html", null ],

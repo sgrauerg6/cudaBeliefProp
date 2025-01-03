@@ -94,20 +94,26 @@ $(document).ready(function(){initNavTree('_evaluate_across_runs_8h.html',''); in
 <code>#include &lt;vector&gt;</code><br />
 <code>#include &lt;filesystem&gt;</code><br />
 <code>#include &quot;<a class="el" href="_run_eval_consts_enums_8h_source.html">RunEvalConstsEnums.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="_run_results_speedups_8h_source.html">RunResultsSpeedups.h</a>&quot;</code><br />
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for EvaluateAcrossRuns.h:</div>
 <div class="dyncontent">
 <div class="center"><img src="_evaluate_across_runs_8h__incl.png" border="0" usemap="#asrc_2_run_eval_2_evaluate_across_runs_8h" alt=""/></div>
 <map name="asrc_2_run_eval_2_evaluate_across_runs_8h" id="asrc_2_run_eval_2_evaluate_across_runs_8h">
-<area shape="rect" title="Declares class with operator function to evaluate implementation runs across multiple architectures...." alt="" coords="69,5,272,47"/>
-<area shape="rect" title=" " alt="" coords="5,95,64,121"/>
-<area shape="rect" title=" " alt="" coords="89,95,151,121"/>
-<area shape="rect" title=" " alt="" coords="176,95,267,121"/>
-<area shape="rect" href="_run_eval_consts_enums_8h.html" title="Contains namespace with enums and constants for implementation run evaluation." alt="" coords="291,95,466,121"/>
-<area shape="rect" title=" " alt="" coords="285,177,341,203"/>
-<area shape="rect" title=" " alt="" coords="358,259,455,285"/>
-<area shape="rect" href="_run_settings_consts_enums_8h.html" title="Contains namespace with constants and enums related to run environment and settings for run." alt="" coords="417,169,647,211"/>
-<area shape="rect" title=" " alt="" coords="507,259,557,285"/>
+<area shape="rect" title="Declares class with operator function to evaluate implementation runs across multiple architectures...." alt="" coords="5,5,208,47"/>
+<area shape="rect" title=" " alt="" coords="128,244,187,271"/>
+<area shape="rect" title=" " alt="" coords="77,169,139,196"/>
+<area shape="rect" title=" " alt="" coords="179,326,269,353"/>
+<area shape="rect" href="_run_eval_consts_enums_8h.html" title="Contains namespace with enums and constants for implementation run evaluation." alt="" coords="595,244,770,271"/>
+<area shape="rect" href="_run_results_speedups_8h.html" title="Declares class to load and store run results data including speedups from evaluation." alt="" coords="144,95,315,121"/>
+<area shape="rect" title=" " alt="" coords="717,326,773,353"/>
+<area shape="rect" title=" " alt="" coords="375,408,473,435"/>
+<area shape="rect" title=" " alt="" coords="785,408,836,435"/>
+<area shape="rect" href="_run_settings_consts_enums_8h.html" title="Contains namespace with constants and enums related to run environment and settings for run." alt="" coords="462,319,693,360"/>
+<area shape="rect" title=" " alt="" coords="261,244,336,271"/>
+<area shape="rect" href="_input_signature_8h.html" title="Declares class for defining input signature for evaluation run that consists of evaluation set number..." alt="" coords="316,169,575,196"/>
+<area shape="rect" title=" " alt="" coords="411,244,487,271"/>
+<area shape="rect" title=" " alt="" coords="512,244,571,271"/>
 </map>
 </div>
 </div><div class="textblock"><div class="dynheader">
@@ -116,7 +122,7 @@ This graph shows which files directly or indirectly include this file:</div>
 <div class="center"><img src="_evaluate_across_runs_8h__dep__incl.png" border="0" usemap="#asrc_2_run_eval_2_evaluate_across_runs_8hdep" alt=""/></div>
 <map name="asrc_2_run_eval_2_evaluate_across_runs_8hdep" id="asrc_2_run_eval_2_evaluate_across_runs_8hdep">
 <area shape="rect" title="Declares class with operator function to evaluate implementation runs across multiple architectures...." alt="" coords="132,5,335,47"/>
-<area shape="rect" href="_evaluate_across_runs_8cpp.html" title="Definition of functions in class for evaluating results across multiple runs, potentially on differen..." alt="" coords="5,95,208,136"/>
+<area shape="rect" href="_evaluate_across_runs_8cpp.html" title="Definitions of functions in class for evaluating results across multiple runs, potentially on differe..." alt="" coords="5,95,208,136"/>
 <area shape="rect" href="_evaluate_imp_results_8cpp.html" title="Function definitions for class to evaluate implementation results." alt="" coords="232,102,491,129"/>
 </map>
 </div>
@@ -125,6 +131,9 @@ This graph shows which files directly or indirectly include this file:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
 Classes</h2></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_eval_across_runs_data.html">EvalAcrossRunsData</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Structure to store data with mappings for evaluating results across runs as well as speedup headers in order.  <a href="struct_eval_across_runs_data.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_evaluate_across_runs.html">EvaluateAcrossRuns</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Class with operator function to evaluate implementation runs across multiple architectures. Outputs a file with speedup data on every run with the runs ordered from fastest to slowest.  <a href="class_evaluate_across_runs.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>

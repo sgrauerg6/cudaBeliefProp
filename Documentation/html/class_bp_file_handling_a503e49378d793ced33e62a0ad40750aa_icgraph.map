@@ -1,4 +1,4 @@
 <map id="BpFileHandling::GroundTruthDisparityFilePath" name="BpFileHandling::GroundTruthDisparityFilePath">
 <area shape="rect" id="node1" title="Get file path to ground truth disparity map." alt="" coords="259,5,465,47"/>
-<area shape="rect" id="node2" href="$class_run_imp_on_input_bp.html#ae5914e5e25b86a0eaacd0c888dee9708" title="Run and compare output disparity maps using the given optimized and single&#45;threaded stereo implementa..." alt="" coords="5,5,211,47"/>
+<area shape="rect" id="node2" href="$class_run_imp_on_input_bp.html#ae5914e5e25b86a0eaacd0c888dee9708" title="Run and compare output disparity maps using the given optimized and single&#45;threaded bp implementation..." alt="" coords="5,5,211,47"/>
 </map>

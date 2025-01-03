@@ -49,7 +49,7 @@ Constructor takes stereo set name as input, which must match the directory name 
 \end{DoxyParams}
 
 
-Definition at line 45 of file Bp\+File\+Handling.\+h.
+Definition at line 46 of file Bp\+File\+Handling.\+h.
 
 
 
@@ -65,13 +65,14 @@ Definition at line 45 of file Bp\+File\+Handling.\+h.
 Return path to use for current output disparity and then increment (to support multiple computed output disparity maps) 
 
 \begin{DoxyReturn}{Returns}
-const std\+::filesystem\+::path 
+File path for output disparity map 
 \end{DoxyReturn}
 
 
-Definition at line 67 of file Bp\+File\+Handling.\+h.
+Definition at line 71 of file Bp\+File\+Handling.\+h.
 
-Here is the caller graph for this function\+:\nopagebreak
+Here is the caller graph for this function\+:
+\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
@@ -89,13 +90,14 @@ Here is the caller graph for this function\+:\nopagebreak
 Get file path to ground truth disparity map. 
 
 \begin{DoxyReturn}{Returns}
-const std\+::filesystem\+::path 
+File path for ground truth disparity map of current stereo set 
 \end{DoxyReturn}
 
 
-Definition at line 77 of file Bp\+File\+Handling.\+h.
+Definition at line 81 of file Bp\+File\+Handling.\+h.
 
-Here is the caller graph for this function\+:\nopagebreak
+Here is the caller graph for this function\+:
+\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
@@ -113,13 +115,14 @@ Here is the caller graph for this function\+:\nopagebreak
 Return path to reference image with valid extension if found, otherwise throw filesystem error. 
 
 \begin{DoxyReturn}{Returns}
-std\+::filesystem\+::path 
+File path of reference image for current stereo set 
 \end{DoxyReturn}
 
 
-Definition at line 79 of file Bp\+File\+Handling.\+cpp.
+Definition at line 90 of file Bp\+File\+Handling.\+cpp.
 
-Here is the caller graph for this function\+:\nopagebreak
+Here is the caller graph for this function\+:
+\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
@@ -137,13 +140,14 @@ Here is the caller graph for this function\+:\nopagebreak
 Return path to test image with valid extension if found, otherwise throw filesystem error. 
 
 \begin{DoxyReturn}{Returns}
-std\+::filesystem\+::path 
+File path of test image for current stereo set 
 \end{DoxyReturn}
 
 
-Definition at line 97 of file Bp\+File\+Handling.\+cpp.
+Definition at line 115 of file Bp\+File\+Handling.\+cpp.
 
-Here is the caller graph for this function\+:\nopagebreak
+Here is the caller graph for this function\+:
+\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode

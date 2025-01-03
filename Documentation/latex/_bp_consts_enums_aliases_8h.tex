@@ -14,8 +14,7 @@ Include dependency graph for Bp\+Consts\+Enums\+Aliases.\+h\+:\nopagebreak
 \includegraphics[width=309pt]{_bp_consts_enums_aliases_8h__incl}
 \end{center}
 \end{figure}
-This graph shows which files directly or indirectly include this file\+:
-\nopagebreak
+This graph shows which files directly or indirectly include this file\+:\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
@@ -31,9 +30,11 @@ This graph shows which files directly or indirectly include this file\+:
 \begin{DoxyCompactItemize}
 \item 
 {\footnotesize template$<$Run\+Data\+\_\+ptr T$>$ }\\using \mbox{\hyperlink{namespacebeliefprop_acef942066296774fdf5d9839ac48abfd}{beliefprop\+::\+Checkerboard\+Messages}} = std\+::array$<$ std\+::array$<$ T, k\+Num\+Message\+Arrays $>$, k\+Num\+Checkerboard\+Parts $>$
-\begin{DoxyCompactList}\small\item\em Each checkerboard messages element corresponds to an array of message values could use a map/unordered map to map Message\+Arrays enum to corresponding message array but using array structure is likely faster. \end{DoxyCompactList}\item 
+\begin{DoxyCompactList}\small\item\em Define alias for array with message costs for each bp processing checkerboard.~\newline
+ Each checkerboard messages element corresponds to an array of message values and message values must be pointers to a bp data type. \end{DoxyCompactList}\item 
 {\footnotesize template$<$Run\+Data\+\_\+ptr T$>$ }\\using \mbox{\hyperlink{namespacebeliefprop_a4894af1b3cdafd201f5df63411074d91}{beliefprop\+::\+Data\+Costs\+Checkerboards}} = std\+::array$<$ T, k\+Num\+Checkerboard\+Parts $>$
-\begin{DoxyCompactList}\small\item\em Belief propagation checkerboard messages and data costs must be pointers to a bp data type define alias for two-\/element array with data costs for each bp processing checkerboard. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\begin{DoxyCompactList}\small\item\em Define alias for two-\/element array with data costs for each bp processing checkerboard.~\newline
+ Belief propagation data costs must be pointers to a bp data type. \end{DoxyCompactList}\end{DoxyCompactItemize}
 \doxysubsection*{Enumerations}
 \begin{DoxyCompactItemize}
 \item 

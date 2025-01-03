@@ -10,5 +10,5 @@ var _bp_run_utils_8h =
     [ "kMemAllocOptHeader", "_bp_run_utils_8h.html#acd0b247144b676dcad6e6edba702a1f4", null ],
     [ "kMemoryCoalescedBpDataHeader", "_bp_run_utils_8h.html#a5f60d2312e165b39e28a446bb19e89d1", null ],
     [ "kOptimizedIndexingSetting", "_bp_run_utils_8h.html#a04b1a93f3c2a19cd5d2ca8f8e36a0384", null ],
-    [ "kUseOptGPUMemManagement", "_bp_run_utils_8h.html#a242b1649163c9f2d3c26b4dad2b84c08", null ]
+    [ "kUseOptMemManagement", "_bp_run_utils_8h.html#a7ca7cb7ceef3b9c99b07bdb2e920aca8", null ]
 ];

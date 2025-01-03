@@ -20,7 +20,8 @@ Inheritance diagram for Process\+Bp$<$ T, DISP\+\_\+\+VALS, ACCELERATION $>$\+:\
 \end{figure}
 
 
-Collaboration diagram for Process\+Bp$<$ T, DISP\+\_\+\+VALS, ACCELERATION $>$\+:\nopagebreak
+Collaboration diagram for Process\+Bp$<$ T, DISP\+\_\+\+VALS, ACCELERATION $>$\+:
+\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
@@ -35,7 +36,9 @@ Collaboration diagram for Process\+Bp$<$ T, DISP\+\_\+\+VALS, ACCELERATION $>$\+
 virtual \mbox{\hyperlink{namespacerun__eval_aa8f06e41fdf48a118ecb84632df4b3cd}{run\+\_\+eval\+::\+Status}} \mbox{\hyperlink{class_process_bp_a5fb280ae72731bf1b0981d647befb26e}{Error\+Check}} (const char $\ast$file=\char`\"{}\char`\"{}, int line=0, bool abort=false) const
 \item 
 std\+::optional$<$ std\+::pair$<$ float $\ast$, \mbox{\hyperlink{class_detailed_timings}{Detailed\+Timings}}$<$ \mbox{\hyperlink{namespacebeliefprop_aec799311905a37226da8b05f8375d951}{beliefprop\+::\+Runtime\+\_\+\+Type}} $>$ $>$ $>$ \mbox{\hyperlink{class_process_bp_a0ccd2a3bcea7ef8b3129ce32667f740d}{operator()}} (const std\+::array$<$ float $\ast$, 2 $>$ \&images\+\_\+target\+\_\+device, const \mbox{\hyperlink{structbeliefprop_1_1_bp_settings}{beliefprop\+::\+Bp\+Settings}} \&alg\+\_\+settings, const std\+::array$<$ unsigned int, 2 $>$ \&width\+\_\+height\+\_\+images, T $\ast$allocated\+\_\+mem\+\_\+bp\+\_\+processing, T $\ast$allocated\+\_\+memory, const std\+::unique\+\_\+ptr$<$ \mbox{\hyperlink{class_memory_management}{Memory\+Management}}$<$ T $>$$>$ \&mem\+\_\+management\+\_\+bp\+\_\+run) const
-\begin{DoxyCompactList}\small\item\em Run the belief propagation algorithm with on a set of stereo images to generate a disparity map input is images image1\+Pixels and image1\+Pixels output is resulting\+Disparity\+Map. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\begin{DoxyCompactList}\small\item\em Run belief propagation implementation with on a set of stereo images to generate a disparity map.~\newline
+ Input is images image1\+Pixels and image1\+Pixels~\newline
+ Output is resulting\+Disparity\+Map. \end{DoxyCompactList}\end{DoxyCompactItemize}
 \doxysubsection*{Protected Attributes}
 \begin{DoxyCompactItemize}
 \item 
@@ -60,7 +63,7 @@ Abstract class to run belief propagation on target device. Some of the class fun
 \end{DoxyTemplParams}
 
 
-Definition at line 68 of file Process\+Bp.\+h.
+Definition at line 67 of file Process\+Bp.\+h.
 
 
 
@@ -74,7 +77,7 @@ Definition at line 68 of file Process\+Bp.\+h.
 
 
 
-Definition at line 70 of file Process\+Bp.\+h.
+Definition at line 69 of file Process\+Bp.\+h.
 
 
 
@@ -88,7 +91,7 @@ virtual \mbox{\hyperlink{namespacerun__eval_aa8f06e41fdf48a118ecb84632df4b3cd}{r
 
 
 
-Definition at line 72 of file Process\+Bp.\+h.
+Definition at line 73 of file Process\+Bp.\+h.
 
 \mbox{\Hypertarget{class_process_bp_a0ccd2a3bcea7ef8b3129ce32667f740d}\label{class_process_bp_a0ccd2a3bcea7ef8b3129ce32667f740d}} 
 \index{ProcessBp$<$ T, DISP\_VALS, ACCELERATION $>$@{ProcessBp$<$ T, DISP\_VALS, ACCELERATION $>$}!operator()@{operator()}}
@@ -99,7 +102,9 @@ std\+::optional$<$ std\+::pair$<$ float $\ast$, \mbox{\hyperlink{class_detailed_
 
 
 
-Run the belief propagation algorithm with on a set of stereo images to generate a disparity map input is images image1\+Pixels and image1\+Pixels output is resulting\+Disparity\+Map. 
+Run belief propagation implementation with on a set of stereo images to generate a disparity map.~\newline
+ Input is images image1\+Pixels and image1\+Pixels~\newline
+ Output is resulting\+Disparity\+Map. 
 
 
 \begin{DoxyParams}{Parameters}
@@ -121,9 +126,10 @@ std\+::optional$<$std\+::pair$<$float$\ast$, Detailed\+Timings$<$beliefprop\+::\
 \end{DoxyReturn}
 
 
-Definition at line 372 of file Process\+Bp.\+h.
+Definition at line 410 of file Process\+Bp.\+h.
 
-Here is the call graph for this function\+:\nopagebreak
+Here is the call graph for this function\+:
+\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
@@ -142,7 +148,7 @@ const \mbox{\hyperlink{class_parallel_params}{Parallel\+Params}}\& \mbox{\hyperl
 
 
 
-Definition at line 96 of file Process\+Bp.\+h.
+Definition at line 103 of file Process\+Bp.\+h.
 
 
 

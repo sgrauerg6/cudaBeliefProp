@@ -135,7 +135,7 @@ class RunBpOnStereoSet&lt; T, DISP_VALS, ACCELERATION &gt;</h3>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="_run_bp_on_stereo_set_8h_source.html#l00091">91</a> of file <a class="el" href="_run_bp_on_stereo_set_8h_source.html">RunBpOnStereoSet.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_run_bp_on_stereo_set_8h_source.html#l00093">93</a> of file <a class="el" href="_run_bp_on_stereo_set_8h_source.html">RunBpOnStereoSet.h</a>.</p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
 <a id="a6c70f066d355522c0c01f896d12b3970"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a6c70f066d355522c0c01f896d12b3970">&#9670;&nbsp;</a></span>BpRunDescription()</h2>
@@ -163,7 +163,7 @@ template&lt;RunData_t T, unsigned int DISP_VALS, run_environment::AccSetting ACC
 </div><div class="memdoc">
 
 <p>Pure virtual function to return run description corresponding to target acceleration. </p>
-<dl class="section return"><dt>Returns</dt><dd>std::string </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>Description of run using specified acceleration </dd></dl>
 
 <p>Implemented in <a class="el" href="class_run_bp_on_stereo_set_single_thread_c_p_u.html#af0039d2461d5479520081a7fd65fd928">RunBpOnStereoSetSingleThreadCPU&lt; T, DISP_VALS, ACCELERATION &gt;</a>, <a class="el" href="class_run_bp_on_stereo_set_c_u_d_a.html#a089aaf8fb93fb15283c75171b6c4792e">RunBpOnStereoSetCUDA&lt; T, DISP_VALS, ACCELERATION &gt;</a>, and <a class="el" href="class_run_bp_on_stereo_set_optimized_c_p_u.html#a78d05e0c1d14367f9e5c951f49f486df">RunBpOnStereoSetOptimizedCPU&lt; T, DISP_VALS, ACCELERATION &gt;</a>.</p>
 
@@ -220,7 +220,7 @@ template&lt;RunData_t T, unsigned int DISP_VALS, run_environment::AccSetting ACC
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>std::optional&lt;beliefprop::BpRunOutput&gt; </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>Output from belief propagation run or null output if error </dd></dl>
 
 <p>Implemented in <a class="el" href="class_run_bp_on_stereo_set_single_thread_c_p_u.html#adb4777dae1af57ab138bc10615074020">RunBpOnStereoSetSingleThreadCPU&lt; T, DISP_VALS, ACCELERATION &gt;</a>, <a class="el" href="class_run_bp_on_stereo_set_c_u_d_a.html#adbc8134aa5f34a8f396778fc1e73af7d">RunBpOnStereoSetCUDA&lt; T, DISP_VALS, ACCELERATION &gt;</a>, and <a class="el" href="class_run_bp_on_stereo_set_optimized_c_p_u.html#ad134068d69c4c87272a8b22537df88da">RunBpOnStereoSetOptimizedCPU&lt; T, DISP_VALS, ACCELERATION &gt;</a>.</p>
 
@@ -277,9 +277,9 @@ template&lt;RunData_t T, unsigned int DISP_VALS, run_environment::AccSetting ACC
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>std::optional&lt;beliefprop::BpRunOutput&gt; </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>Output from running belief propagation on stereo set or null if error in run </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_run_bp_on_stereo_set_8h_source.html#l00133">133</a> of file <a class="el" href="_run_bp_on_stereo_set_8h_source.html">RunBpOnStereoSet.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_run_bp_on_stereo_set_8h_source.html#l00138">138</a> of file <a class="el" href="_run_bp_on_stereo_set_8h_source.html">RunBpOnStereoSet.h</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">

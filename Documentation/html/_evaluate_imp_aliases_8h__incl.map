@@ -1,20 +1,21 @@
 <map id="src/RunEval/EvaluateImpAliases.h" name="src/RunEval/EvaluateImpAliases.h">
-<area shape="rect" id="node1" title="Header for defining aliases for storing run results and evaluating implementations." alt="" coords="364,5,606,32"/>
-<area shape="rect" id="node2" title=" " alt="" coords="314,319,365,345"/>
-<area shape="rect" id="node3" title=" " alt="" coords="107,80,231,107"/>
-<area shape="rect" id="node4" title=" " alt="" coords="629,237,685,263"/>
-<area shape="rect" id="node5" title=" " alt="" coords="26,155,88,181"/>
-<area shape="rect" id="node6" title=" " alt="" coords="422,80,482,107"/>
-<area shape="rect" id="node7" title=" " alt="" coords="620,155,678,181"/>
-<area shape="rect" id="node8" title=" " alt="" coords="470,155,545,181"/>
-<area shape="rect" id="node9" href="$_run_data_8h.html" title="Declares class to store headers with data corresponding to current program run and evaluation." alt="" coords="306,80,397,107"/>
-<area shape="rect" id="node13" href="$_input_signature_8h.html" title="Declares class for defining input signature for evaluation run that consists of evaluation set number..." alt="" coords="670,80,929,107"/>
-<area shape="rect" id="node17" href="$_run_eval_consts_enums_8h.html" title="Contains namespace with enums and constants for implementation run evaluation." alt="" coords="886,155,1118,181"/>
-<area shape="rect" id="node10" title=" " alt="" coords="113,155,198,181"/>
-<area shape="rect" id="node11" title=" " alt="" coords="222,155,302,181"/>
-<area shape="rect" id="node12" title=" " alt="" coords="378,155,446,181"/>
-<area shape="rect" id="node14" title=" " alt="" coords="1004,319,1102,345"/>
-<area shape="rect" id="node15" title=" " alt="" coords="786,155,862,181"/>
-<area shape="rect" id="node16" title=" " alt="" coords="702,155,761,181"/>
-<area shape="rect" id="node18" href="$_run_settings_consts_enums_8h.html" title="Contains namespace with constants and enums related to run environment and settings for run." alt="" coords="784,229,1015,271"/>
+<area shape="rect" id="node1" title="Header for defining aliases for storing run results and evaluating implementations." alt="" coords="300,5,542,32"/>
+<area shape="rect" id="node2" title=" " alt="" coords="478,319,529,345"/>
+<area shape="rect" id="node3" title=" " alt="" coords="23,80,147,107"/>
+<area shape="rect" id="node4" title=" " alt="" coords="216,237,272,263"/>
+<area shape="rect" id="node5" title=" " alt="" coords="199,155,262,181"/>
+<area shape="rect" id="node6" title=" " alt="" coords="342,80,402,107"/>
+<area shape="rect" id="node7" title=" " alt="" coords="741,155,800,181"/>
+<area shape="rect" id="node8" title=" " alt="" coords="642,155,717,181"/>
+<area shape="rect" id="node9" href="$_run_data_8h.html" title="Declares class to store headers with data corresponding to current program run and evaluation." alt="" coords="426,80,517,107"/>
+<area shape="rect" id="node13" href="$_input_signature_8h.html" title="Declares class for defining input signature for evaluation run that consists of evaluation set number..." alt="" coords="724,80,982,107"/>
+<area shape="rect" id="node17" href="$_run_eval_consts_enums_8h.html" title="Contains namespace with enums and constants for implementation run evaluation." alt="" coords="1008,155,1240,181"/>
+<area shape="rect" id="node10" title=" " alt="" coords="429,155,514,181"/>
+<area shape="rect" id="node11" title=" " alt="" coords="538,155,618,181"/>
+<area shape="rect" id="node12" title=" " alt="" coords="286,155,354,181"/>
+<area shape="rect" id="node14" title=" " alt="" coords="1158,319,1255,345"/>
+<area shape="rect" id="node15" title=" " alt="" coords="907,155,983,181"/>
+<area shape="rect" id="node16" title=" " alt="" coords="824,155,882,181"/>
+<area shape="rect" id="node18" title=" " alt="" coords="1078,237,1169,263"/>
+<area shape="rect" id="node19" href="$_run_settings_consts_enums_8h.html" title="Contains namespace with constants and enums related to run environment and settings for run." alt="" coords="823,229,1054,271"/>
 </map>

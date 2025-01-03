@@ -24,8 +24,6 @@ void \mbox{\hyperlink{class_run_data_a4b8772e460a7cc3b4dd0ebc3569a6832}{Add\+Dat
 \begin{DoxyCompactList}\small\item\em Add unsigned int data with header describing added data. \end{DoxyCompactList}\item 
 const std\+::vector$<$ std\+::string $>$ \& \mbox{\hyperlink{class_run_data_a4c749ab4c1dd6fd5af50b40591094efe}{Headers\+In\+Order}} () const
 \begin{DoxyCompactList}\small\item\em Return data headers in order. \end{DoxyCompactList}\item 
-const std\+::map$<$ std\+::string, std\+::variant$<$ unsigned int, double, bool, std\+::string $>$ $>$ \& \mbox{\hyperlink{class_run_data_a4725943bb65e991fe7ef3884d36eaa82}{Get\+All\+Data}} () const
-\begin{DoxyCompactList}\small\item\em Return data mapped to corresponding headers. \end{DoxyCompactList}\item 
 bool \mbox{\hyperlink{class_run_data_abe8eac347c5ef31f0ad5aa75c112945d}{Is\+Data}} (const std\+::string\+\_\+view header) const
 \begin{DoxyCompactList}\small\item\em Return whether or not there is data corresponding to a specific header. \end{DoxyCompactList}\item 
 std\+::string \mbox{\hyperlink{class_run_data_addf651aed946231dfc30634e42b3050c}{Get\+Data\+As\+Str}} (const std\+::string\+\_\+view header) const
@@ -72,7 +70,7 @@ Add boolean data with header describing added data.
 \end{DoxyParams}
 
 
-Definition at line 70 of file Run\+Data.\+cpp.
+Definition at line 80 of file Run\+Data.\+cpp.
 
 \mbox{\Hypertarget{class_run_data_a895a86194e41ce3ff8ce2212405eb233}\label{class_run_data_a895a86194e41ce3ff8ce2212405eb233}} 
 \index{RunData@{RunData}!AddDataWHeader@{AddDataWHeader}}
@@ -93,7 +91,7 @@ Add const char$\ast$ data with header describing added data.
 \end{DoxyParams}
 
 
-Definition at line 56 of file Run\+Data.\+cpp.
+Definition at line 60 of file Run\+Data.\+cpp.
 
 \mbox{\Hypertarget{class_run_data_ae2642121388bb8f32b95eeeb498c7401}\label{class_run_data_ae2642121388bb8f32b95eeeb498c7401}} 
 \index{RunData@{RunData}!AddDataWHeader@{AddDataWHeader}}
@@ -114,9 +112,10 @@ Add string data with header describing added data.
 \end{DoxyParams}
 
 
-Definition at line 49 of file Run\+Data.\+cpp.
+Definition at line 50 of file Run\+Data.\+cpp.
 
-Here is the caller graph for this function\+:\nopagebreak
+Here is the caller graph for this function\+:
+\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
@@ -142,7 +141,7 @@ Add double data with header describing added data.
 \end{DoxyParams}
 
 
-Definition at line 63 of file Run\+Data.\+cpp.
+Definition at line 70 of file Run\+Data.\+cpp.
 
 \mbox{\Hypertarget{class_run_data_a4b8772e460a7cc3b4dd0ebc3569a6832}\label{class_run_data_a4b8772e460a7cc3b4dd0ebc3569a6832}} 
 \index{RunData@{RunData}!AddDataWHeader@{AddDataWHeader}}
@@ -163,7 +162,7 @@ Add unsigned int data with header describing added data.
 \end{DoxyParams}
 
 
-Definition at line 77 of file Run\+Data.\+cpp.
+Definition at line 90 of file Run\+Data.\+cpp.
 
 \mbox{\Hypertarget{class_run_data_a938dd181b583b343480ad9294efff7fb}\label{class_run_data_a938dd181b583b343480ad9294efff7fb}} 
 \index{RunData@{RunData}!AppendData@{AppendData}}
@@ -182,7 +181,7 @@ Append current \mbox{\hyperlink{class_run_data}{Run\+Data}} with input \mbox{\hy
 \end{DoxyParams}
 
 
-Definition at line 84 of file Run\+Data.\+cpp.
+Definition at line 100 of file Run\+Data.\+cpp.
 
 Here is the call graph for this function\+:\nopagebreak
 \begin{figure}[H]
@@ -191,30 +190,14 @@ Here is the call graph for this function\+:\nopagebreak
 \includegraphics[width=350pt]{class_run_data_a938dd181b583b343480ad9294efff7fb_cgraph}
 \end{center}
 \end{figure}
-Here is the caller graph for this function\+:\nopagebreak
+Here is the caller graph for this function\+:
+\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
 \includegraphics[width=350pt]{class_run_data_a938dd181b583b343480ad9294efff7fb_icgraph}
 \end{center}
 \end{figure}
-\mbox{\Hypertarget{class_run_data_a4725943bb65e991fe7ef3884d36eaa82}\label{class_run_data_a4725943bb65e991fe7ef3884d36eaa82}} 
-\index{RunData@{RunData}!GetAllData@{GetAllData}}
-\index{GetAllData@{GetAllData}!RunData@{RunData}}
-\doxysubsubsection{\texorpdfstring{GetAllData()}{GetAllData()}}
-{\footnotesize\ttfamily const std\+::map$<$std\+::string, std\+::variant$<$unsigned int, double, bool, std\+::string$>$ $>$\& Run\+Data\+::\+Get\+All\+Data (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
-
-
-
-Return data mapped to corresponding headers. 
-
-\begin{DoxyReturn}{Returns}
-const std\+::map$<$std\+::string, std\+::variant$<$unsigned int, double, bool, std\+::string$>$$>$\& 
-\end{DoxyReturn}
-
-
-Definition at line 96 of file Run\+Data.\+h.
-
 \mbox{\Hypertarget{class_run_data_afbe69aa62856cc330c3848b712e32ea7}\label{class_run_data_afbe69aa62856cc330c3848b712e32ea7}} 
 \index{RunData@{RunData}!GetDataAsBool@{GetDataAsBool}}
 \index{GetDataAsBool@{GetDataAsBool}!RunData@{RunData}}
@@ -231,13 +214,14 @@ Get data corresponding to header as boolean Return null if data corresponds to a
 \hline
 \end{DoxyParams}
 \begin{DoxyReturn}{Returns}
-std\+::optional$<$double$>$ 
+Data corresponding to header as bool if data is bool, null if not 
 \end{DoxyReturn}
 
 
-Definition at line 144 of file Run\+Data.\+cpp.
+Definition at line 166 of file Run\+Data.\+cpp.
 
-Here is the caller graph for this function\+:\nopagebreak
+Here is the caller graph for this function\+:
+\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
@@ -260,13 +244,14 @@ Get data corresponding to header as double Return null if data corresponds to a 
 \hline
 \end{DoxyParams}
 \begin{DoxyReturn}{Returns}
-std\+::optional$<$double$>$ 
+Data corresponding to header as double if data is double, null if not 
 \end{DoxyReturn}
 
 
-Definition at line 124 of file Run\+Data.\+cpp.
+Definition at line 141 of file Run\+Data.\+cpp.
 
-Here is the caller graph for this function\+:\nopagebreak
+Here is the caller graph for this function\+:
+\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
@@ -289,13 +274,14 @@ Get data corresponding to header as a string Returns data as string regardless o
 \hline
 \end{DoxyParams}
 \begin{DoxyReturn}{Returns}
-std\+::string 
+Data corresponding to header as a string 
 \end{DoxyReturn}
 
 
-Definition at line 103 of file Run\+Data.\+cpp.
+Definition at line 119 of file Run\+Data.\+cpp.
 
-Here is the caller graph for this function\+:\nopagebreak
+Here is the caller graph for this function\+:
+\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
@@ -318,13 +304,14 @@ Get data corresponding to header as unsigned int Return null if data corresponds
 \hline
 \end{DoxyParams}
 \begin{DoxyReturn}{Returns}
-std\+::optional$<$double$>$ 
+Data corresponding to header as unsigned int if data is unsigned int, null if not 
 \end{DoxyReturn}
 
 
-Definition at line 134 of file Run\+Data.\+cpp.
+Definition at line 154 of file Run\+Data.\+cpp.
 
-Here is the caller graph for this function\+:\nopagebreak
+Here is the caller graph for this function\+:
+\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
@@ -342,13 +329,14 @@ Here is the caller graph for this function\+:\nopagebreak
 Return data headers in order. 
 
 \begin{DoxyReturn}{Returns}
-const std\+::vector$<$std\+::string$>$\& 
+Data headers in order 
 \end{DoxyReturn}
 
 
 Definition at line 89 of file Run\+Data.\+h.
 
-Here is the caller graph for this function\+:\nopagebreak
+Here is the caller graph for this function\+:
+\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
@@ -371,13 +359,11 @@ Return whether or not there is data corresponding to a specific header.
 \hline
 \end{DoxyParams}
 \begin{DoxyReturn}{Returns}
-true 
-
-false 
+true if there is run data corresponding to header, false if not 
 \end{DoxyReturn}
 
 
-Definition at line 106 of file Run\+Data.\+h.
+Definition at line 97 of file Run\+Data.\+h.
 
 
 
@@ -400,11 +386,11 @@ Overloaded $<$$<$ operator for output to stream.
 \hline
 \end{DoxyParams}
 \begin{DoxyReturn}{Returns}
-std\+::ostream\& 
+Output stream with run data added 
 \end{DoxyReturn}
 
 
-Definition at line 185 of file Run\+Data.\+h.
+Definition at line 178 of file Run\+Data.\+h.
 
 
 

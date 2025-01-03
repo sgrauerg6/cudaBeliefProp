@@ -109,46 +109,47 @@ $(document).ready(function(){initNavTree('_utility_functs_8h_source.html',''); i
 <div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="_run_type_constraints_8h.html">RunEval/RunTypeConstraints.h</a>&quot;</span></div>
 <div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160; </div>
 <div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;<span class="preprocessor">#if defined(OPTIMIZED_CUDA_RUN)</span></div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;<span class="comment">//added in front of function header to indicate that function is device function to be processed on GPU</span></div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;<span class="preprocessor">#define ARCHITECTURE_ADDITION __device__</span></div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;<span class="preprocessor">#else</span></div>
-<div class="line"><a name="l00036"></a><span class="lineno"><a class="line" href="_utility_functs_8h.html#a27d46e82335417157a0940d32a3fabfc">   36</a></span>&#160;<span class="preprocessor">#define ARCHITECTURE_ADDITION</span></div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;<span class="preprocessor">#endif </span><span class="comment">//OPTIMIZED_CUDA_RUN</span></div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160; </div>
-<div class="line"><a name="l00042"></a><span class="lineno"><a class="line" href="namespaceutil__functs.html">   42</a></span>&#160;<span class="keyword">namespace </span><a class="code" href="namespaceutil__functs.html">util_functs</a> {</div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160; </div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;<span class="keyword">template</span>&lt;RunData_t T, RunData_t U&gt;</div>
-<div class="line"><a name="l00053"></a><span class="lineno"><a class="line" href="namespaceutil__functs.html#a6a1aba89f14c521198e0f8a0640f7e00">   53</a></span>&#160;<a class="code" href="_utility_functs_8h.html#a27d46e82335417157a0940d32a3fabfc">ARCHITECTURE_ADDITION</a> <span class="keyword">inline</span> U <a class="code" href="namespaceutil__functs.html#a6a1aba89f14c521198e0f8a0640f7e00">ConvertValToDifferentDataTypeIfNeeded</a>(T data) {</div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;  <span class="keywordflow">return</span> data; <span class="comment">//by default assume same data type and just return data</span></div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;}</div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160; </div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;<span class="keyword">template</span>&lt;RunData_t T&gt;</div>
-<div class="line"><a name="l00058"></a><span class="lineno"><a class="line" href="namespaceutil__functs.html#af509aad8fbf0c563f8880ac1f1572b99">   58</a></span>&#160;<a class="code" href="_utility_functs_8h.html#a27d46e82335417157a0940d32a3fabfc">ARCHITECTURE_ADDITION</a> <span class="keyword">inline</span> T <a class="code" href="namespaceutil__functs.html#af509aad8fbf0c563f8880ac1f1572b99">ZeroVal</a>() {</div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;  <span class="keywordflow">return</span> (T)0.0;</div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;}</div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160; </div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;<span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;requires std::is_arithmetic_v&lt;T&gt;</div>
-<div class="line"><a name="l00064"></a><span class="lineno"><a class="line" href="namespaceutil__functs.html#a152949893a393787be955df9fb4a638d">   64</a></span>&#160;<a class="code" href="_utility_functs_8h.html#a27d46e82335417157a0940d32a3fabfc">ARCHITECTURE_ADDITION</a> <span class="keyword">inline</span> T <a class="code" href="namespaceutil__functs.html#a152949893a393787be955df9fb4a638d">GetMin</a>(T val1, T val2) {</div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;  <span class="keywordflow">return</span> ((val1 &lt; val2) ? val1 : val2);</div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;}</div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160; </div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;<span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;requires std::is_arithmetic_v&lt;T&gt;</div>
-<div class="line"><a name="l00070"></a><span class="lineno"><a class="line" href="namespaceutil__functs.html#aca34e7c44469367a700c4e23d2637cbb">   70</a></span>&#160;<a class="code" href="_utility_functs_8h.html#a27d46e82335417157a0940d32a3fabfc">ARCHITECTURE_ADDITION</a> <span class="keyword">inline</span> T <a class="code" href="namespaceutil__functs.html#aca34e7c44469367a700c4e23d2637cbb">GetMax</a>(T val1, T val2) {</div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;  <span class="keywordflow">return</span> ((val1 &gt; val2) ? val1 : val2);</div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;}</div>
-<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160; </div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;};</div>
-<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160; </div>
-<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;<span class="preprocessor">#endif </span><span class="comment">//UTILITY_FUNCTS_H_</span></div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;<span class="comment">//added in front of function header to indicate that function is device</span></div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;<span class="comment">//function to be processed on GPU</span></div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;<span class="preprocessor">#define ARCHITECTURE_ADDITION __device__</span></div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;<span class="preprocessor">#else</span></div>
+<div class="line"><a name="l00037"></a><span class="lineno"><a class="line" href="_utility_functs_8h.html#a27d46e82335417157a0940d32a3fabfc">   37</a></span>&#160;<span class="preprocessor">#define ARCHITECTURE_ADDITION</span></div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;<span class="preprocessor">#endif </span><span class="comment">//OPTIMIZED_CUDA_RUN</span></div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160; </div>
+<div class="line"><a name="l00043"></a><span class="lineno"><a class="line" href="namespaceutil__functs.html">   43</a></span>&#160;<span class="keyword">namespace </span><a class="code" href="namespaceutil__functs.html">util_functs</a> {</div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160; </div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;<span class="keyword">template</span>&lt;RunData_t T, RunData_t U&gt;</div>
+<div class="line"><a name="l00054"></a><span class="lineno"><a class="line" href="namespaceutil__functs.html#a6a1aba89f14c521198e0f8a0640f7e00">   54</a></span>&#160;<a class="code" href="_utility_functs_8h.html#a27d46e82335417157a0940d32a3fabfc">ARCHITECTURE_ADDITION</a> <span class="keyword">inline</span> U <a class="code" href="namespaceutil__functs.html#a6a1aba89f14c521198e0f8a0640f7e00">ConvertValToDifferentDataTypeIfNeeded</a>(T data) {</div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;  <span class="keywordflow">return</span> data; <span class="comment">//by default assume same data type and just return data</span></div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;}</div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160; </div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;<span class="keyword">template</span>&lt;RunData_t T&gt;</div>
+<div class="line"><a name="l00059"></a><span class="lineno"><a class="line" href="namespaceutil__functs.html#af509aad8fbf0c563f8880ac1f1572b99">   59</a></span>&#160;<a class="code" href="_utility_functs_8h.html#a27d46e82335417157a0940d32a3fabfc">ARCHITECTURE_ADDITION</a> <span class="keyword">inline</span> T <a class="code" href="namespaceutil__functs.html#af509aad8fbf0c563f8880ac1f1572b99">ZeroVal</a>() {</div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;  <span class="keywordflow">return</span> (T)0.0;</div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;}</div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160; </div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;<span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;requires std::is_arithmetic_v&lt;T&gt;</div>
+<div class="line"><a name="l00065"></a><span class="lineno"><a class="line" href="namespaceutil__functs.html#a152949893a393787be955df9fb4a638d">   65</a></span>&#160;<a class="code" href="_utility_functs_8h.html#a27d46e82335417157a0940d32a3fabfc">ARCHITECTURE_ADDITION</a> <span class="keyword">inline</span> T <a class="code" href="namespaceutil__functs.html#a152949893a393787be955df9fb4a638d">GetMin</a>(T val1, T val2) {</div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;  <span class="keywordflow">return</span> ((val1 &lt; val2) ? val1 : val2);</div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;}</div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160; </div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;<span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;requires std::is_arithmetic_v&lt;T&gt;</div>
+<div class="line"><a name="l00071"></a><span class="lineno"><a class="line" href="namespaceutil__functs.html#aca34e7c44469367a700c4e23d2637cbb">   71</a></span>&#160;<a class="code" href="_utility_functs_8h.html#a27d46e82335417157a0940d32a3fabfc">ARCHITECTURE_ADDITION</a> <span class="keyword">inline</span> T <a class="code" href="namespaceutil__functs.html#aca34e7c44469367a700c4e23d2637cbb">GetMax</a>(T val1, T val2) {</div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;  <span class="keywordflow">return</span> ((val1 &gt; val2) ? val1 : val2);</div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;}</div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160; </div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;};</div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160; </div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;<span class="preprocessor">#endif </span><span class="comment">//UTILITY_FUNCTS_H_</span></div>
 <div class="ttc" id="a_run_type_constraints_8h_html"><div class="ttname"><a href="_run_type_constraints_8h.html">RunTypeConstraints.h</a></div><div class="ttdoc">Define constraints for data type in processing.</div></div>
-<div class="ttc" id="a_utility_functs_8h_html_a27d46e82335417157a0940d32a3fabfc"><div class="ttname"><a href="_utility_functs_8h.html#a27d46e82335417157a0940d32a3fabfc">ARCHITECTURE_ADDITION</a></div><div class="ttdeci">#define ARCHITECTURE_ADDITION</div><div class="ttdef"><b>Definition:</b> <a href="_utility_functs_8h_source.html#l00036">UtilityFuncts.h:36</a></div></div>
-<div class="ttc" id="anamespaceutil__functs_html"><div class="ttname"><a href="namespaceutil__functs.html">util_functs</a></div><div class="ttdoc">Namespace with utility functions for implementation.</div><div class="ttdef"><b>Definition:</b> <a href="_utility_functs_8h_source.html#l00042">UtilityFuncts.h:42</a></div></div>
-<div class="ttc" id="anamespaceutil__functs_html_a152949893a393787be955df9fb4a638d"><div class="ttname"><a href="namespaceutil__functs.html#a152949893a393787be955df9fb4a638d">util_functs::GetMin</a></div><div class="ttdeci">requires std::is_arithmetic_v&lt; T &gt; ARCHITECTURE_ADDITION T GetMin(T val1, T val2)</div><div class="ttdef"><b>Definition:</b> <a href="_utility_functs_8h_source.html#l00064">UtilityFuncts.h:64</a></div></div>
-<div class="ttc" id="anamespaceutil__functs_html_a6a1aba89f14c521198e0f8a0640f7e00"><div class="ttname"><a href="namespaceutil__functs.html#a6a1aba89f14c521198e0f8a0640f7e00">util_functs::ConvertValToDifferentDataTypeIfNeeded</a></div><div class="ttdeci">ARCHITECTURE_ADDITION U ConvertValToDifferentDataTypeIfNeeded(T data)</div><div class="ttdoc">T is input type, U is output type.</div><div class="ttdef"><b>Definition:</b> <a href="_utility_functs_8h_source.html#l00053">UtilityFuncts.h:53</a></div></div>
-<div class="ttc" id="anamespaceutil__functs_html_aca34e7c44469367a700c4e23d2637cbb"><div class="ttname"><a href="namespaceutil__functs.html#aca34e7c44469367a700c4e23d2637cbb">util_functs::GetMax</a></div><div class="ttdeci">requires std::is_arithmetic_v&lt; T &gt; ARCHITECTURE_ADDITION T GetMax(T val1, T val2)</div><div class="ttdef"><b>Definition:</b> <a href="_utility_functs_8h_source.html#l00070">UtilityFuncts.h:70</a></div></div>
-<div class="ttc" id="anamespaceutil__functs_html_af509aad8fbf0c563f8880ac1f1572b99"><div class="ttname"><a href="namespaceutil__functs.html#af509aad8fbf0c563f8880ac1f1572b99">util_functs::ZeroVal</a></div><div class="ttdeci">ARCHITECTURE_ADDITION T ZeroVal()</div><div class="ttdef"><b>Definition:</b> <a href="_utility_functs_8h_source.html#l00058">UtilityFuncts.h:58</a></div></div>
+<div class="ttc" id="a_utility_functs_8h_html_a27d46e82335417157a0940d32a3fabfc"><div class="ttname"><a href="_utility_functs_8h.html#a27d46e82335417157a0940d32a3fabfc">ARCHITECTURE_ADDITION</a></div><div class="ttdeci">#define ARCHITECTURE_ADDITION</div><div class="ttdef"><b>Definition:</b> <a href="_utility_functs_8h_source.html#l00037">UtilityFuncts.h:37</a></div></div>
+<div class="ttc" id="anamespaceutil__functs_html"><div class="ttname"><a href="namespaceutil__functs.html">util_functs</a></div><div class="ttdoc">Namespace with utility functions for implementation.</div><div class="ttdef"><b>Definition:</b> <a href="_utility_functs_8h_source.html#l00043">UtilityFuncts.h:43</a></div></div>
+<div class="ttc" id="anamespaceutil__functs_html_a152949893a393787be955df9fb4a638d"><div class="ttname"><a href="namespaceutil__functs.html#a152949893a393787be955df9fb4a638d">util_functs::GetMin</a></div><div class="ttdeci">requires std::is_arithmetic_v&lt; T &gt; ARCHITECTURE_ADDITION T GetMin(T val1, T val2)</div><div class="ttdef"><b>Definition:</b> <a href="_utility_functs_8h_source.html#l00065">UtilityFuncts.h:65</a></div></div>
+<div class="ttc" id="anamespaceutil__functs_html_a6a1aba89f14c521198e0f8a0640f7e00"><div class="ttname"><a href="namespaceutil__functs.html#a6a1aba89f14c521198e0f8a0640f7e00">util_functs::ConvertValToDifferentDataTypeIfNeeded</a></div><div class="ttdeci">ARCHITECTURE_ADDITION U ConvertValToDifferentDataTypeIfNeeded(T data)</div><div class="ttdoc">T is input type, U is output type.</div><div class="ttdef"><b>Definition:</b> <a href="_utility_functs_8h_source.html#l00054">UtilityFuncts.h:54</a></div></div>
+<div class="ttc" id="anamespaceutil__functs_html_aca34e7c44469367a700c4e23d2637cbb"><div class="ttname"><a href="namespaceutil__functs.html#aca34e7c44469367a700c4e23d2637cbb">util_functs::GetMax</a></div><div class="ttdeci">requires std::is_arithmetic_v&lt; T &gt; ARCHITECTURE_ADDITION T GetMax(T val1, T val2)</div><div class="ttdef"><b>Definition:</b> <a href="_utility_functs_8h_source.html#l00071">UtilityFuncts.h:71</a></div></div>
+<div class="ttc" id="anamespaceutil__functs_html_af509aad8fbf0c563f8880ac1f1572b99"><div class="ttname"><a href="namespaceutil__functs.html#af509aad8fbf0c563f8880ac1f1572b99">util_functs::ZeroVal</a></div><div class="ttdeci">ARCHITECTURE_ADDITION T ZeroVal()</div><div class="ttdef"><b>Definition:</b> <a href="_utility_functs_8h_source.html#l00059">UtilityFuncts.h:59</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->

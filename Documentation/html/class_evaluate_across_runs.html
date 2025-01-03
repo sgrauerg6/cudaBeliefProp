@@ -96,17 +96,18 @@ $(document).ready(function(){initNavTree('class_evaluate_across_runs.html',''); 
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a8e9d81f0baa20d5ed9d3e0699d8e62a3"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_evaluate_across_runs.html#a8e9d81f0baa20d5ed9d3e0699d8e62a3">operator()</a> (const std::filesystem::path &amp;imp_results_file_path, const std::vector&lt; std::string &gt; &amp;eval_across_runs_top_text, const std::vector&lt; std::string &gt; &amp;eval_across_runs_in_params_show, const std::vector&lt; std::string &gt; &amp;speedup_headers) const</td></tr>
-<tr class="memdesc:a8e9d81f0baa20d5ed9d3e0699d8e62a3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Evaluate all runs with results in specified file path and generate csv file with evaluation of results across runs generated file starts with specified top text and includes specified input parameters for each input as well as the optimized implementation runtime for each run on each input.  <a href="class_evaluate_across_runs.html#a8e9d81f0baa20d5ed9d3e0699d8e62a3">More...</a><br /></td></tr>
-<tr class="separator:a8e9d81f0baa20d5ed9d3e0699d8e62a3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6343ee728b3430154d1d3746bfe0914f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_evaluate_across_runs.html#a6343ee728b3430154d1d3746bfe0914f">operator()</a> (const std::filesystem::path &amp;imp_results_file_path, const std::vector&lt; std::string &gt; &amp;eval_across_runs_top_text, const std::vector&lt; std::string &gt; &amp;eval_across_runs_in_params_show) const</td></tr>
+<tr class="memdesc:a6343ee728b3430154d1d3746bfe0914f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Evaluate all runs with results in specified file path and generate csv file with evaluation of results across runs.<br  />
+ Generated file starts with specified top text and includes specified input parameters for each input as well as the optimized implementation runtime for each run on each input.  <a href="class_evaluate_across_runs.html#a6343ee728b3430154d1d3746bfe0914f">More...</a><br /></td></tr>
+<tr class="separator:a6343ee728b3430154d1d3746bfe0914f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Class with operator function to evaluate implementation runs across multiple architectures. Outputs a file with speedup data on every run with the runs ordered from fastest to slowest. </p>
 
-<p class="definition">Definition at line <a class="el" href="_evaluate_across_runs_8h_source.html#l00042">42</a> of file <a class="el" href="_evaluate_across_runs_8h_source.html">EvaluateAcrossRuns.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_evaluate_across_runs_8h_source.html#l00054">54</a> of file <a class="el" href="_evaluate_across_runs_8h_source.html">EvaluateAcrossRuns.h</a>.</p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
-<a id="a8e9d81f0baa20d5ed9d3e0699d8e62a3"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a8e9d81f0baa20d5ed9d3e0699d8e62a3">&#9670;&nbsp;</a></span>operator()()</h2>
+<a id="a6343ee728b3430154d1d3746bfe0914f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6343ee728b3430154d1d3746bfe0914f">&#9670;&nbsp;</a></span>operator()()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -127,13 +128,7 @@ Public Member Functions</h2></td></tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">const std::vector&lt; std::string &gt; &amp;&#160;</td>
-          <td class="paramname"><em>eval_across_runs_in_params_show</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const std::vector&lt; std::string &gt; &amp;&#160;</td>
-          <td class="paramname"><em>speedup_headers</em>&#160;</td>
+          <td class="paramname"><em>eval_across_runs_in_params_show</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -143,13 +138,13 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Evaluate all runs with results in specified file path and generate csv file with evaluation of results across runs generated file starts with specified top text and includes specified input parameters for each input as well as the optimized implementation runtime for each run on each input. </p>
+<p>Evaluate all runs with results in specified file path and generate csv file with evaluation of results across runs.<br  />
+ Generated file starts with specified top text and includes specified input parameters for each input as well as the optimized implementation runtime for each run on each input. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">imp_results_file_path</td><td></td></tr>
     <tr><td class="paramname">eval_across_runs_top_text</td><td></td></tr>
     <tr><td class="paramname">eval_across_runs_in_params_show</td><td></td></tr>
-    <tr><td class="paramname">speedup_headers</td><td></td></tr>
   </table>
   </dd>
 </dl>

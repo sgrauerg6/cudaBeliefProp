@@ -15,7 +15,7 @@ Class to adjust and retrieve settings corresponding to CPU threads pinned to soc
 void \mbox{\hyperlink{class_c_p_u_threads_pinned_to_socket_afb475025104e2e08b3e5b3a0f8e89780}{operator()}} (bool cpu\+\_\+threads\+\_\+pinned) const
 \begin{DoxyCompactList}\small\item\em Adjust setting to specify that CPU threads to be pinned to socket or not. If true, set CPU threads to be pinned to socket via OMP\+\_\+\+PLACES and OMP\+\_\+\+PROC\+\_\+\+BIND envionmental variable settings. If false, set OMP\+\_\+\+PLACES and OMP\+\_\+\+PROC\+\_\+\+BIND environment variables to be blank. Currently commented out since it doesn\textquotesingle{}t seem to have any effect. \end{DoxyCompactList}\item 
 \mbox{\hyperlink{class_run_data}{Run\+Data}} \mbox{\hyperlink{class_c_p_u_threads_pinned_to_socket_ad5b45b526001852d11573c0a564f85d8}{Settings\+As\+Run\+Data}} () const
-\begin{DoxyCompactList}\small\item\em Retrieve environment variable values corresponding to CPU threads being pinned to socket and return as \mbox{\hyperlink{class_run_data}{Run\+Data}} structure. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\begin{DoxyCompactList}\small\item\em Retrieve environment variable values corresponding to CPU threads being pinned to socket and return as \mbox{\hyperlink{class_run_data}{Run\+Data}} object. \end{DoxyCompactList}\end{DoxyCompactItemize}
 
 
 \doxysubsection{Detailed Description}
@@ -53,14 +53,14 @@ Definition at line 45 of file CPUThreads\+Pinned\+To\+Socket.\+h.
 
 
 
-Retrieve environment variable values corresponding to CPU threads being pinned to socket and return as \mbox{\hyperlink{class_run_data}{Run\+Data}} structure. 
+Retrieve environment variable values corresponding to CPU threads being pinned to socket and return as \mbox{\hyperlink{class_run_data}{Run\+Data}} object. 
 
 \begin{DoxyReturn}{Returns}
-\mbox{\hyperlink{class_run_data}{Run\+Data}} 
+\mbox{\hyperlink{class_run_data}{Run\+Data}} object with environment variables settings corresponding to CPU threads being pinned to socket 
 \end{DoxyReturn}
 
 
-Definition at line 74 of file CPUThreads\+Pinned\+To\+Socket.\+h.
+Definition at line 75 of file CPUThreads\+Pinned\+To\+Socket.\+h.
 
 Here is the call graph for this function\+:\nopagebreak
 \begin{figure}[H]

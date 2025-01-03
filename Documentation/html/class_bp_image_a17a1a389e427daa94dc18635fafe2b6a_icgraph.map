@@ -1,7 +1,7 @@
 <map id="BpImage::Height" name="BpImage::Height">
 <area shape="rect" id="node1" title=" " alt="" coords="472,71,603,98"/>
 <area shape="rect" id="node2" href="$class_bp_image.html#a8f9de9c11f90fd177e01b4cc96bce81b" title=" " alt="" coords="209,5,415,47"/>
-<area shape="rect" id="node4" href="$class_smooth_image_c_p_u.html#a1c9a703874e1112ff7da7ce3b310653a" title="Function to use the image filter to apply a guassian filter to the a single images input images have ..." alt="" coords="205,71,419,98"/>
+<area shape="rect" id="node4" href="$class_smooth_image_c_p_u.html#a1c9a703874e1112ff7da7ce3b310653a" title="Function to use the image filter to apply a guassian filter to the a single image...." alt="" coords="205,71,419,98"/>
 <area shape="rect" id="node5" href="$class_smooth_image_c_u_d_a.html#ac810f2f4cb5608673dd21a6f69214444" title="For the CUDA smoothing, the input image is on the host and the output image is on the device (GPU)" alt="" coords="200,122,424,149"/>
 <area shape="rect" id="node3" href="$class_bp_image.html#a39baa8bc55abdf3d071ad9d80edddfe6" title=" " alt="" coords="5,13,152,39"/>
 </map>

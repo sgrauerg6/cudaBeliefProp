@@ -20,7 +20,8 @@ Inheritance diagram for Smooth\+Image\+CPU\+:\nopagebreak
 \end{figure}
 
 
-Collaboration diagram for Smooth\+Image\+CPU\+:\nopagebreak
+Collaboration diagram for Smooth\+Image\+CPU\+:
+\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
@@ -33,7 +34,10 @@ Collaboration diagram for Smooth\+Image\+CPU\+:\nopagebreak
 \mbox{\hyperlink{class_smooth_image_c_p_u_a040161d849597f8a780cb148f4cf2937}{Smooth\+Image\+CPU}} (const \mbox{\hyperlink{class_parallel_params}{Parallel\+Params}} \&opt\+\_\+cpu\+\_\+params)
 \item 
 void \mbox{\hyperlink{class_smooth_image_c_p_u_a1c9a703874e1112ff7da7ce3b310653a}{operator()}} (const \mbox{\hyperlink{class_bp_image}{Bp\+Image}}$<$ unsigned int $>$ \&in\+\_\+image, const float sigma, float $\ast$smoothed\+\_\+image) const override
-\begin{DoxyCompactList}\small\item\em Function to use the image filter to apply a guassian filter to the a single images input images have each pixel stored as an unsigned int (value between 0 and 255 assuming 8-\/bit grayscale image used) output filtered images have each pixel stored as a float after the image has been smoothed with a Gaussian filter of sigma normalize mask so it integrates to one. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\begin{DoxyCompactList}\small\item\em Function to use the image filter to apply a guassian filter to the a single image.~\newline
+ Input images have each pixel stored as an unsigned int (value between 0 and 255 assuming 8-\/bit grayscale image used).~\newline
+ Output filtered images have each pixel stored as a float after the image has been smoothed with a Gaussian filter of sigma.~\newline
+ Mask is normalized so it integrates to one. \end{DoxyCompactList}\end{DoxyCompactItemize}
 \doxysubsection*{Additional Inherited Members}
 
 
@@ -66,7 +70,10 @@ Definition at line 43 of file Smooth\+Image\+CPU.\+h.
 
 
 
-Function to use the image filter to apply a guassian filter to the a single images input images have each pixel stored as an unsigned int (value between 0 and 255 assuming 8-\/bit grayscale image used) output filtered images have each pixel stored as a float after the image has been smoothed with a Gaussian filter of sigma normalize mask so it integrates to one. 
+Function to use the image filter to apply a guassian filter to the a single image.~\newline
+ Input images have each pixel stored as an unsigned int (value between 0 and 255 assuming 8-\/bit grayscale image used).~\newline
+ Output filtered images have each pixel stored as a float after the image has been smoothed with a Gaussian filter of sigma.~\newline
+ Mask is normalized so it integrates to one. 
 
 
 \begin{DoxyParams}{Parameters}

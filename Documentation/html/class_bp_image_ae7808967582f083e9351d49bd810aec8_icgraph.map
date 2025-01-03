@@ -1,7 +1,7 @@
 <map id="BpImage::PointerToPixelsStart" name="BpImage::PointerToPixelsStart">
 <area shape="rect" id="node1" title=" " alt="" coords="520,115,707,156"/>
 <area shape="rect" id="node2" href="$class_bp_image.html#a8f9de9c11f90fd177e01b4cc96bce81b" title=" " alt="" coords="251,5,457,47"/>
-<area shape="rect" id="node4" href="$class_smooth_image_c_p_u.html#a1c9a703874e1112ff7da7ce3b310653a" title="Function to use the image filter to apply a guassian filter to the a single images input images have ..." alt="" coords="247,71,461,98"/>
+<area shape="rect" id="node4" href="$class_smooth_image_c_p_u.html#a1c9a703874e1112ff7da7ce3b310653a" title="Function to use the image filter to apply a guassian filter to the a single image...." alt="" coords="247,71,461,98"/>
 <area shape="rect" id="node5" href="$class_smooth_image_c_u_d_a.html#ac810f2f4cb5608673dd21a6f69214444" title="For the CUDA smoothing, the input image is on the host and the output image is on the device (GPU)" alt="" coords="242,122,466,149"/>
 <area shape="rect" id="node6" href="$class_run_bp_on_stereo_set.html#a5008d2d735a622fce0493f058647ac5c" title="Protected function to set up, run, and evaluate bp processing on target device using pointers to acce..." alt="" coords="253,173,455,215"/>
 <area shape="rect" id="node8" href="$class_disparity_map.html#afe3e01cf3a3f2084198fc4bc1be7db96" title=" " alt="" coords="236,239,472,266"/>

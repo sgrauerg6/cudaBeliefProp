@@ -109,7 +109,7 @@ Collaboration diagram for SmoothImageCPU:</div>
 <map name="a_smooth_image_c_p_u_coll__map" id="a_smooth_image_c_p_u_coll__map">
 <area shape="rect" title="Child class of SmoothImage for smoothing images in the optimized CPU implementation." alt="" coords="5,171,145,197"/>
 <area shape="rect" href="class_smooth_image.html" title="Class for smoothing the images before running BP. Smoothing image always uses float data type." alt="" coords="19,95,132,121"/>
-<area shape="rect" href="class_parallel_params.html" title="Abstract class for holding and processing parallelization parameters. Child class(es) specific to imp..." alt="" coords="16,5,135,32"/>
+<area shape="rect" href="class_parallel_params.html" title="Abstract class for holding and processing parallelization parameters. &#160;Child class(es) specific to im..." alt="" coords="16,5,135,32"/>
 </map>
 <center><span class="legend">[<a target="top" href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
@@ -118,7 +118,10 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a040161d849597f8a780cb148f4cf2937"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_smooth_image_c_p_u.html#a040161d849597f8a780cb148f4cf2937">SmoothImageCPU</a> (const <a class="el" href="class_parallel_params.html">ParallelParams</a> &amp;opt_cpu_params)</td></tr>
 <tr class="separator:a040161d849597f8a780cb148f4cf2937"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1c9a703874e1112ff7da7ce3b310653a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_smooth_image_c_p_u.html#a1c9a703874e1112ff7da7ce3b310653a">operator()</a> (const <a class="el" href="class_bp_image.html">BpImage</a>&lt; unsigned int &gt; &amp;in_image, const float sigma, float *smoothed_image) const override</td></tr>
-<tr class="memdesc:a1c9a703874e1112ff7da7ce3b310653a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Function to use the image filter to apply a guassian filter to the a single images input images have each pixel stored as an unsigned int (value between 0 and 255 assuming 8-bit grayscale image used) output filtered images have each pixel stored as a float after the image has been smoothed with a Gaussian filter of sigma normalize mask so it integrates to one.  <a href="class_smooth_image_c_p_u.html#a1c9a703874e1112ff7da7ce3b310653a">More...</a><br /></td></tr>
+<tr class="memdesc:a1c9a703874e1112ff7da7ce3b310653a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Function to use the image filter to apply a guassian filter to the a single image.<br  />
+ Input images have each pixel stored as an unsigned int (value between 0 and 255 assuming 8-bit grayscale image used).<br  />
+ Output filtered images have each pixel stored as a float after the image has been smoothed with a Gaussian filter of sigma.<br  />
+ Mask is normalized so it integrates to one.  <a href="class_smooth_image_c_p_u.html#a1c9a703874e1112ff7da7ce3b310653a">More...</a><br /></td></tr>
 <tr class="separator:a1c9a703874e1112ff7da7ce3b310653a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_class_smooth_image"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_class_smooth_image')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="class_smooth_image.html">SmoothImage</a></td></tr>
 <tr class="memitem:a9a0cdc76bb759f0e200d001dc7577248 inherit pub_methods_class_smooth_image"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_smooth_image.html#a9a0cdc76bb759f0e200d001dc7577248">SmoothImage</a> (const <a class="el" href="class_parallel_params.html">ParallelParams</a> &amp;parallel_params)</td></tr>
@@ -209,7 +212,10 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Function to use the image filter to apply a guassian filter to the a single images input images have each pixel stored as an unsigned int (value between 0 and 255 assuming 8-bit grayscale image used) output filtered images have each pixel stored as a float after the image has been smoothed with a Gaussian filter of sigma normalize mask so it integrates to one. </p>
+<p>Function to use the image filter to apply a guassian filter to the a single image.<br  />
+ Input images have each pixel stored as an unsigned int (value between 0 and 255 assuming 8-bit grayscale image used).<br  />
+ Output filtered images have each pixel stored as a float after the image has been smoothed with a Gaussian filter of sigma.<br  />
+ Mask is normalized so it integrates to one. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">in_image</td><td></td></tr>
@@ -227,7 +233,7 @@ Here is the call graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><img src="class_smooth_image_c_p_u_a1c9a703874e1112ff7da7ce3b310653a_cgraph.png" border="0" usemap="#aclass_smooth_image_c_p_u_a1c9a703874e1112ff7da7ce3b310653a_cgraph" alt=""/></div>
 <map name="aclass_smooth_image_c_p_u_a1c9a703874e1112ff7da7ce3b310653a_cgraph" id="aclass_smooth_image_c_p_u_a1c9a703874e1112ff7da7ce3b310653a_cgraph">
-<area shape="rect" title="Function to use the image filter to apply a guassian filter to the a single images input images have ..." alt="" coords="5,85,219,112"/>
+<area shape="rect" title="Function to use the image filter to apply a guassian filter to the a single image...." alt="" coords="5,85,219,112"/>
 <area shape="rect" href="class_bp_image.html#a17a1a389e427daa94dc18635fafe2b6a" title=" " alt="" coords="296,5,427,32"/>
 <area shape="rect" href="class_smooth_image.html#aadd11efcc5b461d1c3192c0114184b99" title="Create a Gaussian filter from a sigma value." alt="" coords="267,56,456,83"/>
 <area shape="rect" href="class_bp_image.html#ae7808967582f083e9351d49bd810aec8" title=" " alt="" coords="268,107,455,149"/>

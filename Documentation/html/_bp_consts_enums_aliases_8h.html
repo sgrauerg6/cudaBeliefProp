@@ -168,11 +168,13 @@ Namespaces</h2></td></tr>
 Typedefs</h2></td></tr>
 <tr class="memitem:acef942066296774fdf5d9839ac48abfd"><td class="memTemplParams" colspan="2">template&lt;RunData_ptr T&gt; </td></tr>
 <tr class="memitem:acef942066296774fdf5d9839ac48abfd"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacebeliefprop.html#acef942066296774fdf5d9839ac48abfd">beliefprop::CheckerboardMessages</a> = std::array&lt; std::array&lt; T, kNumMessageArrays &gt;, kNumCheckerboardParts &gt;</td></tr>
-<tr class="memdesc:acef942066296774fdf5d9839ac48abfd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Each checkerboard messages element corresponds to an array of message values could use a map/unordered map to map MessageArrays enum to corresponding message array but using array structure is likely faster.  <a href="namespacebeliefprop.html#acef942066296774fdf5d9839ac48abfd">More...</a><br /></td></tr>
+<tr class="memdesc:acef942066296774fdf5d9839ac48abfd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Define alias for array with message costs for each bp processing checkerboard.<br  />
+ Each checkerboard messages element corresponds to an array of message values and message values must be pointers to a bp data type.  <a href="namespacebeliefprop.html#acef942066296774fdf5d9839ac48abfd">More...</a><br /></td></tr>
 <tr class="separator:acef942066296774fdf5d9839ac48abfd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4894af1b3cdafd201f5df63411074d91"><td class="memTemplParams" colspan="2">template&lt;RunData_ptr T&gt; </td></tr>
 <tr class="memitem:a4894af1b3cdafd201f5df63411074d91"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacebeliefprop.html#a4894af1b3cdafd201f5df63411074d91">beliefprop::DataCostsCheckerboards</a> = std::array&lt; T, kNumCheckerboardParts &gt;</td></tr>
-<tr class="memdesc:a4894af1b3cdafd201f5df63411074d91"><td class="mdescLeft">&#160;</td><td class="mdescRight">Belief propagation checkerboard messages and data costs must be pointers to a bp data type define alias for two-element array with data costs for each bp processing checkerboard.  <a href="namespacebeliefprop.html#a4894af1b3cdafd201f5df63411074d91">More...</a><br /></td></tr>
+<tr class="memdesc:a4894af1b3cdafd201f5df63411074d91"><td class="mdescLeft">&#160;</td><td class="mdescRight">Define alias for two-element array with data costs for each bp processing checkerboard.<br  />
+ Belief propagation data costs must be pointers to a bp data type.  <a href="namespacebeliefprop.html#a4894af1b3cdafd201f5df63411074d91">More...</a><br /></td></tr>
 <tr class="separator:a4894af1b3cdafd201f5df63411074d91"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="enum-members"></a>

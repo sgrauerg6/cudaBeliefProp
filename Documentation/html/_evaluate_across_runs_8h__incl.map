@@ -1,11 +1,16 @@
 <map id="src/RunEval/EvaluateAcrossRuns.h" name="src/RunEval/EvaluateAcrossRuns.h">
-<area shape="rect" id="node1" title="Declares class with operator function to evaluate implementation runs across multiple architectures...." alt="" coords="69,5,272,47"/>
-<area shape="rect" id="node2" title=" " alt="" coords="5,95,64,121"/>
-<area shape="rect" id="node3" title=" " alt="" coords="89,95,151,121"/>
-<area shape="rect" id="node4" title=" " alt="" coords="176,95,267,121"/>
-<area shape="rect" id="node5" href="$_run_eval_consts_enums_8h.html" title="Contains namespace with enums and constants for implementation run evaluation." alt="" coords="291,95,466,121"/>
-<area shape="rect" id="node6" title=" " alt="" coords="285,177,341,203"/>
-<area shape="rect" id="node7" title=" " alt="" coords="358,259,455,285"/>
-<area shape="rect" id="node8" href="$_run_settings_consts_enums_8h.html" title="Contains namespace with constants and enums related to run environment and settings for run." alt="" coords="417,169,647,211"/>
-<area shape="rect" id="node9" title=" " alt="" coords="507,259,557,285"/>
+<area shape="rect" id="node1" title="Declares class with operator function to evaluate implementation runs across multiple architectures...." alt="" coords="5,5,208,47"/>
+<area shape="rect" id="node2" title=" " alt="" coords="128,244,187,271"/>
+<area shape="rect" id="node3" title=" " alt="" coords="77,169,139,196"/>
+<area shape="rect" id="node4" title=" " alt="" coords="179,326,269,353"/>
+<area shape="rect" id="node5" href="$_run_eval_consts_enums_8h.html" title="Contains namespace with enums and constants for implementation run evaluation." alt="" coords="595,244,770,271"/>
+<area shape="rect" id="node10" href="$_run_results_speedups_8h.html" title="Declares class to load and store run results data including speedups from evaluation." alt="" coords="144,95,315,121"/>
+<area shape="rect" id="node6" title=" " alt="" coords="717,326,773,353"/>
+<area shape="rect" id="node7" title=" " alt="" coords="375,408,473,435"/>
+<area shape="rect" id="node8" title=" " alt="" coords="785,408,836,435"/>
+<area shape="rect" id="node9" href="$_run_settings_consts_enums_8h.html" title="Contains namespace with constants and enums related to run environment and settings for run." alt="" coords="462,319,693,360"/>
+<area shape="rect" id="node11" title=" " alt="" coords="261,244,336,271"/>
+<area shape="rect" id="node12" href="$_input_signature_8h.html" title="Declares class for defining input signature for evaluation run that consists of evaluation set number..." alt="" coords="316,169,575,196"/>
+<area shape="rect" id="node13" title=" " alt="" coords="411,244,487,271"/>
+<area shape="rect" id="node14" title=" " alt="" coords="512,244,571,271"/>
 </map>

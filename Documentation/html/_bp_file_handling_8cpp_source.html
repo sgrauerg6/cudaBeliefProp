@@ -111,64 +111,89 @@ $(document).ready(function(){initNavTree('_bp_file_handling_8cpp_source.html',''
 <div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;  <span class="keywordflow">while</span> (<span class="keyword">true</span>)</div>
 <div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;  {</div>
 <div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;    <span class="comment">//create directory iterator corresponding to current path</span></div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;    std::filesystem::directory_iterator dir_iter = std::filesystem::directory_iterator(current_path);</div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160; </div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;    <span class="comment">//check if any of the directories in the current path correspond to the belief prop directory;</span></div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;    <span class="comment">//if so return iterator to directory; otherwise return iterator to end indicating that directory not</span></div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;    <span class="comment">//found in current path</span></div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;    std::filesystem::directory_iterator it = std::find_if(std::filesystem::begin(dir_iter), std::filesystem::end(dir_iter), </div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;      [](<span class="keyword">const</span> <span class="keyword">auto</span>&amp; p) { <span class="keywordflow">return</span> p.path().stem() == <a class="code" href="namespacebeliefprop.html#ad5f85c97e7b10b11a214136459edf6ed">beliefprop::kBeliefPropDirectoryName</a>; });</div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160; </div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;    <span class="comment">//check if return from find_if at iterator end and therefore didn&#39;t find stereo sets directory;</span></div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;    <span class="comment">//if that&#39;s the case continue to outer directory</span></div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;    <span class="comment">//for now assuming stereo sets directory exists in some outer directory and program won&#39;t work without it</span></div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;    <span class="keywordflow">if</span> (it == std::filesystem::end(dir_iter))</div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;    {</div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;      <span class="comment">//if current path same as parent path, then can&#39;t continue and throw error</span></div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;      <span class="keywordflow">if</span> (current_path == current_path.parent_path()) {</div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;        <span class="keywordflow">throw</span> std::filesystem::filesystem_error(<span class="stringliteral">&quot;Belief prop directory not found&quot;</span>, std::error_code());</div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;      }</div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;      current_path = current_path.parent_path();</div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;    }</div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;    <span class="keywordflow">else</span> {</div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;      std::filesystem::path stereo_set_path = it-&gt;path() / <a class="code" href="namespacebeliefprop.html#aa3d390af2a6bbea1625aa43603435d65">beliefprop::kStereoSetsDirectoryName</a>;</div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;      <span class="keywordflow">if</span> (std::filesystem::is_directory(stereo_set_path)) {</div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;        <span class="keywordflow">return</span> stereo_set_path;</div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;      }</div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;      <span class="keywordflow">else</span> {</div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;        <span class="keywordflow">throw</span> std::filesystem::filesystem_error(<span class="stringliteral">&quot;Stereo set directory not found in belief prop directory&quot;</span>, std::error_code());</div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;      }      </div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;    }</div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;  }</div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;  <span class="keywordflow">return</span> std::filesystem::path();</div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;}</div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160; </div>
-<div class="line"><a name="l00079"></a><span class="lineno"><a class="line" href="class_bp_file_handling.html#a308ff5bbbd80493a7babaa63260483c9">   79</a></span>&#160;std::filesystem::path <a class="code" href="class_bp_file_handling.html#a308ff5bbbd80493a7babaa63260483c9">BpFileHandling::RefImagePath</a>()<span class="keyword"> const</span></div>
-<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;<span class="keyword"></span>{</div>
-<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;  <span class="comment">//check if ref image exists for each possible extension (currently pgm and ppm) and return path if so</span></div>
-<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;  <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span>&amp; extension : <a class="code" href="namespacebeliefprop.html#a7ff00475fff3ace85a2f2dfaf3344fad">beliefprop::kInImagePossExtensions</a>) {</div>
-<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;    <span class="keywordflow">if</span> (std::filesystem::exists((stereo_set_path_ / (std::string(<a class="code" href="namespacebeliefprop.html#a400045efcf3a0cd6f13c343e27919230">beliefprop::kRefImageName</a>) + <span class="stringliteral">&quot;.&quot;</span> + std::string(extension))))) {</div>
-<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;      <span class="keywordflow">return</span> stereo_set_path_ / (std::string(<a class="code" href="namespacebeliefprop.html#a400045efcf3a0cd6f13c343e27919230">beliefprop::kRefImageName</a>) + <span class="stringliteral">&quot;.&quot;</span> + std::string(extension));</div>
-<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;    }</div>
-<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;  }</div>
-<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160; </div>
-<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;  <span class="keywordflow">throw</span> std::filesystem::filesystem_error(<span class="stringliteral">&quot;Reference image not found&quot;</span>, std::error_code());</div>
-<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;}</div>
-<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160; </div>
-<div class="line"><a name="l00097"></a><span class="lineno"><a class="line" href="class_bp_file_handling.html#ae005a6eb4397b7a17440bcd9d9c47713">   97</a></span>&#160;std::filesystem::path <a class="code" href="class_bp_file_handling.html#ae005a6eb4397b7a17440bcd9d9c47713">BpFileHandling::TestImagePath</a>()<span class="keyword"> const</span></div>
-<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;<span class="keyword"></span>{</div>
-<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;  <span class="comment">//check if test image exists for each possible extension (currently pgm and ppm) and return path if so</span></div>
-<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;  <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span>&amp; extension : <a class="code" href="namespacebeliefprop.html#a7ff00475fff3ace85a2f2dfaf3344fad">beliefprop::kInImagePossExtensions</a>) {</div>
-<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;    <span class="keywordflow">if</span> (std::filesystem::exists((stereo_set_path_ / (std::string(<a class="code" href="namespacebeliefprop.html#acfd2acd7ff3e70ef11cedaea3e28fd68">beliefprop::kTestImageName</a>) + <span class="stringliteral">&quot;.&quot;</span> + std::string(extension))))) {</div>
-<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;      <span class="keywordflow">return</span> stereo_set_path_ / (std::string(<a class="code" href="namespacebeliefprop.html#acfd2acd7ff3e70ef11cedaea3e28fd68">beliefprop::kTestImageName</a>) + <span class="stringliteral">&quot;.&quot;</span> + std::string(extension));</div>
-<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;    }</div>
-<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;  }</div>
-<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160; </div>
-<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;  <span class="keywordflow">throw</span> std::filesystem::filesystem_error(<span class="stringliteral">&quot;Test image not found&quot;</span>, std::error_code());</div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;    std::filesystem::directory_iterator dir_iter =</div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;      std::filesystem::directory_iterator(current_path);</div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160; </div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;    <span class="comment">//check if any of the directories in the current path correspond to the</span></div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;    <span class="comment">//belief prop directory</span></div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;    <span class="comment">//if so return iterator to directory; otherwise return iterator to end</span></div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;    <span class="comment">//indicating that directory not found in current path</span></div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;    std::filesystem::directory_iterator it = </div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;      std::find_if(</div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;        std::filesystem::begin(dir_iter),</div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;        std::filesystem::end(dir_iter), </div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;        [](<span class="keyword">const</span> <span class="keyword">auto</span>&amp; p) { </div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;          <span class="keywordflow">return</span> p.path().stem() == <a class="code" href="namespacebeliefprop.html#ad5f85c97e7b10b11a214136459edf6ed">beliefprop::kBeliefPropDirectoryName</a>; });</div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160; </div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;    <span class="comment">//check if return from find_if at iterator end and therefore didn&#39;t find</span></div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;    <span class="comment">//stereo sets directory; if that&#39;s the case continue to outer directory</span></div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;    <span class="comment">//for now assuming stereo sets directory exists in some outer directory</span></div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;    <span class="comment">//and program won&#39;t work without it</span></div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;    <span class="keywordflow">if</span> (it == std::filesystem::end(dir_iter))</div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;    {</div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;      <span class="comment">//if current path same as parent path, then can&#39;t continue and throw error</span></div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;      <span class="keywordflow">if</span> (current_path == current_path.parent_path()) {</div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;        <span class="keywordflow">throw</span> std::filesystem::filesystem_error(</div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;          <span class="stringliteral">&quot;Belief prop directory not found&quot;</span>, std::error_code());</div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;      }</div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;      current_path = current_path.parent_path();</div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;    }</div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;    <span class="keywordflow">else</span> {</div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;      std::filesystem::path stereo_set_path = </div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;        it-&gt;path() / <a class="code" href="namespacebeliefprop.html#aa3d390af2a6bbea1625aa43603435d65">beliefprop::kStereoSetsDirectoryName</a>;</div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;      <span class="keywordflow">if</span> (std::filesystem::is_directory(stereo_set_path)) {</div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;        <span class="keywordflow">return</span> stereo_set_path;</div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;      }</div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;      <span class="keywordflow">else</span> {</div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;        <span class="keywordflow">throw</span> std::filesystem::filesystem_error(</div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;          <span class="stringliteral">&quot;Stereo set directory not found in belief prop directory&quot;</span>,</div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;          std::error_code());</div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;      }      </div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;    }</div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;  }</div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;  <span class="keywordflow">return</span> std::filesystem::path();</div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;}</div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160; </div>
+<div class="line"><a name="l00090"></a><span class="lineno"><a class="line" href="class_bp_file_handling.html#a308ff5bbbd80493a7babaa63260483c9">   90</a></span>&#160;std::filesystem::path <a class="code" href="class_bp_file_handling.html#a308ff5bbbd80493a7babaa63260483c9">BpFileHandling::RefImagePath</a>()<span class="keyword"> const</span></div>
+<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;<span class="keyword"></span>{</div>
+<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;  <span class="comment">//check if ref image exists for each possible extension (currently pgm and</span></div>
+<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;  <span class="comment">//ppm) and return path if so</span></div>
+<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;  <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span>&amp; extension : <a class="code" href="namespacebeliefprop.html#a7ff00475fff3ace85a2f2dfaf3344fad">beliefprop::kInImagePossExtensions</a>) {</div>
+<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;    <span class="keywordflow">if</span> (std::filesystem::exists(</div>
+<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;         (stereo_set_path_ / </div>
+<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;          (std::string(<a class="code" href="namespacebeliefprop.html#a400045efcf3a0cd6f13c343e27919230">beliefprop::kRefImageName</a>) + <span class="stringliteral">&quot;.&quot;</span> +</div>
+<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;           std::string(extension))))) {</div>
+<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;      <span class="keywordflow">return</span> stereo_set_path_ / (std::string(<a class="code" href="namespacebeliefprop.html#a400045efcf3a0cd6f13c343e27919230">beliefprop::kRefImageName</a>) + </div>
+<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;                                 <span class="stringliteral">&quot;.&quot;</span> + std::string(extension));</div>
+<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;    }</div>
+<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;  }</div>
+<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160; </div>
+<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;  <span class="keywordflow">throw</span> std::filesystem::filesystem_error(</div>
+<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;    <span class="stringliteral">&quot;Reference image not found&quot;</span>,</div>
+<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;    std::error_code());</div>
 <div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;}</div>
+<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160; </div>
+<div class="line"><a name="l00115"></a><span class="lineno"><a class="line" href="class_bp_file_handling.html#ae005a6eb4397b7a17440bcd9d9c47713">  115</a></span>&#160;std::filesystem::path <a class="code" href="class_bp_file_handling.html#ae005a6eb4397b7a17440bcd9d9c47713">BpFileHandling::TestImagePath</a>()<span class="keyword"> const</span></div>
+<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;<span class="keyword"></span>{</div>
+<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;  <span class="comment">//check if test image exists for each possible extension (currently pgm and</span></div>
+<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;  <span class="comment">//ppm) and return path if so</span></div>
+<div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;  <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span>&amp; extension : <a class="code" href="namespacebeliefprop.html#a7ff00475fff3ace85a2f2dfaf3344fad">beliefprop::kInImagePossExtensions</a>) {</div>
+<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;    <span class="keywordflow">if</span> (std::filesystem::exists(</div>
+<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;      (stereo_set_path_ / </div>
+<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;        (std::string(<a class="code" href="namespacebeliefprop.html#acfd2acd7ff3e70ef11cedaea3e28fd68">beliefprop::kTestImageName</a>) + <span class="stringliteral">&quot;.&quot;</span> +</div>
+<div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;         std::string(extension))))) {</div>
+<div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;      <span class="keywordflow">return</span> stereo_set_path_ / (std::string(<a class="code" href="namespacebeliefprop.html#acfd2acd7ff3e70ef11cedaea3e28fd68">beliefprop::kTestImageName</a>) + </div>
+<div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;                                 <span class="stringliteral">&quot;.&quot;</span> + std::string(extension));</div>
+<div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;    }</div>
+<div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160;  }</div>
+<div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160; </div>
+<div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160;  <span class="keywordflow">throw</span> std::filesystem::filesystem_error(</div>
+<div class="line"><a name="l00130"></a><span class="lineno">  130</span>&#160;    <span class="stringliteral">&quot;Test image not found&quot;</span>,</div>
+<div class="line"><a name="l00131"></a><span class="lineno">  131</span>&#160;    std::error_code());</div>
+<div class="line"><a name="l00132"></a><span class="lineno">  132</span>&#160;}</div>
 <div class="ttc" id="a_bp_file_handling_8h_html"><div class="ttname"><a href="_bp_file_handling_8h.html">BpFileHandling.h</a></div><div class="ttdoc">Declares class to retrieve path of stereo set files for reading and for output.</div></div>
-<div class="ttc" id="aclass_bp_file_handling_html_a308ff5bbbd80493a7babaa63260483c9"><div class="ttname"><a href="class_bp_file_handling.html#a308ff5bbbd80493a7babaa63260483c9">BpFileHandling::RefImagePath</a></div><div class="ttdeci">std::filesystem::path RefImagePath() const</div><div class="ttdoc">Return path to reference image with valid extension if found, otherwise throw filesystem error.</div><div class="ttdef"><b>Definition:</b> <a href="_bp_file_handling_8cpp_source.html#l00079">BpFileHandling.cpp:79</a></div></div>
-<div class="ttc" id="aclass_bp_file_handling_html_ae005a6eb4397b7a17440bcd9d9c47713"><div class="ttname"><a href="class_bp_file_handling.html#ae005a6eb4397b7a17440bcd9d9c47713">BpFileHandling::TestImagePath</a></div><div class="ttdeci">std::filesystem::path TestImagePath() const</div><div class="ttdoc">Return path to test image with valid extension if found, otherwise throw filesystem error.</div><div class="ttdef"><b>Definition:</b> <a href="_bp_file_handling_8cpp_source.html#l00097">BpFileHandling.cpp:97</a></div></div>
+<div class="ttc" id="aclass_bp_file_handling_html_a308ff5bbbd80493a7babaa63260483c9"><div class="ttname"><a href="class_bp_file_handling.html#a308ff5bbbd80493a7babaa63260483c9">BpFileHandling::RefImagePath</a></div><div class="ttdeci">std::filesystem::path RefImagePath() const</div><div class="ttdoc">Return path to reference image with valid extension if found, otherwise throw filesystem error.</div><div class="ttdef"><b>Definition:</b> <a href="_bp_file_handling_8cpp_source.html#l00090">BpFileHandling.cpp:90</a></div></div>
+<div class="ttc" id="aclass_bp_file_handling_html_ae005a6eb4397b7a17440bcd9d9c47713"><div class="ttname"><a href="class_bp_file_handling.html#ae005a6eb4397b7a17440bcd9d9c47713">BpFileHandling::TestImagePath</a></div><div class="ttdeci">std::filesystem::path TestImagePath() const</div><div class="ttdoc">Return path to test image with valid extension if found, otherwise throw filesystem error.</div><div class="ttdef"><b>Definition:</b> <a href="_bp_file_handling_8cpp_source.html#l00115">BpFileHandling.cpp:115</a></div></div>
 <div class="ttc" id="anamespacebeliefprop_html_a400045efcf3a0cd6f13c343e27919230"><div class="ttname"><a href="namespacebeliefprop.html#a400045efcf3a0cd6f13c343e27919230">beliefprop::kRefImageName</a></div><div class="ttdeci">constexpr std::string_view kRefImageName</div><div class="ttdef"><b>Definition:</b> <a href="_bp_file_handling_consts_8h_source.html#l00037">BpFileHandlingConsts.h:37</a></div></div>
 <div class="ttc" id="anamespacebeliefprop_html_a7ff00475fff3ace85a2f2dfaf3344fad"><div class="ttname"><a href="namespacebeliefprop.html#a7ff00475fff3ace85a2f2dfaf3344fad">beliefprop::kInImagePossExtensions</a></div><div class="ttdeci">constexpr std::string_view kInImagePossExtensions[]</div><div class="ttdef"><b>Definition:</b> <a href="_bp_file_handling_consts_8h_source.html#l00039">BpFileHandlingConsts.h:39</a></div></div>
 <div class="ttc" id="anamespacebeliefprop_html_aa3d390af2a6bbea1625aa43603435d65"><div class="ttname"><a href="namespacebeliefprop.html#aa3d390af2a6bbea1625aa43603435d65">beliefprop::kStereoSetsDirectoryName</a></div><div class="ttdeci">constexpr std::string_view kStereoSetsDirectoryName</div><div class="ttdef"><b>Definition:</b> <a href="_bp_file_handling_consts_8h_source.html#l00043">BpFileHandlingConsts.h:43</a></div></div>

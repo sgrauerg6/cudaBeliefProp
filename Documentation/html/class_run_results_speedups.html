@@ -100,10 +100,11 @@ Public Member Functions</h2></td></tr>
 <tr class="memdesc:abfaa82cd1582d3eed0c866c832cbae78"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor that takes in implementation file path and run name and retrieves run results and speedup evaluation for the run if available.  <a href="class_run_results_speedups.html#abfaa82cd1582d3eed0c866c832cbae78">More...</a><br /></td></tr>
 <tr class="separator:abfaa82cd1582d3eed0c866c832cbae78"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a52486d67f4880ceff3c8b86944e2df04"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_run_results_speedups.html#a52486d67f4880ceff3c8b86944e2df04">RunResultsSpeedups</a> (const std::filesystem::path &amp;run_results_file_path)</td></tr>
-<tr class="memdesc:a52486d67f4880ceff3c8b86944e2df04"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor that takes in run results path and processes run results speedups not available when using this constructor.  <a href="class_run_results_speedups.html#a52486d67f4880ceff3c8b86944e2df04">More...</a><br /></td></tr>
+<tr class="memdesc:a52486d67f4880ceff3c8b86944e2df04"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor that takes in run results path and processes run results<br  />
+ Speedups not available when using this constructor.  <a href="class_run_results_speedups.html#a52486d67f4880ceff3c8b86944e2df04">More...</a><br /></td></tr>
 <tr class="separator:a52486d67f4880ceff3c8b86944e2df04"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af16114eb72a5997f72d8f84bdcc8d279"><td class="memItemLeft" align="right" valign="top">std::map&lt; std::string, std::vector&lt; std::string &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_run_results_speedups.html#af16114eb72a5997f72d8f84bdcc8d279">Speedups</a> () const</td></tr>
-<tr class="memdesc:af16114eb72a5997f72d8f84bdcc8d279"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return speedups from evaluation across all runs on an architecture.  <a href="class_run_results_speedups.html#af16114eb72a5997f72d8f84bdcc8d279">More...</a><br /></td></tr>
+<tr class="memdesc:af16114eb72a5997f72d8f84bdcc8d279"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return speedups from run results data with speedups.  <a href="class_run_results_speedups.html#af16114eb72a5997f72d8f84bdcc8d279">More...</a><br /></td></tr>
 <tr class="separator:af16114eb72a5997f72d8f84bdcc8d279"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2e0c77627269d9e30411a822dd4fe871"><td class="memItemLeft" align="right" valign="top">std::vector&lt; std::string &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_run_results_speedups.html#a2e0c77627269d9e30411a822dd4fe871">SpeedupHeadersOrder</a> () const</td></tr>
 <tr class="memdesc:a2e0c77627269d9e30411a822dd4fe871"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return order of speedup headers.  <a href="class_run_results_speedups.html#a2e0c77627269d9e30411a822dd4fe871">More...</a><br /></td></tr>
@@ -118,7 +119,7 @@ Public Member Functions</h2></td></tr>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Class to load and store run results data including speedups from evaluation. </p>
 
-<p class="definition">Definition at line <a class="el" href="_run_results_speedups_8h_source.html#l00041">41</a> of file <a class="el" href="_run_results_speedups_8h_source.html">RunResultsSpeedups.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_run_results_speedups_8h_source.html#l00042">42</a> of file <a class="el" href="_run_results_speedups_8h_source.html">RunResultsSpeedups.h</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="abfaa82cd1582d3eed0c866c832cbae78"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#abfaa82cd1582d3eed0c866c832cbae78">&#9670;&nbsp;</a></span>RunResultsSpeedups() <span class="overload">[1/2]</span></h2>
@@ -191,7 +192,8 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Constructor that takes in run results path and processes run results speedups not available when using this constructor. </p>
+<p>Constructor that takes in run results path and processes run results<br  />
+ Speedups not available when using this constructor. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">run_results_file_path</td><td></td></tr>
@@ -199,7 +201,7 @@ Public Member Functions</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="_run_results_speedups_8cpp_source.html#l00064">64</a> of file <a class="el" href="_run_results_speedups_8cpp_source.html">RunResultsSpeedups.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_run_results_speedups_8cpp_source.html#l00074">74</a> of file <a class="el" href="_run_results_speedups_8cpp_source.html">RunResultsSpeedups.cpp</a>.</p>
 
 </div>
 </div>
@@ -235,9 +237,9 @@ Public Member Functions</h2></td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>std::map&lt;std::string, std::string&gt; </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>Data for run corresponding to input signature </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_run_results_speedups_8h_source.html#l00095">95</a> of file <a class="el" href="_run_results_speedups_8h_source.html">RunResultsSpeedups.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_run_results_speedups_8h_source.html#l00097">97</a> of file <a class="el" href="_run_results_speedups_8h_source.html">RunResultsSpeedups.h</a>.</p>
 
 </div>
 </div>
@@ -264,9 +266,9 @@ Public Member Functions</h2></td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>std::map&lt;InputSignature, std::string&gt; </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>Mapping of run input signature to value corresponding to input key </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_run_results_speedups_8cpp_source.html#l00112">112</a> of file <a class="el" href="_run_results_speedups_8cpp_source.html">RunResultsSpeedups.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_run_results_speedups_8cpp_source.html#l00134">134</a> of file <a class="el" href="_run_results_speedups_8cpp_source.html">RunResultsSpeedups.cpp</a>.</p>
 
 </div>
 </div>
@@ -294,9 +296,9 @@ Public Member Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Return order of speedup headers. </p>
-<dl class="section return"><dt>Returns</dt><dd>std::vector&lt;std::string&gt; </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>Speedup headers in order </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_run_results_speedups_8h_source.html#l00076">76</a> of file <a class="el" href="_run_results_speedups_8h_source.html">RunResultsSpeedups.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_run_results_speedups_8h_source.html#l00078">78</a> of file <a class="el" href="_run_results_speedups_8h_source.html">RunResultsSpeedups.h</a>.</p>
 
 </div>
 </div>
@@ -323,10 +325,10 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Return speedups from evaluation across all runs on an architecture. </p>
-<dl class="section return"><dt>Returns</dt><dd>std::map&lt;std::string, std::vector&lt;std::string&gt;&gt; </dd></dl>
+<p>Return speedups from run results data with speedups. </p>
+<dl class="section return"><dt>Returns</dt><dd>Speedups from run results data with speedups </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_run_results_speedups_8h_source.html#l00067">67</a> of file <a class="el" href="_run_results_speedups_8h_source.html">RunResultsSpeedups.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_run_results_speedups_8h_source.html#l00069">69</a> of file <a class="el" href="_run_results_speedups_8h_source.html">RunResultsSpeedups.h</a>.</p>
 
 </div>
 </div>

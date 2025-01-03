@@ -2,6 +2,7 @@ var dir_accd395d541253e75b115adb54ed527b =
 [
     [ "EvaluateAcrossRuns.cpp", "_evaluate_across_runs_8cpp.html", null ],
     [ "EvaluateAcrossRuns.h", "_evaluate_across_runs_8h.html", [
+      [ "EvalAcrossRunsData", "struct_eval_across_runs_data.html", "struct_eval_across_runs_data" ],
       [ "EvaluateAcrossRuns", "class_evaluate_across_runs.html", "class_evaluate_across_runs" ]
     ] ],
     [ "EvaluateImpAliases.h", "_evaluate_imp_aliases_8h.html", "_evaluate_imp_aliases_8h" ],

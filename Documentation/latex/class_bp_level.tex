@@ -13,17 +13,19 @@ Class to store and retrieve properties of a bp processing level including a data
 \begin{DoxyCompactItemize}
 \item 
 \mbox{\hyperlink{class_bp_level_a369e556671f9e44ece9761086e4ccde4}{Bp\+Level}} (const std\+::array$<$ unsigned int, 2 $>$ \&width\+\_\+height, std\+::size\+\_\+t offset\+\_\+into\+\_\+arrays, unsigned int level\+\_\+num, \mbox{\hyperlink{namespacerun__environment_a2cd0a9de3e0ce6e4d99b35b89befb8bb}{run\+\_\+environment\+::\+Acc\+Setting}} acc\+\_\+setting)
-\item 
+\begin{DoxyCompactList}\small\item\em Construct a new \mbox{\hyperlink{class_bp_level}{Bp\+Level}} object with specified height/wdith, offset into data/message arrays, level number, and acceleration setting. \end{DoxyCompactList}\item 
 \mbox{\hyperlink{class_bp_level_a73f3194887faf215b056311601e06b18}{Bp\+Level}} (const std\+::array$<$ unsigned int, 2 $>$ \&width\+\_\+height, std\+::size\+\_\+t offset\+\_\+into\+\_\+arrays, unsigned int level\+\_\+num, unsigned int bytes\+\_\+align\+\_\+memory)
-\item 
+\begin{DoxyCompactList}\small\item\em Construct a new \mbox{\hyperlink{class_bp_level}{Bp\+Level}} object with specified height/wdith, offset into data/message arrays, level number, and byte alignment for memory. \end{DoxyCompactList}\item 
 \mbox{\hyperlink{class_bp_level}{Bp\+Level}} \mbox{\hyperlink{class_bp_level_ae46c656c6dd5d2fe0a8c398be9f54c07}{Next\+Bp\+Level}} (unsigned int num\+\_\+disparity\+\_\+values) const
 \begin{DoxyCompactList}\small\item\em Get bp level properties for next (higher) level in hierarchy that processes data with half width/height of current level. \end{DoxyCompactList}\item 
 std\+::size\+\_\+t \mbox{\hyperlink{class_bp_level_a4ecf8946b20a208c887bdec5d4104d6b}{Num\+Data\+In\+Bp\+Arrays}} (unsigned int num\+\_\+disparity\+\_\+values) const
 \begin{DoxyCompactList}\small\item\em Get the amount of data in each BP array (data cost/messages for each checkerboard) at the current level with the specified number of possible disparity values. \end{DoxyCompactList}\item 
-unsigned int \mbox{\hyperlink{class_bp_level_aa08d95e4ce0647439a38bee59cf68306}{Checkerboard\+Width\+Target\+Device}} (unsigned int width\+\_\+level) const
-\item 
+unsigned int \mbox{\hyperlink{class_bp_level_a8d11a0cb014c1839d2590ecc6017dbc6}{Checkerboard\+Width}} (unsigned int width\+\_\+level) const
+\begin{DoxyCompactList}\small\item\em Get width of checkerboard to use in bp processing at level.~\newline
+ Checkerboard width is half of the width of the level. \end{DoxyCompactList}\item 
 unsigned int \mbox{\hyperlink{class_bp_level_ad5b1ae253d5d0089e5f7acca96d6c895}{Padded\+Checkerboard\+Width}} (unsigned int checkerboard\+\_\+width) const
-\item 
+\begin{DoxyCompactList}\small\item\em Get width of padded checkerboard to use in bp processing at level.~\newline
+ Padding can add additional width to checkerboard so that reading/writing data starting at x=0 in the checkerboard is aligned for processing using target acceleration (SIMD, CUDA, etc.). \end{DoxyCompactList}\item 
 std\+::size\+\_\+t \mbox{\hyperlink{class_bp_level_ad6325cd5c3b66192ba6b4b3f489c9c2b}{Num\+Data\+For\+Aligned\+Memory\+At\+Level}} (const std\+::array$<$ unsigned int, 2 $>$ \&width\+\_\+height\+\_\+level, unsigned int num\+\_\+possible\+\_\+disparities) const
 \begin{DoxyCompactList}\small\item\em Get count of total data needed for bp processing at level. \end{DoxyCompactList}\item 
 const \mbox{\hyperlink{structbeliefprop_1_1_bp_level_properties}{beliefprop\+::\+Bp\+Level\+Properties}} \& \mbox{\hyperlink{class_bp_level_a546d96e0009d22fa05403845bec98d42}{Level\+Properties}} () const
@@ -55,7 +57,22 @@ Definition at line 59 of file Bp\+Level.\+h.
 
 
 
-Definition at line 131 of file Bp\+Level.\+h.
+Construct a new \mbox{\hyperlink{class_bp_level}{Bp\+Level}} object with specified height/wdith, offset into data/message arrays, level number, and acceleration setting. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em width\+\_\+height} & \\
+\hline
+{\em offset\+\_\+into\+\_\+arrays} & \\
+\hline
+{\em level\+\_\+num} & \\
+\hline
+{\em acc\+\_\+setting} & \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 174 of file Bp\+Level.\+h.
 
 Here is the call graph for this function\+:
 \nopagebreak
@@ -74,21 +91,49 @@ Here is the call graph for this function\+:
 
 
 
-Definition at line 151 of file Bp\+Level.\+h.
+Construct a new \mbox{\hyperlink{class_bp_level}{Bp\+Level}} object with specified height/wdith, offset into data/message arrays, level number, and byte alignment for memory. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em width\+\_\+height} & \\
+\hline
+{\em offset\+\_\+into\+\_\+arrays} & \\
+\hline
+{\em level\+\_\+num} & \\
+\hline
+{\em bytes\+\_\+align\+\_\+memory} & \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 194 of file Bp\+Level.\+h.
 
 
 
 \doxysubsection{Member Function Documentation}
-\mbox{\Hypertarget{class_bp_level_aa08d95e4ce0647439a38bee59cf68306}\label{class_bp_level_aa08d95e4ce0647439a38bee59cf68306}} 
-\index{BpLevel$<$ T $>$@{BpLevel$<$ T $>$}!CheckerboardWidthTargetDevice@{CheckerboardWidthTargetDevice}}
-\index{CheckerboardWidthTargetDevice@{CheckerboardWidthTargetDevice}!BpLevel$<$ T $>$@{BpLevel$<$ T $>$}}
-\doxysubsubsection{\texorpdfstring{CheckerboardWidthTargetDevice()}{CheckerboardWidthTargetDevice()}}
+\mbox{\Hypertarget{class_bp_level_a8d11a0cb014c1839d2590ecc6017dbc6}\label{class_bp_level_a8d11a0cb014c1839d2590ecc6017dbc6}} 
+\index{BpLevel$<$ T $>$@{BpLevel$<$ T $>$}!CheckerboardWidth@{CheckerboardWidth}}
+\index{CheckerboardWidth@{CheckerboardWidth}!BpLevel$<$ T $>$@{BpLevel$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{CheckerboardWidth()}{CheckerboardWidth()}}
 {\footnotesize\ttfamily template$<$Run\+Data\+\_\+t T$>$ \\
-unsigned int \mbox{\hyperlink{class_bp_level}{Bp\+Level}}$<$ T $>$\+::Checkerboard\+Width\+Target\+Device (\begin{DoxyParamCaption}\item[{unsigned int}]{width\+\_\+level }\end{DoxyParamCaption}) const}
+unsigned int \mbox{\hyperlink{class_bp_level}{Bp\+Level}}$<$ T $>$\+::Checkerboard\+Width (\begin{DoxyParamCaption}\item[{unsigned int}]{width\+\_\+level }\end{DoxyParamCaption}) const}
 
 
 
-Definition at line 217 of file Bp\+Level.\+h.
+Get width of checkerboard to use in bp processing at level.~\newline
+ Checkerboard width is half of the width of the level. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em width\+\_\+level} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Width of checkerboard used in bp processing at level 
+\end{DoxyReturn}
+
+
+Definition at line 262 of file Bp\+Level.\+h.
 
 \mbox{\Hypertarget{class_bp_level_a546d96e0009d22fa05403845bec98d42}\label{class_bp_level_a546d96e0009d22fa05403845bec98d42}} 
 \index{BpLevel$<$ T $>$@{BpLevel$<$ T $>$}!LevelProperties@{LevelProperties}}
@@ -102,14 +147,13 @@ const \mbox{\hyperlink{structbeliefprop_1_1_bp_level_properties}{beliefprop\+::\
 Return level properties as const reference to avoid copying and not allow it to be modified. 
 
 \begin{DoxyReturn}{Returns}
-const Bp\+Level\+Properties\& 
+Bp\+Level\+Properties \char`\"{}\+POD\char`\"{} struct with level properties 
 \end{DoxyReturn}
 
 
-Definition at line 124 of file Bp\+Level.\+h.
+Definition at line 165 of file Bp\+Level.\+h.
 
-Here is the caller graph for this function\+:
-\nopagebreak
+Here is the caller graph for this function\+:\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
@@ -133,14 +177,13 @@ Get bp level properties for next (higher) level in hierarchy that processes data
 \hline
 \end{DoxyParams}
 \begin{DoxyReturn}{Returns}
-\mbox{\hyperlink{class_bp_level}{Bp\+Level}} 
+\mbox{\hyperlink{class_bp_level}{Bp\+Level}} object for next level in hierarchy 
 \end{DoxyReturn}
 
 
-Definition at line 170 of file Bp\+Level.\+h.
+Definition at line 214 of file Bp\+Level.\+h.
 
-Here is the caller graph for this function\+:
-\nopagebreak
+Here is the caller graph for this function\+:\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
@@ -166,11 +209,11 @@ Get count of total data needed for bp processing at level.
 \hline
 \end{DoxyParams}
 \begin{DoxyReturn}{Returns}
-std\+::size\+\_\+t 
+Count of total data needed for bp processing at level 
 \end{DoxyReturn}
 
 
-Definition at line 195 of file Bp\+Level.\+h.
+Definition at line 240 of file Bp\+Level.\+h.
 
 \mbox{\Hypertarget{class_bp_level_a4ecf8946b20a208c887bdec5d4104d6b}\label{class_bp_level_a4ecf8946b20a208c887bdec5d4104d6b}} 
 \index{BpLevel$<$ T $>$@{BpLevel$<$ T $>$}!NumDataInBpArrays@{NumDataInBpArrays}}
@@ -189,14 +232,13 @@ Get the amount of data in each BP array (data cost/messages for each checkerboar
 \hline
 \end{DoxyParams}
 \begin{DoxyReturn}{Returns}
-std\+::size\+\_\+t 
+Num data needed in each \char`\"{}belief propagation\char`\"{} array at level 
 \end{DoxyReturn}
 
 
-Definition at line 186 of file Bp\+Level.\+h.
+Definition at line 231 of file Bp\+Level.\+h.
 
-Here is the caller graph for this function\+:
-\nopagebreak
+Here is the caller graph for this function\+:\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
@@ -212,7 +254,20 @@ unsigned int \mbox{\hyperlink{class_bp_level}{Bp\+Level}}$<$ T $>$\+::Padded\+Ch
 
 
 
-Definition at line 224 of file Bp\+Level.\+h.
+Get width of padded checkerboard to use in bp processing at level.~\newline
+ Padding can add additional width to checkerboard so that reading/writing data starting at x=0 in the checkerboard is aligned for processing using target acceleration (SIMD, CUDA, etc.). 
+
+
+\begin{DoxyParams}{Parameters}
+{\em width\+\_\+level} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Width of checkerboard used in bp processing at level 
+\end{DoxyReturn}
+
+
+Definition at line 269 of file Bp\+Level.\+h.
 
 \mbox{\Hypertarget{class_bp_level_af1e5192e3172a6bfacb5eab0e79424bf}\label{class_bp_level_af1e5192e3172a6bfacb5eab0e79424bf}} 
 \index{BpLevel$<$ T $>$@{BpLevel$<$ T $>$}!TotalDataForAlignedMemoryAllLevels@{TotalDataForAlignedMemoryAllLevels}}
@@ -237,22 +292,20 @@ Static function to get count of total data needed for bp processing at all level
 \hline
 \end{DoxyParams}
 \begin{DoxyReturn}{Returns}
-std\+::size\+\_\+t 
+Count of total data needed for bp processing 
 \end{DoxyReturn}
 
 
-Definition at line 237 of file Bp\+Level.\+h.
+Definition at line 282 of file Bp\+Level.\+h.
 
-Here is the call graph for this function\+:
-\nopagebreak
+Here is the call graph for this function\+:\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
 \includegraphics[width=350pt]{class_bp_level_af1e5192e3172a6bfacb5eab0e79424bf_cgraph}
 \end{center}
 \end{figure}
-Here is the caller graph for this function\+:
-\nopagebreak
+Here is the caller graph for this function\+:\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode

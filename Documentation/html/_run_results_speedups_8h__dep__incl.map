@@ -1,6 +1,7 @@
 <map id="src/RunEval/RunResultsSpeedups.h" name="src/RunEval/RunResultsSpeedups.h">
 <area shape="rect" id="node1" title="Declares class to load and store run results data including speedups from evaluation." alt="" coords="236,5,487,32"/>
-<area shape="rect" id="node2" href="$_evaluate_across_runs_8cpp.html" title="Definition of functions in class for evaluating results across multiple runs, potentially on differen..." alt="" coords="5,80,208,121"/>
-<area shape="rect" id="node3" href="$_evaluate_imp_results_8cpp.html" title="Function definitions for class to evaluate implementation results." alt="" coords="232,87,491,114"/>
-<area shape="rect" id="node4" href="$_run_results_speedups_8cpp.html" title=" " alt="" coords="515,87,781,114"/>
+<area shape="rect" id="node2" href="$_evaluate_across_runs_8h.html" title="Declares class with operator function to evaluate implementation runs across multiple architectures...." alt="" coords="121,80,324,121"/>
+<area shape="rect" id="node4" href="$_evaluate_imp_results_8cpp.html" title="Function definitions for class to evaluate implementation results." alt="" coords="232,177,491,203"/>
+<area shape="rect" id="node5" href="$_run_results_speedups_8cpp.html" title=" " alt="" coords="399,87,665,114"/>
+<area shape="rect" id="node3" href="$_evaluate_across_runs_8cpp.html" title="Definitions of functions in class for evaluating results across multiple runs, potentially on differe..." alt="" coords="5,169,208,211"/>
 </map>

@@ -98,8 +98,10 @@ $(document).ready(function(){initNavTree('class_bp_level.html',''); initResizabl
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:a369e556671f9e44ece9761086e4ccde4"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_bp_level.html#a369e556671f9e44ece9761086e4ccde4">BpLevel</a> (const std::array&lt; unsigned int, 2 &gt; &amp;width_height, std::size_t offset_into_arrays, unsigned int level_num, <a class="el" href="namespacerun__environment.html#a2cd0a9de3e0ce6e4d99b35b89befb8bb">run_environment::AccSetting</a> acc_setting)</td></tr>
+<tr class="memdesc:a369e556671f9e44ece9761086e4ccde4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Construct a new <a class="el" href="class_bp_level.html" title="Class to store and retrieve properties of a bp processing level including a data type specified as a ...">BpLevel</a> object with specified height/wdith, offset into data/message arrays, level number, and acceleration setting.  <a href="class_bp_level.html#a369e556671f9e44ece9761086e4ccde4">More...</a><br /></td></tr>
 <tr class="separator:a369e556671f9e44ece9761086e4ccde4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a73f3194887faf215b056311601e06b18"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_bp_level.html#a73f3194887faf215b056311601e06b18">BpLevel</a> (const std::array&lt; unsigned int, 2 &gt; &amp;width_height, std::size_t offset_into_arrays, unsigned int level_num, unsigned int bytes_align_memory)</td></tr>
+<tr class="memdesc:a73f3194887faf215b056311601e06b18"><td class="mdescLeft">&#160;</td><td class="mdescRight">Construct a new <a class="el" href="class_bp_level.html" title="Class to store and retrieve properties of a bp processing level including a data type specified as a ...">BpLevel</a> object with specified height/wdith, offset into data/message arrays, level number, and byte alignment for memory.  <a href="class_bp_level.html#a73f3194887faf215b056311601e06b18">More...</a><br /></td></tr>
 <tr class="separator:a73f3194887faf215b056311601e06b18"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae46c656c6dd5d2fe0a8c398be9f54c07"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_bp_level.html">BpLevel</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_bp_level.html#ae46c656c6dd5d2fe0a8c398be9f54c07">NextBpLevel</a> (unsigned int num_disparity_values) const</td></tr>
 <tr class="memdesc:ae46c656c6dd5d2fe0a8c398be9f54c07"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get bp level properties for next (higher) level in hierarchy that processes data with half width/height of current level.  <a href="class_bp_level.html#ae46c656c6dd5d2fe0a8c398be9f54c07">More...</a><br /></td></tr>
@@ -107,9 +109,13 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a4ecf8946b20a208c887bdec5d4104d6b"><td class="memItemLeft" align="right" valign="top">std::size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_bp_level.html#a4ecf8946b20a208c887bdec5d4104d6b">NumDataInBpArrays</a> (unsigned int num_disparity_values) const</td></tr>
 <tr class="memdesc:a4ecf8946b20a208c887bdec5d4104d6b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the amount of data in each BP array (data cost/messages for each checkerboard) at the current level with the specified number of possible disparity values.  <a href="class_bp_level.html#a4ecf8946b20a208c887bdec5d4104d6b">More...</a><br /></td></tr>
 <tr class="separator:a4ecf8946b20a208c887bdec5d4104d6b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa08d95e4ce0647439a38bee59cf68306"><td class="memItemLeft" align="right" valign="top">unsigned int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_bp_level.html#aa08d95e4ce0647439a38bee59cf68306">CheckerboardWidthTargetDevice</a> (unsigned int width_level) const</td></tr>
-<tr class="separator:aa08d95e4ce0647439a38bee59cf68306"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8d11a0cb014c1839d2590ecc6017dbc6"><td class="memItemLeft" align="right" valign="top">unsigned int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_bp_level.html#a8d11a0cb014c1839d2590ecc6017dbc6">CheckerboardWidth</a> (unsigned int width_level) const</td></tr>
+<tr class="memdesc:a8d11a0cb014c1839d2590ecc6017dbc6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get width of checkerboard to use in bp processing at level.<br  />
+ Checkerboard width is half of the width of the level.  <a href="class_bp_level.html#a8d11a0cb014c1839d2590ecc6017dbc6">More...</a><br /></td></tr>
+<tr class="separator:a8d11a0cb014c1839d2590ecc6017dbc6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad5b1ae253d5d0089e5f7acca96d6c895"><td class="memItemLeft" align="right" valign="top">unsigned int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_bp_level.html#ad5b1ae253d5d0089e5f7acca96d6c895">PaddedCheckerboardWidth</a> (unsigned int checkerboard_width) const</td></tr>
+<tr class="memdesc:ad5b1ae253d5d0089e5f7acca96d6c895"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get width of padded checkerboard to use in bp processing at level.<br  />
+ Padding can add additional width to checkerboard so that reading/writing data starting at x=0 in the checkerboard is aligned for processing using target acceleration (SIMD, CUDA, etc.).  <a href="class_bp_level.html#ad5b1ae253d5d0089e5f7acca96d6c895">More...</a><br /></td></tr>
 <tr class="separator:ad5b1ae253d5d0089e5f7acca96d6c895"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad6325cd5c3b66192ba6b4b3f489c9c2b"><td class="memItemLeft" align="right" valign="top">std::size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_bp_level.html#ad6325cd5c3b66192ba6b4b3f489c9c2b">NumDataForAlignedMemoryAtLevel</a> (const std::array&lt; unsigned int, 2 &gt; &amp;width_height_level, unsigned int num_possible_disparities) const</td></tr>
 <tr class="memdesc:ad6325cd5c3b66192ba6b4b3f489c9c2b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get count of total data needed for bp processing at level.  <a href="class_bp_level.html#ad6325cd5c3b66192ba6b4b3f489c9c2b">More...</a><br /></td></tr>
@@ -180,13 +186,24 @@ template&lt;RunData_t T&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_bp_level_8h_source.html#l00131">131</a> of file <a class="el" href="_bp_level_8h_source.html">BpLevel.h</a>.</p>
+<p>Construct a new <a class="el" href="class_bp_level.html" title="Class to store and retrieve properties of a bp processing level including a data type specified as a ...">BpLevel</a> object with specified height/wdith, offset into data/message arrays, level number, and acceleration setting. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">width_height</td><td></td></tr>
+    <tr><td class="paramname">offset_into_arrays</td><td></td></tr>
+    <tr><td class="paramname">level_num</td><td></td></tr>
+    <tr><td class="paramname">acc_setting</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p class="definition">Definition at line <a class="el" href="_bp_level_8h_source.html#l00174">174</a> of file <a class="el" href="_bp_level_8h_source.html">BpLevel.h</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><img src="class_bp_level_a369e556671f9e44ece9761086e4ccde4_cgraph.png" border="0" usemap="#aclass_bp_level_a369e556671f9e44ece9761086e4ccde4_cgraph" alt=""/></div>
 <map name="aclass_bp_level_a369e556671f9e44ece9761086e4ccde4_cgraph" id="aclass_bp_level_a369e556671f9e44ece9761086e4ccde4_cgraph">
-<area shape="rect" title=" " alt="" coords="5,13,140,39"/>
+<area shape="rect" title="Construct a new BpLevel object with specified height/wdith, offset into data/message arrays,..." alt="" coords="5,13,140,39"/>
 <area shape="rect" href="namespacerun__environment.html#ac68b9fea12a8756652bce761d7a0cdda" title=" " alt="" coords="188,5,389,47"/>
 </map>
 </div>
@@ -241,13 +258,24 @@ template&lt;RunData_t T&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_bp_level_8h_source.html#l00151">151</a> of file <a class="el" href="_bp_level_8h_source.html">BpLevel.h</a>.</p>
+<p>Construct a new <a class="el" href="class_bp_level.html" title="Class to store and retrieve properties of a bp processing level including a data type specified as a ...">BpLevel</a> object with specified height/wdith, offset into data/message arrays, level number, and byte alignment for memory. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">width_height</td><td></td></tr>
+    <tr><td class="paramname">offset_into_arrays</td><td></td></tr>
+    <tr><td class="paramname">level_num</td><td></td></tr>
+    <tr><td class="paramname">bytes_align_memory</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p class="definition">Definition at line <a class="el" href="_bp_level_8h_source.html#l00194">194</a> of file <a class="el" href="_bp_level_8h_source.html">BpLevel.h</a>.</p>
 
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a id="aa08d95e4ce0647439a38bee59cf68306"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa08d95e4ce0647439a38bee59cf68306">&#9670;&nbsp;</a></span>CheckerboardWidthTargetDevice()</h2>
+<a id="a8d11a0cb014c1839d2590ecc6017dbc6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8d11a0cb014c1839d2590ecc6017dbc6">&#9670;&nbsp;</a></span>CheckerboardWidth()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -255,7 +283,7 @@ template&lt;RunData_t T&gt; </div>
 template&lt;RunData_t T&gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname">unsigned int <a class="el" href="class_bp_level.html">BpLevel</a>&lt; T &gt;::CheckerboardWidthTargetDevice </td>
+          <td class="memname">unsigned int <a class="el" href="class_bp_level.html">BpLevel</a>&lt; T &gt;::CheckerboardWidth </td>
           <td>(</td>
           <td class="paramtype">unsigned int&#160;</td>
           <td class="paramname"><em>width_level</em></td><td>)</td>
@@ -264,7 +292,17 @@ template&lt;RunData_t T&gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_bp_level_8h_source.html#l00217">217</a> of file <a class="el" href="_bp_level_8h_source.html">BpLevel.h</a>.</p>
+<p>Get width of checkerboard to use in bp processing at level.<br  />
+ Checkerboard width is half of the width of the level. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">width_level</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Width of checkerboard used in bp processing at level </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="_bp_level_8h_source.html#l00262">262</a> of file <a class="el" href="_bp_level_8h_source.html">BpLevel.h</a>.</p>
 
 </div>
 </div>
@@ -294,9 +332,9 @@ template&lt;RunData_t T&gt; </div>
 </div><div class="memdoc">
 
 <p>Return level properties as const reference to avoid copying and not allow it to be modified. </p>
-<dl class="section return"><dt>Returns</dt><dd>const BpLevelProperties&amp; </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>BpLevelProperties "POD" struct with level properties </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_bp_level_8h_source.html#l00124">124</a> of file <a class="el" href="_bp_level_8h_source.html">BpLevel.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_bp_level_8h_source.html#l00165">165</a> of file <a class="el" href="_bp_level_8h_source.html">BpLevel.h</a>.</p>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
@@ -334,9 +372,9 @@ template&lt;RunData_t T&gt; </div>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd><a class="el" href="class_bp_level.html" title="Class to store and retrieve properties of a bp processing level including a data type specified as a ...">BpLevel</a> </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="class_bp_level.html" title="Class to store and retrieve properties of a bp processing level including a data type specified as a ...">BpLevel</a> object for next level in hierarchy </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_bp_level_8h_source.html#l00170">170</a> of file <a class="el" href="_bp_level_8h_source.html">BpLevel.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_bp_level_8h_source.html#l00214">214</a> of file <a class="el" href="_bp_level_8h_source.html">BpLevel.h</a>.</p>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
@@ -387,9 +425,9 @@ template&lt;RunData_t T&gt; </div>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>std::size_t </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>Count of total data needed for bp processing at level </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_bp_level_8h_source.html#l00195">195</a> of file <a class="el" href="_bp_level_8h_source.html">BpLevel.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_bp_level_8h_source.html#l00240">240</a> of file <a class="el" href="_bp_level_8h_source.html">BpLevel.h</a>.</p>
 
 </div>
 </div>
@@ -418,9 +456,9 @@ template&lt;RunData_t T&gt; </div>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>std::size_t </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>Num data needed in each "belief propagation" array at level </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_bp_level_8h_source.html#l00186">186</a> of file <a class="el" href="_bp_level_8h_source.html">BpLevel.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_bp_level_8h_source.html#l00231">231</a> of file <a class="el" href="_bp_level_8h_source.html">BpLevel.h</a>.</p>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
@@ -453,7 +491,17 @@ template&lt;RunData_t T&gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_bp_level_8h_source.html#l00224">224</a> of file <a class="el" href="_bp_level_8h_source.html">BpLevel.h</a>.</p>
+<p>Get width of padded checkerboard to use in bp processing at level.<br  />
+ Padding can add additional width to checkerboard so that reading/writing data starting at x=0 in the checkerboard is aligned for processing using target acceleration (SIMD, CUDA, etc.). </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">width_level</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Width of checkerboard used in bp processing at level </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="_bp_level_8h_source.html#l00269">269</a> of file <a class="el" href="_bp_level_8h_source.html">BpLevel.h</a>.</p>
 
 </div>
 </div>
@@ -515,9 +563,9 @@ template&lt;RunData_t T&gt; </div>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>std::size_t </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>Count of total data needed for bp processing </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_bp_level_8h_source.html#l00237">237</a> of file <a class="el" href="_bp_level_8h_source.html">BpLevel.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_bp_level_8h_source.html#l00282">282</a> of file <a class="el" href="_bp_level_8h_source.html">BpLevel.h</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">

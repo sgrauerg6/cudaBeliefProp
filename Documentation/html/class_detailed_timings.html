@@ -89,7 +89,8 @@ $(document).ready(function(){initNavTree('class_detailed_timings.html',''); init
 </div><!--header-->
 <div class="contents">
 
-<p>Class to store timings of one or more segments taken during the run(s) of an implementation or across multiple implementations. Index for timing segments must be enum type.  
+<p>Class to store timings of one or more segments taken during the run(s) of an implementation or across multiple implementations.<br  />
+ Index for timing segments must be enum type.  
  <a href="class_detailed_timings.html#details">More...</a></p>
 
 <p><code>#include &lt;<a class="el" href="_detailed_timings_8h_source.html">DetailedTimings.h</a>&gt;</code></p>
@@ -119,7 +120,8 @@ Public Member Functions</h2></td></tr>
 <div class="textblock"><h3>template&lt;typename T&gt;<br />
 class DetailedTimings&lt; T &gt;</h3>
 
-<p>Class to store timings of one or more segments taken during the run(s) of an implementation or across multiple implementations. Index for timing segments must be enum type. </p>
+<p>Class to store timings of one or more segments taken during the run(s) of an implementation or across multiple implementations.<br  />
+ Index for timing segments must be enum type. </p>
 <dl class="tparams"><dt>Template Parameters</dt><dd>
   <table class="tparams">
     <tr><td class="paramname">T</td><td></td></tr>
@@ -163,7 +165,7 @@ template&lt;typename T &gt; </div>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="_detailed_timings_8h_source.html#l00110">110</a> of file <a class="el" href="_detailed_timings_8h_source.html">DetailedTimings.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_detailed_timings_8h_source.html#l00111">111</a> of file <a class="el" href="_detailed_timings_8h_source.html">DetailedTimings.h</a>.</p>
 
 </div>
 </div>
@@ -220,7 +222,7 @@ Here is the caller graph for this function:</div>
 <div class="center"><img src="class_detailed_timings_ade899fc5c569139d6109f5c2bd0727b8_icgraph.png" border="0" usemap="#aclass_detailed_timings_ade899fc5c569139d6109f5c2bd0727b8_icgraph" alt=""/></div>
 <map name="aclass_detailed_timings_ade899fc5c569139d6109f5c2bd0727b8_icgraph" id="aclass_detailed_timings_ade899fc5c569139d6109f5c2bd0727b8_icgraph">
 <area shape="rect" title="Add timing by segment index." alt="" coords="487,35,693,61"/>
-<area shape="rect" href="class_process_bp.html#a0ccd2a3bcea7ef8b3129ce32667f740d" title="Run the belief propagation algorithm with on a set of stereo images to generate a disparity map input..." alt="" coords="256,5,419,32"/>
+<area shape="rect" href="class_process_bp.html#a0ccd2a3bcea7ef8b3129ce32667f740d" title="Run belief propagation implementation with on a set of stereo images to generate a disparity map...." alt="" coords="256,5,419,32"/>
 <area shape="rect" href="class_run_bp_on_stereo_set.html#a5008d2d735a622fce0493f058647ac5c" title="Protected function to set up, run, and evaluate bp processing on target device using pointers to acce..." alt="" coords="236,57,439,98"/>
 <area shape="rect" href="class_run_bp_on_stereo_set_c_u_d_a.html#adbc8134aa5f34a8f396778fc1e73af7d" title="Run the disparity map estimation BP on a set of stereo images and save the results between each set o..." alt="" coords="5,57,188,98"/>
 </map>
@@ -254,7 +256,7 @@ template&lt;typename T &gt; </div>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="_detailed_timings_8h_source.html#l00122">122</a> of file <a class="el" href="_detailed_timings_8h_source.html">DetailedTimings.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_detailed_timings_8h_source.html#l00127">127</a> of file <a class="el" href="_detailed_timings_8h_source.html">DetailedTimings.h</a>.</p>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
@@ -283,9 +285,9 @@ template&lt;typename T &gt; </div>
 </div><div class="memdoc">
 
 <p>Return current timing data as a <a class="el" href="class_run_data.html" title="Class to store headers with data corresponding to current program run and evaluation.">RunData</a> object for evaluation. </p>
-<dl class="section return"><dt>Returns</dt><dd><a class="el" href="class_run_data.html" title="Class to store headers with data corresponding to current program run and evaluation.">RunData</a> </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="class_run_data.html" title="Class to store headers with data corresponding to current program run and evaluation.">RunData</a> object containing timing data </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_detailed_timings_8h_source.html#l00162">162</a> of file <a class="el" href="_detailed_timings_8h_source.html">DetailedTimings.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_detailed_timings_8h_source.html#l00169">169</a> of file <a class="el" href="_detailed_timings_8h_source.html">DetailedTimings.h</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -333,16 +335,16 @@ template&lt;typename T &gt; </div>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>std::chrono::duration&lt;double&gt; </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>Median timing of segment </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_detailed_timings_8h_source.html#l00142">142</a> of file <a class="el" href="_detailed_timings_8h_source.html">DetailedTimings.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_detailed_timings_8h_source.html#l00149">149</a> of file <a class="el" href="_detailed_timings_8h_source.html">DetailedTimings.h</a>.</p>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><img src="class_detailed_timings_a158238eb5d20564311ed04423769d542_icgraph.png" border="0" usemap="#aclass_detailed_timings_a158238eb5d20564311ed04423769d542_icgraph" alt=""/></div>
 <map name="aclass_detailed_timings_a158238eb5d20564311ed04423769d542_icgraph" id="aclass_detailed_timings_a158238eb5d20564311ed04423769d542_icgraph">
 <area shape="rect" title="Get median timing for a specified segment that may have been run multiple times." alt="" coords="487,35,717,61"/>
-<area shape="rect" href="class_process_bp.html#a0ccd2a3bcea7ef8b3129ce32667f740d" title="Run the belief propagation algorithm with on a set of stereo images to generate a disparity map input..." alt="" coords="256,5,419,32"/>
+<area shape="rect" href="class_process_bp.html#a0ccd2a3bcea7ef8b3129ce32667f740d" title="Run belief propagation implementation with on a set of stereo images to generate a disparity map...." alt="" coords="256,5,419,32"/>
 <area shape="rect" href="class_run_bp_on_stereo_set.html#a5008d2d735a622fce0493f058647ac5c" title="Protected function to set up, run, and evaluate bp processing on target device using pointers to acce..." alt="" coords="236,57,439,98"/>
 <area shape="rect" href="class_run_bp_on_stereo_set_c_u_d_a.html#adbc8134aa5f34a8f396778fc1e73af7d" title="Run the disparity map estimation BP on a set of stereo images and save the results between each set o..." alt="" coords="5,57,188,98"/>
 </map>

@@ -111,7 +111,7 @@ Collaboration diagram for SmoothImage:</div>
 <div class="center"><img src="class_smooth_image__coll__graph.png" border="0" usemap="#a_smooth_image_coll__map" alt="Collaboration graph"/></div>
 <map name="a_smooth_image_coll__map" id="a_smooth_image_coll__map">
 <area shape="rect" title="Class for smoothing the images before running BP. Smoothing image always uses float data type." alt="" coords="8,95,121,121"/>
-<area shape="rect" href="class_parallel_params.html" title="Abstract class for holding and processing parallelization parameters. Child class(es) specific to imp..." alt="" coords="5,5,124,32"/>
+<area shape="rect" href="class_parallel_params.html" title="Abstract class for holding and processing parallelization parameters. &#160;Child class(es) specific to im..." alt="" coords="5,5,124,32"/>
 </map>
 <center><span class="legend">[<a target="top" href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
@@ -120,7 +120,10 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a9a0cdc76bb759f0e200d001dc7577248"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_smooth_image.html#a9a0cdc76bb759f0e200d001dc7577248">SmoothImage</a> (const <a class="el" href="class_parallel_params.html">ParallelParams</a> &amp;parallel_params)</td></tr>
 <tr class="separator:a9a0cdc76bb759f0e200d001dc7577248"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a37eeb6579ddfacbf4d651832f3f3d4be"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_smooth_image.html#a37eeb6579ddfacbf4d651832f3f3d4be">operator()</a> (const <a class="el" href="class_bp_image.html">BpImage</a>&lt; unsigned int &gt; &amp;in_image, float sigma, float *smoothed_image) const =0</td></tr>
-<tr class="memdesc:a37eeb6579ddfacbf4d651832f3f3d4be"><td class="mdescLeft">&#160;</td><td class="mdescRight">Function to use the image filter to apply a guassian filter to the a single images input images have each pixel stored as an unsigned int (value between 0 and 255 assuming 8-bit grayscale image used) output filtered images have each pixel stored as a float after the image has been smoothed with a Gaussian filter of sigma normalize mask so it integrates to one.  <a href="class_smooth_image.html#a37eeb6579ddfacbf4d651832f3f3d4be">More...</a><br /></td></tr>
+<tr class="memdesc:a37eeb6579ddfacbf4d651832f3f3d4be"><td class="mdescLeft">&#160;</td><td class="mdescRight">Function to use the image filter to apply a guassian filter to the a single image.<br  />
+ Input images have each pixel stored as an unsigned int (value between 0 and 255 assuming 8-bit grayscale image used).<br  />
+ Output filtered images have each pixel stored as a float after the image has been smoothed with a Gaussian filter of sigma.<br  />
+ Mask is normalized so it integrates to one.  <a href="class_smooth_image.html#a37eeb6579ddfacbf4d651832f3f3d4be">More...</a><br /></td></tr>
 <tr class="separator:a37eeb6579ddfacbf4d651832f3f3d4be"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-methods"></a>
@@ -200,7 +203,7 @@ Protected Attributes</h2></td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>std::pair&lt;std::vector&lt;float&gt;, unsigned int&gt; </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>Generated Gaussian filter </dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="_smooth_image_8cpp_source.html#l00030">30</a> of file <a class="el" href="_smooth_image_8cpp_source.html">SmoothImage.cpp</a>.</p>
 <div class="dynheader">
@@ -209,7 +212,7 @@ Here is the caller graph for this function:</div>
 <div class="center"><img src="class_smooth_image_aadd11efcc5b461d1c3192c0114184b99_icgraph.png" border="0" usemap="#aclass_smooth_image_aadd11efcc5b461d1c3192c0114184b99_icgraph" alt=""/></div>
 <map name="aclass_smooth_image_aadd11efcc5b461d1c3192c0114184b99_icgraph" id="aclass_smooth_image_aadd11efcc5b461d1c3192c0114184b99_icgraph">
 <area shape="rect" title="Create a Gaussian filter from a sigma value." alt="" coords="277,31,467,57"/>
-<area shape="rect" href="class_smooth_image_c_p_u.html#a1c9a703874e1112ff7da7ce3b310653a" title="Function to use the image filter to apply a guassian filter to the a single images input images have ..." alt="" coords="11,5,224,32"/>
+<area shape="rect" href="class_smooth_image_c_p_u.html#a1c9a703874e1112ff7da7ce3b310653a" title="Function to use the image filter to apply a guassian filter to the a single image...." alt="" coords="11,5,224,32"/>
 <area shape="rect" href="class_smooth_image_c_u_d_a.html#ac810f2f4cb5608673dd21a6f69214444" title="For the CUDA smoothing, the input image is on the host and the output image is on the device (GPU)" alt="" coords="5,56,229,83"/>
 </map>
 </div>
@@ -256,7 +259,10 @@ Here is the caller graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p>Function to use the image filter to apply a guassian filter to the a single images input images have each pixel stored as an unsigned int (value between 0 and 255 assuming 8-bit grayscale image used) output filtered images have each pixel stored as a float after the image has been smoothed with a Gaussian filter of sigma normalize mask so it integrates to one. </p>
+<p>Function to use the image filter to apply a guassian filter to the a single image.<br  />
+ Input images have each pixel stored as an unsigned int (value between 0 and 255 assuming 8-bit grayscale image used).<br  />
+ Output filtered images have each pixel stored as a float after the image has been smoothed with a Gaussian filter of sigma.<br  />
+ Mask is normalized so it integrates to one. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">in_image</td><td></td></tr>
@@ -293,7 +299,7 @@ Here is the caller graph for this function:</div>
 
 <p>Parallel parameters to use parallel operations (number of threads on CPU / thread block config in CUDA) </p>
 
-<p class="definition">Definition at line <a class="el" href="_smooth_image_8h_source.html#l00080">80</a> of file <a class="el" href="_smooth_image_8h_source.html">SmoothImage.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_smooth_image_8h_source.html#l00086">86</a> of file <a class="el" href="_smooth_image_8h_source.html">SmoothImage.h</a>.</p>
 
 </div>
 </div>

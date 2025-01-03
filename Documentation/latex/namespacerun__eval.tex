@@ -5,6 +5,11 @@
 Namespace with enums and constants for implementation run evaluation.  
 
 
+\doxysubsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+struct \mbox{\hyperlink{structrun__eval_1_1_out_file_info}{Out\+File\+Info}}
+\end{DoxyCompactItemize}
 \doxysubsection*{Enumerations}
 \begin{DoxyCompactItemize}
 \item 
@@ -15,11 +20,17 @@ enum class \mbox{\hyperlink{namespacerun__eval_aa8f06e41fdf48a118ecb84632df4b3cd
 enum class \mbox{\hyperlink{namespacerun__eval_afde1aa77e63e966b5728eae080febcf2}{Middle\+Val\+Data}} \{ \mbox{\hyperlink{namespacerun__eval_afde1aa77e63e966b5728eae080febcf2af87dddcff4e57dc718478e6ad9432ec5}{k\+Average}}
 , \mbox{\hyperlink{namespacerun__eval_afde1aa77e63e966b5728eae080febcf2afc0c69ca269010f09ab0218150315477}{k\+Median}}
  \}
-\begin{DoxyCompactList}\small\item\em Enum to specify average or median for \char`\"{}middle\char`\"{} value in data. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\begin{DoxyCompactList}\small\item\em Enum to specify average or median for \char`\"{}middle\char`\"{} value in data. \end{DoxyCompactList}\item 
+enum class \mbox{\hyperlink{namespacerun__eval_a8bab2154c9f69aee6f630dede1c230ca}{Out\+Results}} \{ \mbox{\hyperlink{namespacerun__eval_a8bab2154c9f69aee6f630dede1c230caa0d4c807d12467d727754023fd796583a}{k\+Default\+PParams}}
+, \mbox{\hyperlink{namespacerun__eval_a8bab2154c9f69aee6f630dede1c230caa4aa1cff924810a4c91826d97fb37b2f5}{k\+Opt\+PParams}}
+, \mbox{\hyperlink{namespacerun__eval_a8bab2154c9f69aee6f630dede1c230caa1b1672381d2f429dfe9c17a8cb9e9f27}{k\+Speedups}}
+, \mbox{\hyperlink{namespacerun__eval_a8bab2154c9f69aee6f630dede1c230caa6b4de8247c2e65aac1cfd3c324f899ab}{k\+Opt\+WSpeedups}}
+ \}
+\end{DoxyCompactItemize}
 \doxysubsection*{Variables}
 \begin{DoxyCompactItemize}
 \item 
-constexpr std\+::array$<$ size\+\_\+t, 3 $>$ \mbox{\hyperlink{namespacerun__eval_ade2de03079235e85054acc531e3f2350}{k\+Data\+Types\+Eval\+Sizes}} \{sizeof(float), sizeof(double), sizeof(\mbox{\hyperlink{_run_c_u_d_a_settings_8h_ae0ec76c243989a7b368bb78677ff6b30}{halftype}})\}
+constexpr std\+::array$<$ size\+\_\+t, 3 $>$ \mbox{\hyperlink{namespacerun__eval_ade2de03079235e85054acc531e3f2350}{k\+Data\+Types\+Eval\+Sizes}}
 \item 
 constexpr bool \mbox{\hyperlink{namespacerun__eval_ac8888f549eae1f06b02b580494fdf773}{k\+Run\+Alt\+Optimized\+Imps}} \{true\}
 \item 
@@ -57,15 +68,27 @@ constexpr std\+::string\+\_\+view \mbox{\hyperlink{namespacerun__eval_a2fb349e09
 \item 
 constexpr std\+::string\+\_\+view \mbox{\hyperlink{namespacerun__eval_ad93c0dd070cda950d788bd5f22c8f237}{k\+Speedup\+Opt\+Par\+Params\+Header}} \{\char`\"{}Speedup Over Default OMP Thread Count / CUDA Thread Block Dimensions\char`\"{}\}
 \item 
-constexpr std\+::string\+\_\+view \mbox{\hyperlink{namespacerun__eval_a53e8b6af9661ebb7bc6a99e97cf4f3a2}{k\+Speedup\+Double}} \{\char`\"{}Speedup using double-\/precision relative to float (actually slowdown)\char`\"{}\}
+constexpr std\+::string\+\_\+view \mbox{\hyperlink{namespacerun__eval_a71e6b665ae9ac08b9c45769d637aef85}{k\+Speedup\+Double\+Header}} \{\char`\"{}Speedup using double-\/precision relative to float (actually slowdown)\char`\"{}\}
 \item 
-constexpr std\+::string\+\_\+view \mbox{\hyperlink{namespacerun__eval_aacb3f40d5df0b0422fe6173fcd4f7885}{k\+Speedup\+Half}} \{\char`\"{}Speedup using half-\/precision relative to float\char`\"{}\}
+constexpr std\+::string\+\_\+view \mbox{\hyperlink{namespacerun__eval_ad3fbe6f497846de8777e5f4e14ac934d}{k\+Speedup\+Half\+Header}} \{\char`\"{}Speedup using half-\/precision relative to float\char`\"{}\}
 \item 
-constexpr std\+::string\+\_\+view \mbox{\hyperlink{namespacerun__eval_af964fa30f21da7faca4e5b2d56ac7bb3}{k\+Speedup\+Loop\+Iters\+Count\+Template}} \{\char`\"{}Speedup w/ templated disparity count (known at compile-\/time)\char`\"{}\}
+constexpr std\+::string\+\_\+view \mbox{\hyperlink{namespacerun__eval_af964fa30f21da7faca4e5b2d56ac7bb3}{k\+Speedup\+Loop\+Iters\+Count\+Template}} \{\char`\"{}Speedup w/ templated loop iteration count (known at compile-\/time)\char`\"{}\}
 \item 
-constexpr std\+::string\+\_\+view \mbox{\hyperlink{namespacerun__eval_ad368b3398ba326c7e939936988061c95}{k\+Speedup\+CPUVectorization}} \{\char`\"{}Speedup using CPU vectorization\char`\"{}\}
+constexpr std\+::string\+\_\+view \mbox{\hyperlink{namespacerun__eval_ad368b3398ba326c7e939936988061c95}{k\+Speedup\+CPUVectorization}} \{\char`\"{}Speedup over no CPU vectorization\char`\"{}\}
 \item 
 constexpr std\+::string\+\_\+view \mbox{\hyperlink{namespacerun__eval_aca67196adcd344aa6f31a7a7521fd385}{k\+Speedup\+Vs\+Avx256\+Vectorization}} \{\char`\"{}Speedup over AVX256 CPU vectorization\char`\"{}\}
+\item 
+constexpr std\+::string\+\_\+view \mbox{\hyperlink{namespacerun__eval_acb7c6e108435ac56b06260f60cba8773}{k\+Speedup\+Vs\+Avx256\+F16\+Vectorization}} \{\char`\"{}Speedup over AVX256 (w/ float16) CPU vectorization\char`\"{}\}
+\item 
+constexpr std\+::string\+\_\+view \mbox{\hyperlink{namespacerun__eval_ac70af88f811dd78a258b60dfcb173a5b}{k\+Speedup\+Vs\+Avx512\+Vectorization}} \{\char`\"{}Speedup over AVX512 CPU vectorization\char`\"{}\}
+\item 
+constexpr std\+::string\+\_\+view \mbox{\hyperlink{namespacerun__eval_a0dc7aa1de88568d5d58ac30512f5a5ad}{k\+Speedup\+Vs\+Avx512\+F16\+Vectorization}} \{\char`\"{}Speedup over AVX512 (w/ float16) CPU vectorization\char`\"{}\}
+\item 
+constexpr std\+::string\+\_\+view \mbox{\hyperlink{namespacerun__eval_af0984cda4e104f90c052b63bcdda7da2}{k\+Speedup\+Vs\+NEONVectorization}} \{\char`\"{}Speedup over NEON CPU vectorization\char`\"{}\}
+\item 
+constexpr std\+::string\+\_\+view \mbox{\hyperlink{namespacerun__eval_a587247239b6c7e3afc9fe6e26ce73559}{k\+Speedup\+Vs\+CUDAAcceleration}} \{\char`\"{}Speedup over CUDA acceleration\char`\"{}\}
+\item 
+const std\+::map$<$ \mbox{\hyperlink{namespacerun__environment_a2cd0a9de3e0ce6e4d99b35b89befb8bb}{run\+\_\+environment\+::\+Acc\+Setting}}, const std\+::string\+\_\+view $>$ \mbox{\hyperlink{namespacerun__eval_a28df5a9e705a23416bd11501cbc97f9b}{k\+Alt\+Acc\+To\+Speedup\+Desc}}
 \item 
 constexpr std\+::string\+\_\+view \mbox{\hyperlink{namespacerun__eval_aeb9a999d42ab9a972522a36e2e2f9712}{k\+Imp\+Results\+Folder\+Name}} \{\char`\"{}Imp\+Results\char`\"{}\}
 \item 
@@ -79,6 +102,8 @@ constexpr std\+::string\+\_\+view \mbox{\hyperlink{namespacerun__eval_ad2e81e462
 \item 
 constexpr std\+::string\+\_\+view \mbox{\hyperlink{namespacerun__eval_ac16a5475c8ba2869a579e2c1c2b8e902}{k\+Imp\+Results\+Across\+Archs\+Folder\+Name}} \{\char`\"{}Results\+Across\+Architectures\char`\"{}\}
 \item 
+constexpr std\+::string\+\_\+view \mbox{\hyperlink{namespacerun__eval_a2930e44c4ece9cbbe27fe260328e5be4}{k\+Imp\+Results\+Run\+Data\+Acc\+Folder\+Name}} \{\char`\"{}Run\+Results\+Acc\char`\"{}\}
+\item 
 constexpr std\+::array$<$ std\+::string\+\_\+view, 3 $>$ \mbox{\hyperlink{namespacerun__eval_ad0935c80dfec9802bd4f781abfd97162}{k\+Run\+Input\+Sig\+Headers}}
 \item 
 constexpr std\+::size\+\_\+t \mbox{\hyperlink{namespacerun__eval_a126425883abbf68f7c49e9634419bf8b}{k\+Run\+Input\+Num\+Input\+Idx}} \{0\}
@@ -86,6 +111,10 @@ constexpr std\+::size\+\_\+t \mbox{\hyperlink{namespacerun__eval_a126425883abbf6
 constexpr std\+::size\+\_\+t \mbox{\hyperlink{namespacerun__eval_aa4dcdafffb130d2f183786bd93e23b9a}{k\+Run\+Input\+Datatype\+Idx}} \{1\}
 \item 
 constexpr std\+::size\+\_\+t \mbox{\hyperlink{namespacerun__eval_a2be272bfc5ce93166901411313480403}{k\+Run\+Input\+Loop\+Iters\+Templated\+Idx}} \{2\}
+\item 
+const std\+::map$<$ \mbox{\hyperlink{namespacerun__eval_a8bab2154c9f69aee6f630dede1c230ca}{Out\+Results}}, const \mbox{\hyperlink{structrun__eval_1_1_out_file_info}{Out\+File\+Info}} $>$ \mbox{\hyperlink{namespacerun__eval_ac686dfab340d406f91f8f6c5066da397}{k\+Out\+Results\+File\+Info}}
+\item 
+const std\+::map$<$ \mbox{\hyperlink{namespacerun__eval_a8bab2154c9f69aee6f630dede1c230ca}{Out\+Results}}, const std\+::string\+\_\+view $>$ \mbox{\hyperlink{namespacerun__eval_a3e00d0fb1dad1ac2f4e84ca002a35bd5}{k\+Out\+Results\+Desc}}
 \end{DoxyCompactItemize}
 
 
@@ -115,7 +144,35 @@ k\+Median&\\
 \end{DoxyEnumFields}
 
 
-Definition at line 44 of file Run\+Eval\+Consts\+Enums.\+h.
+Definition at line 46 of file Run\+Eval\+Consts\+Enums.\+h.
+
+\mbox{\Hypertarget{namespacerun__eval_a8bab2154c9f69aee6f630dede1c230ca}\label{namespacerun__eval_a8bab2154c9f69aee6f630dede1c230ca}} 
+\index{run\_eval@{run\_eval}!OutResults@{OutResults}}
+\index{OutResults@{OutResults}!run\_eval@{run\_eval}}
+\doxysubsubsection{\texorpdfstring{OutResults}{OutResults}}
+{\footnotesize\ttfamily enum \mbox{\hyperlink{namespacerun__eval_a8bab2154c9f69aee6f630dede1c230ca}{run\+\_\+eval\+::\+Out\+Results}}\hspace{0.3cm}{\ttfamily [strong]}}
+
+\begin{DoxyEnumFields}{Enumerator}
+\raisebox{\heightof{T}}[0pt][0pt]{\index{kDefaultPParams@{kDefaultPParams}!run\_eval@{run\_eval}}\index{run\_eval@{run\_eval}!kDefaultPParams@{kDefaultPParams}}}\mbox{\Hypertarget{namespacerun__eval_a8bab2154c9f69aee6f630dede1c230caa0d4c807d12467d727754023fd796583a}\label{namespacerun__eval_a8bab2154c9f69aee6f630dede1c230caa0d4c807d12467d727754023fd796583a}} 
+k\+Default\+PParams&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{kOptPParams@{kOptPParams}!run\_eval@{run\_eval}}\index{run\_eval@{run\_eval}!kOptPParams@{kOptPParams}}}\mbox{\Hypertarget{namespacerun__eval_a8bab2154c9f69aee6f630dede1c230caa4aa1cff924810a4c91826d97fb37b2f5}\label{namespacerun__eval_a8bab2154c9f69aee6f630dede1c230caa4aa1cff924810a4c91826d97fb37b2f5}} 
+k\+Opt\+PParams&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{kSpeedups@{kSpeedups}!run\_eval@{run\_eval}}\index{run\_eval@{run\_eval}!kSpeedups@{kSpeedups}}}\mbox{\Hypertarget{namespacerun__eval_a8bab2154c9f69aee6f630dede1c230caa1b1672381d2f429dfe9c17a8cb9e9f27}\label{namespacerun__eval_a8bab2154c9f69aee6f630dede1c230caa1b1672381d2f429dfe9c17a8cb9e9f27}} 
+k\+Speedups&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{kOptWSpeedups@{kOptWSpeedups}!run\_eval@{run\_eval}}\index{run\_eval@{run\_eval}!kOptWSpeedups@{kOptWSpeedups}}}\mbox{\Hypertarget{namespacerun__eval_a8bab2154c9f69aee6f630dede1c230caa6b4de8247c2e65aac1cfd3c324f899ab}\label{namespacerun__eval_a8bab2154c9f69aee6f630dede1c230caa6b4de8247c2e65aac1cfd3c324f899ab}} 
+k\+Opt\+WSpeedups&\\
+\hline
+
+\end{DoxyEnumFields}
+
+
+Definition at line 154 of file Run\+Eval\+Consts\+Enums.\+h.
 
 \mbox{\Hypertarget{namespacerun__eval_aa8f06e41fdf48a118ecb84632df4b3cd}\label{namespacerun__eval_aa8f06e41fdf48a118ecb84632df4b3cd}} 
 \index{run\_eval@{run\_eval}!Status@{Status}}
@@ -139,7 +196,7 @@ k\+Error&\\
 \end{DoxyEnumFields}
 
 
-Definition at line 41 of file Run\+Eval\+Consts\+Enums.\+h.
+Definition at line 43 of file Run\+Eval\+Consts\+Enums.\+h.
 
 
 
@@ -156,7 +213,30 @@ Constant for \char`\"{}all runs\char`\"{} string.
 
 
 
-Definition at line 89 of file Run\+Eval\+Consts\+Enums.\+h.
+Definition at line 92 of file Run\+Eval\+Consts\+Enums.\+h.
+
+\mbox{\Hypertarget{namespacerun__eval_a28df5a9e705a23416bd11501cbc97f9b}\label{namespacerun__eval_a28df5a9e705a23416bd11501cbc97f9b}} 
+\index{run\_eval@{run\_eval}!kAltAccToSpeedupDesc@{kAltAccToSpeedupDesc}}
+\index{kAltAccToSpeedupDesc@{kAltAccToSpeedupDesc}!run\_eval@{run\_eval}}
+\doxysubsubsection{\texorpdfstring{kAltAccToSpeedupDesc}{kAltAccToSpeedupDesc}}
+{\footnotesize\ttfamily const std\+::map$<$\mbox{\hyperlink{namespacerun__environment_a2cd0a9de3e0ce6e4d99b35b89befb8bb}{run\+\_\+environment\+::\+Acc\+Setting}}, const std\+::string\+\_\+view$>$ run\+\_\+eval\+::k\+Alt\+Acc\+To\+Speedup\+Desc}
+
+{\bfseries Initial value\+:}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\{}
+\DoxyCodeLine{    \{\mbox{\hyperlink{namespacerun__environment_a2cd0a9de3e0ce6e4d99b35b89befb8bbaf6ce4a828ba0a1a34bfb099125fc3e76}{run\_environment::AccSetting::kAVX512\_F16}}, \mbox{\hyperlink{namespacerun__eval_a0dc7aa1de88568d5d58ac30512f5a5ad}{kSpeedupVsAvx512F16Vectorization}}\},}
+\DoxyCodeLine{    \{\mbox{\hyperlink{namespacerun__environment_a2cd0a9de3e0ce6e4d99b35b89befb8bba5b3095b5e5c7c45fb761b9580b0f61b3}{run\_environment::AccSetting::kAVX512}}, \mbox{\hyperlink{namespacerun__eval_ac70af88f811dd78a258b60dfcb173a5b}{kSpeedupVsAvx512Vectorization}}\},}
+\DoxyCodeLine{    \{\mbox{\hyperlink{namespacerun__environment_a2cd0a9de3e0ce6e4d99b35b89befb8bbad6648890b3f8d224b288f94b5252d9e2}{run\_environment::AccSetting::kAVX256\_F16}}, \mbox{\hyperlink{namespacerun__eval_acb7c6e108435ac56b06260f60cba8773}{kSpeedupVsAvx256F16Vectorization}}\},}
+\DoxyCodeLine{    \{\mbox{\hyperlink{namespacerun__environment_a2cd0a9de3e0ce6e4d99b35b89befb8bba60657ccbea91c13f8e7c57182bb9c233}{run\_environment::AccSetting::kAVX256}}, \mbox{\hyperlink{namespacerun__eval_aca67196adcd344aa6f31a7a7521fd385}{kSpeedupVsAvx256Vectorization}}\},}
+\DoxyCodeLine{    \{\mbox{\hyperlink{namespacerun__environment_a2cd0a9de3e0ce6e4d99b35b89befb8bbaffe1fb6c7e464b3e161257e7ac2f5c70}{run\_environment::AccSetting::kNEON}}, \mbox{\hyperlink{namespacerun__eval_af0984cda4e104f90c052b63bcdda7da2}{kSpeedupVsNEONVectorization}}\},}
+\DoxyCodeLine{    \{\mbox{\hyperlink{namespacerun__environment_a2cd0a9de3e0ce6e4d99b35b89befb8bba15cfe9387f9c286cd8244d15c8cfa6c7}{run\_environment::AccSetting::kCUDA}}, \mbox{\hyperlink{namespacerun__eval_a587247239b6c7e3afc9fe6e26ce73559}{kSpeedupVsCUDAAcceleration}}\},}
+\DoxyCodeLine{    \{\mbox{\hyperlink{namespacerun__environment_a2cd0a9de3e0ce6e4d99b35b89befb8bba35c3ace1970663a16e5c65baa5941b13}{run\_environment::AccSetting::kNone}}, \mbox{\hyperlink{namespacerun__eval_ad368b3398ba326c7e939936988061c95}{kSpeedupCPUVectorization}}\}}
+\DoxyCodeLine{  \}}
+
+\end{DoxyCode}
+
+
+Definition at line 127 of file Run\+Eval\+Consts\+Enums.\+h.
 
 \mbox{\Hypertarget{namespacerun__eval_aaaeaf61451f5f5f94c6cbcf1d550d9e8}\label{namespacerun__eval_aaaeaf61451f5f5f94c6cbcf1d550d9e8}} 
 \index{run\_eval@{run\_eval}!kBoolValFalseTrueDispStr@{kBoolValFalseTrueDispStr}}
@@ -170,7 +250,7 @@ Define string for display of \char`\"{}true\char`\"{} and \char`\"{}false\char`\
 
 
 
-Definition at line 78 of file Run\+Eval\+Consts\+Enums.\+h.
+Definition at line 81 of file Run\+Eval\+Consts\+Enums.\+h.
 
 \mbox{\Hypertarget{namespacerun__eval_a5c69e0c09678a48f6bcd5d46ac052096}\label{namespacerun__eval_a5c69e0c09678a48f6bcd5d46ac052096}} 
 \index{run\_eval@{run\_eval}!kCsvFileExtension@{kCsvFileExtension}}
@@ -180,7 +260,7 @@ Definition at line 78 of file Run\+Eval\+Consts\+Enums.\+h.
 
 
 
-Definition at line 98 of file Run\+Eval\+Consts\+Enums.\+h.
+Definition at line 101 of file Run\+Eval\+Consts\+Enums.\+h.
 
 \mbox{\Hypertarget{namespacerun__eval_a1bb38345922853340e189ff4e073bdf7}\label{namespacerun__eval_a1bb38345922853340e189ff4e073bdf7}} 
 \index{run\_eval@{run\_eval}!kDatatypeHeader@{kDatatypeHeader}}
@@ -190,17 +270,23 @@ Definition at line 98 of file Run\+Eval\+Consts\+Enums.\+h.
 
 
 
-Definition at line 82 of file Run\+Eval\+Consts\+Enums.\+h.
+Definition at line 85 of file Run\+Eval\+Consts\+Enums.\+h.
 
 \mbox{\Hypertarget{namespacerun__eval_ade2de03079235e85054acc531e3f2350}\label{namespacerun__eval_ade2de03079235e85054acc531e3f2350}} 
 \index{run\_eval@{run\_eval}!kDataTypesEvalSizes@{kDataTypesEvalSizes}}
 \index{kDataTypesEvalSizes@{kDataTypesEvalSizes}!run\_eval@{run\_eval}}
 \doxysubsubsection{\texorpdfstring{kDataTypesEvalSizes}{kDataTypesEvalSizes}}
-{\footnotesize\ttfamily constexpr std\+::array$<$size\+\_\+t, 3$>$ run\+\_\+eval\+::k\+Data\+Types\+Eval\+Sizes \{sizeof(float), sizeof(double), sizeof(\mbox{\hyperlink{_run_c_u_d_a_settings_8h_ae0ec76c243989a7b368bb78677ff6b30}{halftype}})\}\hspace{0.3cm}{\ttfamily [constexpr]}}
+{\footnotesize\ttfamily constexpr std\+::array$<$size\+\_\+t, 3$>$ run\+\_\+eval\+::k\+Data\+Types\+Eval\+Sizes\hspace{0.3cm}{\ttfamily [constexpr]}}
+
+{\bfseries Initial value\+:}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\{}
+\DoxyCodeLine{    \textcolor{keyword}{sizeof}(float), \textcolor{keyword}{sizeof}(\textcolor{keywordtype}{double}), \textcolor{keyword}{sizeof}(\mbox{\hyperlink{_run_c_u_d_a_settings_8h_ae0ec76c243989a7b368bb78677ff6b30}{halftype}})\}}
+
+\end{DoxyCode}
 
 
-
-Definition at line 56 of file Run\+Eval\+Consts\+Enums.\+h.
+Definition at line 58 of file Run\+Eval\+Consts\+Enums.\+h.
 
 \mbox{\Hypertarget{namespacerun__eval_a229caf4f6150ca92d66eb06a150b9fa6}\label{namespacerun__eval_a229caf4f6150ca92d66eb06a150b9fa6}} 
 \index{run\_eval@{run\_eval}!kEvalAcrossRunsFileName@{kEvalAcrossRunsFileName}}
@@ -210,7 +296,7 @@ Definition at line 56 of file Run\+Eval\+Consts\+Enums.\+h.
 
 
 
-Definition at line 97 of file Run\+Eval\+Consts\+Enums.\+h.
+Definition at line 100 of file Run\+Eval\+Consts\+Enums.\+h.
 
 \mbox{\Hypertarget{namespacerun__eval_ac16a5475c8ba2869a579e2c1c2b8e902}\label{namespacerun__eval_ac16a5475c8ba2869a579e2c1c2b8e902}} 
 \index{run\_eval@{run\_eval}!kImpResultsAcrossArchsFolderName@{kImpResultsAcrossArchsFolderName}}
@@ -220,7 +306,7 @@ Definition at line 97 of file Run\+Eval\+Consts\+Enums.\+h.
 
 
 
-Definition at line 114 of file Run\+Eval\+Consts\+Enums.\+h.
+Definition at line 143 of file Run\+Eval\+Consts\+Enums.\+h.
 
 \mbox{\Hypertarget{namespacerun__eval_aeb9a999d42ab9a972522a36e2e2f9712}\label{namespacerun__eval_aeb9a999d42ab9a972522a36e2e2f9712}} 
 \index{run\_eval@{run\_eval}!kImpResultsFolderName@{kImpResultsFolderName}}
@@ -230,7 +316,17 @@ Definition at line 114 of file Run\+Eval\+Consts\+Enums.\+h.
 
 
 
-Definition at line 109 of file Run\+Eval\+Consts\+Enums.\+h.
+Definition at line 138 of file Run\+Eval\+Consts\+Enums.\+h.
+
+\mbox{\Hypertarget{namespacerun__eval_a2930e44c4ece9cbbe27fe260328e5be4}\label{namespacerun__eval_a2930e44c4ece9cbbe27fe260328e5be4}} 
+\index{run\_eval@{run\_eval}!kImpResultsRunDataAccFolderName@{kImpResultsRunDataAccFolderName}}
+\index{kImpResultsRunDataAccFolderName@{kImpResultsRunDataAccFolderName}!run\_eval@{run\_eval}}
+\doxysubsubsection{\texorpdfstring{kImpResultsRunDataAccFolderName}{kImpResultsRunDataAccFolderName}}
+{\footnotesize\ttfamily constexpr std\+::string\+\_\+view run\+\_\+eval\+::k\+Imp\+Results\+Run\+Data\+Acc\+Folder\+Name \{\char`\"{}Run\+Results\+Acc\char`\"{}\}\hspace{0.3cm}{\ttfamily [constexpr]}}
+
+
+
+Definition at line 144 of file Run\+Eval\+Consts\+Enums.\+h.
 
 \mbox{\Hypertarget{namespacerun__eval_a625a3bd1e0783741632501cd38ef6f46}\label{namespacerun__eval_a625a3bd1e0783741632501cd38ef6f46}} 
 \index{run\_eval@{run\_eval}!kImpResultsRunDataDefaultPParamsFolderName@{kImpResultsRunDataDefaultPParamsFolderName}}
@@ -240,7 +336,7 @@ Definition at line 109 of file Run\+Eval\+Consts\+Enums.\+h.
 
 
 
-Definition at line 111 of file Run\+Eval\+Consts\+Enums.\+h.
+Definition at line 140 of file Run\+Eval\+Consts\+Enums.\+h.
 
 \mbox{\Hypertarget{namespacerun__eval_a12f0e50ca7718080a44f95b98512aad0}\label{namespacerun__eval_a12f0e50ca7718080a44f95b98512aad0}} 
 \index{run\_eval@{run\_eval}!kImpResultsRunDataFolderName@{kImpResultsRunDataFolderName}}
@@ -250,7 +346,7 @@ Definition at line 111 of file Run\+Eval\+Consts\+Enums.\+h.
 
 
 
-Definition at line 110 of file Run\+Eval\+Consts\+Enums.\+h.
+Definition at line 139 of file Run\+Eval\+Consts\+Enums.\+h.
 
 \mbox{\Hypertarget{namespacerun__eval_adc691a7675131728cd71a6fcc9fc3967}\label{namespacerun__eval_adc691a7675131728cd71a6fcc9fc3967}} 
 \index{run\_eval@{run\_eval}!kImpResultsRunDataWSpeedupsFolderName@{kImpResultsRunDataWSpeedupsFolderName}}
@@ -260,7 +356,7 @@ Definition at line 110 of file Run\+Eval\+Consts\+Enums.\+h.
 
 
 
-Definition at line 112 of file Run\+Eval\+Consts\+Enums.\+h.
+Definition at line 141 of file Run\+Eval\+Consts\+Enums.\+h.
 
 \mbox{\Hypertarget{namespacerun__eval_ad2e81e462dc5a1a39da8b7bd3d6d533c}\label{namespacerun__eval_ad2e81e462dc5a1a39da8b7bd3d6d533c}} 
 \index{run\_eval@{run\_eval}!kImpResultsSpeedupsFolderName@{kImpResultsSpeedupsFolderName}}
@@ -270,7 +366,7 @@ Definition at line 112 of file Run\+Eval\+Consts\+Enums.\+h.
 
 
 
-Definition at line 113 of file Run\+Eval\+Consts\+Enums.\+h.
+Definition at line 142 of file Run\+Eval\+Consts\+Enums.\+h.
 
 \mbox{\Hypertarget{namespacerun__eval_a07d7885ec260b8cfe897bdecf3bc428f}\label{namespacerun__eval_a07d7885ec260b8cfe897bdecf3bc428f}} 
 \index{run\_eval@{run\_eval}!kInputIdxHeader@{kInputIdxHeader}}
@@ -280,7 +376,7 @@ Definition at line 113 of file Run\+Eval\+Consts\+Enums.\+h.
 
 
 
-Definition at line 81 of file Run\+Eval\+Consts\+Enums.\+h.
+Definition at line 84 of file Run\+Eval\+Consts\+Enums.\+h.
 
 \mbox{\Hypertarget{namespacerun__eval_aef29ac0eb3ad8078a51bc7612ee6863b}\label{namespacerun__eval_aef29ac0eb3ad8078a51bc7612ee6863b}} 
 \index{run\_eval@{run\_eval}!kLoopItersTemplatedHeader@{kLoopItersTemplatedHeader}}
@@ -290,7 +386,7 @@ Definition at line 81 of file Run\+Eval\+Consts\+Enums.\+h.
 
 
 
-Definition at line 83 of file Run\+Eval\+Consts\+Enums.\+h.
+Definition at line 86 of file Run\+Eval\+Consts\+Enums.\+h.
 
 \mbox{\Hypertarget{namespacerun__eval_a68b6e7c080212e75c52102099564ec23}\label{namespacerun__eval_a68b6e7c080212e75c52102099564ec23}} 
 \index{run\_eval@{run\_eval}!kMedianOfTestRunsDesc@{kMedianOfTestRunsDesc}}
@@ -304,7 +400,7 @@ Constant to describing timing as median across evaluation runs.
 
 
 
-Definition at line 86 of file Run\+Eval\+Consts\+Enums.\+h.
+Definition at line 89 of file Run\+Eval\+Consts\+Enums.\+h.
 
 \mbox{\Hypertarget{namespacerun__eval_aac082d24ce0fe2ac23fb63c994172981}\label{namespacerun__eval_aac082d24ce0fe2ac23fb63c994172981}} 
 \index{run\_eval@{run\_eval}!kOptimizedRuntimeHeader@{kOptimizedRuntimeHeader}}
@@ -314,7 +410,60 @@ Definition at line 86 of file Run\+Eval\+Consts\+Enums.\+h.
 
 
 
-Definition at line 99 of file Run\+Eval\+Consts\+Enums.\+h.
+Definition at line 102 of file Run\+Eval\+Consts\+Enums.\+h.
+
+\mbox{\Hypertarget{namespacerun__eval_a3e00d0fb1dad1ac2f4e84ca002a35bd5}\label{namespacerun__eval_a3e00d0fb1dad1ac2f4e84ca002a35bd5}} 
+\index{run\_eval@{run\_eval}!kOutResultsDesc@{kOutResultsDesc}}
+\index{kOutResultsDesc@{kOutResultsDesc}!run\_eval@{run\_eval}}
+\doxysubsubsection{\texorpdfstring{kOutResultsDesc}{kOutResultsDesc}}
+{\footnotesize\ttfamily const std\+::map$<$\mbox{\hyperlink{namespacerun__eval_a8bab2154c9f69aee6f630dede1c230ca}{Out\+Results}}, const std\+::string\+\_\+view$>$ run\+\_\+eval\+::k\+Out\+Results\+Desc}
+
+{\bfseries Initial value\+:}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\{}
+\DoxyCodeLine{    \{OutResults::kDefaultPParams,}
+\DoxyCodeLine{     \textcolor{stringliteral}{"{}Run inputs and results using default parallel parameters"{}}\},}
+\DoxyCodeLine{    \{OutResults::kOptPParams,}
+\DoxyCodeLine{     \textcolor{stringliteral}{"{}Run inputs and optimized results"{}}\},}
+\DoxyCodeLine{    \{OutResults::kSpeedups,}
+\DoxyCodeLine{     \textcolor{stringliteral}{"{}Speedup results"{}}\},}
+\DoxyCodeLine{    \{OutResults::kOptWSpeedups, }
+\DoxyCodeLine{     \textcolor{stringliteral}{"{}Input/settings/parameters info, detailed timings, and evaluation for "{}}}
+\DoxyCodeLine{     \textcolor{stringliteral}{"{}each run including speedup results"{}}\}}
+\DoxyCodeLine{  \}}
+
+\end{DoxyCode}
+
+
+Definition at line 183 of file Run\+Eval\+Consts\+Enums.\+h.
+
+\mbox{\Hypertarget{namespacerun__eval_ac686dfab340d406f91f8f6c5066da397}\label{namespacerun__eval_ac686dfab340d406f91f8f6c5066da397}} 
+\index{run\_eval@{run\_eval}!kOutResultsFileInfo@{kOutResultsFileInfo}}
+\index{kOutResultsFileInfo@{kOutResultsFileInfo}!run\_eval@{run\_eval}}
+\doxysubsubsection{\texorpdfstring{kOutResultsFileInfo}{kOutResultsFileInfo}}
+{\footnotesize\ttfamily const std\+::map$<$\mbox{\hyperlink{namespacerun__eval_a8bab2154c9f69aee6f630dede1c230ca}{Out\+Results}}, const \mbox{\hyperlink{structrun__eval_1_1_out_file_info}{Out\+File\+Info}}$>$ run\+\_\+eval\+::k\+Out\+Results\+File\+Info}
+
+{\bfseries Initial value\+:}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\{}
+\DoxyCodeLine{    \{OutResults::kDefaultPParams,}
+\DoxyCodeLine{     \{\mbox{\hyperlink{namespacerun__eval_a625a3bd1e0783741632501cd38ef6f46}{kImpResultsRunDataDefaultPParamsFolderName}},}
+\DoxyCodeLine{      \mbox{\hyperlink{namespacerun__eval_a3f3c5731fd12472eb774b21a5c722aaa}{kRunResultsDefaultPParamsDescFileName}}\}\},}
+\DoxyCodeLine{    \{OutResults::kOptPParams,}
+\DoxyCodeLine{     \{\mbox{\hyperlink{namespacerun__eval_a12f0e50ca7718080a44f95b98512aad0}{kImpResultsRunDataFolderName}},}
+\DoxyCodeLine{      \mbox{\hyperlink{namespacerun__eval_a8532e4526c0af3cc9f9856bcd6eb2744}{kRunResultsDescFileName}}\}\},}
+\DoxyCodeLine{    \{OutResults::kSpeedups,}
+\DoxyCodeLine{     \{\mbox{\hyperlink{namespacerun__eval_ad2e81e462dc5a1a39da8b7bd3d6d533c}{kImpResultsSpeedupsFolderName}},}
+\DoxyCodeLine{      \mbox{\hyperlink{namespacerun__eval_a6f7327cf25d1b917872c8d98f9fd84f3}{kSpeedupsDescFileName}}\}\},}
+\DoxyCodeLine{    \{OutResults::kOptWSpeedups,}
+\DoxyCodeLine{     \{\mbox{\hyperlink{namespacerun__eval_adc691a7675131728cd71a6fcc9fc3967}{kImpResultsRunDataWSpeedupsFolderName}},}
+\DoxyCodeLine{      \mbox{\hyperlink{namespacerun__eval_a2b8f361a2c25b57782ad13ddbae045fc}{kRunResultsWSpeedupsDescFileName}}\}\}}
+\DoxyCodeLine{  \}}
+
+\end{DoxyCode}
+
+
+Definition at line 167 of file Run\+Eval\+Consts\+Enums.\+h.
 
 \mbox{\Hypertarget{namespacerun__eval_ac8888f549eae1f06b02b580494fdf773}\label{namespacerun__eval_ac8888f549eae1f06b02b580494fdf773}} 
 \index{run\_eval@{run\_eval}!kRunAltOptimizedImps@{kRunAltOptimizedImps}}
@@ -324,7 +473,7 @@ Definition at line 99 of file Run\+Eval\+Consts\+Enums.\+h.
 
 
 
-Definition at line 65 of file Run\+Eval\+Consts\+Enums.\+h.
+Definition at line 68 of file Run\+Eval\+Consts\+Enums.\+h.
 
 \mbox{\Hypertarget{namespacerun__eval_aa4dcdafffb130d2f183786bd93e23b9a}\label{namespacerun__eval_aa4dcdafffb130d2f183786bd93e23b9a}} 
 \index{run\_eval@{run\_eval}!kRunInputDatatypeIdx@{kRunInputDatatypeIdx}}
@@ -334,7 +483,7 @@ Definition at line 65 of file Run\+Eval\+Consts\+Enums.\+h.
 
 
 
-Definition at line 120 of file Run\+Eval\+Consts\+Enums.\+h.
+Definition at line 150 of file Run\+Eval\+Consts\+Enums.\+h.
 
 \mbox{\Hypertarget{namespacerun__eval_a2be272bfc5ce93166901411313480403}\label{namespacerun__eval_a2be272bfc5ce93166901411313480403}} 
 \index{run\_eval@{run\_eval}!kRunInputLoopItersTemplatedIdx@{kRunInputLoopItersTemplatedIdx}}
@@ -344,7 +493,7 @@ Definition at line 120 of file Run\+Eval\+Consts\+Enums.\+h.
 
 
 
-Definition at line 121 of file Run\+Eval\+Consts\+Enums.\+h.
+Definition at line 151 of file Run\+Eval\+Consts\+Enums.\+h.
 
 \mbox{\Hypertarget{namespacerun__eval_a126425883abbf68f7c49e9634419bf8b}\label{namespacerun__eval_a126425883abbf68f7c49e9634419bf8b}} 
 \index{run\_eval@{run\_eval}!kRunInputNumInputIdx@{kRunInputNumInputIdx}}
@@ -354,7 +503,7 @@ Definition at line 121 of file Run\+Eval\+Consts\+Enums.\+h.
 
 
 
-Definition at line 119 of file Run\+Eval\+Consts\+Enums.\+h.
+Definition at line 149 of file Run\+Eval\+Consts\+Enums.\+h.
 
 \mbox{\Hypertarget{namespacerun__eval_ad0935c80dfec9802bd4f781abfd97162}\label{namespacerun__eval_ad0935c80dfec9802bd4f781abfd97162}} 
 \index{run\_eval@{run\_eval}!kRunInputSigHeaders@{kRunInputSigHeaders}}
@@ -370,7 +519,7 @@ Definition at line 119 of file Run\+Eval\+Consts\+Enums.\+h.
 \end{DoxyCode}
 
 
-Definition at line 117 of file Run\+Eval\+Consts\+Enums.\+h.
+Definition at line 147 of file Run\+Eval\+Consts\+Enums.\+h.
 
 \mbox{\Hypertarget{namespacerun__eval_a3f3c5731fd12472eb774b21a5c722aaa}\label{namespacerun__eval_a3f3c5731fd12472eb774b21a5c722aaa}} 
 \index{run\_eval@{run\_eval}!kRunResultsDefaultPParamsDescFileName@{kRunResultsDefaultPParamsDescFileName}}
@@ -380,7 +529,7 @@ Definition at line 117 of file Run\+Eval\+Consts\+Enums.\+h.
 
 
 
-Definition at line 93 of file Run\+Eval\+Consts\+Enums.\+h.
+Definition at line 96 of file Run\+Eval\+Consts\+Enums.\+h.
 
 \mbox{\Hypertarget{namespacerun__eval_a739a6278e895cb3e8311abb5431f9cf9}\label{namespacerun__eval_a739a6278e895cb3e8311abb5431f9cf9}} 
 \index{run\_eval@{run\_eval}!kRunResultsDescDefaultPParamsFileName@{kRunResultsDescDefaultPParamsFileName}}
@@ -390,7 +539,7 @@ Definition at line 93 of file Run\+Eval\+Consts\+Enums.\+h.
 
 
 
-Definition at line 95 of file Run\+Eval\+Consts\+Enums.\+h.
+Definition at line 98 of file Run\+Eval\+Consts\+Enums.\+h.
 
 \mbox{\Hypertarget{namespacerun__eval_a8532e4526c0af3cc9f9856bcd6eb2744}\label{namespacerun__eval_a8532e4526c0af3cc9f9856bcd6eb2744}} 
 \index{run\_eval@{run\_eval}!kRunResultsDescFileName@{kRunResultsDescFileName}}
@@ -400,7 +549,7 @@ Definition at line 95 of file Run\+Eval\+Consts\+Enums.\+h.
 
 
 
-Definition at line 92 of file Run\+Eval\+Consts\+Enums.\+h.
+Definition at line 95 of file Run\+Eval\+Consts\+Enums.\+h.
 
 \mbox{\Hypertarget{namespacerun__eval_a2b8f361a2c25b57782ad13ddbae045fc}\label{namespacerun__eval_a2b8f361a2c25b57782ad13ddbae045fc}} 
 \index{run\_eval@{run\_eval}!kRunResultsWSpeedupsDescFileName@{kRunResultsWSpeedupsDescFileName}}
@@ -410,7 +559,7 @@ Definition at line 92 of file Run\+Eval\+Consts\+Enums.\+h.
 
 
 
-Definition at line 94 of file Run\+Eval\+Consts\+Enums.\+h.
+Definition at line 97 of file Run\+Eval\+Consts\+Enums.\+h.
 
 \mbox{\Hypertarget{namespacerun__eval_a2fb349e0919edec1beb2ac3e891201f6}\label{namespacerun__eval_a2fb349e0919edec1beb2ac3e891201f6}} 
 \index{run\_eval@{run\_eval}!kSingleThreadRuntimeHeader@{kSingleThreadRuntimeHeader}}
@@ -420,47 +569,47 @@ Definition at line 94 of file Run\+Eval\+Consts\+Enums.\+h.
 
 
 
-Definition at line 100 of file Run\+Eval\+Consts\+Enums.\+h.
+Definition at line 103 of file Run\+Eval\+Consts\+Enums.\+h.
 
 \mbox{\Hypertarget{namespacerun__eval_ad368b3398ba326c7e939936988061c95}\label{namespacerun__eval_ad368b3398ba326c7e939936988061c95}} 
 \index{run\_eval@{run\_eval}!kSpeedupCPUVectorization@{kSpeedupCPUVectorization}}
 \index{kSpeedupCPUVectorization@{kSpeedupCPUVectorization}!run\_eval@{run\_eval}}
 \doxysubsubsection{\texorpdfstring{kSpeedupCPUVectorization}{kSpeedupCPUVectorization}}
-{\footnotesize\ttfamily constexpr std\+::string\+\_\+view run\+\_\+eval\+::k\+Speedup\+CPUVectorization \{\char`\"{}Speedup using CPU vectorization\char`\"{}\}\hspace{0.3cm}{\ttfamily [constexpr]}}
+{\footnotesize\ttfamily constexpr std\+::string\+\_\+view run\+\_\+eval\+::k\+Speedup\+CPUVectorization \{\char`\"{}Speedup over no CPU vectorization\char`\"{}\}\hspace{0.3cm}{\ttfamily [constexpr]}}
 
 
 
-Definition at line 105 of file Run\+Eval\+Consts\+Enums.\+h.
+Definition at line 118 of file Run\+Eval\+Consts\+Enums.\+h.
 
-\mbox{\Hypertarget{namespacerun__eval_a53e8b6af9661ebb7bc6a99e97cf4f3a2}\label{namespacerun__eval_a53e8b6af9661ebb7bc6a99e97cf4f3a2}} 
-\index{run\_eval@{run\_eval}!kSpeedupDouble@{kSpeedupDouble}}
-\index{kSpeedupDouble@{kSpeedupDouble}!run\_eval@{run\_eval}}
-\doxysubsubsection{\texorpdfstring{kSpeedupDouble}{kSpeedupDouble}}
-{\footnotesize\ttfamily constexpr std\+::string\+\_\+view run\+\_\+eval\+::k\+Speedup\+Double \{\char`\"{}Speedup using double-\/precision relative to float (actually slowdown)\char`\"{}\}\hspace{0.3cm}{\ttfamily [constexpr]}}
-
-
-
-Definition at line 102 of file Run\+Eval\+Consts\+Enums.\+h.
-
-\mbox{\Hypertarget{namespacerun__eval_aacb3f40d5df0b0422fe6173fcd4f7885}\label{namespacerun__eval_aacb3f40d5df0b0422fe6173fcd4f7885}} 
-\index{run\_eval@{run\_eval}!kSpeedupHalf@{kSpeedupHalf}}
-\index{kSpeedupHalf@{kSpeedupHalf}!run\_eval@{run\_eval}}
-\doxysubsubsection{\texorpdfstring{kSpeedupHalf}{kSpeedupHalf}}
-{\footnotesize\ttfamily constexpr std\+::string\+\_\+view run\+\_\+eval\+::k\+Speedup\+Half \{\char`\"{}Speedup using half-\/precision relative to float\char`\"{}\}\hspace{0.3cm}{\ttfamily [constexpr]}}
+\mbox{\Hypertarget{namespacerun__eval_a71e6b665ae9ac08b9c45769d637aef85}\label{namespacerun__eval_a71e6b665ae9ac08b9c45769d637aef85}} 
+\index{run\_eval@{run\_eval}!kSpeedupDoubleHeader@{kSpeedupDoubleHeader}}
+\index{kSpeedupDoubleHeader@{kSpeedupDoubleHeader}!run\_eval@{run\_eval}}
+\doxysubsubsection{\texorpdfstring{kSpeedupDoubleHeader}{kSpeedupDoubleHeader}}
+{\footnotesize\ttfamily constexpr std\+::string\+\_\+view run\+\_\+eval\+::k\+Speedup\+Double\+Header \{\char`\"{}Speedup using double-\/precision relative to float (actually slowdown)\char`\"{}\}\hspace{0.3cm}{\ttfamily [constexpr]}}
 
 
 
-Definition at line 103 of file Run\+Eval\+Consts\+Enums.\+h.
+Definition at line 109 of file Run\+Eval\+Consts\+Enums.\+h.
+
+\mbox{\Hypertarget{namespacerun__eval_ad3fbe6f497846de8777e5f4e14ac934d}\label{namespacerun__eval_ad3fbe6f497846de8777e5f4e14ac934d}} 
+\index{run\_eval@{run\_eval}!kSpeedupHalfHeader@{kSpeedupHalfHeader}}
+\index{kSpeedupHalfHeader@{kSpeedupHalfHeader}!run\_eval@{run\_eval}}
+\doxysubsubsection{\texorpdfstring{kSpeedupHalfHeader}{kSpeedupHalfHeader}}
+{\footnotesize\ttfamily constexpr std\+::string\+\_\+view run\+\_\+eval\+::k\+Speedup\+Half\+Header \{\char`\"{}Speedup using half-\/precision relative to float\char`\"{}\}\hspace{0.3cm}{\ttfamily [constexpr]}}
+
+
+
+Definition at line 110 of file Run\+Eval\+Consts\+Enums.\+h.
 
 \mbox{\Hypertarget{namespacerun__eval_af964fa30f21da7faca4e5b2d56ac7bb3}\label{namespacerun__eval_af964fa30f21da7faca4e5b2d56ac7bb3}} 
 \index{run\_eval@{run\_eval}!kSpeedupLoopItersCountTemplate@{kSpeedupLoopItersCountTemplate}}
 \index{kSpeedupLoopItersCountTemplate@{kSpeedupLoopItersCountTemplate}!run\_eval@{run\_eval}}
 \doxysubsubsection{\texorpdfstring{kSpeedupLoopItersCountTemplate}{kSpeedupLoopItersCountTemplate}}
-{\footnotesize\ttfamily constexpr std\+::string\+\_\+view run\+\_\+eval\+::k\+Speedup\+Loop\+Iters\+Count\+Template \{\char`\"{}Speedup w/ templated disparity count (known at compile-\/time)\char`\"{}\}\hspace{0.3cm}{\ttfamily [constexpr]}}
+{\footnotesize\ttfamily constexpr std\+::string\+\_\+view run\+\_\+eval\+::k\+Speedup\+Loop\+Iters\+Count\+Template \{\char`\"{}Speedup w/ templated loop iteration count (known at compile-\/time)\char`\"{}\}\hspace{0.3cm}{\ttfamily [constexpr]}}
 
 
 
-Definition at line 104 of file Run\+Eval\+Consts\+Enums.\+h.
+Definition at line 115 of file Run\+Eval\+Consts\+Enums.\+h.
 
 \mbox{\Hypertarget{namespacerun__eval_ad93c0dd070cda950d788bd5f22c8f237}\label{namespacerun__eval_ad93c0dd070cda950d788bd5f22c8f237}} 
 \index{run\_eval@{run\_eval}!kSpeedupOptParParamsHeader@{kSpeedupOptParParamsHeader}}
@@ -470,7 +619,7 @@ Definition at line 104 of file Run\+Eval\+Consts\+Enums.\+h.
 
 
 
-Definition at line 101 of file Run\+Eval\+Consts\+Enums.\+h.
+Definition at line 106 of file Run\+Eval\+Consts\+Enums.\+h.
 
 \mbox{\Hypertarget{namespacerun__eval_a6f7327cf25d1b917872c8d98f9fd84f3}\label{namespacerun__eval_a6f7327cf25d1b917872c8d98f9fd84f3}} 
 \index{run\_eval@{run\_eval}!kSpeedupsDescFileName@{kSpeedupsDescFileName}}
@@ -480,7 +629,17 @@ Definition at line 101 of file Run\+Eval\+Consts\+Enums.\+h.
 
 
 
-Definition at line 96 of file Run\+Eval\+Consts\+Enums.\+h.
+Definition at line 99 of file Run\+Eval\+Consts\+Enums.\+h.
+
+\mbox{\Hypertarget{namespacerun__eval_acb7c6e108435ac56b06260f60cba8773}\label{namespacerun__eval_acb7c6e108435ac56b06260f60cba8773}} 
+\index{run\_eval@{run\_eval}!kSpeedupVsAvx256F16Vectorization@{kSpeedupVsAvx256F16Vectorization}}
+\index{kSpeedupVsAvx256F16Vectorization@{kSpeedupVsAvx256F16Vectorization}!run\_eval@{run\_eval}}
+\doxysubsubsection{\texorpdfstring{kSpeedupVsAvx256F16Vectorization}{kSpeedupVsAvx256F16Vectorization}}
+{\footnotesize\ttfamily constexpr std\+::string\+\_\+view run\+\_\+eval\+::k\+Speedup\+Vs\+Avx256\+F16\+Vectorization \{\char`\"{}Speedup over AVX256 (w/ float16) CPU vectorization\char`\"{}\}\hspace{0.3cm}{\ttfamily [constexpr]}}
+
+
+
+Definition at line 120 of file Run\+Eval\+Consts\+Enums.\+h.
 
 \mbox{\Hypertarget{namespacerun__eval_aca67196adcd344aa6f31a7a7521fd385}\label{namespacerun__eval_aca67196adcd344aa6f31a7a7521fd385}} 
 \index{run\_eval@{run\_eval}!kSpeedupVsAvx256Vectorization@{kSpeedupVsAvx256Vectorization}}
@@ -490,7 +649,47 @@ Definition at line 96 of file Run\+Eval\+Consts\+Enums.\+h.
 
 
 
-Definition at line 106 of file Run\+Eval\+Consts\+Enums.\+h.
+Definition at line 119 of file Run\+Eval\+Consts\+Enums.\+h.
+
+\mbox{\Hypertarget{namespacerun__eval_a0dc7aa1de88568d5d58ac30512f5a5ad}\label{namespacerun__eval_a0dc7aa1de88568d5d58ac30512f5a5ad}} 
+\index{run\_eval@{run\_eval}!kSpeedupVsAvx512F16Vectorization@{kSpeedupVsAvx512F16Vectorization}}
+\index{kSpeedupVsAvx512F16Vectorization@{kSpeedupVsAvx512F16Vectorization}!run\_eval@{run\_eval}}
+\doxysubsubsection{\texorpdfstring{kSpeedupVsAvx512F16Vectorization}{kSpeedupVsAvx512F16Vectorization}}
+{\footnotesize\ttfamily constexpr std\+::string\+\_\+view run\+\_\+eval\+::k\+Speedup\+Vs\+Avx512\+F16\+Vectorization \{\char`\"{}Speedup over AVX512 (w/ float16) CPU vectorization\char`\"{}\}\hspace{0.3cm}{\ttfamily [constexpr]}}
+
+
+
+Definition at line 122 of file Run\+Eval\+Consts\+Enums.\+h.
+
+\mbox{\Hypertarget{namespacerun__eval_ac70af88f811dd78a258b60dfcb173a5b}\label{namespacerun__eval_ac70af88f811dd78a258b60dfcb173a5b}} 
+\index{run\_eval@{run\_eval}!kSpeedupVsAvx512Vectorization@{kSpeedupVsAvx512Vectorization}}
+\index{kSpeedupVsAvx512Vectorization@{kSpeedupVsAvx512Vectorization}!run\_eval@{run\_eval}}
+\doxysubsubsection{\texorpdfstring{kSpeedupVsAvx512Vectorization}{kSpeedupVsAvx512Vectorization}}
+{\footnotesize\ttfamily constexpr std\+::string\+\_\+view run\+\_\+eval\+::k\+Speedup\+Vs\+Avx512\+Vectorization \{\char`\"{}Speedup over AVX512 CPU vectorization\char`\"{}\}\hspace{0.3cm}{\ttfamily [constexpr]}}
+
+
+
+Definition at line 121 of file Run\+Eval\+Consts\+Enums.\+h.
+
+\mbox{\Hypertarget{namespacerun__eval_a587247239b6c7e3afc9fe6e26ce73559}\label{namespacerun__eval_a587247239b6c7e3afc9fe6e26ce73559}} 
+\index{run\_eval@{run\_eval}!kSpeedupVsCUDAAcceleration@{kSpeedupVsCUDAAcceleration}}
+\index{kSpeedupVsCUDAAcceleration@{kSpeedupVsCUDAAcceleration}!run\_eval@{run\_eval}}
+\doxysubsubsection{\texorpdfstring{kSpeedupVsCUDAAcceleration}{kSpeedupVsCUDAAcceleration}}
+{\footnotesize\ttfamily constexpr std\+::string\+\_\+view run\+\_\+eval\+::k\+Speedup\+Vs\+CUDAAcceleration \{\char`\"{}Speedup over CUDA acceleration\char`\"{}\}\hspace{0.3cm}{\ttfamily [constexpr]}}
+
+
+
+Definition at line 124 of file Run\+Eval\+Consts\+Enums.\+h.
+
+\mbox{\Hypertarget{namespacerun__eval_af0984cda4e104f90c052b63bcdda7da2}\label{namespacerun__eval_af0984cda4e104f90c052b63bcdda7da2}} 
+\index{run\_eval@{run\_eval}!kSpeedupVsNEONVectorization@{kSpeedupVsNEONVectorization}}
+\index{kSpeedupVsNEONVectorization@{kSpeedupVsNEONVectorization}!run\_eval@{run\_eval}}
+\doxysubsubsection{\texorpdfstring{kSpeedupVsNEONVectorization}{kSpeedupVsNEONVectorization}}
+{\footnotesize\ttfamily constexpr std\+::string\+\_\+view run\+\_\+eval\+::k\+Speedup\+Vs\+NEONVectorization \{\char`\"{}Speedup over NEON CPU vectorization\char`\"{}\}\hspace{0.3cm}{\ttfamily [constexpr]}}
+
+
+
+Definition at line 123 of file Run\+Eval\+Consts\+Enums.\+h.
 
 \mbox{\Hypertarget{namespacerun__eval_a9c724309a03d12aa405c65a93c716bed}\label{namespacerun__eval_a9c724309a03d12aa405c65a93c716bed}} 
 \index{run\_eval@{run\_eval}!kTemplatedItersEvalSettings@{kTemplatedItersEvalSettings}}
@@ -506,5 +705,5 @@ Definition at line 106 of file Run\+Eval\+Consts\+Enums.\+h.
 \end{DoxyCode}
 
 
-Definition at line 73 of file Run\+Eval\+Consts\+Enums.\+h.
+Definition at line 76 of file Run\+Eval\+Consts\+Enums.\+h.
 

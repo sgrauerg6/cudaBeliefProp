@@ -15,7 +15,8 @@ Header for defining aliases for storing run results and evaluating implementatio
 {\ttfamily \#include \char`\"{}Run\+Data.\+h\char`\"{}}\newline
 {\ttfamily \#include \char`\"{}Run\+Settings\+Params/\+Input\+Signature.\+h\char`\"{}}\newline
 {\ttfamily \#include \char`\"{}Run\+Eval/\+Run\+Eval\+Consts\+Enums.\+h\char`\"{}}\newline
-Include dependency graph for Evaluate\+Imp\+Aliases.\+h\+:\nopagebreak
+Include dependency graph for Evaluate\+Imp\+Aliases.\+h\+:
+\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
@@ -33,11 +34,12 @@ This graph shows which files directly or indirectly include this file\+:\nopageb
 \begin{DoxyCompactItemize}
 \item 
 using \mbox{\hyperlink{_evaluate_imp_aliases_8h_aae59d45d00750e48757e5a168e9ec6dc}{Mult\+Run\+Data}} = std\+::map$<$ \mbox{\hyperlink{class_input_signature}{Input\+Signature}}, std\+::optional$<$ std\+::map$<$ \mbox{\hyperlink{namespacerun__environment_a1ff774df4801b48d66861eb53eef88f9}{run\+\_\+environment\+::\+Parallel\+Params\+Setting}}, \mbox{\hyperlink{class_run_data}{Run\+Data}} $>$ $>$$>$
-\item 
+\begin{DoxyCompactList}\small\item\em Alias mapping input signature to run data for each parallel parameters setting~\newline
+ Run data is null if run failed for input signature. \end{DoxyCompactList}\item 
 using \mbox{\hyperlink{_evaluate_imp_aliases_8h_ac65698ddba39b029bfc1e625d39c410a}{Run\+Speedup\+Avg\+Median}} = std\+::pair$<$ std\+::string, std\+::map$<$ \mbox{\hyperlink{namespacerun__eval_afde1aa77e63e966b5728eae080febcf2}{run\+\_\+eval\+::\+Middle\+Val\+Data}}, double $>$ $>$
-\item 
+\begin{DoxyCompactList}\small\item\em Alias for speedup data with speedup name paired with mapping that contains average and median speedup values. \end{DoxyCompactList}\item 
 using \mbox{\hyperlink{_evaluate_imp_aliases_8h_a3a6aff8d2606369119da478289a3cdd0}{Mult\+Run\+Data\+WSpeedup\+By\+Acc}} = std\+::unordered\+\_\+map$<$ \mbox{\hyperlink{namespacerun__environment_a2cd0a9de3e0ce6e4d99b35b89befb8bb}{run\+\_\+environment\+::\+Acc\+Setting}}, std\+::pair$<$ \mbox{\hyperlink{_evaluate_imp_aliases_8h_aae59d45d00750e48757e5a168e9ec6dc}{Mult\+Run\+Data}}, std\+::vector$<$ \mbox{\hyperlink{_evaluate_imp_aliases_8h_ac65698ddba39b029bfc1e625d39c410a}{Run\+Speedup\+Avg\+Median}} $>$ $>$$>$
-\end{DoxyCompactItemize}
+\begin{DoxyCompactList}\small\item\em Mapping of acceleration setting to run and speedup data. \end{DoxyCompactList}\end{DoxyCompactItemize}
 
 
 \doxysubsection{Detailed Description}
@@ -60,7 +62,12 @@ Copyright (c) 2024
 
 
 
-Definition at line 42 of file Evaluate\+Imp\+Aliases.\+h.
+Alias mapping input signature to run data for each parallel parameters setting~\newline
+ Run data is null if run failed for input signature. 
+
+
+
+Definition at line 45 of file Evaluate\+Imp\+Aliases.\+h.
 
 \mbox{\Hypertarget{_evaluate_imp_aliases_8h_a3a6aff8d2606369119da478289a3cdd0}\label{_evaluate_imp_aliases_8h_a3a6aff8d2606369119da478289a3cdd0}} 
 \index{EvaluateImpAliases.h@{EvaluateImpAliases.h}!MultRunDataWSpeedupByAcc@{MultRunDataWSpeedupByAcc}}
@@ -70,7 +77,11 @@ Definition at line 42 of file Evaluate\+Imp\+Aliases.\+h.
 
 
 
-Definition at line 44 of file Evaluate\+Imp\+Aliases.\+h.
+Mapping of acceleration setting to run and speedup data. 
+
+
+
+Definition at line 55 of file Evaluate\+Imp\+Aliases.\+h.
 
 \mbox{\Hypertarget{_evaluate_imp_aliases_8h_ac65698ddba39b029bfc1e625d39c410a}\label{_evaluate_imp_aliases_8h_ac65698ddba39b029bfc1e625d39c410a}} 
 \index{EvaluateImpAliases.h@{EvaluateImpAliases.h}!RunSpeedupAvgMedian@{RunSpeedupAvgMedian}}
@@ -80,5 +91,9 @@ Definition at line 44 of file Evaluate\+Imp\+Aliases.\+h.
 
 
 
-Definition at line 43 of file Evaluate\+Imp\+Aliases.\+h.
+Alias for speedup data with speedup name paired with mapping that contains average and median speedup values. 
+
+
+
+Definition at line 51 of file Evaluate\+Imp\+Aliases.\+h.
 

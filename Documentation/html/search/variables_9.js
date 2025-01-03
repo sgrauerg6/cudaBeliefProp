@@ -1,8 +1,8 @@
 var searchData=
 [
-  ['offset_5finto_5farrays_5f_1179',['offset_into_arrays_',['../structbeliefprop_1_1_bp_level_properties.html#ab4c69b17fd6ec94eb29ba412d1cf5509',1,'beliefprop::BpLevelProperties']]],
-  ['opt_5fimp_5faccel_5f_1180',['opt_imp_accel_',['../class_run_imp_mult_inputs.html#ae624a4c44205ef0b339e6379bebcd7ee',1,'RunImpMultInputs']]],
-  ['opt_5fparallel_5fparams_5fsetting_1181',['opt_parallel_params_setting',['../structrun__environment_1_1_run_imp_settings.html#aa0ec79e36ccca6b24e02176f6946dd67',1,'run_environment::RunImpSettings']]],
-  ['out_5fdisparity_5fmap_1182',['out_disparity_map',['../structbeliefprop_1_1_bp_run_output.html#a6b4e80785df1c0419f6f714e359b6acf',1,'beliefprop::BpRunOutput']]],
-  ['output_5fdiff_5fthresholds_1183',['output_diff_thresholds',['../structbeliefprop_1_1_disparity_map_evaluation_params.html#a8e8df620fcba86beb779c069bcbc73b9',1,'beliefprop::DisparityMapEvaluationParams']]]
+  ['name_1209',['name',['../structbeliefprop_1_1_bp_stereo_set.html#abcc731b205339befe54ebdc1bb4c97e7',1,'beliefprop::BpStereoSet']]],
+  ['num_5fdisp_5fvals_1210',['num_disp_vals',['../structbeliefprop_1_1_bp_stereo_set.html#a3dbcbee32c8d4c3aadf6733bdcd4a20f',1,'beliefprop::BpStereoSet::num_disp_vals()'],['../structbeliefprop_1_1_bp_settings.html#a8009f4bf04e84f8d3f8b06c621d9519c',1,'beliefprop::BpSettings::num_disp_vals()']]],
+  ['num_5fiterations_1211',['num_iterations',['../structbeliefprop_1_1_bp_settings.html#a6224f20a238fdffe36aa1cb3cb14d6b7',1,'beliefprop::BpSettings']]],
+  ['num_5flevels_1212',['num_levels',['../structbeliefprop_1_1_bp_settings.html#a8ad64f0e3691fdf79db0ec60f4ac0643',1,'beliefprop::BpSettings']]],
+  ['num_5fsig_5fdiff_5fpixels_5fat_5fthresholds_5f_1213',['num_sig_diff_pixels_at_thresholds_',['../class_disparity_map_evaluation.html#a61c48d27c0790d15b6644f8a0f005680',1,'DisparityMapEvaluation']]]
 ];

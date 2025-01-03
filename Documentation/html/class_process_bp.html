@@ -110,7 +110,7 @@ Collaboration diagram for ProcessBp&lt; T, DISP_VALS, ACCELERATION &gt;:</div>
 <div class="center"><img src="class_process_bp__coll__graph.png" border="0" usemap="#a_process_bp_3_01_t_00_01_d_i_s_p___v_a_l_s_00_01_a_c_c_e_l_e_r_a_t_i_o_n_01_4_coll__map" alt="Collaboration graph"/></div>
 <map name="a_process_bp_3_01_t_00_01_d_i_s_p___v_a_l_s_00_01_a_c_c_e_l_e_r_a_t_i_o_n_01_4_coll__map" id="a_process_bp_3_01_t_00_01_d_i_s_p___v_a_l_s_00_01_a_c_c_e_l_e_r_a_t_i_o_n_01_4_coll__map">
 <area shape="rect" title="Abstract class to run belief propagation on target device. Some of the class functions need to be ove..." alt="" coords="5,95,188,136"/>
-<area shape="rect" href="class_parallel_params.html" title="Abstract class for holding and processing parallelization parameters. Child class(es) specific to imp..." alt="" coords="37,5,156,32"/>
+<area shape="rect" href="class_parallel_params.html" title="Abstract class for holding and processing parallelization parameters. &#160;Child class(es) specific to im..." alt="" coords="37,5,156,32"/>
 </map>
 <center><span class="legend">[<a target="top" href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
@@ -121,7 +121,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a5fb280ae72731bf1b0981d647befb26e"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="namespacerun__eval.html#aa8f06e41fdf48a118ecb84632df4b3cd">run_eval::Status</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_process_bp.html#a5fb280ae72731bf1b0981d647befb26e">ErrorCheck</a> (const char *file=&quot;&quot;, int line=0, bool abort=false) const</td></tr>
 <tr class="separator:a5fb280ae72731bf1b0981d647befb26e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0ccd2a3bcea7ef8b3129ce32667f740d"><td class="memItemLeft" align="right" valign="top">std::optional&lt; std::pair&lt; float *, <a class="el" href="class_detailed_timings.html">DetailedTimings</a>&lt; <a class="el" href="namespacebeliefprop.html#aec799311905a37226da8b05f8375d951">beliefprop::Runtime_Type</a> &gt; &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_process_bp.html#a0ccd2a3bcea7ef8b3129ce32667f740d">operator()</a> (const std::array&lt; float *, 2 &gt; &amp;images_target_device, const <a class="el" href="structbeliefprop_1_1_bp_settings.html">beliefprop::BpSettings</a> &amp;alg_settings, const std::array&lt; unsigned int, 2 &gt; &amp;width_height_images, T *allocated_mem_bp_processing, T *allocated_memory, const std::unique_ptr&lt; <a class="el" href="class_memory_management.html">MemoryManagement</a>&lt; T &gt;&gt; &amp;mem_management_bp_run) const</td></tr>
-<tr class="memdesc:a0ccd2a3bcea7ef8b3129ce32667f740d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Run the belief propagation algorithm with on a set of stereo images to generate a disparity map input is images image1Pixels and image1Pixels output is resultingDisparityMap.  <a href="class_process_bp.html#a0ccd2a3bcea7ef8b3129ce32667f740d">More...</a><br /></td></tr>
+<tr class="memdesc:a0ccd2a3bcea7ef8b3129ce32667f740d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Run belief propagation implementation with on a set of stereo images to generate a disparity map.<br  />
+ Input is images image1Pixels and image1Pixels<br  />
+ Output is resultingDisparityMap.  <a href="class_process_bp.html#a0ccd2a3bcea7ef8b3129ce32667f740d">More...</a><br /></td></tr>
 <tr class="separator:a0ccd2a3bcea7ef8b3129ce32667f740d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-attribs"></a>
@@ -143,7 +145,7 @@ class ProcessBp&lt; T, DISP_VALS, ACCELERATION &gt;</h3>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="_process_bp_8h_source.html#l00068">68</a> of file <a class="el" href="_process_bp_8h_source.html">ProcessBp.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_process_bp_8h_source.html#l00067">67</a> of file <a class="el" href="_process_bp_8h_source.html">ProcessBp.h</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a222abd86e8786a73f62056d9337f2a54"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a222abd86e8786a73f62056d9337f2a54">&#9670;&nbsp;</a></span>ProcessBp()</h2>
@@ -171,7 +173,7 @@ template&lt;RunData_t T, unsigned int DISP_VALS, run_environment::AccSetting ACC
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_process_bp_8h_source.html#l00070">70</a> of file <a class="el" href="_process_bp_8h_source.html">ProcessBp.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_process_bp_8h_source.html#l00069">69</a> of file <a class="el" href="_process_bp_8h_source.html">ProcessBp.h</a>.</p>
 
 </div>
 </div>
@@ -218,7 +220,7 @@ template&lt;RunData_t T, unsigned int DISP_VALS, run_environment::AccSetting ACC
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_process_bp_8h_source.html#l00072">72</a> of file <a class="el" href="_process_bp_8h_source.html">ProcessBp.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_process_bp_8h_source.html#l00073">73</a> of file <a class="el" href="_process_bp_8h_source.html">ProcessBp.h</a>.</p>
 
 </div>
 </div>
@@ -274,7 +276,9 @@ template&lt;RunData_t T, unsigned int DISP_VALS, run_environment::AccSetting ACC
       </table>
 </div><div class="memdoc">
 
-<p>Run the belief propagation algorithm with on a set of stereo images to generate a disparity map input is images image1Pixels and image1Pixels output is resultingDisparityMap. </p>
+<p>Run belief propagation implementation with on a set of stereo images to generate a disparity map.<br  />
+ Input is images image1Pixels and image1Pixels<br  />
+ Output is resultingDisparityMap. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">images_target_device</td><td></td></tr>
@@ -288,13 +292,13 @@ template&lt;RunData_t T, unsigned int DISP_VALS, run_environment::AccSetting ACC
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>std::optional&lt;std::pair&lt;float*, DetailedTimings&lt;beliefprop::Runtime_Type&gt;&gt;&gt; </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_process_bp_8h_source.html#l00372">372</a> of file <a class="el" href="_process_bp_8h_source.html">ProcessBp.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_process_bp_8h_source.html#l00410">410</a> of file <a class="el" href="_process_bp_8h_source.html">ProcessBp.h</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><img src="class_process_bp_a0ccd2a3bcea7ef8b3129ce32667f740d_cgraph.png" border="0" usemap="#aclass_process_bp_a0ccd2a3bcea7ef8b3129ce32667f740d_cgraph" alt=""/></div>
 <map name="aclass_process_bp_a0ccd2a3bcea7ef8b3129ce32667f740d_cgraph" id="aclass_process_bp_a0ccd2a3bcea7ef8b3129ce32667f740d_cgraph">
-<area shape="rect" title="Run the belief propagation algorithm with on a set of stereo images to generate a disparity map input..." alt="" coords="5,56,168,83"/>
+<area shape="rect" title="Run belief propagation implementation with on a set of stereo images to generate a disparity map...." alt="" coords="5,56,168,83"/>
 <area shape="rect" href="class_detailed_timings.html#ade899fc5c569139d6109f5c2bd0727b8" title="Add timing by segment index." alt="" coords="228,5,435,32"/>
 <area shape="rect" href="class_detailed_timings.html#a158238eb5d20564311ed04423769d542" title="Get median timing for a specified segment that may have been run multiple times." alt="" coords="216,56,447,83"/>
 <area shape="rect" href="namespacebeliefprop__cpu.html#aefc3512e6ee1730e923a897554504685" title=" " alt="" coords="241,107,422,149"/>
@@ -327,7 +331,7 @@ template&lt;RunData_t T, unsigned int DISP_VALS, run_environment::AccSetting ACC
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_process_bp_8h_source.html#l00096">96</a> of file <a class="el" href="_process_bp_8h_source.html">ProcessBp.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_process_bp_8h_source.html#l00103">103</a> of file <a class="el" href="_process_bp_8h_source.html">ProcessBp.h</a>.</p>
 
 </div>
 </div>

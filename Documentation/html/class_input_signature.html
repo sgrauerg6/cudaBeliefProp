@@ -104,7 +104,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memdesc:aa98ce4cd19ff01ae7820255f167a7dbd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor to generate evaluation input signature from parameters corresponding to each part.  <a href="class_input_signature.html#aa98ce4cd19ff01ae7820255f167a7dbd">More...</a><br /></td></tr>
 <tr class="separator:aa98ce4cd19ff01ae7820255f167a7dbd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab7068c172488696c06dda2fc629ba663"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_input_signature.html#ab7068c172488696c06dda2fc629ba663">operator&lt;</a> (const <a class="el" href="class_input_signature.html">InputSignature</a> &amp;rhs) const</td></tr>
-<tr class="memdesc:ab7068c172488696c06dda2fc629ba663"><td class="mdescLeft">&#160;</td><td class="mdescRight">Less than operator for comparing evaluation input signatures so they can be ordered Operator needed to support ordering since input signature is used as std::map key and also for evaluation output order If any <a class="el" href="class_input_signature.html" title="Class defines input signature for evaluation run that contains evaluation set number,...">InputSignature</a> member is "no value" that property is considered "any" and is ignored in the comparison.  <a href="class_input_signature.html#ab7068c172488696c06dda2fc629ba663">More...</a><br /></td></tr>
+<tr class="memdesc:ab7068c172488696c06dda2fc629ba663"><td class="mdescLeft">&#160;</td><td class="mdescRight">Less than operator for comparing evaluation input signatures so they can be ordered<br  />
+ Operator needed to support ordering since input signature is used as std::map key and also for evaluation output order<br  />
+ If any <a class="el" href="class_input_signature.html" title="Class defines input signature for evaluation run that contains evaluation set number,...">InputSignature</a> member is "no value" that property is considered "any" and is ignored in the comparison.  <a href="class_input_signature.html#ab7068c172488696c06dda2fc629ba663">More...</a><br /></td></tr>
 <tr class="separator:ab7068c172488696c06dda2fc629ba663"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4be7ab943ae1a76a160fda8b531aabb6"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_input_signature.html#a4be7ab943ae1a76a160fda8b531aabb6">operator==</a> (const <a class="el" href="class_input_signature.html">InputSignature</a> &amp;rhs) const</td></tr>
 <tr class="memdesc:a4be7ab943ae1a76a160fda8b531aabb6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Equality operator for comparing evaluation input signatures.  <a href="class_input_signature.html#a4be7ab943ae1a76a160fda8b531aabb6">More...</a><br /></td></tr>
@@ -138,7 +140,7 @@ Friends</h2></td></tr>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Class defines input signature for evaluation run that contains evaluation set number, data type, and whether or not to use templated loop iteration count. </p>
 
-<p class="definition">Definition at line <a class="el" href="_input_signature_8h_source.html#l00043">43</a> of file <a class="el" href="_input_signature_8h_source.html">InputSignature.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_input_signature_8h_source.html#l00044">44</a> of file <a class="el" href="_input_signature_8h_source.html">InputSignature.h</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="ad43082ee3cadef77d72b62b9b4a3d7b2"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ad43082ee3cadef77d72b62b9b4a3d7b2">&#9670;&nbsp;</a></span>InputSignature() <span class="overload">[1/2]</span></h2>
@@ -254,7 +256,7 @@ Friends</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_input_signature_8h_source.html#l00100">100</a> of file <a class="el" href="_input_signature_8h_source.html">InputSignature.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_input_signature_8h_source.html#l00102">102</a> of file <a class="el" href="_input_signature_8h_source.html">InputSignature.h</a>.</p>
 
 </div>
 </div>
@@ -281,9 +283,7 @@ Friends</h2></td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>true </dd>
-<dd>
-false </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>true if current input signature is same as rhs input signature where an attribute is considered "equal" in cases where one side is "ANY" for the attribute </dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="_input_signature_8cpp_source.html#l00107">107</a> of file <a class="el" href="_input_signature_8cpp_source.html">InputSignature.cpp</a>.</p>
 
@@ -312,7 +312,7 @@ false </dd></dl>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_input_signature_8h_source.html#l00125">125</a> of file <a class="el" href="_input_signature_8h_source.html">InputSignature.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_input_signature_8h_source.html#l00127">127</a> of file <a class="el" href="_input_signature_8h_source.html">InputSignature.h</a>.</p>
 
 </div>
 </div>
@@ -339,7 +339,7 @@ false </dd></dl>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_input_signature_8h_source.html#l00116">116</a> of file <a class="el" href="_input_signature_8h_source.html">InputSignature.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_input_signature_8h_source.html#l00118">118</a> of file <a class="el" href="_input_signature_8h_source.html">InputSignature.h</a>.</p>
 
 </div>
 </div>
@@ -359,16 +359,16 @@ false </dd></dl>
       </table>
 </div><div class="memdoc">
 
-<p>Less than operator for comparing evaluation input signatures so they can be ordered Operator needed to support ordering since input signature is used as std::map key and also for evaluation output order If any <a class="el" href="class_input_signature.html" title="Class defines input signature for evaluation run that contains evaluation set number,...">InputSignature</a> member is "no value" that property is considered "any" and is ignored in the comparison. </p>
+<p>Less than operator for comparing evaluation input signatures so they can be ordered<br  />
+ Operator needed to support ordering since input signature is used as std::map key and also for evaluation output order<br  />
+ If any <a class="el" href="class_input_signature.html" title="Class defines input signature for evaluation run that contains evaluation set number,...">InputSignature</a> member is "no value" that property is considered "any" and is ignored in the comparison. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">rhs</td><td></td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>true </dd>
-<dd>
-false </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>true if current input signature is less than rhs input signature, false otherwise </dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="_input_signature_8cpp_source.html#l00067">67</a> of file <a class="el" href="_input_signature_8cpp_source.html">InputSignature.cpp</a>.</p>
 
@@ -397,9 +397,7 @@ false </dd></dl>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>true </dd>
-<dd>
-false </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>true if current input signature is same as rhs input signature, false otherwise </dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="_input_signature_8cpp_source.html#l00099">99</a> of file <a class="el" href="_input_signature_8cpp_source.html">InputSignature.cpp</a>.</p>
 
@@ -430,7 +428,7 @@ false </dd></dl>
 
 <p>Remove data type setting and change it to "any". </p>
 
-<p class="definition">Definition at line <a class="el" href="_input_signature_8h_source.html#l00153">153</a> of file <a class="el" href="_input_signature_8h_source.html">InputSignature.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_input_signature_8h_source.html#l00155">155</a> of file <a class="el" href="_input_signature_8h_source.html">InputSignature.h</a>.</p>
 
 </div>
 </div>
@@ -459,7 +457,7 @@ false </dd></dl>
 
 <p>Remove templated loop iter setting and change it to "any". </p>
 
-<p class="definition">Definition at line <a class="el" href="_input_signature_8h_source.html#l00146">146</a> of file <a class="el" href="_input_signature_8h_source.html">InputSignature.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_input_signature_8h_source.html#l00148">148</a> of file <a class="el" href="_input_signature_8h_source.html">InputSignature.h</a>.</p>
 
 </div>
 </div>
@@ -486,7 +484,7 @@ false </dd></dl>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_input_signature_8h_source.html#l00157">157</a> of file <a class="el" href="_input_signature_8h_source.html">InputSignature.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_input_signature_8h_source.html#l00159">159</a> of file <a class="el" href="_input_signature_8h_source.html">InputSignature.h</a>.</p>
 
 </div>
 </div>
@@ -513,7 +511,7 @@ false </dd></dl>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_input_signature_8h_source.html#l00134">134</a> of file <a class="el" href="_input_signature_8h_source.html">InputSignature.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_input_signature_8h_source.html#l00136">136</a> of file <a class="el" href="_input_signature_8h_source.html">InputSignature.h</a>.</p>
 
 </div>
 </div>
@@ -560,9 +558,9 @@ false </dd></dl>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>std::ostream&amp; </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>Output stream with <a class="el" href="class_input_signature.html" title="Class defines input signature for evaluation run that contains evaluation set number,...">InputSignature</a> object written to it </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_input_signature_8h_source.html#l00177">177</a> of file <a class="el" href="_input_signature_8h_source.html">InputSignature.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_input_signature_8h_source.html#l00181">181</a> of file <a class="el" href="_input_signature_8h_source.html">InputSignature.h</a>.</p>
 
 </div>
 </div>

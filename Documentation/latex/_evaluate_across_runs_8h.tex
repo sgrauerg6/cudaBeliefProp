@@ -9,14 +9,17 @@ Declares class with operator function to evaluate implementation runs across mul
 {\ttfamily \#include $<$vector$>$}\newline
 {\ttfamily \#include $<$filesystem$>$}\newline
 {\ttfamily \#include \char`\"{}Run\+Eval\+Consts\+Enums.\+h\char`\"{}}\newline
-Include dependency graph for Evaluate\+Across\+Runs.\+h\+:\nopagebreak
+{\ttfamily \#include \char`\"{}Run\+Results\+Speedups.\+h\char`\"{}}\newline
+Include dependency graph for Evaluate\+Across\+Runs.\+h\+:
+\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
 \includegraphics[width=350pt]{_evaluate_across_runs_8h__incl}
 \end{center}
 \end{figure}
-This graph shows which files directly or indirectly include this file\+:\nopagebreak
+This graph shows which files directly or indirectly include this file\+:
+\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
@@ -26,6 +29,8 @@ This graph shows which files directly or indirectly include this file\+:\nopageb
 \doxysubsection*{Classes}
 \begin{DoxyCompactItemize}
 \item 
+struct \mbox{\hyperlink{struct_eval_across_runs_data}{Eval\+Across\+Runs\+Data}}
+\begin{DoxyCompactList}\small\item\em Structure to store data with mappings for evaluating results across runs as well as speedup headers in order. \end{DoxyCompactList}\item 
 class \mbox{\hyperlink{class_evaluate_across_runs}{Evaluate\+Across\+Runs}}
 \begin{DoxyCompactList}\small\item\em Class with operator function to evaluate implementation runs across multiple architectures. Outputs a file with speedup data on every run with the runs ordered from fastest to slowest. \end{DoxyCompactList}\end{DoxyCompactItemize}
 
