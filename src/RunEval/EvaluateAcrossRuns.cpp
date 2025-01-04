@@ -397,7 +397,6 @@ void EvaluateAcrossRuns::WriteEvalAcrossRunsToFile(
   for (const auto& speedup_header : eval_data.speedup_headers) {
     //don't process if header is empty
     if (!(speedup_header.empty())) {
-      std::cout << "SPEEDUP HEADER: " << speedup_header << std::endl;
       eval_results_across_run_str << speedup_header << ',';
       //get runs ordered by speedup
       const auto ordered_runs_speedup =
@@ -405,7 +404,11 @@ void EvaluateAcrossRuns::WriteEvalAcrossRunsToFile(
           eval_data,
           speedup_header);
       for (const auto& run_name : ordered_runs_speedup) {
-        eval_results_across_run_str << run_name << ',';
+        const auto speedup =
+          eval_data.speedup_results_name_to_data.at(run_name).at(
+            speedup_header).at(0);
+        eval_results_across_run_str << run_name << " - " << std::setprecision(3)
+                                    << std::fixed << std::stof(speedup) << ',';
       }
     }
     //continue to next row of table to write data for next speedup result
