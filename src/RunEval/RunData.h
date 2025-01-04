@@ -95,7 +95,7 @@ public:
    * @return true if there is run data corresponding to header, false if not 
    */
   bool IsData(const std::string_view header) const {
-    std::string header_str(header);
+    const std::string header_str(header);
     return (std::any_of(headers_in_order_.cbegin(), headers_in_order_.cend(),
                         [&header_str](const auto& ordered_header) {
                           return (ordered_header == header_str);
