@@ -34,31 +34,31 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 RunResultsSpeedups::RunResultsSpeedups(
   const std::filesystem::path& imp_results_file_path,
   const std::string& run_name) : run_name_{run_name}
-{
-  //get run results data from file if available
-  const std::filesystem::path run_results_fp = 
-    imp_results_file_path / run_eval::kImpResultsRunDataFolderName /
-    (std::string(run_name_) + '_' +
-     std::string(run_eval::kImpResultsRunDataFolderName) +
-     std::string(run_eval::kCsvFileExtension));
+{  
   std::pair<std::map<std::string, std::vector<std::string>>,
             std::vector<std::string>>
-    run_results_header_to_data_ordered_headers;
-  if ((std::filesystem::exists(run_results_fp)) &&
-      (std::filesystem::is_regular_file(run_results_fp)))
+  run_results_header_to_data_ordered_headers;
+  //get run results data from file if available
+  if (const auto run_results_fp = 
+        imp_results_file_path / run_eval::kImpResultsRunDataFolderName /
+        (std::string(run_name_) + '_' +
+         std::string(run_eval::kImpResultsRunDataFolderName) +
+         std::string(run_eval::kCsvFileExtension));
+      ((std::filesystem::exists(run_results_fp))) &&
+       (std::filesystem::is_regular_file(run_results_fp)))
   {
     run_results_header_to_data_ordered_headers =
       HeaderToDataWOrderedHeadersCsv(run_results_fp);
   }
 
   //get speedup evaluation data from file if available
-  const std::filesystem::path run_speedup_fp =
-    imp_results_file_path / run_eval::kImpResultsSpeedupsFolderName /
-    (std::string(run_name_) + '_' + 
-     std::string(run_eval::kSpeedupsDescFileName) +
-     std::string(run_eval::kCsvFileExtension));
-  if ((std::filesystem::exists(run_speedup_fp)) &&
-      (std::filesystem::is_regular_file(run_speedup_fp)))
+  if (const auto run_speedup_fp =
+        imp_results_file_path / run_eval::kImpResultsSpeedupsFolderName /
+        (std::string(run_name_) + '_' + 
+         std::string(run_eval::kSpeedupsDescFileName) +
+         std::string(run_eval::kCsvFileExtension));
+      ((std::filesystem::exists(run_speedup_fp)) &&
+       (std::filesystem::is_regular_file(run_speedup_fp))))
   {
     speedup_header_to_result_speedup_order_ =
       HeaderToDataWOrderedHeadersCsv(run_speedup_fp);

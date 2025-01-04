@@ -130,8 +130,9 @@ void DetailedTimings<T>::AddToCurrentTimings(
   std::ranges::for_each(in_detailed_timings.segment_timings_,
     [this](const auto& curr_segment_timings) {
       const auto& [segment, segment_time_durations] = curr_segment_timings;
-      auto iter = this->segment_timings_.find(segment);
-      if (iter != this->segment_timings_.cend()) {
+      if (auto iter = this->segment_timings_.find(segment);
+          iter != this->segment_timings_.cend())
+      {
         iter->second.insert(iter->second.cend(), 
                             segment_time_durations.cbegin(),
                             segment_time_durations.cend());
