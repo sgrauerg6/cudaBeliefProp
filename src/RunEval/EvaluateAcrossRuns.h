@@ -90,7 +90,8 @@ private:
    * @param eval_data
    */
   std::vector<std::string> OrderedRunNames(
-    const EvalAcrossRunsData& eval_data) const;
+    const EvalAcrossRunsData& eval_data,
+    const std::optional<std::string>& speedup_header = std::optional<std::string>()) const;
 
   /**
    * @brief Function to get names of runs with results from implementation

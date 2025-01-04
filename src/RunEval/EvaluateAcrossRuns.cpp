@@ -66,8 +66,22 @@ void EvaluateAcrossRuns::operator()(
 
   //get run names in order from fastest to slowest based on first speedup
   //header
-  const std::vector<std::string> run_names_ordered =
+  std::vector<std::string> run_names_ordered =
     OrderedRunNames(eval_data);
+  
+  //add any run names not in ordered run names (due to not having data
+  //corresponding to first speedup header) to end of ordered runs
+  std::copy_if(
+    run_names.begin(),
+    run_names.end(),
+    std::back_inserter(run_names_ordered),
+    [&run_names_ordered](const auto& run_name) {
+      return (
+        std::find(
+          run_names_ordered.begin(),
+          run_names_ordered.end(),
+          run_name) == run_names_ordered.end());
+    });
 
   //write output evaluation across runs to file
   WriteEvalAcrossRunsToFile(
@@ -181,23 +195,83 @@ EvalAcrossRunsData EvaluateAcrossRuns::GenEvalAcrossRunsData(
 }
 
 /**
- * @brief Get run names in order from fastest to slowest based on first
- * speedup header
+ * @brief Get run names in order from fastest to slowest based on
+ * speedup header.<br>
+ * If no speedup header is given, use the first speedup header in evaluation
+ * data.
  * 
  * @param eval_data
  */
 std::vector<std::string> EvaluateAcrossRuns::OrderedRunNames(
-  const EvalAcrossRunsData& eval_data) const
+  const EvalAcrossRunsData& eval_data,
+  const std::optional<std::string>& speedup_header) const
 {
-  //get header to use for speedup ordering
-  //use first speedup in speedup headers for ordering
-  //of runs from fastest to slowest
-  const auto speedup_ordering = eval_data.speedup_headers.front();
+  //get header to use for speedup ordering of runs
+  //use first speedup in speedup headers if no input speedup header given
+  const std::string speedup_ordering =
+    speedup_header.value_or(eval_data.speedup_headers.front());
+  
+  //declare vector with run names paired with reference wrapper containing
+  //speedup results for run
+  //reference wrapper used to prevent need to copy speedup results
+  std::vector<std::pair<
+    std::string,
+    std::reference_wrapper<const std::map<std::string, std::vector<std::string>>>>>
+  runs_w_speedup_data;
+
+  //populate vector of run names paired with reference wrapper containing speedup data
+  std::transform(
+    eval_data.speedup_results_name_to_data.cbegin(),
+    eval_data.speedup_results_name_to_data.cend(),
+    std::back_inserter(runs_w_speedup_data),
+    [](const auto& run_name_w_speedup) {
+      return std::pair<std::string, std::reference_wrapper<const std::map<std::string, std::vector<std::string>>>>{
+        run_name_w_speedup.first, std::cref(run_name_w_speedup.second)};
+    });
+  
+  //remove runs where current speedup ordering header does not have data or
+  //data is blank (currently assumed that data is a valid float)
+  std::erase_if(
+    runs_w_speedup_data,
+    [&speedup_ordering](const auto& run_name_w_speedup) {
+      if (!(run_name_w_speedup.second.get().contains(speedup_ordering))) {
+        return true;
+      }
+      else {
+        const std::string speedup_str =
+          run_name_w_speedup.second.get().at(speedup_ordering).at(0);
+        return std::all_of(
+          speedup_str.begin(),
+          speedup_str.end(),
+          [](unsigned char c) { return isspace(c); });
+      }
+    });
+  
+  //sort runs from greatest speedup to lowest speedup according to speedup
+  //header
+  std::sort(runs_w_speedup_data.begin(), runs_w_speedup_data.end(),
+    [&speedup_ordering](const auto& run_w_speedups_1, const auto& run_w_speedups_2) {
+      //return true if run 1 has greater speedup than run 2
+      return (std::stof(run_w_speedups_1.second.get().at(speedup_ordering).at(0)) >
+              std::stof(run_w_speedups_2.second.get().at(speedup_ordering).at(0)));
+    });
+
+  //generate ordered run names from greatest speedup to least speedup
+  //according to speedup header
+  std::vector<std::string> ordered_run_names;
+  std::transform(
+    runs_w_speedup_data.cbegin(),
+    runs_w_speedup_data.cend(),
+    std::back_inserter(ordered_run_names),
+    [](const auto& run_name_speedup) { return run_name_speedup.first; });
+
+  //return run names ordered from greatest speedup to least speedup
+  return ordered_run_names;
 
   //write each evaluation run name and save order of runs with speedup
   //corresponding to first speedup header
   //order of run names is in speedup from largest to smallest
-  auto cmp_speedup = 
+  /*auto cmp_speedup = 
     [](const std::pair<std::string, float>& a,
        const std::pair<std::string, float>& b)
        { return a.second > b.second; };
@@ -215,7 +289,7 @@ std::vector<std::string> EvaluateAcrossRuns::OrderedRunNames(
        speedup_results.contains(speedup_ordering) ?
        std::stof(std::string(speedup_results.at(speedup_ordering).at(0))) :
        0});
-  }
+  }*
 
   //generate ordered run names from fastest to slowest
   std::vector<std::string> ordered_run_names;
@@ -225,7 +299,7 @@ std::vector<std::string> EvaluateAcrossRuns::OrderedRunNames(
     std::back_inserter(ordered_run_names),
     [](const auto& run_name_speedup) { return run_name_speedup.first; });
   
-  return ordered_run_names;
+  return ordered_run_names;*/
 }
 
 //write output evaluation across runs to file
@@ -314,6 +388,28 @@ void EvaluateAcrossRuns::WriteEvalAcrossRunsToFile(
       //continue to next row of table to write data for next speedup result
       eval_results_across_run_str << std::endl;
     }
+  }
+
+  //go through each speedup and display runs ordered from highest speedup to lowest
+  //speedup
+  eval_results_across_run_str << std::endl;
+  eval_results_across_run_str << "Runs ordered by speedup (highest to lowest)" << std::endl;
+  for (const auto& speedup_header : eval_data.speedup_headers) {
+    //don't process if header is empty
+    if (!(speedup_header.empty())) {
+      std::cout << "SPEEDUP HEADER: " << speedup_header << std::endl;
+      eval_results_across_run_str << speedup_header << ',';
+      //get runs ordered by speedup
+      const auto ordered_runs_speedup =
+        OrderedRunNames(
+          eval_data,
+          speedup_header);
+      for (const auto& run_name : ordered_runs_speedup) {
+        eval_results_across_run_str << run_name << ',';
+      }
+    }
+    //continue to next row of table to write data for next speedup result
+    eval_results_across_run_str << std::endl;
   }
   
   //write location of evaluation results across runs to output console
