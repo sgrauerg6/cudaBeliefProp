@@ -132,21 +132,22 @@ $(document).ready(function(){initNavTree('_evaluate_across_runs_8h_source.html',
 <div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;    <span class="keyword">const</span> std::map&lt;std::string, RunResultsSpeedups&gt;&amp; run_results_by_name,</div>
 <div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;    <span class="keyword">const</span> std::vector&lt;std::string&gt;&amp; eval_across_runs_in_params_show) <span class="keyword">const</span>;</div>
 <div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160; </div>
-<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;  std::vector&lt;std::string&gt; OrderedRunNames(</div>
-<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;    <span class="keyword">const</span> <a class="code" href="struct_eval_across_runs_data.html">EvalAcrossRunsData</a>&amp; eval_data) <span class="keyword">const</span>;</div>
-<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160; </div>
-<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;  std::vector&lt;std::string&gt; GetRunNames(</div>
-<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;    <span class="keyword">const</span> std::filesystem::path&amp; imp_results_file_path) <span class="keyword">const</span>;</div>
-<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160; </div>
-<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;  <span class="keywordtype">void</span> WriteEvalAcrossRunsToFile(</div>
-<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;    <span class="keyword">const</span> std::filesystem::path&amp; imp_results_file_path,</div>
-<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;    <span class="keyword">const</span> std::vector&lt;std::string&gt;&amp; eval_across_runs_top_text,</div>
-<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;    <span class="keyword">const</span> std::vector&lt;std::string&gt;&amp; eval_across_runs_in_params_show,</div>
-<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;    <span class="keyword">const</span> <a class="code" href="struct_eval_across_runs_data.html">EvalAcrossRunsData</a>&amp; eval_data,</div>
-<div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;    <span class="keyword">const</span> std::vector&lt;std::string&gt;&amp; run_names_ordered) <span class="keyword">const</span>;</div>
-<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;};</div>
-<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160; </div>
-<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;<span class="preprocessor">#endif </span><span class="comment">//EVALUATE_ACROSS_RUNS_H_</span></div>
+<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;  std::vector&lt;std::string&gt; OrderedRunNames(</div>
+<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;    <span class="keyword">const</span> <a class="code" href="struct_eval_across_runs_data.html">EvalAcrossRunsData</a>&amp; eval_data,</div>
+<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;    <span class="keyword">const</span> std::optional&lt;std::string&gt;&amp; speedup_header = std::optional&lt;std::string&gt;()) <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160; </div>
+<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;  std::vector&lt;std::string&gt; GetRunNames(</div>
+<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;    <span class="keyword">const</span> std::filesystem::path&amp; imp_results_file_path) <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160; </div>
+<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;  <span class="keywordtype">void</span> WriteEvalAcrossRunsToFile(</div>
+<div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;    <span class="keyword">const</span> std::filesystem::path&amp; imp_results_file_path,</div>
+<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;    <span class="keyword">const</span> std::vector&lt;std::string&gt;&amp; eval_across_runs_top_text,</div>
+<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;    <span class="keyword">const</span> std::vector&lt;std::string&gt;&amp; eval_across_runs_in_params_show,</div>
+<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;    <span class="keyword">const</span> <a class="code" href="struct_eval_across_runs_data.html">EvalAcrossRunsData</a>&amp; eval_data,</div>
+<div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;    <span class="keyword">const</span> std::vector&lt;std::string&gt;&amp; run_names_ordered) <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;};</div>
+<div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160; </div>
+<div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;<span class="preprocessor">#endif </span><span class="comment">//EVALUATE_ACROSS_RUNS_H_</span></div>
 <div class="ttc" id="a_run_eval_consts_enums_8h_html"><div class="ttname"><a href="_run_eval_consts_enums_8h.html">RunEvalConstsEnums.h</a></div><div class="ttdoc">Contains namespace with enums and constants for implementation run evaluation.</div></div>
 <div class="ttc" id="a_run_results_speedups_8h_html"><div class="ttname"><a href="_run_results_speedups_8h.html">RunResultsSpeedups.h</a></div><div class="ttdoc">Declares class to load and store run results data including speedups from evaluation.</div></div>
 <div class="ttc" id="aclass_evaluate_across_runs_html"><div class="ttname"><a href="class_evaluate_across_runs.html">EvaluateAcrossRuns</a></div><div class="ttdoc">Class with operator function to evaluate implementation runs across multiple architectures....</div><div class="ttdef"><b>Definition:</b> <a href="_evaluate_across_runs_8h_source.html#l00054">EvaluateAcrossRuns.h:54</a></div></div>
