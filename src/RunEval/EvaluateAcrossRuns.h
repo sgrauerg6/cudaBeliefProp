@@ -84,10 +84,13 @@ private:
     const std::vector<std::string>& eval_across_runs_in_params_show) const;
 
   /**
-   * @brief Get run names in order from fastest to slowest based on first
-   * speedup header
+   * @brief Get run names in order from highest to lowest speedup based on
+   * speedup header.<br>
+   * If no speedup header is given, use the first speedup header in evaluation
+   * data.
    * 
    * @param eval_data
+   * @param speedup_header
    */
   std::vector<std::string> OrderedRunNames(
     const EvalAcrossRunsData& eval_data,

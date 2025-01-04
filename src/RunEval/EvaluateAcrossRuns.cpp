@@ -195,12 +195,13 @@ EvalAcrossRunsData EvaluateAcrossRuns::GenEvalAcrossRunsData(
 }
 
 /**
- * @brief Get run names in order from fastest to slowest based on
+ * @brief Get run names in order from highest to lowest speedup based on
  * speedup header.<br>
  * If no speedup header is given, use the first speedup header in evaluation
  * data.
  * 
  * @param eval_data
+ * @param speedup_header
  */
 std::vector<std::string> EvaluateAcrossRuns::OrderedRunNames(
   const EvalAcrossRunsData& eval_data,
