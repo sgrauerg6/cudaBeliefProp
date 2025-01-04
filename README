@@ -16,7 +16,7 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 */
 
-GPU and optimized CPU Implementations of Belief Propagation for Stereo
+GPU and Optimized CPU Implementations of Belief Propagation for Stereo
 
 This README describes an implementation of the CUDA belief propagation algorithm
 originally described in "GPU implementation of belief propagation using CUDA
