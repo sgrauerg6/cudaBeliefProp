@@ -104,6 +104,10 @@ FLOAT16_VECTORIZATION_DEFINE = -DFLOAT16_VECTORIZATION in
 beliefprop/LinuxMakeAndRunBPOptimizedCPU/Makefile.h (both must be set). Also
 may need to use a relatively recent gcc version for AVX512 FP16 vectorization
 to compile (in testing worked on gcc with Ubuntu 24.04 but not Ubuntu 22.04).
+This setting does make it so that the results in the test with
+conesFullSizeCropped at half precision will not be "good" due to half-precision
+value(s) becoming infinity or NaN when processing that stereo set (same as
+"half" datatype in CUDA as described in 1a).
 
 -If on a multi-CPU system, may want to adjust environment variables OMP_PLACES
 and OMP_PROC_BIND to optimize OpenMP thread configuration. In some tests on
