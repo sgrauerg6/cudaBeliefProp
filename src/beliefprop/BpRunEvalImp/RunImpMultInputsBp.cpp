@@ -65,9 +65,10 @@ MultRunData RunImpMultInputsBp::RunEvalImpMultDataSets(
     return RunEvalImpMultDataSets<double, OPT_IMP_ACCEL>(run_imp_settings);
   }
   else {
-    //if using AVX, need to check if using float16 vectorization
-    //data stored as _Float16 if using float16 vectorization and as short if
-    //not
+    //if using x86 CPU that supports AVX vectorization, need to check if using
+    //float16 vectorization data stored as _Float16 if using float16
+    //vectorization and as short if not
+#if (defined(OPTIMIZED_CPU_RUN) && (!(defined(COMPILING_FOR_ARM))))
     if constexpr ((OPT_IMP_ACCEL == run_environment::AccSetting::kAVX512) ||
                   (OPT_IMP_ACCEL == run_environment::AccSetting::kAVX256))
     {
@@ -82,9 +83,8 @@ MultRunData RunImpMultInputsBp::RunEvalImpMultDataSets(
       return RunEvalImpMultDataSets<_Float16, OPT_IMP_ACCEL>(run_imp_settings);
     }
 #endif //FLOAT16_VECTORIZATION
-    else {
-      return RunEvalImpMultDataSets<halftype, OPT_IMP_ACCEL>(run_imp_settings);
-    }
+#endif //(defined(OPTIMIZED_CPU_RUN) && (!(defined(COMPILING_FOR_ARM))))
+    return RunEvalImpMultDataSets<halftype, OPT_IMP_ACCEL>(run_imp_settings);
   }
 }
 
