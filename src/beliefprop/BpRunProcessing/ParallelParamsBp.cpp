@@ -167,21 +167,25 @@ void ParallelParamsBp::SetOptimizedParams() {
                              [](const auto& p_params_to_runtime_kernel_at_level) {
                                return (std::ranges::min_element(
                                  p_params_to_runtime_kernel_at_level,
-                                 [](const auto& a, const auto& b) { 
-                                   return a.second < b.second;
+                                 {},
+                                 [](const auto& p_params_w_runtime) {
+                                   return p_params_w_runtime.second;
                                  }))->first;
                              });
     }
   }
   else {
     //set optimized parallel parameters for all kernels to parallel parameters
-    //that got the best runtime across all kernels in test runs where each
+    //that got the lowest runtime across all kernels in test runs where each
     //possible parallel parameter setting was used
     //seems like setting different parallel parameters for different kernels on
     //GPU decreases runtime but increases runtime on CPU
     const auto best_parallel_params = std::ranges::min_element(
       p_params_to_run_time_each_kernel_[beliefprop::kNumKernels][0],
-      [](const auto& a, const auto& b) { return a.second < b.second; })->first;
+      {},
+      [](const auto& p_params_w_runtime) {
+        return p_params_w_runtime.second;
+      })->first;
     SetParallelDims(best_parallel_params);
   }
 }
