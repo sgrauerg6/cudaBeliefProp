@@ -72,7 +72,7 @@ DisparityMapEvaluation DisparityMap<T>::OutputComparison(
 
     //increment number of pixels that differ greater than threshold for each threshold
     std::ranges::for_each(evaluation_parameters.output_diff_thresholds,
-      [abs_diff, &output_evaluation](auto threshold) {
+      [abs_diff, &output_evaluation](const auto threshold) {
         if (abs_diff > threshold) {
           output_evaluation.num_sig_diff_pixels_at_thresholds_[threshold]++;
         }
