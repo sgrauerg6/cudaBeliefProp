@@ -33,11 +33,10 @@ std::string RunData::GetHeaderToAdd(const std::string& in_header) const
 {
   auto header_to_add = in_header;
   unsigned int num{0};
-  while (std::any_of(headers_in_order_.cbegin(),
-                     headers_in_order_.cend(),
-                     [&header_to_add](const auto& ordered_header){
-                       return (ordered_header == header_to_add);
-                     }))
+  while (std::ranges::any_of(headers_in_order_,
+                             [&header_to_add](const auto& ordered_header){
+                               return (ordered_header == header_to_add);
+                             }))
   {
     //add "_{num}" to header if header already in data
     num++;

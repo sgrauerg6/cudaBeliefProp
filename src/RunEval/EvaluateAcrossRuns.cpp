@@ -71,15 +71,13 @@ void EvaluateAcrossRuns::operator()(
   
   //add any run names not in ordered run names (due to not having data
   //corresponding to first speedup header) to end of ordered runs
-  std::copy_if(
-    run_names.begin(),
-    run_names.end(),
+  std::ranges::copy_if(
+    run_names,
     std::back_inserter(run_names_ordered),
     [&run_names_ordered](const auto& run_name) {
       return (
-        std::find(
-          run_names_ordered.begin(),
-          run_names_ordered.end(),
+        std::ranges::find(
+          run_names_ordered,
           run_name) == run_names_ordered.end());
     });
 
@@ -137,30 +135,27 @@ EvalAcrossRunsData EvaluateAcrossRuns::GenEvalAcrossRunsData(
               run_speedup_iter++)
     {
       //ignore speedup if all whitespace
-      if (std::all_of(
-            run_speedup_iter->begin(),
-            run_speedup_iter->end(),
+      if (std::ranges::all_of(
+            *run_speedup_iter,
             [](unsigned char c){ return std::isspace(c); }))
       {
         continue;
       }
       //check if speedup in run is included in current evaluation speedups and
       //add it in expected position in evaluation speedups if not
-      if (std::none_of(eval_data.speedup_headers.cbegin(), 
-                       eval_data.speedup_headers.cend(),
-                       [run_speedup_iter](const auto& header){
-                         return (header == *run_speedup_iter);
-                       }))
+      if (std::ranges::none_of(eval_data.speedup_headers,
+                               [run_speedup_iter](const auto& header) {
+                                 return (header == *run_speedup_iter);
+                               }))
       {
         //get relative position of previous ordered speedup header
         auto iter_prev_ordered_header = run_speedup_iter;
         while (iter_prev_ordered_header != run_speedups_ordered.cbegin())
         {
           iter_prev_ordered_header--;
-          if (std::find(eval_data.speedup_headers.cbegin(),
-                        eval_data.speedup_headers.cend(),
-                        *iter_prev_ordered_header) !=
-                eval_data.speedup_headers.cend())
+          if (std::ranges::find(eval_data.speedup_headers,
+                                *iter_prev_ordered_header) !=
+                        eval_data.speedup_headers.cend())
           {
             break;
           }
@@ -174,10 +169,9 @@ EvalAcrossRunsData EvaluateAcrossRuns::GenEvalAcrossRunsData(
           //find position in evaluation speedups of previous ordered header
           //and add new header in front of it
           eval_data.speedup_headers.insert(
-            (std::find(eval_data.speedup_headers.cbegin(),
-                       eval_data.speedup_headers.cend(),
-                       *iter_prev_ordered_header) + 1),
-            *run_speedup_iter);
+            (std::ranges::find(eval_data.speedup_headers,
+                               *iter_prev_ordered_header) + 1),
+                      *run_speedup_iter);
         }
         else {
           //add speedup header to front of evaluation speedup headers if no
@@ -216,18 +210,16 @@ std::vector<std::string> EvaluateAcrossRuns::OrderedRunNames(
   //speedup results for run
   //reference wrapper used to prevent need to copy speedup results
   std::vector<std::pair<
-    std::string,
-    std::reference_wrapper<const std::map<std::string, std::vector<std::string>>>>>
+    decltype(eval_data.speedup_results_name_to_data)::key_type,
+    std::reference_wrapper<const decltype(eval_data.speedup_results_name_to_data)::mapped_type>>>
   runs_w_speedup_data;
 
   //populate vector of run names paired with reference wrapper containing speedup data
-  std::transform(
-    eval_data.speedup_results_name_to_data.cbegin(),
-    eval_data.speedup_results_name_to_data.cend(),
+  std::ranges::transform(
+    eval_data.speedup_results_name_to_data,
     std::back_inserter(runs_w_speedup_data),
-    [](const auto& run_name_w_speedup) {
-      return std::pair<std::string, std::reference_wrapper<const std::map<std::string, std::vector<std::string>>>>{
-        run_name_w_speedup.first, std::cref(run_name_w_speedup.second)};
+    [](const auto& run_name_w_speedup) -> decltype(runs_w_speedup_data)::value_type {
+      return {run_name_w_speedup.first, std::cref(run_name_w_speedup.second)};
     });
   
   //remove runs where current speedup ordering header does not have data or
@@ -239,30 +231,24 @@ std::vector<std::string> EvaluateAcrossRuns::OrderedRunNames(
         return true;
       }
       else {
-        const std::string speedup_str =
-          run_name_w_speedup.second.get().at(speedup_ordering).at(0);
-        return std::all_of(
-          speedup_str.begin(),
-          speedup_str.end(),
+        return std::ranges::all_of(
+          run_name_w_speedup.second.get().at(speedup_ordering).at(0),
           [](unsigned char c) { return isspace(c); });
       }
     });
   
   //sort runs from greatest speedup to lowest speedup according to speedup
   //header
-  std::sort(runs_w_speedup_data.begin(), runs_w_speedup_data.end(),
-    [&speedup_ordering](const auto& run_w_speedups_1, const auto& run_w_speedups_2) {
-      //return true if run 1 has greater speedup than run 2
-      return (std::stof(run_w_speedups_1.second.get().at(speedup_ordering).at(0)) >
-              std::stof(run_w_speedups_2.second.get().at(speedup_ordering).at(0)));
+  std::ranges::sort(runs_w_speedup_data, std::ranges::greater{},
+    [&speedup_ordering](const auto& run_w_speedups) {
+      return std::stof(run_w_speedups.second.get().at(speedup_ordering).at(0));
     });
 
   //generate ordered run names from greatest speedup to least speedup
   //according to speedup header
   std::vector<std::string> ordered_run_names;
-  std::transform(
-    runs_w_speedup_data.cbegin(),
-    runs_w_speedup_data.cend(),
+  std::ranges::transform(
+    runs_w_speedup_data,
     std::back_inserter(ordered_run_names),
     [](const auto& run_name_speedup) { return run_name_speedup.first; });
 

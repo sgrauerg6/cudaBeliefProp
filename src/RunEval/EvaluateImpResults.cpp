@@ -328,8 +328,8 @@ void EvaluateImpResults::WriteRunResultsForAcc(
   //run_result corresponds to a std::optional object that contains run data if
   //run successful and returns false if no data (indicating run not successful)
   const auto first_success_run_iter =
-    std::find_if(run_results.cbegin(), run_results.cend(),
-      [](const auto& run_result) { return run_result.second; } );
+    std::ranges::find_if(run_results,
+      [](const auto& run_result) { return run_result.second.has_value(); } );
   
   //get headers from first successful run and write headers to top of output
   //files
@@ -342,9 +342,8 @@ void EvaluateImpResults::WriteRunResultsForAcc(
       for (const auto& curr_header : run_sig_data->at(
              run_environment::ParallelParamsSetting::kOptimized).HeadersInOrder())
       {
-        if (auto header_iter = std::find(headers_in_order.cbegin(),
-                                         headers_in_order.cend(),
-                                         curr_header);
+        if (auto header_iter = std::ranges::find(headers_in_order,
+                                                 curr_header);
             header_iter == headers_in_order.cend())
         {
           headers_in_order.push_back(curr_header);
@@ -405,8 +404,8 @@ void EvaluateImpResults::WriteRunOutput(
   //run_result corresponds to a std::optional object that contains run data if
   //run successful and returns false if no data (indicating run not successful)
   const auto first_success_run_iter =
-    std::find_if(run_results.cbegin(), run_results.cend(),
-      [](const auto& run_result) { return run_result.second; } );
+    std::ranges::find_if(run_results,
+      [](const auto& run_result) { return run_result.second.has_value(); } );
 
   //check if there was at least one successful run
   if (first_success_run_iter != run_results.cend())
@@ -436,9 +435,8 @@ void EvaluateImpResults::WriteRunOutput(
     //delete any speedup headers already in headers_in_order
     //since they will be added in order to end of vector
     for (const auto& speedup_header : speedup_headers) {
-      if (auto speedup_header_iter = std::find(headers_in_order.cbegin(),
-                                               headers_in_order.cend(),
-                                               speedup_header);
+      if (auto speedup_header_iter = std::ranges::find(headers_in_order,
+                                                       speedup_header);
           speedup_header_iter != headers_in_order.cend())
       {
         headers_in_order.erase(speedup_header_iter);
@@ -1034,7 +1032,7 @@ RunSpeedupAvgMedian EvaluateImpResults::GetAvgMedSpeedupLoopItersInTemplate(
   //in separate structures
   std::array<MultRunData, 2> templated_non_templated_loops_data;
   for (const auto data_index : {0, 1}) {
-    std::copy_if(run_results.cbegin(), run_results.cend(),
+    std::ranges::copy_if(run_results,
       std::inserter(templated_non_templated_loops_data[data_index],
                     templated_non_templated_loops_data[data_index].end()),
         [data_index](const auto& input_sig_run_results) {
