@@ -19,7 +19,7 @@ CPU_VECTORIZATION_DEFINE =
 # set compile flags and debug setting
 DBG_SETTING    =
 COMPILE_FLAGS = -DUNIX -DOPTIMIZED_CPU_RUN -DCOMPILING_FOR_ARM ${CPU_VECTORIZATION_DEFINE} ${COMMON_IMP_DEFINES} \
-				${DBG_SETTING} $(OPENMP_LIB) -O3 -std=c++20 -Wall -march=native
+				${DBG_SETTING} $(OPENMP_LIB) -O3 -std=c++20 -Wall -march=native -MMD -MP
 
 # define directory for compiled objects and object files to generate during compilation
 OBJ_DIR = obj
@@ -32,6 +32,9 @@ ${OBJ_DIR}/SmoothImage.o ${OBJ_DIR}/SmoothImageCPU.o ${OBJ_DIR}/ProcessBp.o ${OB
 ${OBJ_DIR}/RunBpOnStereoSetOptimizedCPU.o ${OBJ_DIR}/ProcessBpOptimizedCPU.o
 DRIVER_BENCHMARK_CPU_OBJECT = ${OBJ_DIR}/DriverBpStereoCPU.o
 DRIVER_BENCHMARK_CPU_OBJECT_CUSTOM = ${OBJ_DIR}/DriverBpStereoCPU_customRun.o
+
+# dependency files corresponding to each object
+DEPS := $(OBJECTS:.o=.d)
 
 # executables for belief propagation CPU implementations
 DRIVER_BENCHMARK_CPU = driverCPUBp
@@ -53,3 +56,6 @@ impDriverCPUCustom: ${DRIVER_BENCHMARK_CPU_OBJECT_CUSTOM} ${OBJECTS}
 
 make clean:
 	rm *.o ${OBJ_DIR}/*.o driverCPUBp driverCPUBpCustom
+
+# include for dependency files
+-include $(DEPS)

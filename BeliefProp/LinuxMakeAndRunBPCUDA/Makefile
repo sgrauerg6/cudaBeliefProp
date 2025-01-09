@@ -25,8 +25,8 @@ BFLOAT_DATA_TYPE_SETTING = -DUSE_BFLOAT16_FOR_HALF_PRECISION
 CUDA_IMP_RUN_DEFINES = -DOPTIMIZED_CUDA_RUN ${BFLOAT_DATA_TYPE_SETTING} ${COMMON_IMP_DEFINES}
 
 # set compile flags for CUDA implementation for gcc and nvcc
-CUDA_IMP_COMPILE_FLAGS_GCC = -DUNIX -O3 -std=c++20 -march=native -Wall ${COMPILE_FLAGS} ${CUDA_IMP_RUN_DEFINES} 
-CUDA_IMP_COMPILE_FLAGS_NVCC = -DUNIX -O3 -std=c++20 -arch=native ${COMPILE_FLAGS} ${CUDA_IMP_RUN_DEFINES} 
+CUDA_IMP_COMPILE_FLAGS_GCC = -DUNIX -O3 -std=c++20 -march=native -Wall ${COMPILE_FLAGS} ${CUDA_IMP_RUN_DEFINES} -MMD -MP
+CUDA_IMP_COMPILE_FLAGS_NVCC = -DUNIX -O3 -std=c++20 -arch=native ${COMPILE_FLAGS} ${CUDA_IMP_RUN_DEFINES} -MMD -MP
 CUDA_LINK_FLAGS = -O3 -march=native -std=c++20
 
 # define directory for compiled objects and object files to generate during compilation
@@ -40,6 +40,9 @@ ${OBJ_DIR}/SmoothImageCUDA.o ${OBJ_DIR}/SmoothImage.o ${OBJ_DIR}/DetailedTimings
 ${OBJ_DIR}/ProcessBpCUDA.o
 DRIVER_BENCHMARK_CUDA_OBJECT = ${OBJ_DIR}/DriverCudaBp.o
 DRIVER_BENCHMARK_CUDA_OBJECT_CUSTOM = ${OBJ_DIR}/DriverBpStereoCUDA_customRun.o
+
+# dependency files corresponding to each object
+DEPS := $(OBJECTS:.o=.d)
 
 # executables for belief propagation CUDA implementations
 DRIVER_BENCHMARK_CUDA = driverCudaBp
@@ -68,3 +71,6 @@ impDriverCUDACustom: ${OBJECTS} ${DRIVER_BENCHMARK_CUDA_OBJECT_CUSTOM}
 
 make clean:
 	rm *.o ${OBJ_DIR}/*.o driverCudaBp driverCPUBp driverCudaBpCustom
+
+# include for dependency files
+-include $(DEPS)
