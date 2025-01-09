@@ -77,7 +77,4 @@ std::filesystem::path EvaluateImpResultsBp::GetImpResultsPath() const
       return impResultsPath;
     }
   }
-
-  //return empty path if no path found
-  return std::filesystem::path();
 }

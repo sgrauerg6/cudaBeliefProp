@@ -69,7 +69,7 @@ public:
   std::pair<MultRunData, std::vector<RunSpeedupAvgMedian>>
   EvalResultsSingDataTypeAcc(
     const MultRunData& run_results,
-    const run_environment::RunImpSettings run_imp_settings,
+    const run_environment::RunImpSettings& run_imp_settings,
     size_t data_size) const;
 
   /**
@@ -152,7 +152,7 @@ private:
    * @param run_imp_settings
    */
   void WriteRunResultsForAcc(
-    MultRunData run_results,
+    const MultRunData& run_results,
     run_environment::AccSetting acceleration_setting,
     const run_environment::RunImpSettings& run_imp_settings) const;
 

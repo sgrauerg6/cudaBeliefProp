@@ -72,7 +72,6 @@ std::filesystem::path BpFileHandling::StereoSetsPath() const
       }      
     }
   }
-  return std::filesystem::path();
 }
 
 /**

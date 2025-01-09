@@ -117,18 +117,20 @@ void RunData::AppendData(const RunData& rundata)
 //get data corresponding to header
 std::string RunData::GetDataAsStr(const std::string_view header) const
 {
-  const auto variantVal = headers_w_data_.at(std::string(header));
-  if (std::holds_alternative<std::string>(variantVal)) {
-    return std::get<std::string>(variantVal);
+  const auto& data_variant = headers_w_data_.at(std::string(header));
+  //check if data is string, double, unsigned int, or bool, convert to
+  //string if needed, and return as string
+  if (const std::string* data_str_ptr = std::get_if<std::string>(&data_variant)) {
+    return *data_str_ptr;
   }
-  if (std::holds_alternative<double>(variantVal)) {
-    return std::to_string(std::get<double>(variantVal));
+  if (const double* data_double_ptr = std::get_if<double>(&data_variant)) {
+    return std::to_string(*data_double_ptr);
   }
-  if (std::holds_alternative<unsigned int>(variantVal)) {
-    return std::to_string(std::get<unsigned int>(variantVal));
+  if (const unsigned int* data_uint_ptr = std::get_if<unsigned int>(&data_variant)) {
+    return std::to_string(*data_uint_ptr);
   }
-  if (std::holds_alternative<bool>(variantVal)) {
-    return (std::get<bool>(variantVal)) ?
+  if (const bool* data_bool_ptr = std::get_if<bool>(&data_variant)) {
+    return (*data_bool_ptr) ?
       std::string(run_eval::kBoolValFalseTrueDispStr[1]) :
       std::string(run_eval::kBoolValFalseTrueDispStr[0]);
   }
@@ -140,9 +142,9 @@ std::string RunData::GetDataAsStr(const std::string_view header) const
 std::optional<double> RunData::GetDataAsDouble(
   const std::string_view header) const
 {
-  const auto variantVal = headers_w_data_.at(std::string(header));
-  if (std::holds_alternative<double>(variantVal)) {
-    return std::get<double>(variantVal);
+  const auto& data_variant = headers_w_data_.at(std::string(header));
+  if (const double* data_double_ptr = std::get_if<double>(&data_variant)) {
+    return *data_double_ptr;
   }
   return {};
 }
@@ -153,9 +155,9 @@ std::optional<double> RunData::GetDataAsDouble(
 std::optional<unsigned int> RunData::GetDataAsUInt(
   const std::string_view header) const
 {
-  const auto variantVal = headers_w_data_.at(std::string(header));
-  if (std::holds_alternative<unsigned int>(variantVal)) {
-    return std::get<unsigned int>(variantVal);
+  const auto& data_variant = headers_w_data_.at(std::string(header));
+  if (const unsigned int* data_uint_ptr = std::get_if<unsigned int>(&data_variant)) {
+    return *data_uint_ptr;
   }
   return {};
 }
@@ -165,9 +167,9 @@ std::optional<unsigned int> RunData::GetDataAsUInt(
 std::optional<bool> RunData::GetDataAsBool(
   const std::string_view header) const
 {
-  const auto variantVal = headers_w_data_.at(std::string(header));
-  if (std::holds_alternative<bool>(variantVal)) {
-    return std::get<bool>(variantVal);
+  const auto& data_variant = headers_w_data_.at(std::string(header));
+  if (const bool* data_bool_ptr = std::get_if<bool>(&data_variant)) {
+    return *data_bool_ptr;
   }
   return {};
 }

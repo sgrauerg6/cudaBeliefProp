@@ -39,7 +39,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 std::pair<MultRunData, std::vector<RunSpeedupAvgMedian>>
 EvaluateImpResults::EvalResultsSingDataTypeAcc(
   const MultRunData& run_results,
-  const run_environment::RunImpSettings run_imp_settings,
+  const run_environment::RunImpSettings& run_imp_settings,
   size_t data_size) const
 {
   //store whether or not parallel parameters optimized in run
@@ -297,7 +297,7 @@ void EvaluateImpResults::EvalAllResultsWriteOutput(
 //Write run results corresponding to runs using a specific acceleration to a
 //file with the acceleration setting as part of the file name
 void EvaluateImpResults::WriteRunResultsForAcc(
-  MultRunData run_results,
+  const MultRunData& run_results,
   run_environment::AccSetting acceleration_setting,
   const run_environment::RunImpSettings& run_imp_settings) const
 {
