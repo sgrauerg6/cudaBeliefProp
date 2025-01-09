@@ -159,30 +159,40 @@ std::pair<std::map<std::string, std::vector<std::string>>,
 RunResultsSpeedups::HeaderToDataWOrderedHeadersCsv(
   const std::filesystem::path& csv_file_path) const
 {
+  //open data file with comma-separate headers and data
   std::ifstream csv_file_str(csv_file_path);
   if (!(csv_file_str.is_open())) {
     std::cout << "ERROR CREATING STREAM: " << csv_file_path << std::endl;
   }
-  //retrieve data headers from top row
+
+  //initialize containers for header to data mapping and data headers in order
+  std::map<std::string, std::vector<std::string>> header_to_data;
+  std::vector<std::string> data_headers;
+  
+  //get comma-separated data headers in top row and initialize header to data
+  //mapping for each header
   std::string headers_line;
   std::getline(csv_file_str, headers_line);
   std::stringstream headers_str(headers_line);
-  std::vector<std::string> data_headers;
-  std::string header;
-  std::map<std::string, std::vector<std::string>> header_to_data;
-  while (std::getline(headers_str, header, ',')) {
+  for (std::string header; std::getline(headers_str, header, ',');)
+  {
     data_headers.push_back(header);
-    header_to_data[header] = std::vector<std::string>();
+    header_to_data.insert({header, std::vector<std::string>()});
   }
-  //go through each data line and add to mapping from headers to data
-  std::string data_line;
-  while (std::getline(csv_file_str, data_line)) {
-    std::stringstream data_line_str(data_line);
-    std::string data;
-    unsigned int num_data{0};
-    while (std::getline(data_line_str, data, ',')) {
-      header_to_data[data_headers[num_data++]].push_back(data);
+
+  //go through each data line and add data mapping to each header 
+  for (std::string data_line; std::getline(csv_file_str, data_line);)
+  {
+    //get each comma-separated data element and add to mapping to corresponding
+    //header in top row of column
+    for (auto [data_line_str, data, num_data] =
+           std::make_tuple(std::stringstream(data_line), std::string(), 0u);
+         std::getline(data_line_str, data, ',');)
+    {
+      header_to_data.at(data_headers[num_data++]).push_back(data);
     }
   }
+
+  //return mapping of headers to data and data headers in order
   return {header_to_data, data_headers};
 }
