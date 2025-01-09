@@ -37,6 +37,10 @@ std::filesystem::path EvaluateImpResultsBp::GetImpResultsPath() const
     //create directory iterator corresponding to current path
     std::filesystem::directory_iterator dir_iter =
       std::filesystem::directory_iterator(current_path);
+    
+    //set variable corresponding to iterator past end of directory since it's
+    //used multiple times
+    auto dir_end_iter = std::filesystem::end(dir_iter);
 
     //check if any of the directories in the current path correspond to the
     //belief propagation directory; if so return iterator to directory;
@@ -44,7 +48,7 @@ std::filesystem::path EvaluateImpResultsBp::GetImpResultsPath() const
     //found in current path
     std::filesystem::directory_iterator it =
       std::find_if(std::filesystem::begin(dir_iter),
-                   std::filesystem::end(dir_iter), 
+                   dir_end_iter, 
                    [](const auto &p) {
                     return p.path().stem() ==
                       beliefprop::kBeliefPropDirectoryName; });
@@ -54,7 +58,7 @@ std::filesystem::path EvaluateImpResultsBp::GetImpResultsPath() const
     //directory
     //for now assuming stereo sets directory exists in some outer directory and
     //program won't work without it
-    if (it == std::filesystem::end(dir_iter))
+    if (it == dir_end_iter)
     {
       //if current path same as parent path, throw error
       if (current_path == current_path.parent_path()) {
@@ -67,7 +71,7 @@ std::filesystem::path EvaluateImpResultsBp::GetImpResultsPath() const
     
     //retrieve and return path for implementation results which is a subfolder
     //inside of belief propagation directory
-    if (it != std::filesystem::end(dir_iter)) {
+    if (it != dir_end_iter) {
       const std::filesystem::path impResultsPath{
         it->path() / run_eval::kImpResultsFolderName};
       if (!(std::filesystem::is_directory(impResultsPath))) {

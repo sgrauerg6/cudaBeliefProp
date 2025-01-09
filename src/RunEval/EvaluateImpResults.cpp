@@ -412,7 +412,7 @@ void EvaluateImpResults::WriteRunOutput(
   { 
     //initialize parallel params setting enum and set of parallel params
     //settings that are enabled in run
-    const auto parallel_param_settings =
+    const auto& parallel_param_settings =
       p_params_optimized ?
       std::set<run_environment::ParallelParamsSetting>{
         run_environment::ParallelParamsSetting::kDefault,

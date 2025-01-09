@@ -323,7 +323,7 @@ std::optional<beliefprop::BpRunOutput> RunBpOnStereoSet<T, DISP_VALS, ACCELERATI
     detailed_bp_timings.MedianTiming(
       beliefprop::Runtime_Type::kTotalWithTransfer),
       std::move(output_disparity_map),
-      run_data}};
+      std::move(run_data)}};
 }
 
 #endif /* RUNBPSTEREOSET_H_ */

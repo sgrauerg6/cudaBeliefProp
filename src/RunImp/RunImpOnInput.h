@@ -240,7 +240,7 @@ protected:
           //set output for run with default parallel parameters if current test
           //params runs is run with default parallel parameters
           out_run_data[run_environment::ParallelParamsSetting::kDefault] =
-            curr_run_data; 
+            std::move(curr_run_data); 
         }
       }
       else if (curr_run_type == RunType::ONLY_RUN) {
@@ -251,7 +251,7 @@ protected:
         out_run_data[run_environment::ParallelParamsSetting::kDefault] =
           curr_run_data;
         out_run_data[run_environment::ParallelParamsSetting::kOptimized] =
-          curr_run_data;
+          std::move(curr_run_data);
 
         //exit loop since only running with default parameters and that is done
         break;
@@ -259,7 +259,7 @@ protected:
       else if (curr_run_type == RunType::OPTIMIZED_RUN) {
         //set output for final run with optimized parallel parameters
         out_run_data[run_environment::ParallelParamsSetting::kOptimized] =
-          curr_run_data;
+          std::move(curr_run_data);
 
         //exit loop since run with optimized parameters is final run
         break;

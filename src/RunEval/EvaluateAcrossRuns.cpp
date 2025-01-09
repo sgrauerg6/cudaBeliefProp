@@ -391,7 +391,7 @@ void EvaluateAcrossRuns::WriteEvalAcrossRunsToFile(
           eval_data,
           speedup_header);
       for (const auto& run_name : ordered_runs_speedup) {
-        const auto speedup =
+        const auto& speedup =
           eval_data.speedup_results_name_to_data.at(run_name).at(
             speedup_header).at(0);
         eval_results_across_run_str << run_name << " - " << std::setprecision(3)
