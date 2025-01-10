@@ -98,7 +98,7 @@ inline std::optional<beliefprop::BpRunOutput> RunBpOnStereoSetOptimizedCPU<T, DI
       std::make_unique<MemoryManagement<float>>()});
   if (process_set_output) {
     run_data.AppendData(std::move(process_set_output->run_data));
-    process_set_output->run_data = run_data;
+    process_set_output->run_data = std::move(run_data);
   }
 
   return process_set_output;
