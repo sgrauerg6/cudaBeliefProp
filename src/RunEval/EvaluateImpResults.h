@@ -34,6 +34,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #include <array>
 #include <utility>
 #include <string_view>
+#include <optional>
 #include "RunSettingsParams/RunSettings.h"
 #include "RunSettingsParams/InputSignature.h"
 #include "EvaluateImpAliases.h"
@@ -262,29 +263,38 @@ private:
    * @brief Get average and median speedup using optimized parallel parameters
    * compared to default parallel parameters
    * 
-   * @param run_results 
-   * @param speedup_header 
+   * @param run_results
+   * @param speedup_header
+   * @param eval_subsets
    * @return Average and median speedups using optimized parallel parameters
-   * compared to default parallel parameters 
+   * compared to default parallel parameters across all runs and subsets of
+   * runs if specified
    */
-  RunSpeedupAvgMedian GetAvgMedSpeedupOptPParams(
+  std::vector<RunSpeedupAvgMedian> GetAvgMedSpeedupOptPParams(
     MultRunData& run_results,
-    std::string_view speedup_header) const;
+    std::string_view speedup_header,
+    const std::optional<std::vector<std::pair<std::string, std::vector<InputSignature>>>>& eval_subsets =
+      std::nullopt) const;
 
   /**
    * @brief Get average and median speedup between base and target runtime data
+   * across all runs and any specified subsets of runs
    * 
    * @param run_results_base 
    * @param run_results_target 
    * @param speedup_header 
-   * @param base_target_diff 
-   * @return Average and median speedups between base and target runtime data 
+   * @param base_target_diff
+   * @param eval_subsets 
+   * @return Average and median speedups between base and target runtime data
+   * across all runs and subsets of runs if specified
    */
-  RunSpeedupAvgMedian GetAvgMedSpeedupBaseVsTarget(
+  std::vector<RunSpeedupAvgMedian> GetAvgMedSpeedupBaseVsTarget(
     MultRunData& run_results_base,
     MultRunData& run_results_target,
     std::string_view speedup_header,
-    BaseTargetDiff base_target_diff) const;
+    BaseTargetDiff base_target_diff,
+    const std::optional<std::vector<std::pair<std::string, std::vector<InputSignature>>>>& eval_subsets =
+      std::nullopt) const;
 
   /**
    * @brief Get average and median speedup when loop iterations are given at
@@ -292,13 +302,16 @@ private:
    * 
    * @param run_results 
    * @param speedup_header 
+   * @param run_imp_settings
    * @return Average and median speedups when loop iterations are given at
    * compile time as template value compared to when iteration count only known
-   * at runtime 
+   * at runtime across all runs and subsets of runs if specified in
+   * implementation settings
    */
-  RunSpeedupAvgMedian GetAvgMedSpeedupLoopItersInTemplate(
+  std::vector<RunSpeedupAvgMedian> GetAvgMedSpeedupLoopItersInTemplate(
     MultRunData& run_results,
-    std::string_view speedup_header) const;
+    std::string_view speedup_header,
+    const run_environment::RunImpSettings& run_imp_settings) const;
 };
 
 #endif //EVALUATE_IMP_RESULTS_H_

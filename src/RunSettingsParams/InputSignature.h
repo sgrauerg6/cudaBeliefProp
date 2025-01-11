@@ -163,8 +163,8 @@ public:
   /**
    * @brief Overloaded << operator to write InputSignature object to stream
    * 
-   * @param os 
-   * @param eval_input_sig 
+   * @param os
+   * @param eval_input_sig
    * @return Output stream with InputSignature object written to it
    */
   friend std::ostream& operator<<(

@@ -75,8 +75,15 @@ EvaluateImpResults::EvalResultsSingDataTypeAcc(
     const std::string speedup_header_optimized_p_params =
       std::string(run_eval::kSpeedupOptParParamsHeader) + " - " +
       std::string(run_environment::kDataSizeToNameMap.at(data_size));
-    run_imp_speedups.push_back(GetAvgMedSpeedupOptPParams(
-      run_imp_opt_results, speedup_header_optimized_p_params));
+    const auto opt_p_params_speedups =
+      GetAvgMedSpeedupOptPParams(
+        run_imp_opt_results,
+        speedup_header_optimized_p_params,
+        run_imp_settings.subset_desc_input_sig);
+    run_imp_speedups.insert(
+      run_imp_speedups.end(),
+      opt_p_params_speedups.begin(),
+      opt_p_params_speedups.end());
   }
 
   //compute and add speedup info for using templated loop iteration counts
@@ -87,8 +94,13 @@ EvaluateImpResults::EvalResultsSingDataTypeAcc(
     const std::string speedup_header_loop_iters_templated =
       std::string(run_eval::kSpeedupLoopItersCountTemplate) + " - " +
       std::string(run_environment::kDataSizeToNameMap.at(data_size));
-    run_imp_speedups.push_back(GetAvgMedSpeedupLoopItersInTemplate(
-      run_imp_opt_results, speedup_header_loop_iters_templated));
+    const auto speedups_templated_iters = GetAvgMedSpeedupLoopItersInTemplate(
+      run_imp_opt_results, speedup_header_loop_iters_templated,
+      run_imp_settings);
+    run_imp_speedups.insert(
+      run_imp_speedups.end(),
+      speedups_templated_iters.begin(),
+      speedups_templated_iters.end());
   }
 
   //return run data with speedup from evaluation of implementation runs using
@@ -123,11 +135,16 @@ std::vector<RunSpeedupAvgMedian> EvaluateImpResults::SpeedupsAllRuns(
   //get and add speedup for using optimized parallel parameters
   //compared to default for all runs
   if (p_params_optimized) {
-    speedups_all_runs.push_back(
+    const auto opt_p_params_speedups =
       GetAvgMedSpeedupOptPParams(
         run_results,
         std::string(run_eval::kSpeedupOptParParamsHeader) + " - " +
-          std::string(run_eval::kAllRunsStr)));
+          std::string(run_eval::kAllRunsStr),
+          run_imp_settings.subset_desc_input_sig);
+    speedups_all_runs.insert(
+      speedups_all_runs.end(),
+      opt_p_params_speedups.begin(),
+      opt_p_params_speedups.end());
   }
 
   //get and add speedup when using templated loop iteration count
@@ -135,11 +152,15 @@ std::vector<RunSpeedupAvgMedian> EvaluateImpResults::SpeedupsAllRuns(
   if (run_imp_settings.templated_iters_setting ==
       run_environment::TemplatedItersSetting::kRunTemplatedAndNotTemplated)
   {
-    speedups_all_runs.push_back(
-      GetAvgMedSpeedupLoopItersInTemplate(
-        run_results,
-        std::string(run_eval::kSpeedupLoopItersCountTemplate) + " - " + 
-          std::string(run_eval::kAllRunsStr)));
+    const auto speedups_templated_iters =  GetAvgMedSpeedupLoopItersInTemplate(
+      run_results,
+      std::string(run_eval::kSpeedupLoopItersCountTemplate) + " - " + 
+        std::string(run_eval::kAllRunsStr),
+      run_imp_settings);
+    speedups_all_runs.insert(
+      speedups_all_runs.end(),
+      speedups_templated_iters.begin(),
+      speedups_templated_iters.end());
   }
 
   //return speedups across all runs
@@ -224,14 +245,18 @@ void EvaluateImpResults::EvalAllResultsWriteOutput(
     {
       //get speedup or slowdown using alternate data type (double or half)
       //compared with float and add to run speedups
-      speedups_alt_datatypes.push_back(
-        GetAvgMedSpeedupBaseVsTarget(
+      const auto alt_datatype_speedups = GetAvgMedSpeedupBaseVsTarget(
           run_result_mult_runs_opt.at(sizeof(float)).at(opt_imp_acc).first,
           run_result_mult_runs_opt.at(data_size).at(opt_imp_acc).first,
           (data_size > sizeof(float)) ?
           run_eval::kSpeedupDoubleHeader :
           run_eval::kSpeedupHalfHeader,
-          BaseTargetDiff::kDiffDatatype));
+          BaseTargetDiff::kDiffDatatype,
+          run_imp_settings.subset_desc_input_sig);
+      speedups_alt_datatypes.insert(
+        speedups_alt_datatypes.begin(),
+        alt_datatype_speedups.begin(),
+        alt_datatype_speedups.end());
     }
   }
 
@@ -662,7 +687,7 @@ EvaluateImpResults::GetAltAccelSpeedups(
             std::string(run_eval::kAltAccToSpeedupDesc.at(acc_setting)) + 
               " - " + std::string(run_environment::kDataSizeToNameMap.at(
                                   data_type_size)),
-            BaseTargetDiff::kDiffAcceleration));
+            BaseTargetDiff::kDiffAcceleration).front());
 
         //process optimized results using alternate acceleration
         //go through each result and replace optimized run data with alternate
@@ -808,8 +833,8 @@ EvaluateImpResults::GetAvgMedSpeedupOverBaselineSubsets(
 
     //get header corresponding to current subset
     const std::string speedup_header = "Speedup relative to " + 
-      std::string(baseline_name) + " on " +
-      std::string(subset_desc) + " - " + std::string(data_type_str);
+      std::string(baseline_name) + " - " + std::string(data_type_str) +
+      " on " + std::string(subset_desc);
 
     //go through each input signature of current subset
     for (const auto& subset_input_signature : subset_inputs)
@@ -921,112 +946,189 @@ std::vector<RunSpeedupAvgMedian> EvaluateImpResults::GetAvgMedSpeedupOverBaselin
 //get average and median speedup using optimized parallel parameters compared to default parallel parameters
 //and also add speedup for each run using optimized parallel parameters compared to each run with default
 //parallel parameters
-RunSpeedupAvgMedian EvaluateImpResults::GetAvgMedSpeedupOptPParams(
-  MultRunData& run_results, std::string_view speedup_header) const
+std::vector<RunSpeedupAvgMedian> EvaluateImpResults::GetAvgMedSpeedupOptPParams(
+  MultRunData& run_results, std::string_view speedup_header,
+  const std::optional<std::vector<std::pair<std::string, std::vector<InputSignature>>>>& eval_subsets) const
 {
-  //initialize vector of speedups across runs
-  std::vector<double> speedups_vect;
-  for (auto& [_, sig_run_results] : run_results)
+  //initialize speedup evaluations
+  std::vector<RunSpeedupAvgMedian> speedups_base_v_target;
+
+  //initialize evaluation sets to evaluate to set of all runs
+  std::vector<std::pair<std::string, std::vector<InputSignature>>> eval_sets
+    {std::make_pair(
+      std::string(), std::vector<InputSignature>{InputSignature({}, {}, {})})};
+
+  //add subsets specified in input parameter to subsets to evaluate
+  if (eval_subsets) {
+    eval_sets.insert(
+      eval_sets.end(), eval_subsets->begin(), eval_subsets->end());
+  }
+  
+  //go through each specified subset of runs and compute average and median
+  //speedup compared to baseline for each subset
+  for (const auto& [subset_desc, subset_inputs] : eval_sets)
   {
-    if (sig_run_results) {
-      //compute speedup of run using optimized parallel parameters compared to
-      //default parallel parameters and add to vector of speedups for all runs
-      speedups_vect.push_back(
-        (*(sig_run_results->at(
-          run_environment::ParallelParamsSetting::kDefault).GetDataAsDouble(
-            run_eval::kOptimizedRuntimeHeader))) / 
-        (*(sig_run_results->at(
-          run_environment::ParallelParamsSetting::kOptimized).GetDataAsDouble(
-            run_eval::kOptimizedRuntimeHeader))));
-      
-      //add speedup for run to data for run in run results
-      sig_run_results->at(
-        run_environment::ParallelParamsSetting::kDefault).AddDataWHeader(
-          std::string(speedup_header), speedups_vect.back());
-      sig_run_results->at(
-        run_environment::ParallelParamsSetting::kOptimized).AddDataWHeader(
-          std::string(speedup_header), speedups_vect.back());
+    //initialize vector of speedups across runs
+    std::vector<double> speedups_vect;
+
+    //get header corresponding to current subset
+    const std::string speedup_header_set =
+      (subset_desc.size() == 0) ?
+      std::string(speedup_header) : 
+      std::string(speedup_header) + " on " + std::string(subset_desc);
+
+    for (auto& [input_sig, sig_run_results] : run_results)
+    {
+      //check if any subset input signature matches current input signature
+      //and there are valid results for input signature
+      if (std::ranges::any_of(
+            subset_inputs,
+            [&input_sig](const auto& subset_sig) {
+              return input_sig.EqualsUsingAny(subset_sig);}) && 
+          sig_run_results)
+      {
+        //compute speedup of run using optimized parallel parameters compared to
+        //default parallel parameters and add to vector of speedups for all runs
+        speedups_vect.push_back(
+          (*(sig_run_results->at(
+            run_environment::ParallelParamsSetting::kDefault).GetDataAsDouble(
+              run_eval::kOptimizedRuntimeHeader))) / 
+          (*(sig_run_results->at(
+            run_environment::ParallelParamsSetting::kOptimized).GetDataAsDouble(
+              run_eval::kOptimizedRuntimeHeader))));
+        
+        //add speedup for run to data for run in run results
+        sig_run_results->at(
+          run_environment::ParallelParamsSetting::kDefault).AddDataWHeader(
+            std::string(speedup_header), speedups_vect.back());
+        sig_run_results->at(
+          run_environment::ParallelParamsSetting::kOptimized).AddDataWHeader(
+            std::string(speedup_header), speedups_vect.back());
+      }
+    }
+    if (!(speedups_vect.empty())) {
+      //compute average and median speedup when using parallel parameters
+      //across runs from vector containing speedups of every run
+      speedups_base_v_target.push_back({RunSpeedupAvgMedian::first_type(speedup_header_set), GetAvgMedSpeedup(speedups_vect)});
+      speedups_vect.clear();
     }
   }
-  if (!(speedups_vect.empty())) {
-    //compute average and median speedup when using parallel parameters
-    //across runs from vector containing speedups of every run
-    return {RunSpeedupAvgMedian::first_type(speedup_header), GetAvgMedSpeedup(speedups_vect)};
-  }
-  return {RunSpeedupAvgMedian::first_type(speedup_header), {}};
+  
+  return speedups_base_v_target;
 }
 
 //get average and median speedup between base and target runtime data and also add
 //speedup for each target runtime data run as compared to corresponding base run
-RunSpeedupAvgMedian EvaluateImpResults::GetAvgMedSpeedupBaseVsTarget(
+//across all runs and also on selected subsets if specified
+std::vector<RunSpeedupAvgMedian> EvaluateImpResults::GetAvgMedSpeedupBaseVsTarget(
   MultRunData& run_results_base,
   MultRunData& run_results_target,
   std::string_view speedup_header,
-  BaseTargetDiff base_target_diff) const
+  BaseTargetDiff base_target_diff,
+  const std::optional<std::vector<std::pair<std::string, std::vector<InputSignature>>>>& eval_subsets) const
 {
-  //initialize empty vector where speedups will be added
-  std::vector<double> speedups_vect;
+  //initialize speedup evaluations
+  std::vector<RunSpeedupAvgMedian> speedups_base_v_target;
 
-  //go through all base runtime data and compute speedups
-  for (auto& [input_sig_base, sig_run_results_base] : run_results_base)
+  //initialize evaluation sets to evaluate to set of all runs
+  std::vector<std::pair<std::string, std::vector<InputSignature>>> eval_sets
+    {std::make_pair(
+      std::string(), std::vector<InputSignature>{InputSignature({}, {}, {})})};
+
+  //add subsets specified in input parameter to subsets to evaluate
+  if (eval_subsets) {
+    eval_sets.insert(
+      eval_sets.end(), eval_subsets->begin(), eval_subsets->end());
+  }
+
+  //go through each specified subset of runs and compute average and median
+  //speedup compared to baseline for each subset
+  for (const auto& [subset_desc, subset_inputs] : eval_sets)
   {
-    InputSignature base_in_sig_adjusted(input_sig_base);
-    //go through all target runtime data and find speedup for data
-    //that corresponds with current base runtime data
-    for (auto& [input_sig_target, sig_run_results_target] : run_results_target)
-    {
-      InputSignature target_in_sig_adjusted(input_sig_target);
-      if (base_target_diff == BaseTargetDiff::kDiffDatatype) {
-        //remove datatype from input signature if different datatype
-        //between base and target output
-        base_in_sig_adjusted.RemoveDatatypeSetting();
-        target_in_sig_adjusted.RemoveDatatypeSetting();
-      }
-      else if (base_target_diff == BaseTargetDiff::kDiffTemplatedSetting) {
-        //remove templated setting from input signature if different template
-        //setting between base and target output
-        base_in_sig_adjusted.RemoveTemplatedLoopIterSetting();
-        target_in_sig_adjusted.RemoveTemplatedLoopIterSetting();
-      }
-      if (base_in_sig_adjusted == target_in_sig_adjusted) {
-        //compute speedup between corresponding base and target data and
-        //add it to vector of speedups across all data
-        if (sig_run_results_base && 
-            sig_run_results_target)
-        {
-          speedups_vect.push_back(
-            *sig_run_results_base->at(
-              run_environment::ParallelParamsSetting::kOptimized).GetDataAsDouble(
-                run_eval::kOptimizedRuntimeHeader) / 
-            *sig_run_results_target->at(
-              run_environment::ParallelParamsSetting::kOptimized).GetDataAsDouble(
-                run_eval::kOptimizedRuntimeHeader));
+    //initialize empty vector where speedups will be added
+    //for evaluation subset
+    std::vector<double> speedups_vect;
 
-          //add speedup data to corresponding base and target data
-          sig_run_results_base->at(
-            run_environment::ParallelParamsSetting::kOptimized).AddDataWHeader(
-              std::string(speedup_header), speedups_vect.back());
-          sig_run_results_target->at(
-            run_environment::ParallelParamsSetting::kOptimized).AddDataWHeader(
-              std::string(speedup_header), speedups_vect.back());
+    //get header corresponding to current subset
+    const std::string speedup_header_set =
+      (subset_desc.size() == 0) ?
+      std::string(speedup_header) : 
+      std::string(speedup_header) + " on " + std::string(subset_desc);
+
+    //go through all base runtime data and compute speedups
+    for (auto& [input_sig_base, sig_run_results_base] : run_results_base)
+    {
+      //check if any subset input signature matches current input signature in
+      //base runtime data
+      if (std::ranges::any_of(
+            subset_inputs,
+            [&input_sig_base](const auto& subset_sig) {
+              return input_sig_base.EqualsUsingAny(subset_sig);
+          }))
+      {
+        InputSignature base_in_sig_adjusted(input_sig_base);
+        //go through all target runtime data and find speedup for data
+        //that corresponds with current base runtime data
+        for (auto& [input_sig_target, sig_run_results_target] : run_results_target)
+        {
+          InputSignature target_in_sig_adjusted(input_sig_target);
+          if (base_target_diff == BaseTargetDiff::kDiffDatatype) {
+            //remove datatype from input signature if different datatype
+            //between base and target output
+            base_in_sig_adjusted.RemoveDatatypeSetting();
+            target_in_sig_adjusted.RemoveDatatypeSetting();
+          }
+          else if (base_target_diff == BaseTargetDiff::kDiffTemplatedSetting) {
+            //remove templated setting from input signature if different template
+            //setting between base and target output
+            base_in_sig_adjusted.RemoveTemplatedLoopIterSetting();
+            target_in_sig_adjusted.RemoveTemplatedLoopIterSetting();
+          }
+          if (base_in_sig_adjusted == target_in_sig_adjusted) {
+            //compute speedup between corresponding base and target data and
+            //add it to vector of speedups across all data
+            if (sig_run_results_base && 
+                sig_run_results_target)
+            {
+              speedups_vect.push_back(
+                *sig_run_results_base->at(
+                  run_environment::ParallelParamsSetting::kOptimized).GetDataAsDouble(
+                    run_eval::kOptimizedRuntimeHeader) / 
+                *sig_run_results_target->at(
+                  run_environment::ParallelParamsSetting::kOptimized).GetDataAsDouble(
+                    run_eval::kOptimizedRuntimeHeader));
+
+              //add speedup data to corresponding base and target data
+              sig_run_results_base->at(
+                run_environment::ParallelParamsSetting::kOptimized).AddDataWHeader(
+                  std::string(speedup_header), speedups_vect.back());
+              sig_run_results_target->at(
+                run_environment::ParallelParamsSetting::kOptimized).AddDataWHeader(
+                  std::string(speedup_header), speedups_vect.back());
+            }
+          }
         }
       }
     }
+    if (!(speedups_vect.empty())) {
+      //get average and median speedup from speedup vector with all speedup
+      //data and add to subset speedups
+      speedups_base_v_target.push_back(
+        {RunSpeedupAvgMedian::first_type(speedup_header_set), GetAvgMedSpeedup(speedups_vect)});
+      speedups_vect.clear();
+    }
   }
-  if (!(speedups_vect.empty())) {
-    //get average and median speedup from speedup vector with all speedup
-    //data and return as pair with header describing speedup
-    return {RunSpeedupAvgMedian::first_type(speedup_header), GetAvgMedSpeedup(speedups_vect)};
-  }
-  return {RunSpeedupAvgMedian::first_type(speedup_header), {}};
+
+  return speedups_base_v_target;
 }
 
 //get average and median speedup when loop iterations are given at compile time as template value
 //and also add speedup for each run with templated loop iterations as compared to same run without
 //templated loop iterations
-RunSpeedupAvgMedian EvaluateImpResults::GetAvgMedSpeedupLoopItersInTemplate(
+std::vector<RunSpeedupAvgMedian> EvaluateImpResults::GetAvgMedSpeedupLoopItersInTemplate(
   MultRunData& run_results,
-  std::string_view speedup_header) const
+  std::string_view speedup_header,
+  const run_environment::RunImpSettings& run_imp_settings) const
 {
   //get all data entries corresponding to templated loop iterations and not templated loop iterations
   //in separate structures
@@ -1055,14 +1157,28 @@ RunSpeedupAvgMedian EvaluateImpResults::GetAvgMedSpeedupLoopItersInTemplate(
       });
   }
 
+  //get specific subset to evaluate in addition to evaluation across all runs
+  //remove any subsets with templated loop iteration count specified since that's
+  //what's being evaluated here
+  auto subsets_eval = run_imp_settings.subset_desc_input_sig;
+  std::erase_if(subsets_eval, [](const auto& subset_desc_sigs)
+  {
+    return std::ranges::any_of(
+      subset_desc_sigs.second, [](const auto& input_sig)
+      {
+        return input_sig.TemplatedLoopIters().has_value();
+      });
+  });
+
   //get speedup using templated loop iteration counts with non-templated loop
   //iters being base data and templated loop iterations counts being target data
-  const RunSpeedupAvgMedian speedup_header_data =
+  const std::vector<RunSpeedupAvgMedian> speedups_header_data =
     GetAvgMedSpeedupBaseVsTarget(
       templated_non_templated_loops_data[1],
       templated_non_templated_loops_data[0],
       speedup_header,
-      BaseTargetDiff::kDiffTemplatedSetting);
+      BaseTargetDiff::kDiffTemplatedSetting,
+      subsets_eval);
   
   //update run output data with templated and non templated data results
   //after processing for speedup
@@ -1075,5 +1191,5 @@ RunSpeedupAvgMedian EvaluateImpResults::GetAvgMedSpeedupLoopItersInTemplate(
   }
 
   //return speedup data with header
-  return speedup_header_data;
+  return speedups_header_data;
 }
