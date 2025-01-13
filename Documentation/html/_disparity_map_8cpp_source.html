@@ -151,7 +151,7 @@ $(document).ready(function(){initNavTree('_disparity_map_8cpp_source.html',''); 
 <div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160; </div>
 <div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;    <span class="comment">//increment number of pixels that differ greater than threshold for each threshold</span></div>
 <div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;    std::ranges::for_each(evaluation_parameters.<a class="code" href="structbeliefprop_1_1_disparity_map_evaluation_params.html#a8e8df620fcba86beb779c069bcbc73b9">output_diff_thresholds</a>,</div>
-<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;      [abs_diff, &amp;output_evaluation](<span class="keyword">auto</span> <a class="code" href="imutil_8h.html#a8fdb61b124189db3caf4e9630637e784">threshold</a>) {</div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;      [abs_diff, &amp;output_evaluation](<span class="keyword">const</span> <span class="keyword">auto</span> <a class="code" href="imutil_8h.html#a8fdb61b124189db3caf4e9630637e784">threshold</a>) {</div>
 <div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;        if (abs_diff &gt; threshold) {</div>
 <div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;          output_evaluation.num_sig_diff_pixels_at_thresholds_[threshold]++;</div>
 <div class="line"><a name="l00078"></a><span class="lineno"><a class="line" href="class_disparity_map.html#a3428722b1a8edcf5261aa51cc5899ba4">   78</a></span>&#160;        }</div>

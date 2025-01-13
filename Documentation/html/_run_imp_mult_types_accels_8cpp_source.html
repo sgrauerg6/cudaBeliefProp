@@ -165,10 +165,10 @@ $(document).ready(function(){initNavTree('_run_imp_mult_types_accels_8cpp_source
 <div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;     <a class="code" href="namespacerun__environment.html#a2cd0a9de3e0ce6e4d99b35b89befb8bba60657ccbea91c13f8e7c57182bb9c233">run_environment::AccSetting::kAVX256</a>,</div>
 <div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;     <a class="code" href="namespacerun__environment.html#a2cd0a9de3e0ce6e4d99b35b89befb8bbaffe1fb6c7e464b3e161257e7ac2f5c70">run_environment::AccSetting::kNEON</a>})</div>
 <div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;  {</div>
-<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;    <span class="keywordflow">if</span> (std::any_of(run_benchmark_imps_w_acc.cbegin(), run_benchmark_imps_w_acc.cend(),</div>
-<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;                    [&amp;acceleration](<span class="keyword">const</span> <span class="keyword">auto</span>&amp; run_imp) { </div>
-<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;                      return run_imp-&gt;AccelerationSetting() == acceleration;</div>
-<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;                    }))</div>
+<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;    <span class="keywordflow">if</span> (std::ranges::any_of(run_benchmark_imps_w_acc,</div>
+<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;                           [&amp;acceleration](<span class="keyword">const</span> <span class="keyword">auto</span>&amp; run_imp) { </div>
+<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;                             <span class="keywordflow">return</span> run_imp-&gt;AccelerationSetting() == acceleration;</div>
+<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;                           }))</div>
 <div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;    {</div>
 <div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;      <span class="comment">//return acceleration as fastest acceleration if equal to acceleration</span></div>
 <div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;      <span class="comment">//setting of any input run implementation</span></div>

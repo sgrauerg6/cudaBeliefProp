@@ -113,31 +113,31 @@ $(document).ready(function(){initNavTree('_run_results_speedups_8cpp_source.html
 <div class="line"><a name="l00034"></a><span class="lineno"><a class="line" href="class_run_results_speedups.html#abfaa82cd1582d3eed0c866c832cbae78">   34</a></span>&#160;<a class="code" href="class_run_results_speedups.html#abfaa82cd1582d3eed0c866c832cbae78">RunResultsSpeedups::RunResultsSpeedups</a>(</div>
 <div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;  <span class="keyword">const</span> std::filesystem::path&amp; imp_results_file_path,</div>
 <div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;  <span class="keyword">const</span> std::string&amp; run_name) : run_name_{run_name}</div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;{</div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;  <span class="comment">//get run results data from file if available</span></div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;  <span class="keyword">const</span> std::filesystem::path run_results_fp = </div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;    imp_results_file_path / <a class="code" href="namespacerun__eval.html#a12f0e50ca7718080a44f95b98512aad0">run_eval::kImpResultsRunDataFolderName</a> /</div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;    (std::string(run_name_) + <span class="charliteral">&#39;_&#39;</span> +</div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;     std::string(<a class="code" href="namespacerun__eval.html#a12f0e50ca7718080a44f95b98512aad0">run_eval::kImpResultsRunDataFolderName</a>) +</div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;     std::string(<a class="code" href="namespacerun__eval.html#a5c69e0c09678a48f6bcd5d46ac052096">run_eval::kCsvFileExtension</a>));</div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;  std::pair&lt;std::map&lt;std::string, std::vector&lt;std::string&gt;&gt;,</div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;            std::vector&lt;std::string&gt;&gt;</div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;    run_results_header_to_data_ordered_headers;</div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;  <span class="keywordflow">if</span> ((std::filesystem::exists(run_results_fp)) &amp;&amp;</div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;      (std::filesystem::is_regular_file(run_results_fp)))</div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;{  </div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;  std::pair&lt;std::map&lt;std::string, std::vector&lt;std::string&gt;&gt;,</div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;            std::vector&lt;std::string&gt;&gt;</div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;  run_results_header_to_data_ordered_headers;</div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;  <span class="comment">//get run results data from file if available</span></div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;  <span class="keywordflow">if</span> (<span class="keyword">const</span> <span class="keyword">auto</span> run_results_fp = </div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;        imp_results_file_path / <a class="code" href="namespacerun__eval.html#a12f0e50ca7718080a44f95b98512aad0">run_eval::kImpResultsRunDataFolderName</a> /</div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;        (std::string(run_name_) + <span class="charliteral">&#39;_&#39;</span> +</div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;         std::string(<a class="code" href="namespacerun__eval.html#a12f0e50ca7718080a44f95b98512aad0">run_eval::kImpResultsRunDataFolderName</a>) +</div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;         std::string(<a class="code" href="namespacerun__eval.html#a5c69e0c09678a48f6bcd5d46ac052096">run_eval::kCsvFileExtension</a>));</div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;      ((std::filesystem::exists(run_results_fp))) &amp;&amp;</div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;       (std::filesystem::is_regular_file(run_results_fp)))</div>
 <div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;  {</div>
 <div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;    run_results_header_to_data_ordered_headers =</div>
 <div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;      HeaderToDataWOrderedHeadersCsv(run_results_fp);</div>
 <div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;  }</div>
 <div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160; </div>
 <div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;  <span class="comment">//get speedup evaluation data from file if available</span></div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;  <span class="keyword">const</span> std::filesystem::path run_speedup_fp =</div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;    imp_results_file_path / <a class="code" href="namespacerun__eval.html#ad2e81e462dc5a1a39da8b7bd3d6d533c">run_eval::kImpResultsSpeedupsFolderName</a> /</div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;    (std::string(run_name_) + <span class="charliteral">&#39;_&#39;</span> + </div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;     std::string(<a class="code" href="namespacerun__eval.html#a6f7327cf25d1b917872c8d98f9fd84f3">run_eval::kSpeedupsDescFileName</a>) +</div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;     std::string(<a class="code" href="namespacerun__eval.html#a5c69e0c09678a48f6bcd5d46ac052096">run_eval::kCsvFileExtension</a>));</div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;  <span class="keywordflow">if</span> ((std::filesystem::exists(run_speedup_fp)) &amp;&amp;</div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;      (std::filesystem::is_regular_file(run_speedup_fp)))</div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;  <span class="keywordflow">if</span> (<span class="keyword">const</span> <span class="keyword">auto</span> run_speedup_fp =</div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;        imp_results_file_path / <a class="code" href="namespacerun__eval.html#ad2e81e462dc5a1a39da8b7bd3d6d533c">run_eval::kImpResultsSpeedupsFolderName</a> /</div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;        (std::string(run_name_) + <span class="charliteral">&#39;_&#39;</span> + </div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;         std::string(<a class="code" href="namespacerun__eval.html#a6f7327cf25d1b917872c8d98f9fd84f3">run_eval::kSpeedupsDescFileName</a>) +</div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;         std::string(<a class="code" href="namespacerun__eval.html#a5c69e0c09678a48f6bcd5d46ac052096">run_eval::kCsvFileExtension</a>));</div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;      ((std::filesystem::exists(run_speedup_fp)) &amp;&amp;</div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;       (std::filesystem::is_regular_file(run_speedup_fp))))</div>
 <div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;  {</div>
 <div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;    speedup_header_to_result_speedup_order_ =</div>
 <div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;      HeaderToDataWOrderedHeadersCsv(run_speedup_fp);</div>
@@ -238,33 +238,43 @@ $(document).ready(function(){initNavTree('_run_results_speedups_8cpp_source.html
 <div class="line"><a name="l00159"></a><span class="lineno">  159</span>&#160;RunResultsSpeedups::HeaderToDataWOrderedHeadersCsv(</div>
 <div class="line"><a name="l00160"></a><span class="lineno">  160</span>&#160;  <span class="keyword">const</span> std::filesystem::path&amp; csv_file_path)<span class="keyword"> const</span></div>
 <div class="line"><a name="l00161"></a><span class="lineno">  161</span>&#160;<span class="keyword"></span>{</div>
-<div class="line"><a name="l00162"></a><span class="lineno">  162</span>&#160;  std::ifstream csv_file_str(csv_file_path);</div>
-<div class="line"><a name="l00163"></a><span class="lineno">  163</span>&#160;  <span class="keywordflow">if</span> (!(csv_file_str.is_open())) {</div>
-<div class="line"><a name="l00164"></a><span class="lineno">  164</span>&#160;    std::cout &lt;&lt; <span class="stringliteral">&quot;ERROR CREATING STREAM: &quot;</span> &lt;&lt; csv_file_path &lt;&lt; std::endl;</div>
-<div class="line"><a name="l00165"></a><span class="lineno">  165</span>&#160;  }</div>
-<div class="line"><a name="l00166"></a><span class="lineno">  166</span>&#160;  <span class="comment">//retrieve data headers from top row</span></div>
-<div class="line"><a name="l00167"></a><span class="lineno">  167</span>&#160;  std::string headers_line;</div>
-<div class="line"><a name="l00168"></a><span class="lineno">  168</span>&#160;  std::getline(csv_file_str, headers_line);</div>
-<div class="line"><a name="l00169"></a><span class="lineno">  169</span>&#160;  std::stringstream headers_str(headers_line);</div>
+<div class="line"><a name="l00162"></a><span class="lineno">  162</span>&#160;  <span class="comment">//open data file with comma-separate headers and data</span></div>
+<div class="line"><a name="l00163"></a><span class="lineno">  163</span>&#160;  std::ifstream csv_file_str(csv_file_path);</div>
+<div class="line"><a name="l00164"></a><span class="lineno">  164</span>&#160;  <span class="keywordflow">if</span> (!(csv_file_str.is_open())) {</div>
+<div class="line"><a name="l00165"></a><span class="lineno">  165</span>&#160;    std::cout &lt;&lt; <span class="stringliteral">&quot;ERROR CREATING STREAM: &quot;</span> &lt;&lt; csv_file_path &lt;&lt; std::endl;</div>
+<div class="line"><a name="l00166"></a><span class="lineno">  166</span>&#160;  }</div>
+<div class="line"><a name="l00167"></a><span class="lineno">  167</span>&#160; </div>
+<div class="line"><a name="l00168"></a><span class="lineno">  168</span>&#160;  <span class="comment">//initialize containers for header to data mapping and data headers in order</span></div>
+<div class="line"><a name="l00169"></a><span class="lineno">  169</span>&#160;  std::map&lt;std::string, std::vector&lt;std::string&gt;&gt; header_to_data;</div>
 <div class="line"><a name="l00170"></a><span class="lineno">  170</span>&#160;  std::vector&lt;std::string&gt; data_headers;</div>
-<div class="line"><a name="l00171"></a><span class="lineno">  171</span>&#160;  std::string header;</div>
-<div class="line"><a name="l00172"></a><span class="lineno">  172</span>&#160;  std::map&lt;std::string, std::vector&lt;std::string&gt;&gt; header_to_data;</div>
-<div class="line"><a name="l00173"></a><span class="lineno">  173</span>&#160;  <span class="keywordflow">while</span> (std::getline(headers_str, header, <span class="charliteral">&#39;,&#39;</span>)) {</div>
-<div class="line"><a name="l00174"></a><span class="lineno">  174</span>&#160;    data_headers.push_back(header);</div>
-<div class="line"><a name="l00175"></a><span class="lineno">  175</span>&#160;    header_to_data[header] = std::vector&lt;std::string&gt;();</div>
-<div class="line"><a name="l00176"></a><span class="lineno">  176</span>&#160;  }</div>
-<div class="line"><a name="l00177"></a><span class="lineno">  177</span>&#160;  <span class="comment">//go through each data line and add to mapping from headers to data</span></div>
-<div class="line"><a name="l00178"></a><span class="lineno">  178</span>&#160;  std::string data_line;</div>
-<div class="line"><a name="l00179"></a><span class="lineno">  179</span>&#160;  <span class="keywordflow">while</span> (std::getline(csv_file_str, data_line)) {</div>
-<div class="line"><a name="l00180"></a><span class="lineno">  180</span>&#160;    std::stringstream data_line_str(data_line);</div>
-<div class="line"><a name="l00181"></a><span class="lineno">  181</span>&#160;    std::string data;</div>
-<div class="line"><a name="l00182"></a><span class="lineno">  182</span>&#160;    <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> num_data{0};</div>
-<div class="line"><a name="l00183"></a><span class="lineno">  183</span>&#160;    <span class="keywordflow">while</span> (std::getline(data_line_str, data, <span class="charliteral">&#39;,&#39;</span>)) {</div>
-<div class="line"><a name="l00184"></a><span class="lineno">  184</span>&#160;      header_to_data[data_headers[num_data++]].push_back(data);</div>
-<div class="line"><a name="l00185"></a><span class="lineno">  185</span>&#160;    }</div>
-<div class="line"><a name="l00186"></a><span class="lineno">  186</span>&#160;  }</div>
-<div class="line"><a name="l00187"></a><span class="lineno">  187</span>&#160;  <span class="keywordflow">return</span> {header_to_data, data_headers};</div>
-<div class="line"><a name="l00188"></a><span class="lineno">  188</span>&#160;}</div>
+<div class="line"><a name="l00171"></a><span class="lineno">  171</span>&#160;  </div>
+<div class="line"><a name="l00172"></a><span class="lineno">  172</span>&#160;  <span class="comment">//get comma-separated data headers in top row and initialize header to data</span></div>
+<div class="line"><a name="l00173"></a><span class="lineno">  173</span>&#160;  <span class="comment">//mapping for each header</span></div>
+<div class="line"><a name="l00174"></a><span class="lineno">  174</span>&#160;  std::string headers_line;</div>
+<div class="line"><a name="l00175"></a><span class="lineno">  175</span>&#160;  std::getline(csv_file_str, headers_line);</div>
+<div class="line"><a name="l00176"></a><span class="lineno">  176</span>&#160;  std::stringstream headers_str(headers_line);</div>
+<div class="line"><a name="l00177"></a><span class="lineno">  177</span>&#160;  <span class="keywordflow">for</span> (std::string header; std::getline(headers_str, header, <span class="charliteral">&#39;,&#39;</span>);)</div>
+<div class="line"><a name="l00178"></a><span class="lineno">  178</span>&#160;  {</div>
+<div class="line"><a name="l00179"></a><span class="lineno">  179</span>&#160;    data_headers.push_back(header);</div>
+<div class="line"><a name="l00180"></a><span class="lineno">  180</span>&#160;    header_to_data.insert({header, std::vector&lt;std::string&gt;()});</div>
+<div class="line"><a name="l00181"></a><span class="lineno">  181</span>&#160;  }</div>
+<div class="line"><a name="l00182"></a><span class="lineno">  182</span>&#160; </div>
+<div class="line"><a name="l00183"></a><span class="lineno">  183</span>&#160;  <span class="comment">//go through each data line and add data mapping to each header </span></div>
+<div class="line"><a name="l00184"></a><span class="lineno">  184</span>&#160;  <span class="keywordflow">for</span> (std::string data_line; std::getline(csv_file_str, data_line);)</div>
+<div class="line"><a name="l00185"></a><span class="lineno">  185</span>&#160;  {</div>
+<div class="line"><a name="l00186"></a><span class="lineno">  186</span>&#160;    <span class="comment">//get each comma-separated data element and add to mapping to corresponding</span></div>
+<div class="line"><a name="l00187"></a><span class="lineno">  187</span>&#160;    <span class="comment">//header in top row of column</span></div>
+<div class="line"><a name="l00188"></a><span class="lineno">  188</span>&#160;    <span class="keywordflow">for</span> (<span class="keyword">auto</span> [data_line_str, data, num_data] =</div>
+<div class="line"><a name="l00189"></a><span class="lineno">  189</span>&#160;           std::make_tuple(std::stringstream(data_line), std::string(), 0u);</div>
+<div class="line"><a name="l00190"></a><span class="lineno">  190</span>&#160;         std::getline(data_line_str, data, <span class="charliteral">&#39;,&#39;</span>);)</div>
+<div class="line"><a name="l00191"></a><span class="lineno">  191</span>&#160;    {</div>
+<div class="line"><a name="l00192"></a><span class="lineno">  192</span>&#160;      header_to_data.at(data_headers[num_data++]).push_back(data);</div>
+<div class="line"><a name="l00193"></a><span class="lineno">  193</span>&#160;    }</div>
+<div class="line"><a name="l00194"></a><span class="lineno">  194</span>&#160;  }</div>
+<div class="line"><a name="l00195"></a><span class="lineno">  195</span>&#160; </div>
+<div class="line"><a name="l00196"></a><span class="lineno">  196</span>&#160;  <span class="comment">//return mapping of headers to data and data headers in order</span></div>
+<div class="line"><a name="l00197"></a><span class="lineno">  197</span>&#160;  <span class="keywordflow">return</span> {header_to_data, data_headers};</div>
+<div class="line"><a name="l00198"></a><span class="lineno">  198</span>&#160;}</div>
 <div class="ttc" id="a_run_eval_consts_enums_8h_html"><div class="ttname"><a href="_run_eval_consts_enums_8h.html">RunEvalConstsEnums.h</a></div><div class="ttdoc">Contains namespace with enums and constants for implementation run evaluation.</div></div>
 <div class="ttc" id="a_run_results_speedups_8h_html"><div class="ttname"><a href="_run_results_speedups_8h.html">RunResultsSpeedups.h</a></div><div class="ttdoc">Declares class to load and store run results data including speedups from evaluation.</div></div>
 <div class="ttc" id="aclass_input_signature_html"><div class="ttname"><a href="class_input_signature.html">InputSignature</a></div><div class="ttdoc">Class defines input signature for evaluation run that contains evaluation set number,...</div><div class="ttdef"><b>Definition:</b> <a href="_input_signature_8h_source.html#l00044">InputSignature.h:44</a></div></div>

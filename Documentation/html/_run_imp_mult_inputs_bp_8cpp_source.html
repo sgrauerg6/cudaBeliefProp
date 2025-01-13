@@ -144,26 +144,26 @@ $(document).ready(function(){initNavTree('_run_imp_mult_inputs_bp_8cpp_source.ht
 <div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;    <span class="keywordflow">return</span> RunEvalImpMultDataSets&lt;double, OPT_IMP_ACCEL&gt;(run_imp_settings);</div>
 <div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;  }</div>
 <div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;  <span class="keywordflow">else</span> {</div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;    <span class="comment">//if using AVX, need to check if using float16 vectorization</span></div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;    <span class="comment">//data stored as _Float16 if using float16 vectorization and as short if</span></div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;    <span class="comment">//not</span></div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;    <span class="keywordflow">if</span> constexpr ((OPT_IMP_ACCEL == <a class="code" href="namespacerun__environment.html#a2cd0a9de3e0ce6e4d99b35b89befb8bba5b3095b5e5c7c45fb761b9580b0f61b3">run_environment::AccSetting::kAVX512</a>) ||</div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;                  (OPT_IMP_ACCEL == <a class="code" href="namespacerun__environment.html#a2cd0a9de3e0ce6e4d99b35b89befb8bba60657ccbea91c13f8e7c57182bb9c233">run_environment::AccSetting::kAVX256</a>))</div>
-<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;    {</div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;      <span class="keywordflow">return</span> RunEvalImpMultDataSets&lt;short, OPT_IMP_ACCEL&gt;(run_imp_settings);</div>
-<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;    }</div>
-<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;<span class="preprocessor">#if defined(FLOAT16_VECTORIZATION)</span></div>
-<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;    <span class="keywordflow">else</span> <span class="keywordflow">if</span> constexpr ((OPT_IMP_ACCEL == <a class="code" href="namespacerun__environment.html#a2cd0a9de3e0ce6e4d99b35b89befb8bbaf6ce4a828ba0a1a34bfb099125fc3e76">run_environment::AccSetting::kAVX512_F16</a>) ||</div>
-<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;                       (OPT_IMP_ACCEL == <a class="code" href="namespacerun__environment.html#a2cd0a9de3e0ce6e4d99b35b89befb8bbad6648890b3f8d224b288f94b5252d9e2">run_environment::AccSetting::kAVX256_F16</a>) ||</div>
-<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;                       (OPT_IMP_ACCEL == <a class="code" href="namespacerun__environment.html#a2cd0a9de3e0ce6e4d99b35b89befb8bba35c3ace1970663a16e5c65baa5941b13">run_environment::AccSetting::kNone</a>))</div>
-<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;    {</div>
-<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;      std::cout &lt;&lt; <span class="stringliteral">&quot;FLOAT16 USED&quot;</span> &lt;&lt; std::endl;</div>
-<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;      <span class="keywordflow">return</span> RunEvalImpMultDataSets&lt;_Float16, OPT_IMP_ACCEL&gt;(run_imp_settings);</div>
-<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;    }</div>
-<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;<span class="preprocessor">#endif </span><span class="comment">//FLOAT16_VECTORIZATION</span></div>
-<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;    <span class="keywordflow">else</span> {</div>
-<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;      <span class="keywordflow">return</span> RunEvalImpMultDataSets&lt;halftype, OPT_IMP_ACCEL&gt;(run_imp_settings);</div>
-<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;    }</div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;    <span class="comment">//if using x86 CPU that supports AVX vectorization, need to check if using</span></div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;    <span class="comment">//float16 vectorization data stored as _Float16 if using float16</span></div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;    <span class="comment">//vectorization and as short if not</span></div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;<span class="preprocessor">#if (defined(OPTIMIZED_CPU_RUN) &amp;&amp; (!(defined(COMPILING_FOR_ARM))))</span></div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;    <span class="keywordflow">if</span> constexpr ((OPT_IMP_ACCEL == <a class="code" href="namespacerun__environment.html#a2cd0a9de3e0ce6e4d99b35b89befb8bba5b3095b5e5c7c45fb761b9580b0f61b3">run_environment::AccSetting::kAVX512</a>) ||</div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;                  (OPT_IMP_ACCEL == <a class="code" href="namespacerun__environment.html#a2cd0a9de3e0ce6e4d99b35b89befb8bba60657ccbea91c13f8e7c57182bb9c233">run_environment::AccSetting::kAVX256</a>))</div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;    {</div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;      <span class="keywordflow">return</span> RunEvalImpMultDataSets&lt;short, OPT_IMP_ACCEL&gt;(run_imp_settings);</div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;    }</div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;<span class="preprocessor">#if defined(FLOAT16_VECTORIZATION)</span></div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;    <span class="keywordflow">else</span> <span class="keywordflow">if</span> constexpr ((OPT_IMP_ACCEL == <a class="code" href="namespacerun__environment.html#a2cd0a9de3e0ce6e4d99b35b89befb8bbaf6ce4a828ba0a1a34bfb099125fc3e76">run_environment::AccSetting::kAVX512_F16</a>) ||</div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;                       (OPT_IMP_ACCEL == <a class="code" href="namespacerun__environment.html#a2cd0a9de3e0ce6e4d99b35b89befb8bbad6648890b3f8d224b288f94b5252d9e2">run_environment::AccSetting::kAVX256_F16</a>) ||</div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;                       (OPT_IMP_ACCEL == <a class="code" href="namespacerun__environment.html#a2cd0a9de3e0ce6e4d99b35b89befb8bba35c3ace1970663a16e5c65baa5941b13">run_environment::AccSetting::kNone</a>))</div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;    {</div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;      std::cout &lt;&lt; <span class="stringliteral">&quot;FLOAT16 USED&quot;</span> &lt;&lt; std::endl;</div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;      <span class="keywordflow">return</span> RunEvalImpMultDataSets&lt;_Float16, OPT_IMP_ACCEL&gt;(run_imp_settings);</div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;    }</div>
+<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;<span class="preprocessor">#endif </span><span class="comment">//FLOAT16_VECTORIZATION</span></div>
+<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;<span class="preprocessor">#endif </span><span class="comment">//(defined(OPTIMIZED_CPU_RUN) &amp;&amp; (!(defined(COMPILING_FOR_ARM))))</span></div>
+<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;    <span class="keywordflow">return</span> RunEvalImpMultDataSets&lt;halftype, OPT_IMP_ACCEL&gt;(run_imp_settings);</div>
 <div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;  }</div>
 <div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;}</div>
 <div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160; </div>

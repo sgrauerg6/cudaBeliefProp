@@ -4,7 +4,7 @@ var searchData=
   ['errorcheck_127',['ErrorCheck',['../class_process_bp.html#a5fb280ae72731bf1b0981d647befb26e',1,'ProcessBp']]],
   ['evalacrossrunsdata_128',['EvalAcrossRunsData',['../struct_eval_across_runs_data.html',1,'']]],
   ['evalallresultswriteoutput_129',['EvalAllResultsWriteOutput',['../class_evaluate_imp_results.html#a21c9e5785e0f5fa730d98c4a64e85637',1,'EvaluateImpResults']]],
-  ['evalresultssingdatatypeacc_130',['EvalResultsSingDataTypeAcc',['../class_evaluate_imp_results.html#a7ff24d748d8a06db46691fb403472397',1,'EvaluateImpResults']]],
+  ['evalresultssingdatatypeacc_130',['EvalResultsSingDataTypeAcc',['../class_evaluate_imp_results.html#a231b436febb8b53f774587d8e1293d6c',1,'EvaluateImpResults']]],
   ['evalsetnum_131',['EvalSetNum',['../class_input_signature.html#ae380baa162dbe7347fbaaf1630e475de',1,'InputSignature']]],
   ['evalsetnumstr_132',['EvalSetNumStr',['../class_input_signature.html#a5af9a3c2037dc34e8ae16a0721212740',1,'InputSignature']]],
   ['evaluateacrossruns_133',['EvaluateAcrossRuns',['../class_evaluate_across_runs.html',1,'']]],
