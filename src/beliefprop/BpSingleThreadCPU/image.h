@@ -62,6 +62,40 @@ class image {
 };
 
 template <class T>
+class imageWDisp {
+ public:
+  /* create an image */
+  imageWDisp(int width, int height, int num_disp_vals, bool init = true);
+
+  /* delete an image */
+  ~imageWDisp();
+
+  /* init an image */
+  void init(const T &val);
+
+  /* copy an image */
+  imageWDisp<T> *copy() const;
+  
+  /* get the width of an image. */
+  int width() const { return w; }
+  
+  /* get the height of an image. */
+  int height() const { return h; }
+
+  /* get the number of disparity values of an image. */
+  int DisparityVals() const { return disp_vals; }
+  
+  /* image data. */
+  T *data;
+  
+  /* row pointers. */
+  T **access;
+  
+ private:
+  int w, h, disp_vals;
+};
+
+template <class T>
 class BpVector {
 public:
   //default constructor
@@ -162,6 +196,54 @@ template <class T>
 image<T> *image<T>::copy() const {
   image<T> *im = new image<T>(w, h, false);
   memcpy(im->data, data, w * h * sizeof(T));
+  return im;
+}
+
+/* use imRef to access image data. */
+#define imWDispRef(im, x, y, disp) (im->data[(y * im->width() * im->DisparityVals()) + (x * im->DisparityVals()) + disp])
+  
+/* use imPtr to get pointer to image data. */
+#define imWDispPtr(im, x, y, disp) &(im->data[(y * im->width() * im->DisparityVals()) + (x * im->DisparityVals()) + disp])
+
+template <class T>
+imageWDisp<T>::imageWDisp(int width, int height, int num_disp_vals, bool init)
+{
+  w = width;
+  h = height;
+  disp_vals = num_disp_vals;
+  data = new T[w * h * disp_vals];  // allocate space for image data
+  //access = new T*[h];   // allocate space for row pointers
+  
+  // initialize row pointers
+  /*for (int i = 0; i < h; i++)
+    access[i] = data + (i * w * disp_vals);*/
+  
+  if (init)
+    memset(data, 0, w * h * disp_vals * sizeof(T));
+}
+
+template <class T>
+imageWDisp<T>::~imageWDisp() {
+  delete [] data; 
+  //delete [] access;
+}
+
+template <class T>
+void imageWDisp<T>::init(const T &val) {
+  for (int i=0; i < w*h*disp_vals; i++) {
+    data[i] = val;
+  }
+  /*T *ptr = imPtr(this, 0, 0);
+  T *end = imPtr(this, w-1, h-1);
+  while (ptr <= end)
+    *ptr++ = val;*/
+}
+
+
+template <class T>
+imageWDisp<T> *imageWDisp<T>::copy() const {
+  imageWDisp<T> *im = new imageWDisp<T>(w, h, disp_vals, false);
+  memcpy(im->data, data, w * h * disp_vals * sizeof(T));
   return im;
 }
 
