@@ -106,15 +106,19 @@ int main(int argc, char** argv)
   //commented out code to compare result to single-thread CPU run...currently
   //only works if disparity count known at compile time since the single-thread
   //CPU implementation only works with disparity count given as template value
-  /*if ((argc > 5) && (std::string(argv[5]) == "comp")) {
-    std::unique_ptr<RunBpOnStereoSet<float, 64, run_environment::AccSetting::kNone>> runBpStereoSingleThread = 
-      std::make_unique<RunBpOnStereoSetSingleThreadCPU<float, 64, run_environment::AccSetting::kNone>>();
+  if ((argc > 5) && (std::string(argv[5]) == "comp")) {
+    std::unique_ptr<RunBpOnStereoSet<float, 0, run_environment::AccSetting::kNone>> runBpStereoSingleThread = 
+      std::make_unique<RunBpOnStereoSetSingleThreadCPU<float, 0, run_environment::AccSetting::kNone>>();
     auto run_output_single_thread = runBpStereoSingleThread->operator()({refTestImPath[0], refTestImPath[1]}, alg_settings, parallel_params);
     std::cout << "BP processing runtime (single threaded imp): " << run_output_single_thread->run_time.count() << std::endl;
     const auto outComp = run_output_single_thread->out_disparity_map.OutputComparison(run_output->out_disparity_map, beliefprop::DisparityMapEvaluationParams());
+    if (argc > 6) {
+      run_output_single_thread->out_disparity_map.SaveDisparityMap(argv[6], dispMapScale);
+      std::cout << "Output disparity map from single thread run saved to " << argv[6] << std::endl;
+    }
     std::cout << "Difference between resulting disparity maps (no difference expected)" << std::endl;
     std::cout << outComp.AsRunData();
-  }*/
+  }
 
   return 0;
 }

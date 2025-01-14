@@ -22,6 +22,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #define IMAGE_H
 
 #include <cstring>
+#include <memory>
 
 /**
  * @brief Class and structs in single-thread CPU bp implementation by Pedro
@@ -59,6 +60,67 @@ class image {
  private:
   int w, h;
 };
+
+template <class T>
+class BpVector {
+public:
+  //default constructor
+  BpVector() {}
+
+  /* create BpVector with specified width, height, and number of disparity values */
+  BpVector(unsigned int width, unsigned int height, unsigned int num_disp_vals) :
+    width_{width}, height_{height}, num_disp_vals_(num_disp_vals)
+  {
+    //bp_vals_ = std::vector<T>(width_*height_*num_disp_vals_);
+    bp_vals_ = std::make_unique<T[]>(width_*height_*num_disp_vals_);
+    vals_each_disparity_ = std::make_shared<T[]>(num_disp_vals_);
+  }
+
+  inline T& operator()(unsigned int x, unsigned int y, unsigned int disparity) noexcept
+  {
+    return bp_vals_[(y * (width_ * num_disp_vals_)) + (width_ * disparity) + x];
+  }
+
+  inline const T& operator()(unsigned int x, unsigned int y, unsigned int disparity) const noexcept
+  {
+    return bp_vals_[(y * (width_ * num_disp_vals_)) + (width_ * disparity) + x];
+  }
+
+  /**
+   * @brief Get a vector with the values corresponding to each disparity
+   * 
+   * @param x 
+   * @param y 
+   * @return std::vector<T> 
+   */
+  /*std::vector<T>*/std::shared_ptr<T[]> ValsEachDisparity(unsigned int x, unsigned int y) const {
+    /*std::vector<T>*/ 
+    //auto vals_each_disp = std::make_unique<T[]>(num_disp_vals_);
+    //go through each disparity and add values corresponding to each disparity
+    //to vector
+    for (unsigned int disp = 0; disp < num_disp_vals_; disp++) {
+      //vals_each_disp.push_back(this->operator()(x, y, disp));
+      vals_each_disparity_[disp] = (this->operator()(x, y, disp));
+    }
+    return vals_each_disparity_;
+  }
+  
+  /* get the width of an image in the stereo set */
+  unsigned int Width() const { return width_; }
+  
+  /* get the height of an image in the stereo set */
+  unsigned int Height() const { return height_; }
+
+  /* get the number of possible disparity values of the stereo set */
+  unsigned int NumDisparityVals() const { return num_disp_vals_; }
+  
+ private:
+  //std::vector<T> bp_vals_;
+  std::unique_ptr<T[]> bp_vals_;
+  std::shared_ptr<T[]> vals_each_disparity_;
+  unsigned int width_, height_, num_disp_vals_;
+};
+
 
 /* use imRef to access image data. */
 #define imRef(im, x, y) (im->access[y][x])

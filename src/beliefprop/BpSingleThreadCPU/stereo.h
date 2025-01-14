@@ -42,6 +42,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #include <iostream>
 #include <array>
 #include <utility>
+#include <span>
 #include "image.h"
 #include "misc.h"
 #include "pnmfile.h"
@@ -62,7 +63,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  * @tparam ACCELERATION 
  */
 template<typename T, unsigned int DISP_VALS, run_environment::AccSetting ACCELERATION>
-class RunBpOnStereoSetSingleThreadCPU final : public RunBpOnStereoSet<T, DISP_VALS, ACCELERATION>
+class RunBpOnStereoSetSingleThreadCPU  : public RunBpOnStereoSet<T, DISP_VALS, ACCELERATION>
 {
 public:
   std::optional<beliefprop::BpRunOutput> operator()(const std::array<std::string, 2>& ref_test_image_path,
@@ -299,12 +300,6 @@ inline std::pair<bp_single_thread_imp::image<uchar>*, RunData> RunBpOnStereoSetS
           }
         }
       }
-      // delete old messages and data
-      delete u[i + 1];
-      delete d[i + 1];
-      delete l[i + 1];
-      delete r[i + 1];
-      delete data[i + 1];
     }
 
     // BP
@@ -332,6 +327,401 @@ template<typename T, unsigned int DISP_VALS, run_environment::AccSetting ACCELER
 inline std::optional<beliefprop::BpRunOutput> RunBpOnStereoSetSingleThreadCPU<T, DISP_VALS, ACCELERATION>::operator()(const std::array<std::string, 2>& ref_test_image_path,
     const beliefprop::BpSettings& alg_settings, const ParallelParams& parallel_params) const
 {
+  //return no value if acceleration setting is not NONE
+  if constexpr (ACCELERATION != run_environment::AccSetting::kNone) {
+    return {};
+  }
+
+  //load input
+  bp_single_thread_imp::image<uchar> *img1, *img2;
+  img1 = loadPGMOrPPMImage(ref_test_image_path[0].c_str());
+  img2 = loadPGMOrPPMImage(ref_test_image_path[1].c_str());
+
+  //run single-thread belief propagation implementation and return output
+  //disparity map and run data
+  std::chrono::duration<double> runtime;
+  const auto [output_disp_map, output_run_data] = stereo_ms(img1, img2, alg_settings, runtime);
+
+  //setup run output to return
+  std::optional<beliefprop::BpRunOutput> output{beliefprop::BpRunOutput{}};
+  output->run_time = runtime;
+  output->run_data = output_run_data;
+  output->out_disparity_map =
+    DisparityMap<float>(
+      std::array<unsigned int, 2>{(unsigned int)img1->width(), (unsigned int)img1->height()});
+
+  //set disparity at each point in disparity map from single-thread run output
+  for (unsigned int y = 0; y < (unsigned int)img1->height(); y++) {
+    for (unsigned int x = 0; x < (unsigned int)img1->width(); x++) {
+      output->out_disparity_map.SetPixelAtPoint({x, y}, (float)imRef(output_disp_map, x, y));
+    }
+  }
+
+  //free dynamically allocated memory
+  delete img1;
+  delete img2;
+  delete output_disp_map;
+
+  //return run output
+  return output;
+}
+
+
+/**
+ * @brief Child class of RunBpOnStereoSet to run single-threaded CPU implementation of belief propagation on a
+ * given stereo set as defined by reference and test image file paths
+ * 
+ * @tparam T 
+ * @tparam DISP_VALS 
+ * @tparam ACCELERATION 
+ */
+template<typename T, run_environment::AccSetting ACCELERATION>
+class RunBpOnStereoSetSingleThreadCPU<T, 0, ACCELERATION> : public RunBpOnStereoSet<T, 0, ACCELERATION>
+{
+public:
+  std::optional<beliefprop::BpRunOutput> operator()(const std::array<std::string, 2>& ref_test_image_path,
+      const beliefprop::BpSettings& alg_settings,
+      const ParallelParams& parallel_params) const override;
+  std::string BpRunDescription() const override { return "Single-Thread CPU"; }
+
+private:
+  // compute message
+  bp_single_thread_imp::BpVector<float> comp_data(bp_single_thread_imp::image<uchar> *img1, bp_single_thread_imp::image<uchar> *img2, const beliefprop::BpSettings& alg_settings) const;
+  std::vector<float> msg(const std::vector<float>& s1, const std::vector<float>& s2, const std::vector<float>& s3, const std::vector<float>& s4,
+    float disc_k_bp) const;
+  // compute message
+  inline /*std::unique_ptr<float[]>*/void msg(
+    const std::shared_ptr<T[]>& s1, const std::shared_ptr<T[]>& s2, const std::shared_ptr<T[]>& s3,
+    const std::shared_ptr<T[]>& s4, float disc_k_bp, unsigned int num_disp_vals) const;
+  void dt(std::span<float> f) const;
+  void dt(std::unique_ptr<float[]>& f, unsigned int num_disp_vals) const;
+  bp_single_thread_imp::image<uchar> *output(
+    const bp_single_thread_imp::BpVector<float>& u, const bp_single_thread_imp::BpVector<float>& d,
+    const bp_single_thread_imp::BpVector<float>& l, const bp_single_thread_imp::BpVector<float>& r,
+    const bp_single_thread_imp::BpVector<float>& data) const;
+  void bp_cb(bp_single_thread_imp::BpVector<float>& u, bp_single_thread_imp::BpVector<float>& d,
+      bp_single_thread_imp::BpVector<float>& l, bp_single_thread_imp::BpVector<float>& r,
+      const bp_single_thread_imp::BpVector<float>& data, unsigned int iter, float disc_k_bp) const;
+  std::pair<bp_single_thread_imp::image<uchar>*, RunData> stereo_ms(bp_single_thread_imp::image<uchar> *img1, bp_single_thread_imp::image<uchar> *img2,
+    const beliefprop::BpSettings& alg_settings, std::chrono::duration<double>& runtime) const;
+  std::unique_ptr<float[]> dst;
+};
+
+// dt of 1d function
+template<typename T, run_environment::AccSetting ACCELERATION>
+inline void RunBpOnStereoSetSingleThreadCPU<T, 0, ACCELERATION>::dt(std::span<float> f) const {
+  for (unsigned int q = 1; q < f.size(); q++) {
+    float prev = f[q - 1] + 1.0F;
+    if (prev < f[q])
+      f[q] = prev;
+  }
+  for (int q = (int)f.size() - 2; q >= 0; q--) {
+    float prev = f[q + 1] + 1.0F;
+    if (prev < f[q])
+      f[q] = prev;
+  }
+}
+
+// compute message
+template<typename T, run_environment::AccSetting ACCELERATION>
+inline std::vector<float> RunBpOnStereoSetSingleThreadCPU<T, 0, ACCELERATION>::msg(
+  const std::vector<float>& s1, const std::vector<float>& s2, const std::vector<float>& s3,
+  const std::vector<float>& s4, float disc_k_bp) const
+{
+  // aggregate and find min
+  std::vector<float> dst(s1.size());
+  float minimum = beliefprop::kHighValBp<float>;
+  for (unsigned int value = 0; value < s1.size(); value++) {
+    dst[value] = s1[value] + s2[value] + s3[value] + s4[value];
+    if (dst[value] < minimum)
+      minimum = dst[value];
+  }
+
+  // dt
+  dt(dst);
+
+  // truncate
+  minimum += disc_k_bp;
+  for (unsigned int value = 0; value < s1.size(); value++)
+    if (minimum < dst[value])
+      dst[value] = minimum;
+
+  // normalize
+  float val = 0;
+  for (unsigned int value = 0; value < s1.size(); value++)
+    val += dst[value];
+
+  val /= s1.size();
+  for (unsigned int value = 0; value < s1.size(); value++)
+    dst[value] -= val;
+
+  return dst;
+}
+
+// dt of 1d function
+template<typename T, run_environment::AccSetting ACCELERATION>
+inline void RunBpOnStereoSetSingleThreadCPU<T, 0, ACCELERATION>::dt(
+  std::unique_ptr<float[]>& f, unsigned int num_disp_vals) const
+{
+  for (unsigned int q = 1; q < num_disp_vals; q++) {
+    float prev = f[q - 1] + 1.0F;
+    if (prev < f[q])
+      f[q] = prev;
+  }
+  for (int q = (int)num_disp_vals - 2; q >= 0; q--) {
+    float prev = f[q + 1] + 1.0F;
+    if (prev < f[q])
+      f[q] = prev;
+  }
+}
+
+// compute message
+template<typename T, run_environment::AccSetting ACCELERATION>
+inline void /*std::unique_ptr<float[]>*/ RunBpOnStereoSetSingleThreadCPU<T, 0, ACCELERATION>::msg(
+  const std::shared_ptr<T[]>& s1, const std::shared_ptr<T[]>& s2, const std::shared_ptr<T[]>& s3,
+  const std::shared_ptr<T[]>& s4, float disc_k_bp, unsigned int num_disp_vals) const
+{
+  // aggregate and find min
+  float minimum = beliefprop::kHighValBp<float>;
+  for (unsigned int value = 0; value < num_disp_vals; value++) {
+    dst[value] = s1[value] + s2[value] + s3[value] + s4[value];
+    if (dst[value] < minimum)
+      minimum = dst[value];
+  }
+
+  // dt
+  dt(dst, num_disp_vals);
+
+  // truncate
+  minimum += disc_k_bp;
+  for (unsigned int value = 0; value < num_disp_vals; value++)
+    if (minimum < dst[value])
+      dst[value] = minimum;
+
+  // normalize
+  float val = 0;
+  for (unsigned int value = 0; value < num_disp_vals; value++)
+    val += dst[value];
+
+  val /= num_disp_vals;
+  for (unsigned int value = 0; value < num_disp_vals; value++)
+    dst[value] -= val;
+  //return std::move(dst);
+}
+
+// computation of data costs
+template<typename T, run_environment::AccSetting ACCELERATION>
+inline bp_single_thread_imp::BpVector<float> RunBpOnStereoSetSingleThreadCPU<T, 0, ACCELERATION>::comp_data(
+    bp_single_thread_imp::image<uchar> *img1,
+    bp_single_thread_imp::image<uchar> *img2,
+    const beliefprop::BpSettings& alg_settings) const
+{
+  bp_single_thread_imp::image<float> *sm1, *sm2;
+  if (alg_settings.smoothing_sigma >= 0.1) {
+    sm1 = bp_single_thread_imp::FilterImage::smooth(img1, alg_settings.smoothing_sigma);
+    sm2 = bp_single_thread_imp::FilterImage::smooth(img2, alg_settings.smoothing_sigma);
+  } else {
+    sm1 = imageUCHARtoFLOAT(img1);
+    sm2 = imageUCHARtoFLOAT(img2);
+  }
+
+  //compute disparity cost for each possible disparity at each pixel
+  bp_single_thread_imp::BpVector<float> data(
+    img1->width(), img1->height(), alg_settings.num_disp_vals);
+  for (unsigned int y = 0; y < (unsigned int)img1->height(); y++) {
+    for (unsigned int x = alg_settings.num_disp_vals - 1; x < (unsigned int)img1->width(); x++) {
+      for (unsigned int disp = 0; disp < alg_settings.num_disp_vals; disp++) {
+        const float val = abs(imRef(sm1, x, y) - imRef(sm2, x - disp, y));
+        data(x, y, disp) = alg_settings.lambda_bp * std::min(val, alg_settings.data_k_bp);
+      }
+    }
+  }
+
+  delete sm1;
+  delete sm2;
+  return data;
+}
+
+// generate output from current messages
+template<typename T, run_environment::AccSetting ACCELERATION>
+inline bp_single_thread_imp::image<uchar> * RunBpOnStereoSetSingleThreadCPU<T, 0, ACCELERATION>::output(
+  const bp_single_thread_imp::BpVector<float>& u,
+  const bp_single_thread_imp::BpVector<float>& d,
+  const bp_single_thread_imp::BpVector<float>& l,
+  const bp_single_thread_imp::BpVector<float>& r,
+  const bp_single_thread_imp::BpVector<float>& data) const
+{
+  bp_single_thread_imp::image<uchar> *out =
+    new bp_single_thread_imp::image<uchar>(data.Width(), data.Height());
+
+  for (unsigned int y = 1; y < data.Height() - 1; y++) {
+    for (unsigned int x = 1; x < data.Width() - 1; x++) {
+      // keep track of best disparity for current pixel
+      unsigned int best_disp = 0;
+      float best_val = beliefprop::kHighValBp<float>;
+      for (unsigned int disp = 0; disp < data.NumDisparityVals(); disp++) {
+        const float val =
+          u(x, y+1, disp) +
+          d(x, y-1, disp) +
+          l(x+1, y, disp) +
+          r(x-1, y, disp) +
+          data(x, y, disp);
+
+        if (val < best_val) {
+          best_val = val;
+          best_disp = disp;
+        }
+      }
+      imRef(out, x, y) = best_disp;
+    }
+  }
+
+  return out;
+}
+
+// belief propagation using checkerboard update scheme
+template<typename T, run_environment::AccSetting ACCELERATION>
+inline void RunBpOnStereoSetSingleThreadCPU<T, 0, ACCELERATION>::bp_cb(
+  bp_single_thread_imp::BpVector<float>& u, bp_single_thread_imp::BpVector<float>& d,
+  bp_single_thread_imp::BpVector<float>& l, bp_single_thread_imp::BpVector<float>& r,
+  const bp_single_thread_imp::BpVector<float>& data, unsigned int iter, float disc_k_bp) const
+{
+  for (unsigned int t = 0; t < iter; t++) {
+    for (unsigned int y = 1; y < data.Height() - 1; y++) {
+      for (unsigned int x = ((y + t) % 2) + 1; x < data.Width() - 1; x += 2)
+      {
+        //get message values and data costs for each disparity at pixel
+        const auto& u_vals_all_disp = u.ValsEachDisparity(x, y+1);
+        const auto& d_vals_all_disp = d.ValsEachDisparity(x, y-1);
+        const auto& l_vals_all_disp = l.ValsEachDisparity(x+1, y);
+        const auto& r_vals_all_disp = r.ValsEachDisparity(x-1, y);
+        const auto& data_vals_all_disp = data.ValsEachDisparity(x, y);
+
+        //update u message value
+        /*const auto& u_vals = */msg(u_vals_all_disp, l_vals_all_disp, r_vals_all_disp,
+          data_vals_all_disp, disc_k_bp, u.NumDisparityVals());
+        for (auto disp=0u; disp < u.NumDisparityVals(); disp++) {
+          u(x, y, disp) = dst[disp];
+        }
+
+        //update d message value
+        /*const auto& d_vals = */msg(d_vals_all_disp, l_vals_all_disp, r_vals_all_disp,
+          data_vals_all_disp, disc_k_bp, u.NumDisparityVals());
+        for (auto disp=0u; disp < u.NumDisparityVals(); disp++) {
+          d(x, y, disp) = dst[disp];
+        }
+
+        //update r message value
+        /*const auto& r_vals = */msg(u_vals_all_disp, d_vals_all_disp, r_vals_all_disp,
+          data_vals_all_disp, disc_k_bp, u.NumDisparityVals());
+        for (auto disp=0u; disp < u.NumDisparityVals(); disp++) {
+          r(x, y, disp) = dst[disp];
+        }
+
+        //update l message value
+        /*const auto& l_vals = */msg(u_vals_all_disp, d_vals_all_disp, l_vals_all_disp,
+          data_vals_all_disp, disc_k_bp, u.NumDisparityVals());
+        for (auto disp=0u; disp < u.NumDisparityVals(); disp++) {
+          l(x, y, disp) = dst[disp];
+        }
+      }
+    }
+  }
+}
+
+// multiscale belief propagation for image restoration
+template<typename T, run_environment::AccSetting ACCELERATION>
+inline std::pair<bp_single_thread_imp::image<uchar>*, RunData> RunBpOnStereoSetSingleThreadCPU<T, 0, ACCELERATION>::stereo_ms(
+  bp_single_thread_imp::image<uchar> *img1, bp_single_thread_imp::image<uchar> *img2,
+  const beliefprop::BpSettings& alg_settings, std::chrono::duration<double>& runtime) const {
+  std::vector<bp_single_thread_imp::BpVector<float>> u(alg_settings.num_levels);
+  std::vector<bp_single_thread_imp::BpVector<float>> d(alg_settings.num_levels);
+  std::vector<bp_single_thread_imp::BpVector<float>> l(alg_settings.num_levels);
+  std::vector<bp_single_thread_imp::BpVector<float>> r(alg_settings.num_levels);
+  std::vector<bp_single_thread_imp::BpVector<float>> data(alg_settings.num_levels);
+
+  auto timeStart = std::chrono::system_clock::now();
+  std::unique_ptr<float[]> dst = std::make_unique<float[]>(alg_settings.num_disp_vals);
+  // data costs
+  data[0] = comp_data(img1, img2, alg_settings);
+
+  // data pyramid
+  for (unsigned int i = 1; i < alg_settings.num_levels; i++) {
+    const unsigned int old_width = (unsigned int)data[i - 1].Width();
+    const unsigned int old_height = (unsigned int)data[i - 1].Height();
+    const unsigned int new_width = (unsigned int)ceil(old_width / 2.0);
+    const unsigned int new_height = (unsigned int)ceil(old_height / 2.0);
+
+    assert(new_width >= 1);
+    assert(new_height >= 1);
+
+    data[i] = bp_single_thread_imp::BpVector<float>(
+      new_width, new_height, alg_settings.num_disp_vals);
+    for (unsigned int y = 0; y < old_height; y++) {
+      for (unsigned int x = 0; x < old_width; x++) {
+        for (unsigned int value = 0; value < alg_settings.num_disp_vals; value++) {
+          data[i](x/2, y/2, value) +=
+            data[i-1](x, y, value);
+        }
+      }
+    }
+  }
+
+  // run bp from coarse to fine
+  for (int i = alg_settings.num_levels - 1; i >= 0; i--) {
+    unsigned int width = (unsigned int)data[i].Width();
+    unsigned int height = (unsigned int)data[i].Height();
+
+    // allocate & init memory for messages
+    if ((unsigned int)i == (alg_settings.num_levels - 1)) {
+      // in the coarsest level messages are initialized to zero
+      u[i] = bp_single_thread_imp::BpVector<float>(width, height, alg_settings.num_disp_vals);
+      d[i] = bp_single_thread_imp::BpVector<float>(width, height, alg_settings.num_disp_vals);
+      l[i] = bp_single_thread_imp::BpVector<float>(width, height, alg_settings.num_disp_vals);
+      r[i] = bp_single_thread_imp::BpVector<float>(width, height, alg_settings.num_disp_vals);
+    } else {
+      // initialize messages from values of previous level
+      u[i] = bp_single_thread_imp::BpVector<float>(width, height, alg_settings.num_disp_vals);
+      d[i] = bp_single_thread_imp::BpVector<float>(width, height, alg_settings.num_disp_vals);
+      l[i] = bp_single_thread_imp::BpVector<float>(width, height, alg_settings.num_disp_vals);
+      r[i] = bp_single_thread_imp::BpVector<float>(width, height, alg_settings.num_disp_vals);
+
+      for (unsigned int y = 0; y < height; y++) {
+        for (unsigned int x = 0; x < width; x++) {
+          for (unsigned int value = 0; value < alg_settings.num_disp_vals; value++) {
+            u[i](x, y, value) =
+              u[i+1](x/2, y/2, value);
+            d[i](x, y, value) =
+              d[i+1](x/2, y/2, value);
+            l[i](x, y, value) =
+              l[i+1](x/2, y/2, value);
+            r[i](x, y, value) =
+              r[i+1](x/2, y/2, value);
+          }
+        }
+      }
+    }
+
+    // BP
+    bp_cb(u[i], d[i], l[i], r[i], data[i], alg_settings.num_iterations, alg_settings.disc_k_bp);
+  }
+
+  bp_single_thread_imp::image<uchar> *out = output(u[0], d[0], l[0], r[0], data[0]);
+
+  auto timeEnd = std::chrono::system_clock::now();
+  runtime = timeEnd-timeStart;
+  
+  RunData run_data;
+  run_data.AddDataWHeader(std::string(run_eval::kSingleThreadRuntimeHeader), runtime.count());
+
+  return {out, run_data};
+}
+
+template<typename T, run_environment::AccSetting ACCELERATION>
+inline std::optional<beliefprop::BpRunOutput> RunBpOnStereoSetSingleThreadCPU<T, 0, ACCELERATION>::operator()(const std::array<std::string, 2>& ref_test_image_path,
+    const beliefprop::BpSettings& alg_settings, const ParallelParams& parallel_params) const
+{
+  std::cout << "SINGLE THREAD BELIEF PROP WITH DISPARITY NOT KNOWN AT COMPILE TIME" << std::endl;
   //return no value if acceleration setting is not NONE
   if constexpr (ACCELERATION != run_environment::AccSetting::kNone) {
     return {};
