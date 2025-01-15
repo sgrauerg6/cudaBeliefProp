@@ -95,6 +95,12 @@ class imageWDisp {
   int w, h, disp_vals;
 };
 
+//uncomment for indexing where x-value is last when getting index (as opposed
+//to disparity value); indexing this way (along with splitting up messages/data
+//costs into separate vectors by "checkerboard") needed for SIMD processing but
+//seems to be slower when not using SIMD
+//#define INDEXING_W_X_VAL_LAST
+
 template <class T>
 class BpVector {
 public:
@@ -107,17 +113,33 @@ public:
   {
     //bp_vals_ = std::vector<T>(width_*height_*num_disp_vals_);
     bp_vals_ = std::make_unique<T[]>(width_*height_*num_disp_vals_);
-    vals_each_disparity_ = std::make_shared<T[]>(num_disp_vals_);
   }
 
   inline T& operator()(unsigned int x, unsigned int y, unsigned int disparity) noexcept
   {
+#if defined(INDEXING_W_X_VAL_LAST)
     return bp_vals_[(y * (width_ * num_disp_vals_)) + (width_ * disparity) + x];
+#else
+    return bp_vals_[(y * width_ * num_disp_vals_) + (x * num_disp_vals_) + disparity];
+#endif //INDEXING_W_X_VAL_LAST
   }
 
   inline const T& operator()(unsigned int x, unsigned int y, unsigned int disparity) const noexcept
   {
+#if defined(INDEXING_W_X_VAL_LAST)
     return bp_vals_[(y * (width_ * num_disp_vals_)) + (width_ * disparity) + x];
+#else
+    return bp_vals_[(y * width_ * num_disp_vals_) + (x * num_disp_vals_) + disparity];
+#endif //INDEXING_W_X_VAL_LAST
+  }
+
+  inline T* DispValsPtr(unsigned int x, unsigned int y) const noexcept
+  {
+#if defined(INDEXING_W_X_VAL_LAST)
+    return &(bp_vals_[(y * (width_ * num_disp_vals_)) + (width_ * 0) + x]);
+#else
+    return &(bp_vals_[(y * width_ * num_disp_vals_) + (x * num_disp_vals_)]);
+#endif //INDEXING_W_X_VAL_LAST
   }
 
   /**
@@ -127,16 +149,16 @@ public:
    * @param y 
    * @return std::vector<T> 
    */
-  /*std::vector<T>*/std::shared_ptr<T[]> ValsEachDisparity(unsigned int x, unsigned int y) const {
-    /*std::vector<T>*/ 
+  std::vector<T> ValsEachDisparity(unsigned int x, unsigned int y) const {
+    std::vector<T> vals_each_disp(num_disp_vals_);
     //auto vals_each_disp = std::make_unique<T[]>(num_disp_vals_);
     //go through each disparity and add values corresponding to each disparity
     //to vector
     for (unsigned int disp = 0; disp < num_disp_vals_; disp++) {
       //vals_each_disp.push_back(this->operator()(x, y, disp));
-      vals_each_disparity_[disp] = (this->operator()(x, y, disp));
+      vals_each_disp[disp] = (this->operator()(x, y, disp));
     }
-    return vals_each_disparity_;
+    return vals_each_disp;
   }
   
   /* get the width of an image in the stereo set */
@@ -147,11 +169,20 @@ public:
 
   /* get the number of possible disparity values of the stereo set */
   unsigned int NumDisparityVals() const { return num_disp_vals_; }
+
+  /* get the index offset between values corresponding between different
+     disparity values for the same pixel */
+  unsigned int IndexBtwDispVals() const {
+#if defined(INDEXING_W_X_VAL_LAST)
+    return width_;
+#else
+    return 1;
+#endif //INDEXING_W_X_VAL_LAST
+  }
   
  private:
   //std::vector<T> bp_vals_;
   std::unique_ptr<T[]> bp_vals_;
-  std::shared_ptr<T[]> vals_each_disparity_;
   unsigned int width_, height_, num_disp_vals_;
 };
 
