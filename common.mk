@@ -5,7 +5,8 @@ USE_ONLY_SMALLER_DATA_SETTING :=
 #-DSMALLER_SETS_ONLY
 
 # set to only run fastest and not use alternate optimized implementations in evaluation
-ALT_OPTIMIZED_IMP_SETTING = -DNO_ALT_OPTIMIZED_IMPS
+ALT_OPTIMIZED_IMP_SETTING =
+#-DNO_ALT_OPTIMIZED_IMPS
 
 # set to use only default parallel parameters or limited set of alternative
 # parallel parameters for optimization
