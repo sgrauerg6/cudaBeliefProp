@@ -34,6 +34,9 @@ of this work.  The additional optimizations as well as the parallel CPU
 implementation are described in
 https://sgrauerg6.github.io/OptimizingGlobalStereoMatchingOnNVIDIAGPUsAndCPUs.pdf.
 
+Updated paper with discussion of selected optimizations and results at
+https://sgrauerg6.github.io/OptimizedBpGpuVsCpu_Jan2025.pdf.
+
 The original code is available at
 https://sgrauerg6.github.io/beliefPropCodePost.zip.
 
