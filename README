@@ -268,11 +268,10 @@ Optimized CPU implementation specifically
 -OpenMP and SIMD instructions (NEON, AVX-256, and AVX-512
 supported) used to maximize parallel processing on the CPU
 
-Optimizations above described in the following writeups
+Optimizations described in the following writeups
 https://sgrauerg6.github.io/OptimizingGlobalStereoMatching.pdf
 https://sgrauerg6.github.io/OptimizedBpGpuVsCpu_Jan2025.pdf
 
 Previously looked at an optimization of using shared and/or register memory in place
-of local memory during processing; that work is discussed in the following paper:
+of local memory during processing and that work is discussed in the following paper:
 https://sgrauerg6.github.io/LCPC_2010_optBeliefProp.pdf
-(will note that this specific optimization is not in the current implementation)
