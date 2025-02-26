@@ -252,25 +252,27 @@ Amazon Graviton3E (64 ARM cores): 0.86x
 AMD Rome (48 Cores): 0.78x
 Amazon Graviton2 (64 ARM cores): 0.63x
 
-Optimizations used or available to select:
+Optimizations used or available as option
 -Indexing into data cost/message arrays designed to maximize memory coalescence
 -Optimizing CUDA Thread Block dimensions / CPU thread count
 -Templated disparity count (requires disparity known at compile time)
 -Processing using half-precision floating point
 
-CUDA Implementation specifically:
--All CUDA device memory needed for run is allocated as single
-block at start with arrays for data costs/messages at each level generated using
-offsets into the allocated block of device memory
+CUDA Implementation specifically
+-Device memory is allocated as single block with arrays for
+data costs/messages at each level generated using offsets into the 
+allocated block of device memory to minimize the number of cudaMalloc()
+and cudaFree() calls
 
-Optimized CPU implementation specifically:
+Optimized CPU implementation specifically
 -OpenMP and SIMD instructions (NEON, AVX-256, and AVX-512
 supported) used to maximize parallel processing on the CPU
 
-Optimizations above described in the following writeups:
+Optimizations above described in the following writeups
 https://sgrauerg6.github.io/OptimizingGlobalStereoMatching.pdf
 https://sgrauerg6.github.io/OptimizedBpGpuVsCpu_Jan2025.pdf
 
 Previously looked at an optimization of using shared and/or register memory in place
 of local memory during processing; that work is discussed in the following paper:
 https://sgrauerg6.github.io/LCPC_2010_optBeliefProp.pdf
+(will note that this specific optimization is not in the current implementation)
