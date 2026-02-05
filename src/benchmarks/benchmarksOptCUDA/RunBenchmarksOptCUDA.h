@@ -27,4 +27,8 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #ifndef RUN_BENCHMARKS_OPT_CUDA_H
 #define RUN_BENCHMARKS_OPT_CUDA_H
 
+class RunBenchmarksOptCUDA {
+
+};
+
 #endif //RUN_BENCHMARKS_OPT_CUDA_H

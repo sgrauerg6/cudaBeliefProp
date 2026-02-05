@@ -27,4 +27,8 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #ifndef RUN_BENCHMARKS_SING_THREAD_CPU_H_
 #define RUN_BENCHMARKS_SING_THREAD_CPU_H_
 
+class RunBenchmarksSingThreadCPU {
+
+};
+
 #endif //RUN_BENCHMARKS_SING_THREAD_CPU_H_

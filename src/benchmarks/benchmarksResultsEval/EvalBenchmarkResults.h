@@ -27,4 +27,8 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #ifndef EVAL_BENCHMARK_RESULTS_H
 #define EVAL_BENCHMARK_RESULTS_H
 
+class EvalBenchmarkResults {
+
+};
+
 #endif //EVAL_BENCHMARK_RESULTS_H
