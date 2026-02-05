@@ -123,10 +123,10 @@ namespace beliefprop_cpu
     const T* message_l_prev_checkerboard_0, const T* message_r_prev_checkerboard_0,
     const T* message_u_prev_checkerboard_1, const T* message_d_prev_checkerboard_1,
     const T* message_l_prev_checkerboard_1, const T* message_r_prev_checkerboard_1,
-    const T* message_u_checkerboard_0, const T* message_d_checkerboard_0,
-    const T* message_l_checkerboard_0, const T* message_r_checkerboard_0,
-    const T* message_u_checkerboard_1, const T* message_d_checkerboard_1,
-    const T* message_l_checkerboard_1, const T* message_r_checkerboard_1,
+    T* message_u_checkerboard_0, T* message_d_checkerboard_0,
+    T* message_l_checkerboard_0, T* message_r_checkerboard_0,
+    T* message_u_checkerboard_1, T* message_d_checkerboard_1,
+    T* message_l_checkerboard_1, T* message_r_checkerboard_1,
     unsigned int bp_settings_disp_vals,
     const ParallelParams& opt_cpu_params);
 
