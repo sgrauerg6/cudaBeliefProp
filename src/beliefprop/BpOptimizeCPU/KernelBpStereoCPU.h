@@ -588,11 +588,7 @@ void beliefprop_cpu::InitializeBottomLevelData(
 #else
   #pragma omp parallel for
 #endif
-#ifdef _WIN32
-  for (int val = 0; val < (current_bp_level.width_level_*current_bp_level.height_level_); val++)
-#else
   for (unsigned int val = 0; val < (current_bp_level.width_level_*current_bp_level.height_level_); val++)
-#endif //_WIN32
   {
     const unsigned int y_val = val / current_bp_level.width_level_;
     const unsigned int x_val = val % current_bp_level.width_level_;
@@ -624,11 +620,7 @@ void beliefprop_cpu::InitializeCurrentLevelData(
 #else
   #pragma omp parallel for
 #endif
-#ifdef _WIN32
-  for (int val = 0; val < (current_bp_level.width_checkerboard_level_*current_bp_level.height_level_); val++)
-#else
   for (unsigned int val = 0; val < (current_bp_level.width_checkerboard_level_*current_bp_level.height_level_); val++)
-#endif //_WIN32
   {
     const unsigned int y_val = val / current_bp_level.width_checkerboard_level_;
     const unsigned int x_val = val % current_bp_level.width_checkerboard_level_;
@@ -679,11 +671,7 @@ void beliefprop_cpu::InitializeMessageValsToDefaultKernel(
 #else
   #pragma omp parallel for
 #endif
-#ifdef _WIN32
-  for (int val = 0; val < (current_bp_level.width_checkerboard_level_*current_bp_level.height_level_); val++)
-#else
   for (unsigned int val = 0; val < (current_bp_level.width_checkerboard_level_*current_bp_level.height_level_); val++)
-#endif //_WIN32
   {
     const unsigned int y_val = val / current_bp_level.width_checkerboard_level_;
     const unsigned int x_val_in_checkerboard = val % current_bp_level.width_checkerboard_level_;
@@ -727,11 +715,7 @@ void beliefprop_cpu::RunBPIterationUsingCheckerboardUpdatesNoPackedInstructions(
 #else
   #pragma omp parallel for
 #endif
-#ifdef _WIN32
-  for (int val = 0; val < (width_checkerboard_run_processing * current_bp_level.height_level_); val++)
-#else
   for (unsigned int val = 0; val < (width_checkerboard_run_processing * current_bp_level.height_level_); val++)
-#endif //_WIN32
   {
     const unsigned int y_val = val / width_checkerboard_run_processing;
     const unsigned int x_val = val % width_checkerboard_run_processing;
@@ -850,11 +834,7 @@ void beliefprop_cpu::RunBPIterationUsingCheckerboardUpdatesUseSIMDVectorsProcess
 #else
     #pragma omp parallel for
 #endif
-#ifdef _WIN32
-    for (int y_val = 1; y_val < current_bp_level.height_level_ - 1; y_val++) {
-#else
     for (unsigned int y_val = 1; y_val < current_bp_level.height_level_ - 1; y_val++) {
-#endif //_WIN32
       //checkerboard_adjustment used for indexing into current checkerboard to update
       const unsigned int checkerboard_adjustment =
         (checkerboard_to_update == beliefprop::CheckerboardPart::kCheckerboardPart0) ?
@@ -1007,11 +987,7 @@ void beliefprop_cpu::RunBPIterationUsingCheckerboardUpdatesUseSIMDVectorsProcess
 #else
     #pragma omp parallel for
 #endif
-#ifdef _WIN32
-    for (int y_val = 1; y_val < current_bp_level.height_level_ - 1; y_val++) {
-#else
     for (unsigned int y_val = 1; y_val < current_bp_level.height_level_ - 1; y_val++) {
-#endif //_WIN32
       //checkerboard_adjustment used for indexing into current checkerboard to update
       const unsigned int checkerboard_adjustment =
         (checkerboard_to_update == beliefprop::CheckerboardPart::kCheckerboardPart0) ?
@@ -1322,11 +1298,7 @@ void beliefprop_cpu::CopyMsgDataToNextLevel(
 #else
   #pragma omp parallel for
 #endif
-#ifdef _WIN32
-  for (int val = 0; val < (current_bp_level.width_checkerboard_level_*current_bp_level.height_level_); val++)
-#else
   for (unsigned int val = 0; val < (current_bp_level.width_checkerboard_level_*current_bp_level.height_level_); val++)
-#endif //_WIN32
   {
     const unsigned int y_val = val / current_bp_level.width_checkerboard_level_;
     const unsigned int x_val = val % current_bp_level.width_checkerboard_level_;
@@ -1369,11 +1341,7 @@ void beliefprop_cpu::RetrieveOutputDisparity(
 #else
     #pragma omp parallel for
 #endif
-#ifdef _WIN32
-    for (int val = 0; val < (current_bp_level.width_checkerboard_level_*current_bp_level.height_level_); val++)
-#else
     for (unsigned int val = 0; val < (current_bp_level.width_checkerboard_level_*current_bp_level.height_level_); val++)
-#endif //_WIN32
     {
       const unsigned int y_val = val / current_bp_level.width_checkerboard_level_;
       const unsigned int x_val = val % current_bp_level.width_checkerboard_level_;
@@ -1494,11 +1462,7 @@ void beliefprop_cpu::RetrieveOutputDisparityUseSIMDVectors(
 #else
     #pragma omp parallel for
 #endif
-#ifdef _WIN32
-    for (int y_val = 1; y_val < current_bp_level.height_level_ - 1; y_val++) {
-#else
     for (unsigned int y_val = 1; y_val < current_bp_level.height_level_ - 1; y_val++) {
-#endif //_WIN32
       //checkerboard_adjustment used for indexing into current checkerboard to retrieve best disparities
       const unsigned int checkerboard_adjustment = 
         (checkerboardGetDispMap == beliefprop::CheckerboardPart::kCheckerboardPart0) ?
@@ -1788,11 +1752,7 @@ void beliefprop_cpu::RetrieveOutputDisparityUseSIMDVectors(
 #else
   #pragma omp parallel for
 #endif
-#ifdef _WIN32
-  for (int y=0; y < current_bp_level.height_level_; y++)
-#else
   for (unsigned int y=0; y < current_bp_level.height_level_; y++)
-#endif //_WIN32
   {
     const bool start_checkerboard_0 = ((y%2) == 0);
     unsigned int checkerboard_index = y * width_disp_checkerboard;

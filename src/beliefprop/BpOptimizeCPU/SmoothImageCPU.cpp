@@ -74,11 +74,7 @@ void SmoothImageCPU::ConvertUnsignedIntImageToFloatCPU(
 #else
   #pragma omp parallel for
 #endif
-#ifdef _WIN32
-  for (int val = 0; val < width_images * height_images; val++) {
-#else
   for (unsigned int val = 0; val < width_images * height_images; val++) {
-#endif //_WIN32
     const unsigned int y_val = val / width_images;
     const unsigned int x_val = val % width_images;
     float_image_pixels[y_val * width_images + x_val] = 1.0f * uint_image_pixels[y_val * width_images + x_val];
@@ -102,11 +98,7 @@ void SmoothImageCPU::FilterImageAcrossCPU(
 #else
   #pragma omp parallel for
 #endif
-#ifdef _WIN32
-  for (int val = 0; val < width_images * height_images; val++) {
-#else
   for (unsigned int val = 0; val < width_images * height_images; val++) {
-#endif //_WIN32
     const unsigned int y_val = val / width_images;
     const unsigned int x_val = val % width_images;
     beliefprop::FilterImageAcrossProcessPixel<U>(
@@ -130,11 +122,7 @@ void SmoothImageCPU::FilterImageVerticalCPU(
 #else
   #pragma omp parallel for
 #endif
-#ifdef _WIN32
-  for (int val = 0; val < width_images * height_images; val++) {
-#else
   for (unsigned int val = 0; val < width_images * height_images; val++) {
-#endif //_WIN32
     const unsigned int y_val = val / width_images;
     const unsigned int x_val = val % width_images;
     beliefprop::FilterImageVerticalProcessPixel<U>(
