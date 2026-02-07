@@ -579,6 +579,7 @@ void beliefprop_cpu::InitializeBottomLevelData(
   float lambda_bp, float data_k_bp, unsigned int bp_settings_disp_vals,
   const ParallelParams& opt_cpu_params)
 {
+//#ifndef __APPLE__
 #if defined(SET_THREAD_COUNT_INDIVIDUAL_KERNELS_CPU)
   int num_threads_kernel{
     (int)opt_cpu_params.OptParamsForKernel(
@@ -601,6 +602,8 @@ void beliefprop_cpu::InitializeBottomLevelData(
         data_cost_stereo_checkerboard_0, data_cost_stereo_checkerboard_1,
         lambda_bp, data_k_bp, bp_settings_disp_vals);
   }
+/*#else
+#endif //__APPLE__*/
 }
 
 //initialize the data costs at the "next" level up in the pyramid given that the data at the lower has been set
@@ -613,6 +616,7 @@ void beliefprop_cpu::InitializeCurrentLevelData(
   T* data_cost_current_level, unsigned int offset_num, unsigned int bp_settings_disp_vals,
   const ParallelParams& opt_cpu_params)
 {
+//#ifndef __APPLE__
 #if defined(SET_THREAD_COUNT_INDIVIDUAL_KERNELS_CPU)
   int num_threads_kernel{(int)opt_cpu_params.OptParamsForKernel(
     {static_cast<unsigned int>(beliefprop::BpKernel::kDataCostsAtLevel), current_bp_level.level_num_})[0]};
@@ -651,6 +655,8 @@ void beliefprop_cpu::InitializeCurrentLevelData(
         data_cost_current_level, offset_num, bp_settings_disp_vals);
     }
   }
+/*#else
+#endif //__APPLE__*/
 }
 
 //initialize the message values at each pixel of the current level to the default value
@@ -664,6 +670,7 @@ void beliefprop_cpu::InitializeMessageValsToDefaultKernel(
   unsigned int bp_settings_disp_vals,
   const ParallelParams& opt_cpu_params)
 {
+//#ifndef __APPLE__
 #if defined(SET_THREAD_COUNT_INDIVIDUAL_KERNELS_CPU)
   int num_threads_kernel{
     (int)opt_cpu_params.OptParamsForKernel(
@@ -689,6 +696,8 @@ void beliefprop_cpu::InitializeMessageValsToDefaultKernel(
       message_l_checkerboard_1, message_r_checkerboard_1,
       bp_settings_disp_vals);
   }
+/*#else
+#endif //__APPLE__*/
 }
 
 template<RunData_t T, unsigned int DISP_VALS, run_environment::AccSetting ACCELERATION>
@@ -703,6 +712,7 @@ void beliefprop_cpu::RunBPIterationUsingCheckerboardUpdatesNoPackedInstructions(
   float disc_k_bp, unsigned int bp_settings_disp_vals,
   const ParallelParams& opt_cpu_params)
 {
+//#ifndef __APPLE__
   const unsigned int width_checkerboard_run_processing = current_bp_level.width_level_ / 2;
 
   //in cuda kernel storing data one at a time (though it is coalesced), so simd_data_size not relevant here and set to 1
@@ -755,6 +765,8 @@ void beliefprop_cpu::RunBPIterationUsingCheckerboardUpdatesNoPackedInstructions(
         disc_k_bp, 0, data_aligned, bp_settings_disp_vals);
     }
   }
+/*#else
+#endif //__APPLE__*/
 }
 
 template<RunData_t T, RunDataVect_t U, unsigned int DISP_VALS>
@@ -829,6 +841,7 @@ void beliefprop_cpu::RunBPIterationUsingCheckerboardUpdatesUseSIMDVectorsProcess
   const unsigned int width_checkerboard_run_processing = current_bp_level.width_level_ / 2;
   const U disc_k_bp_vect = simd_processing::createSIMDVectorSameData<U>(disc_k_bp);
 
+//#ifndef __APPLE__
   if constexpr (DISP_VALS > 0) {
 #if defined(SET_THREAD_COUNT_INDIVIDUAL_KERNELS_CPU)
     int num_threads_kernel{(int)opt_cpu_params.OptParamsForKernel(
@@ -1164,6 +1177,8 @@ void beliefprop_cpu::RunBPIterationUsingCheckerboardUpdatesUseSIMDVectorsProcess
       }
     }
   }
+/*#else
+#endif //__APPLE__*/
 }
 
 //kernel function to run the current iteration of belief propagation in parallel using
@@ -1299,6 +1314,7 @@ void beliefprop_cpu::CopyMsgDataToNextLevel(
   unsigned int bp_settings_disp_vals,
   const ParallelParams& opt_cpu_params)
 {
+//#ifndef __APPLE__
 #if defined(SET_THREAD_COUNT_INDIVIDUAL_KERNELS_CPU)
   int num_threads_kernel{(int)opt_cpu_params.OptParamsForKernel(
     {static_cast<unsigned int>(beliefprop::BpKernel::kCopyAtLevel), current_bp_level.level_num_})[0]};
@@ -1328,6 +1344,8 @@ void beliefprop_cpu::CopyMsgDataToNextLevel(
       message_l_checkerboard_1, message_r_checkerboard_1,
       bp_settings_disp_vals);
   }
+/*#else
+#endif //__APPLE__*/
 }
 
 template<RunData_t T, unsigned int DISP_VALS, run_environment::AccSetting ACCELERATION>
@@ -1341,6 +1359,7 @@ void beliefprop_cpu::RetrieveOutputDisparity(
   float* disparity_between_images_device, unsigned int bp_settings_disp_vals,
   const ParallelParams& opt_cpu_params)
 {
+//#ifndef __APPLE__
   if constexpr (ACCELERATION == run_environment::AccSetting::kNone) {
 #if defined(SET_THREAD_COUNT_INDIVIDUAL_KERNELS_CPU)
     int num_threads_kernel{
@@ -1427,6 +1446,8 @@ void beliefprop_cpu::RetrieveOutputDisparity(
     }
 #endif //COMPILING_FOR_ARM
   }
+/*#else
+#endif //__APPLE__*/
 }
 
 //retrieve the best disparity estimate from image 1 to image 2 for each pixel in parallel using SIMD vectors
