@@ -75,7 +75,9 @@ inline std::optional<beliefprop::BpRunOutput> RunBpOnStereoSetOptimizedCPU<T, DI
   //current setting on CPU is to execute all parallel processing in a run using the same number of parallel threads
   const unsigned int nthreads = 
     parallel_params.OptParamsForKernel({static_cast<unsigned int>(beliefprop::BpKernel::kBlurImages), 0})[0];
-  omp_set_num_threads(nthreads);
+  #ifndef __APPLE__
+    omp_set_num_threads(nthreads);
+  #endif //__APPLE__
 
   //add settings for current run to output data
   RunData run_data;

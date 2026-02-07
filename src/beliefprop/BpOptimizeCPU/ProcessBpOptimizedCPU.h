@@ -28,7 +28,11 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #ifndef PROCESS_BP_OPTIMIZED_CPU_H_
 #define PROCESS_BP_OPTIMIZED_CPU_H_
 
-#include <malloc.h>
+//malloc.h include causes error when compiled on Apple
+//and thinking that it isn't necessary and can be removed
+//add back if running on Linux and receive error from it
+//not being included
+//#include <malloc.h>
 #include <vector>
 #include <algorithm>
 #include <chrono>

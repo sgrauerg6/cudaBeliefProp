@@ -28,8 +28,11 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #ifndef KERNEL_BP_STEREO_CPU_H
 #define KERNEL_BP_STEREO_CPU_H
 
-#include <math.h>
+#ifndef __APPLE__
 #include <omp.h>
+#endif //__APPLE__
+
+#include <math.h>
 #include <algorithm>
 #include <iostream>
 //TODO: switch use of printf with std::format when it is supported on compiler used for development

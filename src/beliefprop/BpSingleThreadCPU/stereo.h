@@ -33,6 +33,10 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #ifndef STEREO_H_
 #define STEREO_H_
 
+#ifndef __APPLE__
+#include <omp.h>
+#endif //__APPLE__
+
 #include <cstdio>
 #include <iostream>
 #include <algorithm>
@@ -43,7 +47,6 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #include <array>
 #include <utility>
 #include <span>
-#include <omp.h>
 #include "image.h"
 #include "misc.h"
 #include "pnmfile.h"
