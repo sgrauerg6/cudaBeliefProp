@@ -537,7 +537,7 @@ namespace beliefprop_cpu
   template<RunDataVectProcess_t T>
   void UpdateBestDispBestVals(
     T& best_disparities, T& best_vals,
-    const T& current_disparity, const T& val_at_disp) {
+    const T& current_disparity, const T& vals_at_disp) {
     std::cout << "Data type not supported for updating best disparities and values" << std::endl;
   }
 
@@ -1533,18 +1533,20 @@ void beliefprop_cpu::RetrieveOutputDisparityUseSIMDVectors(
 
   //initially get output for each checkerboard
   //set width of disparity checkerboard to be a multiple of simd_data_size so that SIMD vectors can be aligned
-  unsigned int width_disp_checkerboard =
+  //disparities for checkerboard pixels are organized such that the disparities for the first checkerboard
+  //are in the first half of the array and are followed by the disparities for the second checkerboard
+  const unsigned int width_disp_checkerboard =
     ((current_bp_level.padded_width_checkerboard_level_ % (current_bp_level.bytes_align_memory_ / sizeof(T)) == 0) ?
       current_bp_level.padded_width_checkerboard_level_  :
       (current_bp_level.padded_width_checkerboard_level_ + ((current_bp_level.bytes_align_memory_ / sizeof(T)) - 
         (current_bp_level.padded_width_checkerboard_level_ % (current_bp_level.bytes_align_memory_ / sizeof(T))))));
   const unsigned int num_data_disp_checkerboard = width_disp_checkerboard * current_bp_level.height_level_;
 #ifdef _WIN32
-  V* disparity_checkerboard = 
+  V* disparity_checkerboards = 
     static_cast<V*>(
       _aligned_malloc(2 * num_data_disp_checkerboard * sizeof(V), current_bp_level.bytes_align_memory_));
 #else
-  V* disparity_checkerboard =
+  V* disparity_checkerboards =
     static_cast<V*>(std::aligned_alloc(
       current_bp_level.bytes_align_memory_, 2 * num_data_disp_checkerboard * sizeof(V)));
 #endif
@@ -1612,44 +1614,50 @@ void beliefprop_cpu::RetrieveOutputDisparityUseSIMDVectors(
             current_bp_level.bytes_align_memory_,
             current_bp_level.padded_width_checkerboard_level_);
 
-        //declare SIMD vectors for current best values and best disparities
-        W best_vals, best_disparities, val_at_disp;
+        //declare SIMD vectors for current best values, corresponding best disparities,
+        //and values at current disparity
+        //values at disparity is sum of data and message values
+        W best_vals, best_disparities, vals_at_disp;
 
-        //load using aligned instructions when possible
         if constexpr (DISP_VALS > 0) {
           for (unsigned int current_disparity = 0; current_disparity < DISP_VALS; current_disparity++) {
             if (checkerboard_get_disp_map == beliefprop::CheckerboardPart::kCheckerboardPart0) {
               if (data_aligned_x_val) {
+                //use aligned load where possible
                 //retrieve and get sum of message and data values
-                val_at_disp = simd_processing::AddVals<U, U, W>(
+                //need to add values in specified order to match results
+                //from single-thread CPU output
+                vals_at_disp = simd_processing::AddVals<U, U, W>(
                   simd_processing::LoadPackedDataAligned<T, U>(x_val_process, y_val + 1,
                     current_disparity, current_bp_level, DISP_VALS, message_u_checkerboard_1),
                   simd_processing::LoadPackedDataAligned<T, U>(x_val_process, y_val - 1,
                     current_disparity, current_bp_level, DISP_VALS, message_d_checkerboard_1));
-                val_at_disp = simd_processing::AddVals<W, U, W>(val_at_disp, 
+                //l and r message values are loaded at possible offsets so not using
+                //aligned load for them
+                vals_at_disp = simd_processing::AddVals<W, U, W>(vals_at_disp, 
                   simd_processing::LoadPackedDataUnaligned<T, U>(x_val_process + checkerboard_adjustment, y_val,
                     current_disparity, current_bp_level, DISP_VALS, message_l_checkerboard_1));
-                val_at_disp = simd_processing::AddVals<W, U, W>(val_at_disp, 
+                vals_at_disp = simd_processing::AddVals<W, U, W>(vals_at_disp, 
                   simd_processing::LoadPackedDataUnaligned<T, U>((x_val_process + checkerboard_adjustment) - 1, y_val,
                     current_disparity, current_bp_level, DISP_VALS, message_r_checkerboard_1));
-                val_at_disp = simd_processing::AddVals<W, U, W>(val_at_disp, 
+                vals_at_disp = simd_processing::AddVals<W, U, W>(vals_at_disp, 
                   simd_processing::LoadPackedDataAligned<T, U>(x_val_process, y_val,
                     current_disparity, current_bp_level, DISP_VALS, data_cost_checkerboard_0));
               }
               else {
                 //retrieve and get sum of message and data values
-                val_at_disp = simd_processing::AddVals<U, U, W>(
+                vals_at_disp = simd_processing::AddVals<U, U, W>(
                   simd_processing::LoadPackedDataUnaligned<T, U>(x_val_process, y_val + 1,
                     current_disparity, current_bp_level, DISP_VALS, message_u_checkerboard_1),
                   simd_processing::LoadPackedDataUnaligned<T, U>(x_val_process, y_val - 1,
                     current_disparity, current_bp_level, DISP_VALS, message_d_checkerboard_1));
-                val_at_disp = simd_processing::AddVals<W, U, W>(val_at_disp, 
+                vals_at_disp = simd_processing::AddVals<W, U, W>(vals_at_disp, 
                   simd_processing::LoadPackedDataUnaligned<T, U>(x_val_process + checkerboard_adjustment, y_val,
                     current_disparity, current_bp_level, DISP_VALS, message_l_checkerboard_1));
-                val_at_disp = simd_processing::AddVals<W, U, W>(val_at_disp, 
+                vals_at_disp = simd_processing::AddVals<W, U, W>(vals_at_disp, 
                   simd_processing::LoadPackedDataUnaligned<T, U>((x_val_process + checkerboard_adjustment) - 1, y_val,
                     current_disparity, current_bp_level, DISP_VALS, message_r_checkerboard_1));
-                val_at_disp = simd_processing::AddVals<W, U, W>(val_at_disp, 
+                vals_at_disp = simd_processing::AddVals<W, U, W>(vals_at_disp, 
                   simd_processing::LoadPackedDataUnaligned<T, U>(x_val_process, y_val,
                     current_disparity, current_bp_level, DISP_VALS, data_cost_checkerboard_0));
               }
@@ -1657,42 +1665,46 @@ void beliefprop_cpu::RetrieveOutputDisparityUseSIMDVectors(
             else //checkerboard_get_disp_map == beliefprop::CheckerboardPart::kCheckerboardPart1
             {
               if (data_aligned_x_val) {
+                //use aligned load where possible
                 //retrieve and get sum of message and data values
-                val_at_disp = simd_processing::AddVals<U, U, W>(
+                vals_at_disp = simd_processing::AddVals<U, U, W>(
                   simd_processing::LoadPackedDataAligned<T, U>(x_val_process, y_val + 1,
                     current_disparity, current_bp_level, DISP_VALS, message_u_checkerboard_0),
                   simd_processing::LoadPackedDataAligned<T, U>(x_val_process, y_val - 1,
                     current_disparity, current_bp_level, DISP_VALS, message_d_checkerboard_0));
-                val_at_disp = simd_processing::AddVals<W, U, W>(val_at_disp, 
+                //l and r message values are loaded at possible offsets to not using
+                //aligned load for them
+                vals_at_disp = simd_processing::AddVals<W, U, W>(vals_at_disp, 
                   simd_processing::LoadPackedDataUnaligned<T, U>(x_val_process + checkerboard_adjustment, y_val,
                     current_disparity, current_bp_level, DISP_VALS, message_l_checkerboard_0));
-                val_at_disp = simd_processing::AddVals<W, U, W>(val_at_disp, 
+                vals_at_disp = simd_processing::AddVals<W, U, W>(vals_at_disp, 
                   simd_processing::LoadPackedDataUnaligned<T, U>((x_val_process + checkerboard_adjustment) - 1, y_val,
                     current_disparity, current_bp_level, DISP_VALS, message_r_checkerboard_0));
-                val_at_disp = simd_processing::AddVals<W, U, W>(val_at_disp, 
+                vals_at_disp = simd_processing::AddVals<W, U, W>(vals_at_disp, 
                   simd_processing::LoadPackedDataAligned<T, U>(x_val_process, y_val,
                     current_disparity, current_bp_level, DISP_VALS, data_cost_checkerboard_1));
               }
               else {
                 //retrieve and get sum of message and data values
-                val_at_disp = simd_processing::AddVals<U, U, W>(
+                vals_at_disp = simd_processing::AddVals<U, U, W>(
                   simd_processing::LoadPackedDataUnaligned<T, U>(x_val_process, y_val + 1,
                     current_disparity, current_bp_level, DISP_VALS, message_u_checkerboard_0),
                   simd_processing::LoadPackedDataUnaligned<T, U>(x_val_process, y_val - 1,
                     current_disparity, current_bp_level, DISP_VALS, message_d_checkerboard_0));
-                val_at_disp = simd_processing::AddVals<W, U, W>(val_at_disp, 
+                vals_at_disp = simd_processing::AddVals<W, U, W>(vals_at_disp, 
                   simd_processing::LoadPackedDataUnaligned<T, U>(x_val_process + checkerboard_adjustment, y_val,
                     current_disparity, current_bp_level, DISP_VALS, message_l_checkerboard_0));
-                val_at_disp = simd_processing::AddVals<W, U, W>(val_at_disp, 
+                vals_at_disp = simd_processing::AddVals<W, U, W>(vals_at_disp, 
                   simd_processing::LoadPackedDataUnaligned<T, U>((x_val_process + checkerboard_adjustment) - 1, y_val,
                     current_disparity, current_bp_level, DISP_VALS, message_r_checkerboard_0));
-                val_at_disp = simd_processing::AddVals<W, U, W>(val_at_disp, 
+                vals_at_disp = simd_processing::AddVals<W, U, W>(vals_at_disp, 
                   simd_processing::LoadPackedDataUnaligned<T, U>(x_val_process, y_val,
                     current_disparity, current_bp_level, DISP_VALS, data_cost_checkerboard_1));
-              }
+              }   
             }
+
             if (current_disparity == 0) {
-              best_vals = val_at_disp;
+              best_vals = vals_at_disp;
               //set disp at min vals to all 0
               best_disparities = simd_processing::createSIMDVectorSameData<W>(0.0f);
             }
@@ -1701,29 +1713,29 @@ void beliefprop_cpu::RetrieveOutputDisparityUseSIMDVectors(
               //if value at current disparity is lower than current best value, need
               //to update best value to current value and set best disparity to current disparity
               UpdateBestDispBestVals(best_disparities, best_vals,
-                simd_processing::createSIMDVectorSameData<W>((float)current_disparity), val_at_disp);
+                simd_processing::createSIMDVectorSameData<W>((float)current_disparity), vals_at_disp);
             }
           }
           if (data_aligned_x_val) {
             if (checkerboard_get_disp_map == beliefprop::CheckerboardPart::kCheckerboardPart0) {
               simd_processing::StorePackedDataAligned<V, W>(
-                index_output, disparity_checkerboard, best_disparities);
+                index_output, disparity_checkerboards, best_disparities);
             }
             else //checkerboard_get_disp_map == beliefprop::CheckerboardPart::kCheckerboardPart1
             {
               simd_processing::StorePackedDataAligned<V, W>(
-                num_data_disp_checkerboard + index_output, disparity_checkerboard, best_disparities);
+                num_data_disp_checkerboard + index_output, disparity_checkerboards, best_disparities);
             }
           }
           else {
             if (checkerboard_get_disp_map == beliefprop::CheckerboardPart::kCheckerboardPart0) {
               simd_processing::StorePackedDataUnaligned<V, W>(
-                index_output, disparity_checkerboard, best_disparities);
+                index_output, disparity_checkerboards, best_disparities);
             }
             else //checkerboard_get_disp_map == beliefprop::CheckerboardPart::kCheckerboardPart1
             {
               simd_processing::StorePackedDataUnaligned<V, W>(
-                num_data_disp_checkerboard + index_output, disparity_checkerboard, best_disparities);
+                num_data_disp_checkerboard + index_output, disparity_checkerboards, best_disparities);
             }
           }
         }
@@ -1732,35 +1744,35 @@ void beliefprop_cpu::RetrieveOutputDisparityUseSIMDVectors(
             if (checkerboard_get_disp_map == beliefprop::CheckerboardPart::kCheckerboardPart0) {
               if (data_aligned_x_val) {
                 //retrieve and get sum of message and data values
-                val_at_disp = simd_processing::AddVals<U, U, W>(
+                vals_at_disp = simd_processing::AddVals<U, U, W>(
                   simd_processing::LoadPackedDataAligned<T, U>(x_val_process, y_val + 1,
                     current_disparity, current_bp_level, bp_settings_disp_vals, message_u_checkerboard_1),
                   simd_processing::LoadPackedDataAligned<T, U>(x_val_process, y_val - 1,
                     current_disparity, current_bp_level, bp_settings_disp_vals, message_d_checkerboard_1));
-                val_at_disp = simd_processing::AddVals<W, U, W>(val_at_disp, 
+                vals_at_disp = simd_processing::AddVals<W, U, W>(vals_at_disp, 
                   simd_processing::LoadPackedDataUnaligned<T, U>(x_val_process + checkerboard_adjustment, y_val,
                     current_disparity, current_bp_level, bp_settings_disp_vals, message_l_checkerboard_1));
-                val_at_disp = simd_processing::AddVals<W, U, W>(val_at_disp, 
+                vals_at_disp = simd_processing::AddVals<W, U, W>(vals_at_disp, 
                   simd_processing::LoadPackedDataUnaligned<T, U>((x_val_process + checkerboard_adjustment) - 1, y_val,
                     current_disparity, current_bp_level, bp_settings_disp_vals, message_r_checkerboard_1));
-                val_at_disp = simd_processing::AddVals<W, U, W>(val_at_disp,
+                vals_at_disp = simd_processing::AddVals<W, U, W>(vals_at_disp,
                   simd_processing::LoadPackedDataAligned<T, U>(x_val_process, y_val,
                     current_disparity, current_bp_level, bp_settings_disp_vals, data_cost_checkerboard_0));
               }
               else {
                 //retrieve and get sum of message and data values
-                val_at_disp = simd_processing::AddVals<U, U, W>(
+                vals_at_disp = simd_processing::AddVals<U, U, W>(
                   simd_processing::LoadPackedDataUnaligned<T, U>(x_val_process, y_val + 1,
                     current_disparity, current_bp_level, bp_settings_disp_vals, message_u_checkerboard_1),
                   simd_processing::LoadPackedDataUnaligned<T, U>(x_val_process, y_val - 1,
                     current_disparity, current_bp_level, bp_settings_disp_vals, message_d_checkerboard_1));
-                val_at_disp = simd_processing::AddVals<W, U, W>(val_at_disp, 
+                vals_at_disp = simd_processing::AddVals<W, U, W>(vals_at_disp, 
                   simd_processing::LoadPackedDataUnaligned<T, U>(x_val_process + checkerboard_adjustment, y_val,
                     current_disparity, current_bp_level, bp_settings_disp_vals, message_l_checkerboard_1));
-                val_at_disp = simd_processing::AddVals<W, U, W>(val_at_disp, 
+                vals_at_disp = simd_processing::AddVals<W, U, W>(vals_at_disp, 
                   simd_processing::LoadPackedDataUnaligned<T, U>((x_val_process + checkerboard_adjustment) - 1, y_val,
                     current_disparity, current_bp_level, bp_settings_disp_vals, message_r_checkerboard_1));
-                val_at_disp = simd_processing::AddVals<W, U, W>(val_at_disp, 
+                vals_at_disp = simd_processing::AddVals<W, U, W>(vals_at_disp, 
                   simd_processing::LoadPackedDataUnaligned<T, U>(x_val_process, y_val,
                     current_disparity, current_bp_level, bp_settings_disp_vals, data_cost_checkerboard_0));
               }
@@ -1769,41 +1781,41 @@ void beliefprop_cpu::RetrieveOutputDisparityUseSIMDVectors(
             {
               if (data_aligned_x_val) {
                 //retrieve and get sum of message and data values
-                val_at_disp = simd_processing::AddVals<U, U, W>( 
+                vals_at_disp = simd_processing::AddVals<U, U, W>( 
                   simd_processing::LoadPackedDataAligned<T, U>(x_val_process, y_val + 1,
                     current_disparity, current_bp_level, bp_settings_disp_vals, message_u_checkerboard_0),
                   simd_processing::LoadPackedDataAligned<T, U>(x_val_process, y_val - 1,
                     current_disparity, current_bp_level, bp_settings_disp_vals, message_d_checkerboard_0));
-                val_at_disp = simd_processing::AddVals<W, U, W>(val_at_disp, 
+                vals_at_disp = simd_processing::AddVals<W, U, W>(vals_at_disp, 
                   simd_processing::LoadPackedDataUnaligned<T, U>(x_val_process + checkerboard_adjustment, y_val,
                     current_disparity, current_bp_level, bp_settings_disp_vals, message_l_checkerboard_0));
-                val_at_disp = simd_processing::AddVals<W, U, W>(val_at_disp, 
+                vals_at_disp = simd_processing::AddVals<W, U, W>(vals_at_disp, 
                   simd_processing::LoadPackedDataUnaligned<T, U>((x_val_process + checkerboard_adjustment) - 1, y_val,
                     current_disparity, current_bp_level, bp_settings_disp_vals, message_r_checkerboard_0));
-                val_at_disp = simd_processing::AddVals<W, U, W>(val_at_disp, 
+                vals_at_disp = simd_processing::AddVals<W, U, W>(vals_at_disp, 
                   simd_processing::LoadPackedDataAligned<T, U>(x_val_process, y_val,
                     current_disparity, current_bp_level, bp_settings_disp_vals, data_cost_checkerboard_1));
               }
               else {
                 //retrieve and get sum of message and data values
-                val_at_disp = simd_processing::AddVals<U, U, W>( 
+                vals_at_disp = simd_processing::AddVals<U, U, W>( 
                   simd_processing::LoadPackedDataUnaligned<T, U>(x_val_process, y_val + 1,
                     current_disparity, current_bp_level, bp_settings_disp_vals, message_u_checkerboard_0),
                   simd_processing::LoadPackedDataUnaligned<T, U>(x_val_process, y_val - 1,
                     current_disparity, current_bp_level, bp_settings_disp_vals, message_d_checkerboard_0));
-                val_at_disp = simd_processing::AddVals<W, U, W>(val_at_disp, 
+                vals_at_disp = simd_processing::AddVals<W, U, W>(vals_at_disp, 
                   simd_processing::LoadPackedDataUnaligned<T, U>(x_val_process + checkerboard_adjustment, y_val,
                     current_disparity, current_bp_level, bp_settings_disp_vals, message_l_checkerboard_0));
-                val_at_disp = simd_processing::AddVals<W, U, W>(val_at_disp, 
+                vals_at_disp = simd_processing::AddVals<W, U, W>(vals_at_disp, 
                   simd_processing::LoadPackedDataUnaligned<T, U>((x_val_process + checkerboard_adjustment) - 1, y_val,
                     current_disparity, current_bp_level, bp_settings_disp_vals, message_r_checkerboard_0));
-                val_at_disp = simd_processing::AddVals<W, U, W>(val_at_disp,
+                vals_at_disp = simd_processing::AddVals<W, U, W>(vals_at_disp,
                   simd_processing::LoadPackedDataUnaligned<T, U>(x_val_process, y_val,
                     current_disparity, current_bp_level, bp_settings_disp_vals, data_cost_checkerboard_1));
               }
             }
             if (current_disparity == 0) {
-              best_vals = val_at_disp;
+              best_vals = vals_at_disp;
               //set disp at min vals to all 0
               best_disparities = simd_processing::createSIMDVectorSameData<W>(0.0f);
             }
@@ -1815,30 +1827,30 @@ void beliefprop_cpu::RetrieveOutputDisparityUseSIMDVectors(
                 best_disparities,
                 best_vals,
                 simd_processing::createSIMDVectorSameData<W>((float)current_disparity),
-                val_at_disp);
+                vals_at_disp);
             }
           }
           //store best disparities in checkerboard being updated
           if (data_aligned_x_val) {
             if (checkerboard_get_disp_map == beliefprop::CheckerboardPart::kCheckerboardPart0) {
               simd_processing::StorePackedDataAligned<V, W>(
-                index_output, disparity_checkerboard, best_disparities);
+                index_output, disparity_checkerboards, best_disparities);
             }
             else //checkerboard_get_disp_map == beliefprop::CheckerboardPart::kCheckerboardPart1
             {
               simd_processing::StorePackedDataAligned<V, W>(
-                num_data_disp_checkerboard + index_output, disparity_checkerboard, best_disparities);
+                num_data_disp_checkerboard + index_output, disparity_checkerboards, best_disparities);
             }
           }
           else {
             if (checkerboard_get_disp_map == beliefprop::CheckerboardPart::kCheckerboardPart0) {
               simd_processing::StorePackedDataUnaligned<V, W>(
-                index_output, disparity_checkerboard, best_disparities);
+                index_output, disparity_checkerboards, best_disparities);
             }
             else //checkerboard_get_disp_map == beliefprop::CheckerboardPart::kCheckerboardPart1
             {
               simd_processing::StorePackedDataUnaligned<V, W>(
-                num_data_disp_checkerboard + index_output, disparity_checkerboard, best_disparities);
+                num_data_disp_checkerboard + index_output, disparity_checkerboards, best_disparities);
             }
           }
         }
@@ -1887,14 +1899,14 @@ void beliefprop_cpu::RetrieveOutputDisparityUseSIMDVectors(
           }
           else {
             disparity_between_images_device[y * current_bp_level.width_level_ + (x + 0)] =
-              (float)disparity_checkerboard[checkerboard_index];
+              (float)disparity_checkerboards[checkerboard_index];
           }
           if ((x + 1) == (current_bp_level.width_level_ - 1)) {
             disparity_between_images_device[y * current_bp_level.width_level_ + (x + 1)] = 0;
           }
           else if ((x + 1) < current_bp_level.width_level_) {
             disparity_between_images_device[y * current_bp_level.width_level_ + (x + 1)] =
-                (float)disparity_checkerboard[num_data_disp_checkerboard + checkerboard_index];
+                (float)disparity_checkerboards[num_data_disp_checkerboard + checkerboard_index];
           }
         }
         else {
@@ -1903,14 +1915,14 @@ void beliefprop_cpu::RetrieveOutputDisparityUseSIMDVectors(
           }
           else {
             disparity_between_images_device[y * current_bp_level.width_level_ + (x + 0)] =
-              (float)disparity_checkerboard[num_data_disp_checkerboard + checkerboard_index];
+              (float)disparity_checkerboards[num_data_disp_checkerboard + checkerboard_index];
           }
           if ((x + 1) == (current_bp_level.width_level_ - 1)) {
             disparity_between_images_device[y * current_bp_level.width_level_ + (x + 1)] = 0;
           }
           else if ((x + 1) < current_bp_level.width_level_) {
             disparity_between_images_device[y * current_bp_level.width_level_ + (x + 1)] =
-              (float)disparity_checkerboard[checkerboard_index];
+              (float)disparity_checkerboards[checkerboard_index];
           }
         }
         //increment checkerboard index for next x-value
@@ -1922,8 +1934,8 @@ void beliefprop_cpu::RetrieveOutputDisparityUseSIMDVectors(
   );
 #endif //__APPLE__
     
-  //delete [] disparity_checkerboard;
-  free(disparity_checkerboard);
+  //delete [] disparity_checkerboards;
+  free(disparity_checkerboards);
 }
 
 //function retrieve the minimum value at each 1-d disparity value in O(n) time

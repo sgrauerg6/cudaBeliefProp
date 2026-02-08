@@ -222,25 +222,25 @@ void beliefprop_cpu::RetrieveOutputDisparityUseSIMDVectorsAVX256(
 
 template<> inline void beliefprop_cpu::UpdateBestDispBestVals<__m256>(
   __m256& best_disparities, __m256& best_vals,
-  const __m256& current_disparity, const __m256& val_at_disp)
+  const __m256& current_disparity, const __m256& vals_at_disp)
 {
-  __m256 maskNeedUpdate = _mm256_cmp_ps(val_at_disp, best_vals, _CMP_LT_OS);
-  best_vals = _mm256_blendv_ps(best_vals, val_at_disp, maskNeedUpdate);
+  __m256 maskNeedUpdate = _mm256_cmp_ps(vals_at_disp, best_vals, _CMP_LT_OS);
+  best_vals = _mm256_blendv_ps(best_vals, vals_at_disp, maskNeedUpdate);
   best_disparities = _mm256_blendv_ps(best_disparities, current_disparity, maskNeedUpdate);
-   /* __mmask8 maskNeedUpdate =  _mm256_cmp_ps_mask(val_at_disp, best_vals, _CMP_LT_OS);
-  best_vals = _mm256_mask_blend_ps(maskNeedUpdate, best_vals, val_at_disp);
+   /* __mmask8 maskNeedUpdate =  _mm256_cmp_ps_mask(vals_at_disp, best_vals, _CMP_LT_OS);
+  best_vals = _mm256_mask_blend_ps(maskNeedUpdate, best_vals, vals_at_disp);
   best_disparities = _mm256_mask_blend_ps(maskNeedUpdate, best_disparities, current_disparity);*/
 }
 
 template<> inline void beliefprop_cpu::UpdateBestDispBestVals<__m256d>(
   __m256d& best_disparities, __m256d& best_vals,
-  const __m256d& current_disparity, const __m256d& val_at_disp)
+  const __m256d& current_disparity, const __m256d& vals_at_disp)
 {
-  __m256d maskNeedUpdate = _mm256_cmp_pd(val_at_disp, best_vals, _CMP_LT_OS);
-  best_vals = _mm256_blendv_pd(best_vals, val_at_disp, maskNeedUpdate);
+  __m256d maskNeedUpdate = _mm256_cmp_pd(vals_at_disp, best_vals, _CMP_LT_OS);
+  best_vals = _mm256_blendv_pd(best_vals, vals_at_disp, maskNeedUpdate);
   best_disparities = _mm256_blendv_pd(best_disparities, current_disparity, maskNeedUpdate);
-  /*__mmask8 maskNeedUpdate =  _mm256_cmp_pd_mask(val_at_disp, best_vals, _CMP_LT_OS);
-  best_vals = _mm256_mask_blend_pd(maskNeedUpdate, best_vals, val_at_disp);
+  /*__mmask8 maskNeedUpdate =  _mm256_cmp_pd_mask(vals_at_disp, best_vals, _CMP_LT_OS);
+  best_vals = _mm256_mask_blend_pd(maskNeedUpdate, best_vals, vals_at_disp);
   best_disparities = _mm256_mask_blend_pd(maskNeedUpdate, best_disparities, current_disparity);*/
 }
 
@@ -248,13 +248,13 @@ template<> inline void beliefprop_cpu::UpdateBestDispBestVals<__m256d>(
 
 template<> inline void beliefprop_cpu::UpdateBestDispBestVals<__m256h>(
   __m256h& best_disparities, __m256h& best_vals,
-  const __m256h& current_disparity, const __m256h& val_at_disp)
+  const __m256h& current_disparity, const __m256h& vals_at_disp)
 {
-  /*__m256h maskNeedUpdate = _mm256_cmp_ph(val_at_disp, best_vals, _CMP_LT_OS);
-  best_vals = _mm256_blendv_ph(best_vals, val_at_disp, maskNeedUpdate);
+  /*__m256h maskNeedUpdate = _mm256_cmp_ph(vals_at_disp, best_vals, _CMP_LT_OS);
+  best_vals = _mm256_blendv_ph(best_vals, vals_at_disp, maskNeedUpdate);
   best_disparities = _mm256_blendv_ph(best_disparities, current_disparity, maskNeedUpdate);*/
-  __mmask16 maskNeedUpdate =  _mm256_cmp_ph_mask(val_at_disp, best_vals, _CMP_LT_OS);
-  best_vals = _mm256_mask_blend_ph(maskNeedUpdate, best_vals, val_at_disp);
+  __mmask16 maskNeedUpdate =  _mm256_cmp_ph_mask(vals_at_disp, best_vals, _CMP_LT_OS);
+  best_vals = _mm256_mask_blend_ph(maskNeedUpdate, best_vals, vals_at_disp);
   best_disparities = _mm256_mask_blend_ph(maskNeedUpdate, best_disparities, current_disparity);
 }
 

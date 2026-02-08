@@ -166,22 +166,22 @@ void beliefprop_cpu::RetrieveOutputDisparityUseSIMDVectorsNEON(
 
 template<> inline void beliefprop_cpu::UpdateBestDispBestVals<float32x4_t>(
   float32x4_t& best_disparities, float32x4_t& best_vals,
-  const float32x4_t& current_disparity, const float32x4_t& val_at_disp)
+  const float32x4_t& current_disparity, const float32x4_t& vals_at_disp)
 {
   //get mask with value 1 where current value less then current best 1, 0 otherwise
-  uint32x4_t mask_update_vals = vcltq_f32(val_at_disp, best_vals);
+  uint32x4_t mask_update_vals = vcltq_f32(vals_at_disp, best_vals);
   //update best values and best disparities using mask
   //vbslq_f32 operation uses first float32x4_t argument if mask value is 1 and seconde float32x4_t argument if mask value is 0
-  best_vals = vbslq_f32(mask_update_vals, val_at_disp, best_vals);
+  best_vals = vbslq_f32(mask_update_vals, vals_at_disp, best_vals);
   best_disparities = vbslq_f32(mask_update_vals, current_disparity, best_disparities);
 }
 
 template<> inline void beliefprop_cpu::UpdateBestDispBestVals<float64x2_t>(
   float64x2_t& best_disparities, float64x2_t& best_vals,
-  const float64x2_t& current_disparity, const float64x2_t& val_at_disp)
+  const float64x2_t& current_disparity, const float64x2_t& vals_at_disp)
 {
-  uint64x2_t mask_update_vals = vcltq_f64(val_at_disp, best_vals);
-  best_vals = vbslq_f64(mask_update_vals, val_at_disp, best_vals);
+  uint64x2_t mask_update_vals = vcltq_f64(vals_at_disp, best_vals);
+  best_vals = vbslq_f64(mask_update_vals, vals_at_disp, best_vals);
   best_disparities = vbslq_f64(mask_update_vals, current_disparity, best_disparities);
 }
 

@@ -1402,10 +1402,10 @@ ARCHITECTURE_ADDITION inline void RetrieveOutputDisparityPixel(
         }
       }
 
-      disparity_between_images_device[y_val*current_bp_level.width_level_ +
+      disparity_between_images_device[y_val * current_bp_level.width_level_ +
         (x_val_checkerboard * 2 + checkerboard_part_adjustment)] = bestDisparity;
     } else {
-      disparity_between_images_device[y_val* current_bp_level.width_level_ +
+      disparity_between_images_device[y_val * current_bp_level.width_level_ +
         (x_val_checkerboard * 2 + checkerboard_part_adjustment)] = 0;
     }
   }

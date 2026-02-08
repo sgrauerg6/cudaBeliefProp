@@ -224,19 +224,19 @@ void beliefprop_cpu::RetrieveOutputDisparityUseSIMDVectorsAVX512(
 
 template<> inline void beliefprop_cpu::UpdateBestDispBestVals<__m512>(
   __m512& best_disparities, __m512& best_vals,
-  const __m512& current_disparity, const __m512& val_at_disp)
+  const __m512& current_disparity, const __m512& vals_at_disp)
 {
-  __mmask16 maskNeedUpdate =  _mm512_cmp_ps_mask(val_at_disp, best_vals, _CMP_LT_OS);
-  best_vals = _mm512_mask_blend_ps(maskNeedUpdate, best_vals, val_at_disp);
+  __mmask16 maskNeedUpdate =  _mm512_cmp_ps_mask(vals_at_disp, best_vals, _CMP_LT_OS);
+  best_vals = _mm512_mask_blend_ps(maskNeedUpdate, best_vals, vals_at_disp);
   best_disparities = _mm512_mask_blend_ps(maskNeedUpdate, best_disparities, current_disparity);
 }
 
 template<> inline void beliefprop_cpu::UpdateBestDispBestVals<__m512d>(
   __m512d& best_disparities, __m512d& best_vals,
-  const __m512d& current_disparity, const __m512d& val_at_disp)
+  const __m512d& current_disparity, const __m512d& vals_at_disp)
 {
-  __mmask8 maskNeedUpdate =  _mm512_cmp_pd_mask(val_at_disp, best_vals, _CMP_LT_OS);
-  best_vals = _mm512_mask_blend_pd(maskNeedUpdate, best_vals, val_at_disp);
+  __mmask8 maskNeedUpdate =  _mm512_cmp_pd_mask(vals_at_disp, best_vals, _CMP_LT_OS);
+  best_vals = _mm512_mask_blend_pd(maskNeedUpdate, best_vals, vals_at_disp);
   best_disparities = _mm512_mask_blend_pd(maskNeedUpdate, best_disparities, current_disparity);
 }
 
@@ -244,10 +244,10 @@ template<> inline void beliefprop_cpu::UpdateBestDispBestVals<__m512d>(
 
 template<> inline void beliefprop_cpu::UpdateBestDispBestVals<__m512h>(
   __m512h& best_disparities, __m512h& best_vals,
-  const __m512h& current_disparity, const __m512h& val_at_disp)
+  const __m512h& current_disparity, const __m512h& vals_at_disp)
 {
-  __mmask32 maskNeedUpdate =  _mm512_cmp_ph_mask(val_at_disp, best_vals, _CMP_LT_OS);
-  best_vals = _mm512_mask_blend_ph(maskNeedUpdate, best_vals, val_at_disp);
+  __mmask32 maskNeedUpdate =  _mm512_cmp_ph_mask(vals_at_disp, best_vals, _CMP_LT_OS);
+  best_vals = _mm512_mask_blend_ph(maskNeedUpdate, best_vals, vals_at_disp);
   best_disparities = _mm512_mask_blend_ph(maskNeedUpdate, best_disparities, current_disparity);
 }
 
