@@ -73,7 +73,7 @@ void SmoothImageCPU::ConvertUnsignedIntImageToFloatCPU(
     unsigned int width_images, unsigned int height_images,
     const ParallelParams& opt_cpu_params) const
 {
-#ifndef __APPLE__
+#if !defined(__APPLE__) || defined(DONT_USE_GRAND_CENTRAL_DISPATCH)
 #if defined(SET_THREAD_COUNT_INDIVIDUAL_KERNELS_CPU)
   int num_threads_kernel{
     (int)opt_cpu_params.OptParamsForKernel({static_cast<unsigned int>(beliefprop::BpKernel::kBlurImages), 0})[0]};
@@ -110,7 +110,7 @@ void SmoothImageCPU::FilterImageAcrossCPU(
   const float* image_filter, unsigned int size_filter,
   const ParallelParams& opt_cpu_params) const
 {
-#ifndef __APPLE__
+#if !defined(__APPLE__) || defined(DONT_USE_GRAND_CENTRAL_DISPATCH)
 #if defined(SET_THREAD_COUNT_INDIVIDUAL_KERNELS_CPU)
   int num_threads_kernel{
     (int)opt_cpu_params.OptParamsForKernel(
@@ -150,7 +150,7 @@ void SmoothImageCPU::FilterImageVerticalCPU(
   const float* image_filter, unsigned int size_filter,
   const ParallelParams& opt_cpu_params) const
 {
-#ifndef __APPLE__
+#if !defined(__APPLE__) || defined(DONT_USE_GRAND_CENTRAL_DISPATCH)
 #if defined(SET_THREAD_COUNT_INDIVIDUAL_KERNELS_CPU)
   int num_threads_kernel{
     (int)opt_cpu_params.OptParamsForKernel({static_cast<unsigned int>(beliefprop::BpKernel::kBlurImages), 0})[0]};

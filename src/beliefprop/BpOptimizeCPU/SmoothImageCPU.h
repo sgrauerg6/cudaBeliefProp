@@ -34,6 +34,8 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #include "BpImageProcessing/BpImageConstraints.h"
 #include "RunSettingsParams/ParallelParams.h"
 
+//#define DONT_USE_GRAND_CENTRAL_DISPATCH
+
 /**
  * @brief Child class of SmoothImage for smoothing images in the optimized CPU implementation
  * 

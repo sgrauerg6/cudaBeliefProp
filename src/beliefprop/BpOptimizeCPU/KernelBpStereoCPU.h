@@ -49,6 +49,8 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #include "RunImpCPU/RunCPUSettings.h"
 #include "RunImpCPU/SIMDProcessing.h"
 
+//#define DONT_USE_GRAND_CENTRAL_DISPATCH
+
 /**
  * @brief Namespace to define global kernel functions for optimized belief
  * propagation processing on the CPU using OpenMP and SIMD vectorization.
@@ -581,7 +583,7 @@ void beliefprop_cpu::InitializeBottomLevelData(
   float lambda_bp, float data_k_bp, unsigned int bp_settings_disp_vals,
   const ParallelParams& opt_cpu_params)
 {
-#ifndef __APPLE__
+#if !defined(__APPLE__) || defined(DONT_USE_GRAND_CENTRAL_DISPATCH)
 #if defined(SET_THREAD_COUNT_INDIVIDUAL_KERNELS_CPU)
   int num_threads_kernel{
     (int)opt_cpu_params.OptParamsForKernel(
@@ -610,7 +612,7 @@ void beliefprop_cpu::InitializeBottomLevelData(
         data_cost_stereo_checkerboard_0, data_cost_stereo_checkerboard_1,
         lambda_bp, data_k_bp, bp_settings_disp_vals);
   }
-#ifdef __APPLE__
+#if defined(__APPLE__) && !defined(DONT_USE_GRAND_CENTRAL_DISPATCH)
   );
 #endif //__APPLE__
 }
@@ -625,7 +627,7 @@ void beliefprop_cpu::InitializeCurrentLevelData(
   T* data_cost_current_level, unsigned int offset_num, unsigned int bp_settings_disp_vals,
   const ParallelParams& opt_cpu_params)
 {
-#ifndef __APPLE__
+#if !defined(__APPLE__) || defined(DONT_USE_GRAND_CENTRAL_DISPATCH)
 #if defined(SET_THREAD_COUNT_INDIVIDUAL_KERNELS_CPU)
   int num_threads_kernel{(int)opt_cpu_params.OptParamsForKernel(
     {static_cast<unsigned int>(beliefprop::BpKernel::kDataCostsAtLevel), current_bp_level.level_num_})[0]};
@@ -670,7 +672,7 @@ void beliefprop_cpu::InitializeCurrentLevelData(
         data_cost_current_level, offset_num, bp_settings_disp_vals);
     }
   }
-#ifdef __APPLE__
+#if defined(__APPLE__) && !defined(DONT_USE_GRAND_CENTRAL_DISPATCH)
   );
 #endif //__APPLE__
 }
@@ -686,7 +688,7 @@ void beliefprop_cpu::InitializeMessageValsToDefaultKernel(
   unsigned int bp_settings_disp_vals,
   const ParallelParams& opt_cpu_params)
 {
-#ifndef __APPLE__
+#if !defined(__APPLE__) || defined(DONT_USE_GRAND_CENTRAL_DISPATCH)
 #if defined(SET_THREAD_COUNT_INDIVIDUAL_KERNELS_CPU)
   int num_threads_kernel{
     (int)opt_cpu_params.OptParamsForKernel(
@@ -718,7 +720,7 @@ void beliefprop_cpu::InitializeMessageValsToDefaultKernel(
       message_l_checkerboard_1, message_r_checkerboard_1,
       bp_settings_disp_vals);
   }
-#ifdef __APPLE__
+#if defined(__APPLE__) && !defined(DONT_USE_GRAND_CENTRAL_DISPATCH)
   );
 #endif //__APPLE__
 }
@@ -742,7 +744,7 @@ void beliefprop_cpu::RunBPIterationUsingCheckerboardUpdatesNoPackedInstructions(
   const bool data_aligned = beliefprop::MemoryAlignedAtDataStart<T>(
     0, 1, current_bp_level.bytes_align_memory_, current_bp_level.padded_width_checkerboard_level_);
 
-#ifndef __APPLE__
+#if !defined(__APPLE__) || defined(DONT_USE_GRAND_CENTRAL_DISPATCH)
 #if defined(SET_THREAD_COUNT_INDIVIDUAL_KERNELS_CPU)
   int num_threads_kernel{(int)opt_cpu_params.OptParamsForKernel(
     {static_cast<unsigned int>(beliefprop::BpKernel::kBpAtLevel), current_bp_level.level_num_})[0]};
@@ -793,7 +795,7 @@ void beliefprop_cpu::RunBPIterationUsingCheckerboardUpdatesNoPackedInstructions(
         disc_k_bp, 0, data_aligned, bp_settings_disp_vals);
     }
   }
-#ifdef __APPLE__
+#if defined(__APPLE__) && !defined(DONT_USE_GRAND_CENTRAL_DISPATCH)
   );
 #endif //__APPLE__
 }
@@ -871,7 +873,7 @@ void beliefprop_cpu::RunBPIterationUsingCheckerboardUpdatesUseSIMDVectorsProcess
   const U disc_k_bp_vect = simd_processing::createSIMDVectorSameData<U>(disc_k_bp);
 
   if constexpr (DISP_VALS > 0) {
-#ifndef __APPLE__
+#if !defined(__APPLE__) || defined(DONT_USE_GRAND_CENTRAL_DISPATCH)
 #if defined(SET_THREAD_COUNT_INDIVIDUAL_KERNELS_CPU)
     int num_threads_kernel{(int)opt_cpu_params.OptParamsForKernel(
       {static_cast<unsigned int>(beliefprop::BpKernel::kBpAtLevel), current_bp_level.level_num_})[0]};
@@ -891,7 +893,7 @@ void beliefprop_cpu::RunBPIterationUsingCheckerboardUpdatesUseSIMDVectorsProcess
                    ^(size_t y_index)
 #endif //__APPLE__
     {
-#ifdef __APPLE__
+#if defined(__APPLE__) && !defined(DONT_USE_GRAND_CENTRAL_DISPATCH)
       unsigned int y_val = y_index + 1;
 #endif //__APPLE__
 
@@ -1037,12 +1039,12 @@ void beliefprop_cpu::RunBPIterationUsingCheckerboardUpdatesUseSIMDVectorsProcess
         }
       }
     }
-#ifdef __APPLE__
+#if defined(__APPLE__) && !defined(DONT_USE_GRAND_CENTRAL_DISPATCH)
     );
 #endif //__APPLE__
   }
   else {
-#ifndef __APPLE__
+#if !defined(__APPLE__) || defined(DONT_USE_GRAND_CENTRAL_DISPATCH)
 #if defined(SET_THREAD_COUNT_INDIVIDUAL_KERNELS_CPU)
     int num_threads_kernel{
       (int)opt_cpu_params.OptParamsForKernel(
@@ -1063,9 +1065,10 @@ void beliefprop_cpu::RunBPIterationUsingCheckerboardUpdatesUseSIMDVectorsProcess
                  ^(size_t y_index)
 #endif //__APPLE__
   {
-#ifdef __APPLE__
+#if defined(__APPLE__) && !defined(DONT_USE_GRAND_CENTRAL_DISPATCH)
       unsigned int y_val = y_index + 1;
 #endif //__APPLE__
+
       //checkerboard_adjustment used for indexing into current checkerboard to update
       const unsigned int checkerboard_adjustment =
         (checkerboard_to_update == beliefprop::CheckerboardPart::kCheckerboardPart0) ?
@@ -1230,7 +1233,7 @@ void beliefprop_cpu::RunBPIterationUsingCheckerboardUpdatesUseSIMDVectorsProcess
         delete [] prev_r_message;
       }
     }
-#ifdef __APPLE__
+#if defined(__APPLE__) && !defined(DONT_USE_GRAND_CENTRAL_DISPATCH)
     );
 #endif //__APPLE__
   }
@@ -1369,7 +1372,7 @@ void beliefprop_cpu::CopyMsgDataToNextLevel(
   unsigned int bp_settings_disp_vals,
   const ParallelParams& opt_cpu_params)
 {
-#ifndef __APPLE__
+#if !defined(__APPLE__) || defined(DONT_USE_GRAND_CENTRAL_DISPATCH)
 #if defined(SET_THREAD_COUNT_INDIVIDUAL_KERNELS_CPU)
   int num_threads_kernel{(int)opt_cpu_params.OptParamsForKernel(
     {static_cast<unsigned int>(beliefprop::BpKernel::kCopyAtLevel), current_bp_level.level_num_})[0]};
@@ -1405,7 +1408,7 @@ void beliefprop_cpu::CopyMsgDataToNextLevel(
       message_l_checkerboard_1, message_r_checkerboard_1,
       bp_settings_disp_vals);
   }
-#ifdef __APPLE__
+#if defined(__APPLE__) && !defined(DONT_USE_GRAND_CENTRAL_DISPATCH)
   );
 #endif //__APPLE__
 }
@@ -1422,7 +1425,7 @@ void beliefprop_cpu::RetrieveOutputDisparity(
   const ParallelParams& opt_cpu_params)
 {
   if constexpr (ACCELERATION == run_environment::AccSetting::kNone) {
-#ifndef __APPLE__
+#if !defined(__APPLE__) || defined(DONT_USE_GRAND_CENTRAL_DISPATCH)
 #if defined(SET_THREAD_COUNT_INDIVIDUAL_KERNELS_CPU)
     int num_threads_kernel{
       (int)opt_cpu_params.OptParamsForKernel(
@@ -1474,7 +1477,7 @@ void beliefprop_cpu::RetrieveOutputDisparity(
           disparity_between_images_device, bp_settings_disp_vals);
       }
     }
-#ifdef __APPLE__
+#if defined(__APPLE__) && !defined(DONT_USE_GRAND_CENTRAL_DISPATCH)
     );
 #endif //__APPLE__
   }
@@ -1555,7 +1558,7 @@ void beliefprop_cpu::RetrieveOutputDisparityUseSIMDVectors(
   for (const auto checkerboardGetDispMap : {beliefprop::CheckerboardPart::kCheckerboardPart0,
                                             beliefprop::CheckerboardPart::kCheckerboardPart1})
   {
-#ifndef __APPLE__
+#if !defined(__APPLE__) || defined(DONT_USE_GRAND_CENTRAL_DISPATCH)
 #if defined(SET_THREAD_COUNT_INDIVIDUAL_KERNELS_CPU)
     int num_threads_kernel{
       (int)opt_cpu_params.OptParamsForKernel(
@@ -1576,9 +1579,10 @@ void beliefprop_cpu::RetrieveOutputDisparityUseSIMDVectors(
                    ^(size_t y_index)
 #endif //__APPLE__
     {
-#ifdef __APPLE__
+#if defined(__APPLE__) && !defined(DONT_USE_GRAND_CENTRAL_DISPATCH)
       unsigned int y_val = y_index + 1;
 #endif //__APPLE__
+
       //checkerboard_adjustment used for indexing into current checkerboard to retrieve best disparities
       const unsigned int checkerboard_adjustment = 
         (checkerboardGetDispMap == beliefprop::CheckerboardPart::kCheckerboardPart0) ?
@@ -1854,7 +1858,7 @@ void beliefprop_cpu::RetrieveOutputDisparityUseSIMDVectors(
         }
       }
     }
-#ifdef __APPLE__
+#if defined(__APPLE__) && !defined(DONT_USE_GRAND_CENTRAL_DISPATCH)
     );
 #endif //__APPLE__
   }
@@ -1862,7 +1866,7 @@ void beliefprop_cpu::RetrieveOutputDisparityUseSIMDVectors(
   //combine output disparity maps from each checkerboard
   //start with checkerboard 0 in first row since (0, 0) corresponds to (0, 0)
   //in checkerboard 0 and (1, 0) corresponds to (0, 0) in checkerboard 1
-#ifndef __APPLE__
+#if !defined(__APPLE__) || defined(DONT_USE_GRAND_CENTRAL_DISPATCH)
 #if defined(SET_THREAD_COUNT_INDIVIDUAL_KERNELS_CPU)
   int num_threads_kernel{
     (int)opt_cpu_params.OptParamsForKernel(
@@ -1928,7 +1932,7 @@ void beliefprop_cpu::RetrieveOutputDisparityUseSIMDVectors(
       }
     }
   }
-#ifdef __APPLE__
+#if defined(__APPLE__) && !defined(DONT_USE_GRAND_CENTRAL_DISPATCH)
   );
 #endif //__APPLE__
     
