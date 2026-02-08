@@ -230,7 +230,7 @@ static bp_single_thread_imp::image<uchar> *loadPPMAndConvertToGrayScale(const ch
   file.write((char *)imPtr(im, 0, 0), width * height * sizeof(bp_single_thread_imp::rgb));
 }*/
 
-static bp_single_thread_imp::image<uchar> *loadPGMOrPPMImage(const char *name) {
+static inline bp_single_thread_imp::image<uchar> *loadPGMOrPPMImage(const char *name) {
   char pgmExtension[] = "pgm";
   char ppmExtension[] = "ppm";
   char* file_path_image_copy = new char[strlen(name) + 1]{};

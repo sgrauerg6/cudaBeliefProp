@@ -69,6 +69,11 @@ public:
   explicit ProcessBp(
     const ParallelParams& parallel_params) :
     parallel_params_{parallel_params} {}
+  
+  /**
+   * @brief Virtual destructor
+   */
+  virtual ~ProcessBp() {}
 
   virtual run_eval::Status ErrorCheck(
     const char *file = "",
@@ -232,11 +237,11 @@ private:
     beliefprop::CheckerboardMessages<T*> output_checkerboard_messages;
     std::ranges::for_each(
       output_checkerboard_messages,
-      [this, num_data_allocate_per_message, &mem_management_bp_run](
+      [num_data_allocate_per_message, &mem_management_bp_run](
         auto& checkerboard_messages_set)
       {
         std::ranges::for_each(checkerboard_messages_set, 
-          [this, num_data_allocate_per_message, &mem_management_bp_run](
+          [num_data_allocate_per_message, &mem_management_bp_run](
             auto& checkerboard_messages)
           {
             checkerboard_messages =

@@ -52,6 +52,11 @@ public:
   explicit SmoothImage(const ParallelParams& parallel_params) : parallel_params_{parallel_params} {}
 
   /**
+   * @brief Virtual destructor
+   */
+  virtual ~SmoothImage() {}
+
+  /**
    * @brief Function to use the image filter to apply a guassian filter to the
    * a single image.<br>
    * Input images have each pixel stored as an unsigned int (value between 0

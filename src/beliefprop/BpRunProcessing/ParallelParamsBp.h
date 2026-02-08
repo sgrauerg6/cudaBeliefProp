@@ -86,7 +86,7 @@ public:
    */
   void AddTestResultsForParallelParams(
     const std::array<unsigned int, 2>& p_params_curr_run,
-    const RunData& curr_run_data);
+    const RunData& curr_run_data) override;
 
   /**
    * @brief Retrieve optimized parameters from results across multiple runs

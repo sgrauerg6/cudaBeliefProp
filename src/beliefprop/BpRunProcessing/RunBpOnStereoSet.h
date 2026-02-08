@@ -101,6 +101,11 @@ public:
   virtual std::string BpRunDescription() const = 0;
 
   /**
+   * @brief Virtual destructor
+   */
+  virtual ~RunBpOnStereoSet() {}
+
+  /**
    * @brief Pure virtual operator() overload that must be defined in child class
    * 
    * @param ref_test_image_path 

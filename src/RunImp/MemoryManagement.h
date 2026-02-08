@@ -46,6 +46,11 @@ template <RunData_t T>
 class MemoryManagement
 {
 public:
+  /**
+   * @brief Virtual destructor
+   */
+  virtual ~MemoryManagement() {}
+
   virtual T* AllocateMemoryOnDevice(std::size_t numData) const {
     return (new T[numData]);
   }

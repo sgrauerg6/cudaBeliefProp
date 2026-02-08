@@ -57,6 +57,11 @@ enum class BaseTargetDiff {
 class EvaluateImpResults {
 public:
   /**
+   * @brief Virtual destructor
+   */
+  virtual ~EvaluateImpResults() {}
+
+  /**
    * @brief Evaluate results for implementation runs on multiple inputs with
    * all the runs having the same data type and acceleration method
    * return run data results with run speedups added as well as average and

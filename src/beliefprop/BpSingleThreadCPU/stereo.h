@@ -47,6 +47,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #include <array>
 #include <utility>
 #include <span>
+#include <vector>
 #include "image.h"
 #include "misc.h"
 #include "pnmfile.h"
@@ -239,11 +240,11 @@ inline void RunBpOnStereoSetSingleThreadCPU<T, DISP_VALS, ACCELERATION>::bp_cb(b
 template<typename T, unsigned int DISP_VALS, run_environment::AccSetting ACCELERATION>
 inline std::pair<bp_single_thread_imp::image<uchar>*, RunData> RunBpOnStereoSetSingleThreadCPU<T, DISP_VALS, ACCELERATION>::stereo_ms(bp_single_thread_imp::image<uchar> *img1, bp_single_thread_imp::image<uchar> *img2,
   const beliefprop::BpSettings& alg_settings, std::chrono::duration<double>& runtime) const {
-  bp_single_thread_imp::image<float[DISP_VALS]> *u[alg_settings.num_levels];
-  bp_single_thread_imp::image<float[DISP_VALS]> *d[alg_settings.num_levels];
-  bp_single_thread_imp::image<float[DISP_VALS]> *l[alg_settings.num_levels];
-  bp_single_thread_imp::image<float[DISP_VALS]> *r[alg_settings.num_levels];
-  bp_single_thread_imp::image<float[DISP_VALS]> *data[alg_settings.num_levels];
+  std::vector<bp_single_thread_imp::image<float[DISP_VALS]>*> u(alg_settings.num_levels);
+  std::vector<bp_single_thread_imp::image<float[DISP_VALS]>*> d(alg_settings.num_levels);
+  std::vector<bp_single_thread_imp::image<float[DISP_VALS]>*> l(alg_settings.num_levels);
+  std::vector<bp_single_thread_imp::image<float[DISP_VALS]>*> r(alg_settings.num_levels);
+  std::vector<bp_single_thread_imp::image<float[DISP_VALS]>*> data(alg_settings.num_levels);
 
   auto timeStart = std::chrono::system_clock::now();
 
@@ -851,7 +852,7 @@ inline bp_single_thread_imp::BpVector<float> RunBpOnStereoSetSingleThreadCPU<T, 
   //compute disparity cost for each possible disparity at each pixel
   bp_single_thread_imp::BpVector<float> data(
     img1->width(), img1->height(), alg_settings.num_disp_vals);
-  const unsigned int num_threads_kernel{std::thread::hardware_concurrency()};
+  //const unsigned int num_threads_kernel{std::thread::hardware_concurrency()};
   //#pragma omp parallel for num_threads(num_threads_kernel)
   for (unsigned int y = 0; y < (unsigned int)img1->height(); y++) {
     for (unsigned int x = alg_settings.num_disp_vals - 1; x < (unsigned int)img1->width(); x++) {
@@ -879,7 +880,7 @@ inline bp_single_thread_imp::image<uchar> * RunBpOnStereoSetSingleThreadCPU<T, 0
   bp_single_thread_imp::image<uchar> *out =
     new bp_single_thread_imp::image<uchar>(data.Width(), data.Height());
 
-  const unsigned int num_threads_kernel{std::thread::hardware_concurrency()};
+  //const unsigned int num_threads_kernel{std::thread::hardware_concurrency()};
   //#pragma omp parallel for num_threads(num_threads_kernel)
   for (unsigned int y = 1; y < data.Height() - 1; y++) {
     for (unsigned int x = 1; x < data.Width() - 1; x++) {
@@ -913,7 +914,7 @@ inline void RunBpOnStereoSetSingleThreadCPU<T, 0, ACCELERATION>::bp_cb(
   bp_single_thread_imp::BpVector<float>& l, bp_single_thread_imp::BpVector<float>& r,
   const bp_single_thread_imp::BpVector<float>& data, unsigned int iter, float disc_k_bp) const
 {
-  const unsigned int num_threads_kernel{std::thread::hardware_concurrency()};
+  //const unsigned int num_threads_kernel{std::thread::hardware_concurrency()};
   const auto num_disparity_vals = u.NumDisparityVals();
   const auto index_btw_disp_vals = u.IndexBtwDispVals();
   for (unsigned int t = 0; t < iter; t++) {
@@ -980,7 +981,7 @@ inline std::pair<bp_single_thread_imp::image<uchar>*, RunData> RunBpOnStereoSetS
 
     data[i] = bp_single_thread_imp::BpVector<float>(
       new_width, new_height, alg_settings.num_disp_vals);
-    const unsigned int num_threads_kernel{std::thread::hardware_concurrency()};
+    //const unsigned int num_threads_kernel{std::thread::hardware_concurrency()};
     //#pragma omp parallel for num_threads(num_threads_kernel)
     for (unsigned int y = 0; y < old_height; y++) {
       for (unsigned int x = 0; x < old_width; x++) {
@@ -1011,7 +1012,7 @@ inline std::pair<bp_single_thread_imp::image<uchar>*, RunData> RunBpOnStereoSetS
       l[i] = bp_single_thread_imp::BpVector<float>(width, height, alg_settings.num_disp_vals);
       r[i] = bp_single_thread_imp::BpVector<float>(width, height, alg_settings.num_disp_vals);
 
-      const unsigned int num_threads_kernel{std::thread::hardware_concurrency()};
+      //const unsigned int num_threads_kernel{std::thread::hardware_concurrency()};
       //#pragma omp parallel for num_threads(num_threads_kernel)
       for (unsigned int y = 0; y < height; y++) {
         for (unsigned int x = 0; x < width; x++) {
