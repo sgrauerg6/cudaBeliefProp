@@ -1546,11 +1546,11 @@ void beliefprop_cpu::RetrieveOutputDisparityUseSIMDVectors(
         (current_bp_level.padded_width_checkerboard_level_ % (current_bp_level.bytes_align_memory_ / sizeof(T))))));
   const unsigned int num_data_disp_checkerboard = width_disp_checkerboard * current_bp_level.height_level_;
 #ifdef _WIN32
-  V* disparity_checkerboard_0 = 
+  V* disparity_checkerboard = 
     static_cast<V*>(
       _aligned_malloc(2 * num_data_disp_checkerboard * sizeof(V), current_bp_level.bytes_align_memory_));
 #else
-  V* disparity_checkerboard_0 =
+  V* disparity_checkerboard =
     static_cast<V*>(std::aligned_alloc(
       current_bp_level.bytes_align_memory_, 2 * num_data_disp_checkerboard * sizeof(V)));
 #endif
@@ -1721,23 +1721,23 @@ void beliefprop_cpu::RetrieveOutputDisparityUseSIMDVectors(
           if (data_aligned_x_val) {
             if (checkerboardGetDispMap == beliefprop::CheckerboardPart::kCheckerboardPart0) {
               simd_processing::StorePackedDataAligned<V, W>(
-                index_output, disparity_checkerboard_0, best_disparities);
+                index_output, disparity_checkerboard, best_disparities);
             }
             else //checkerboardGetDispMap == beliefprop::CheckerboardPart::kCheckerboardPart1
             {
               simd_processing::StorePackedDataAligned<V, W>(
-                num_data_disp_checkerboard + index_output, disparity_checkerboard_0, best_disparities);
+                num_data_disp_checkerboard + index_output, disparity_checkerboard, best_disparities);
             }
           }
           else {
             if (checkerboardGetDispMap == beliefprop::CheckerboardPart::kCheckerboardPart0) {
               simd_processing::StorePackedDataUnaligned<V, W>(
-                index_output, disparity_checkerboard_0, best_disparities);
+                index_output, disparity_checkerboard, best_disparities);
             }
             else //checkerboardGetDispMap == beliefprop::CheckerboardPart::kCheckerboardPart1
             {
               simd_processing::StorePackedDataUnaligned<V, W>(
-                num_data_disp_checkerboard + index_output, disparity_checkerboard_0, best_disparities);
+                num_data_disp_checkerboard + index_output, disparity_checkerboard, best_disparities);
             }
           }
         }
@@ -1836,23 +1836,23 @@ void beliefprop_cpu::RetrieveOutputDisparityUseSIMDVectors(
           if (data_aligned_x_val) {
             if (checkerboardGetDispMap == beliefprop::CheckerboardPart::kCheckerboardPart0) {
               simd_processing::StorePackedDataAligned<V, W>(
-                index_output, disparity_checkerboard_0, best_disparities);
+                index_output, disparity_checkerboard, best_disparities);
             }
             else //checkerboardGetDispMap == beliefprop::CheckerboardPart::kCheckerboardPart1
             {
               simd_processing::StorePackedDataAligned<V, W>(
-                num_data_disp_checkerboard + index_output, disparity_checkerboard_0, best_disparities);
+                num_data_disp_checkerboard + index_output, disparity_checkerboard, best_disparities);
             }
           }
           else {
             if (checkerboardGetDispMap == beliefprop::CheckerboardPart::kCheckerboardPart0) {
               simd_processing::StorePackedDataUnaligned<V, W>(
-                index_output, disparity_checkerboard_0, best_disparities);
+                index_output, disparity_checkerboard, best_disparities);
             }
             else //checkerboardGetDispMap == beliefprop::CheckerboardPart::kCheckerboardPart1
             {
               simd_processing::StorePackedDataUnaligned<V, W>(
-                num_data_disp_checkerboard + index_output, disparity_checkerboard_0, best_disparities);
+                num_data_disp_checkerboard + index_output, disparity_checkerboard, best_disparities);
             }
           }
         }
@@ -1901,14 +1901,14 @@ void beliefprop_cpu::RetrieveOutputDisparityUseSIMDVectors(
           }
           else {
             disparity_between_images_device[y * current_bp_level.width_level_ + (x + 0)] =
-              (float)disparity_checkerboard_0[checkerboard_index];
+              (float)disparity_checkerboard[checkerboard_index];
           }
           if ((x + 1) == (current_bp_level.width_level_ - 1)) {
             disparity_between_images_device[y * current_bp_level.width_level_ + (x + 1)] = 0;
           }
           else if ((x + 1) < current_bp_level.width_level_) {
             disparity_between_images_device[y * current_bp_level.width_level_ + (x + 1)] =
-                (float)disparity_checkerboard_0[num_data_disp_checkerboard + checkerboard_index];
+                (float)disparity_checkerboard[num_data_disp_checkerboard + checkerboard_index];
           }
         }
         else {
@@ -1917,14 +1917,14 @@ void beliefprop_cpu::RetrieveOutputDisparityUseSIMDVectors(
           }
           else {
             disparity_between_images_device[y * current_bp_level.width_level_ + (x + 0)] =
-              (float)disparity_checkerboard_0[num_data_disp_checkerboard + checkerboard_index];
+              (float)disparity_checkerboard[num_data_disp_checkerboard + checkerboard_index];
           }
           if ((x + 1) == (current_bp_level.width_level_ - 1)) {
             disparity_between_images_device[y * current_bp_level.width_level_ + (x + 1)] = 0;
           }
           else if ((x + 1) < current_bp_level.width_level_) {
             disparity_between_images_device[y * current_bp_level.width_level_ + (x + 1)] =
-              (float)disparity_checkerboard_0[checkerboard_index];
+              (float)disparity_checkerboard[checkerboard_index];
           }
         }
         //increment checkerboard index for next x-value
@@ -1936,8 +1936,8 @@ void beliefprop_cpu::RetrieveOutputDisparityUseSIMDVectors(
   );
 #endif //__APPLE__
     
-  //delete [] disparity_checkerboard_0;
-  free(disparity_checkerboard_0);
+  //delete [] disparity_checkerboard;
+  free(disparity_checkerboard);
 }
 
 //function retrieve the minimum value at each 1-d disparity value in O(n) time
