@@ -871,7 +871,7 @@ void beliefprop_cpu::RunBPIterationUsingCheckerboardUpdatesUseSIMDVectorsProcess
   const U disc_k_bp_vect = simd_processing::createSIMDVectorSameData<U>(disc_k_bp);
 
   if constexpr (DISP_VALS > 0) {
-//#ifndef __APPLE__
+#ifndef __APPLE__
 #if defined(SET_THREAD_COUNT_INDIVIDUAL_KERNELS_CPU)
     int num_threads_kernel{(int)opt_cpu_params.OptParamsForKernel(
       {static_cast<unsigned int>(beliefprop::BpKernel::kBpAtLevel), current_bp_level.level_num_})[0]};
@@ -880,17 +880,21 @@ void beliefprop_cpu::RunBPIterationUsingCheckerboardUpdatesUseSIMDVectorsProcess
     #pragma omp parallel for
 #endif
     for (unsigned int y_val = 1; y_val < current_bp_level.height_level_ - 1; y_val++)
-/*#else
-  //std::cout << "SmoothImageCPU::ConvertUnsignedIntImageToFloatCPU" << std::endl;
-  // Get a global concurrent queue (system-managed thread pool)
-  dispatch_queue_t concurrent_queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
+#else
+    //std::cout << "SmoothImageCPU::ConvertUnsignedIntImageToFloatCPU" << std::endl;
+    // Get a global concurrent queue (system-managed thread pool)
+    dispatch_queue_t concurrent_queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
 
-  // dispatch_apply submits each iteration as a task to the queue
-  dispatch_apply(current_bp_level.height_level_ - 1,
-                 concurrent_queue,
-                 ^(size_t y_val)
-#endif //__APPLE__*/
-  {
+    // dispatch_apply submits each iteration as a task to the queue
+    dispatch_apply(current_bp_level.height_level_ - 1,
+                   concurrent_queue,
+                   ^(size_t y_index)
+#endif //__APPLE__
+    {
+#ifdef __APPLE__
+      unsigned int y_val = y_index + 1;
+#endif //__APPLE__
+
       //checkerboard_adjustment used for indexing into current checkerboard to update
       const unsigned int checkerboard_adjustment =
         (checkerboard_to_update == beliefprop::CheckerboardPart::kCheckerboardPart0) ?
@@ -1033,12 +1037,12 @@ void beliefprop_cpu::RunBPIterationUsingCheckerboardUpdatesUseSIMDVectorsProcess
         }
       }
     }
-/*#ifdef __APPLE__
+#ifdef __APPLE__
     );
-#endif //__APPLE__*/
+#endif //__APPLE__
   }
   else {
-//#ifndef __APPLE__
+#ifndef __APPLE__
 #if defined(SET_THREAD_COUNT_INDIVIDUAL_KERNELS_CPU)
     int num_threads_kernel{
       (int)opt_cpu_params.OptParamsForKernel(
@@ -1048,7 +1052,7 @@ void beliefprop_cpu::RunBPIterationUsingCheckerboardUpdatesUseSIMDVectorsProcess
     #pragma omp parallel for
 #endif
     for (unsigned int y_val = 1; y_val < current_bp_level.height_level_ - 1; y_val++)
-/*#else
+#else
   //std::cout << "SmoothImageCPU::ConvertUnsignedIntImageToFloatCPU" << std::endl;
   // Get a global concurrent queue (system-managed thread pool)
   dispatch_queue_t concurrent_queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
@@ -1056,9 +1060,12 @@ void beliefprop_cpu::RunBPIterationUsingCheckerboardUpdatesUseSIMDVectorsProcess
   // dispatch_apply submits each iteration as a task to the queue
   dispatch_apply(current_bp_level.height_level_ - 1,
                  concurrent_queue,
-                 ^(size_t y_val)
-#endif //__APPLE__*/
+                 ^(size_t y_index)
+#endif //__APPLE__
   {
+#ifdef __APPLE__
+      unsigned int y_val = y_index + 1;
+#endif //__APPLE__
       //checkerboard_adjustment used for indexing into current checkerboard to update
       const unsigned int checkerboard_adjustment =
         (checkerboard_to_update == beliefprop::CheckerboardPart::kCheckerboardPart0) ?
@@ -1223,9 +1230,9 @@ void beliefprop_cpu::RunBPIterationUsingCheckerboardUpdatesUseSIMDVectorsProcess
         delete [] prev_r_message;
       }
     }
-/*#ifdef __APPLE__
+#ifdef __APPLE__
     );
-#endif //__APPLE__*/
+#endif //__APPLE__
   }
 }
 
@@ -1414,8 +1421,8 @@ void beliefprop_cpu::RetrieveOutputDisparity(
   float* disparity_between_images_device, unsigned int bp_settings_disp_vals,
   const ParallelParams& opt_cpu_params)
 {
-//#ifndef __APPLE__
   if constexpr (ACCELERATION == run_environment::AccSetting::kNone) {
+#ifndef __APPLE__
 #if defined(SET_THREAD_COUNT_INDIVIDUAL_KERNELS_CPU)
     int num_threads_kernel{
       (int)opt_cpu_params.OptParamsForKernel(
@@ -1425,6 +1432,16 @@ void beliefprop_cpu::RetrieveOutputDisparity(
     #pragma omp parallel for
 #endif
     for (unsigned int val = 0; val < (current_bp_level.width_checkerboard_level_*current_bp_level.height_level_); val++)
+#else
+    //std::cout << "SmoothImageCPU::ConvertUnsignedIntImageToFloatCPU" << std::endl;
+    // Get a global concurrent queue (system-managed thread pool)
+    dispatch_queue_t concurrent_queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
+
+    // dispatch_apply submits each iteration as a task to the queue
+    dispatch_apply(current_bp_level.width_checkerboard_level_*current_bp_level.height_level_,
+                   concurrent_queue,
+                   ^(size_t val)
+#endif //__APPLE__
     {
       const unsigned int y_val = val / current_bp_level.width_checkerboard_level_;
       const unsigned int x_val = val % current_bp_level.width_checkerboard_level_;
@@ -1457,6 +1474,9 @@ void beliefprop_cpu::RetrieveOutputDisparity(
           disparity_between_images_device, bp_settings_disp_vals);
       }
     }
+#ifdef __APPLE__
+    );
+#endif //__APPLE__
   }
   else {
 #if defined(COMPILING_FOR_ARM)
@@ -1497,8 +1517,6 @@ void beliefprop_cpu::RetrieveOutputDisparity(
     }
 #endif //COMPILING_FOR_ARM
   }
-/*#else
-#endif //__APPLE__*/
 }
 
 //retrieve the best disparity estimate from image 1 to image 2 for each pixel in parallel using SIMD vectors
@@ -1537,6 +1555,7 @@ void beliefprop_cpu::RetrieveOutputDisparityUseSIMDVectors(
   for (const auto checkerboardGetDispMap : {beliefprop::CheckerboardPart::kCheckerboardPart0,
                                             beliefprop::CheckerboardPart::kCheckerboardPart1})
   {
+#ifndef __APPLE__
 #if defined(SET_THREAD_COUNT_INDIVIDUAL_KERNELS_CPU)
     int num_threads_kernel{
       (int)opt_cpu_params.OptParamsForKernel(
@@ -1545,7 +1564,21 @@ void beliefprop_cpu::RetrieveOutputDisparityUseSIMDVectors(
 #else
     #pragma omp parallel for
 #endif
-    for (unsigned int y_val = 1; y_val < current_bp_level.height_level_ - 1; y_val++) {
+    for (unsigned int y_val = 1; y_val < current_bp_level.height_level_ - 1; y_val++)
+#else
+    //std::cout << "SmoothImageCPU::ConvertUnsignedIntImageToFloatCPU" << std::endl;
+    // Get a global concurrent queue (system-managed thread pool)
+    dispatch_queue_t concurrent_queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
+
+    // dispatch_apply submits each iteration as a task to the queue
+    dispatch_apply(current_bp_level.height_level_ - 1,
+                   concurrent_queue,
+                   ^(size_t y_index)
+#endif //__APPLE__
+    {
+#ifdef __APPLE__
+      unsigned int y_val = y_index + 1;
+#endif //__APPLE__
       //checkerboard_adjustment used for indexing into current checkerboard to retrieve best disparities
       const unsigned int checkerboard_adjustment = 
         (checkerboardGetDispMap == beliefprop::CheckerboardPart::kCheckerboardPart0) ?
@@ -1571,7 +1604,6 @@ void beliefprop_cpu::RetrieveOutputDisparityUseSIMDVectors(
         {
           x_val_process = end_final - simd_data_size;
         }
-
         //not processing at x=0 if start_x is 1 (this will cause this
         //processing to be less aligned than ideal for this iteration)
         x_val_process = std::max(start_x, x_val_process);
@@ -1822,11 +1854,15 @@ void beliefprop_cpu::RetrieveOutputDisparityUseSIMDVectors(
         }
       }
     }
+#ifdef __APPLE__
+    );
+#endif //__APPLE__
   }
 
   //combine output disparity maps from each checkerboard
   //start with checkerboard 0 in first row since (0, 0) corresponds to (0, 0)
   //in checkerboard 0 and (1, 0) corresponds to (0, 0) in checkerboard 1
+#ifndef __APPLE__
 #if defined(SET_THREAD_COUNT_INDIVIDUAL_KERNELS_CPU)
   int num_threads_kernel{
     (int)opt_cpu_params.OptParamsForKernel(
@@ -1836,6 +1872,16 @@ void beliefprop_cpu::RetrieveOutputDisparityUseSIMDVectors(
   #pragma omp parallel for
 #endif
   for (unsigned int y=0; y < current_bp_level.height_level_; y++)
+#else
+    //std::cout << "SmoothImageCPU::ConvertUnsignedIntImageToFloatCPU" << std::endl;
+    // Get a global concurrent queue (system-managed thread pool)
+    dispatch_queue_t concurrent_queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
+
+    // dispatch_apply submits each iteration as a task to the queue
+    dispatch_apply(current_bp_level.height_level_,
+                   concurrent_queue,
+                   ^(size_t y)
+#endif //__APPLE__
   {
     const bool start_checkerboard_0 = ((y%2) == 0);
     unsigned int checkerboard_index = y * width_disp_checkerboard;
@@ -1882,6 +1928,9 @@ void beliefprop_cpu::RetrieveOutputDisparityUseSIMDVectors(
       }
     }
   }
+#ifdef __APPLE__
+  );
+#endif //__APPLE__
     
   //delete [] disparity_checkerboard_0;
   free(disparity_checkerboard_0);
