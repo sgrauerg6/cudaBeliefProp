@@ -9,8 +9,11 @@ NVCC := $(CUDA_DIR)/bin/nvcc
 # define path to belief propatation source code
 SRC_DIR_BP := ../../${SRC_DIR}/beliefprop
 
+# define path to benchmarks source code
+SRC_DIR_BNCHMRKS = ../../${SRC_DIR}/benchmarks
+
 # define the directories to include when compiling CUDA implementation
-CUDA_IMP_INCLUDES := -I../../${SRC_DIR} -I${SRC_DIR_BP} -I${CUDA_DIR}/include
+CUDA_IMP_INCLUDES := -I../../${SRC_DIR} -I${SRC_DIR_BNCHMRKS} -I${CUDA_DIR}/include
 
 # contains the library files needed for linking
 # need -lstdc++fs for c++17 filesystem library to work

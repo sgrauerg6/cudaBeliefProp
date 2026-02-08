@@ -1,8 +1,7 @@
 include ../../common.mk
 
-SRC_DIR_BP = ../../${SRC_DIR}/beliefprop
-
-INCLUDE_DIRS = -I../../${SRC_DIR} -I${SRC_DIR_BP}
+SRC_DIR_BNCHMRKS = ../../${SRC_DIR}/benchmarks
+INCLUDE_DIRS = -I../../${SRC_DIR} -I${SRC_DIR_BNCHMRKS}
 
 # contains the library files needed for linking
 # need -lstdc++fs for c++17 filesystem library to work
