@@ -888,13 +888,13 @@ void beliefprop_cpu::RunBPIterationUsingCheckerboardUpdatesUseSIMDVectorsProcess
     dispatch_queue_t concurrent_queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
 
     // dispatch_apply submits each iteration as a task to the queue
-    dispatch_apply(current_bp_level.height_level_ - 1,
+    dispatch_apply(current_bp_level.height_level_ - 2,
                    concurrent_queue,
                    ^(size_t y_index)
 #endif //__APPLE__
     {
 #if defined(__APPLE__) && !defined(DONT_USE_GRAND_CENTRAL_DISPATCH)
-      unsigned int y_val = y_index + 1;
+      const unsigned int y_val = y_index + 1;
 #endif //__APPLE__
 
       //checkerboard_adjustment used for indexing into current checkerboard to update
@@ -1055,18 +1055,18 @@ void beliefprop_cpu::RunBPIterationUsingCheckerboardUpdatesUseSIMDVectorsProcess
 #endif
     for (unsigned int y_val = 1; y_val < current_bp_level.height_level_ - 1; y_val++)
 #else
-  //std::cout << "SmoothImageCPU::ConvertUnsignedIntImageToFloatCPU" << std::endl;
-  // Get a global concurrent queue (system-managed thread pool)
-  dispatch_queue_t concurrent_queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
+    //std::cout << "SmoothImageCPU::ConvertUnsignedIntImageToFloatCPU" << std::endl;
+    // Get a global concurrent queue (system-managed thread pool)
+    dispatch_queue_t concurrent_queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
 
-  // dispatch_apply submits each iteration as a task to the queue
-  dispatch_apply(current_bp_level.height_level_ - 1,
-                 concurrent_queue,
-                 ^(size_t y_index)
+    // dispatch_apply submits each iteration as a task to the queue
+    dispatch_apply(current_bp_level.height_level_ - 2,
+                   concurrent_queue,
+                   ^(size_t y_index)
 #endif //__APPLE__
-  {
+    {
 #if defined(__APPLE__) && !defined(DONT_USE_GRAND_CENTRAL_DISPATCH)
-      unsigned int y_val = y_index + 1;
+      const unsigned int y_val = y_index + 1;
 #endif //__APPLE__
 
       //checkerboard_adjustment used for indexing into current checkerboard to update
@@ -1574,13 +1574,13 @@ void beliefprop_cpu::RetrieveOutputDisparityUseSIMDVectors(
     dispatch_queue_t concurrent_queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
 
     // dispatch_apply submits each iteration as a task to the queue
-    dispatch_apply(current_bp_level.height_level_ - 1,
+    dispatch_apply(current_bp_level.height_level_ - 2,
                    concurrent_queue,
                    ^(size_t y_index)
 #endif //__APPLE__
     {
 #if defined(__APPLE__) && !defined(DONT_USE_GRAND_CENTRAL_DISPATCH)
-      unsigned int y_val = y_index + 1;
+      const unsigned int y_val = y_index + 1;
 #endif //__APPLE__
 
       //checkerboard_adjustment used for indexing into current checkerboard to retrieve best disparities
