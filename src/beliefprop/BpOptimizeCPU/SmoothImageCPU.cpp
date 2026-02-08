@@ -67,6 +67,7 @@ void SmoothImageCPU::ConvertUnsignedIntImageToFloatCPU(
     unsigned int width_images, unsigned int height_images,
     const ParallelParams& opt_cpu_params) const
 {
+//#ifndef __APPLE__
 #if defined(SET_THREAD_COUNT_INDIVIDUAL_KERNELS_CPU)
   int num_threads_kernel{
     (int)opt_cpu_params.OptParamsForKernel({static_cast<unsigned int>(beliefprop::BpKernel::kBlurImages), 0})[0]};
@@ -79,6 +80,8 @@ void SmoothImageCPU::ConvertUnsignedIntImageToFloatCPU(
     const unsigned int x_val = val % width_images;
     float_image_pixels[y_val * width_images + x_val] = 1.0f * uint_image_pixels[y_val * width_images + x_val];
   }
+/*#else
+#endif //__APPLE__*/
 }
 
 
@@ -90,6 +93,7 @@ void SmoothImageCPU::FilterImageAcrossCPU(
   const float* image_filter, unsigned int size_filter,
   const ParallelParams& opt_cpu_params) const
 {
+//#ifndef __APPLE__
 #if defined(SET_THREAD_COUNT_INDIVIDUAL_KERNELS_CPU)
   int num_threads_kernel{
     (int)opt_cpu_params.OptParamsForKernel(
@@ -105,6 +109,8 @@ void SmoothImageCPU::FilterImageAcrossCPU(
       x_val, y_val, image_to_filter, filtered_image,
       width_images, height_images, image_filter, size_filter);
   }
+/*#else
+#endif //__APPLE__*/
 }
 
 //apply a vertical filter on each pixel of the image in parallel
@@ -115,6 +121,7 @@ void SmoothImageCPU::FilterImageVerticalCPU(
   const float* image_filter, unsigned int size_filter,
   const ParallelParams& opt_cpu_params) const
 {
+//#ifndef __APPLE__
 #if defined(SET_THREAD_COUNT_INDIVIDUAL_KERNELS_CPU)
   int num_threads_kernel{
     (int)opt_cpu_params.OptParamsForKernel({static_cast<unsigned int>(beliefprop::BpKernel::kBlurImages), 0})[0]};
@@ -129,6 +136,8 @@ void SmoothImageCPU::FilterImageVerticalCPU(
       x_val, y_val, image_to_filter, filtered_image,
       width_images, height_images, image_filter, size_filter);
   }
+/*#else
+#endif //__APPLE__*/
 }
 
 //explicit instantiations of template member functions
