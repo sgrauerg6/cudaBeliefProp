@@ -476,6 +476,15 @@ namespace beliefprop_cpu
     T* message_l_checkerboard_1, T* message_r_checkerboard_1,
     float disc_k_bp, unsigned int bp_settings_disp_vals,
     const ParallelParams& opt_cpu_params);
+  
+  //retrieve attributes needed for SIMD processing where SIMD
+  //vectors are used to process multiple pixels in parallel
+  std::tuple<unsigned int, unsigned int, unsigned int, int> setupSIMDProcessing(
+    unsigned int y_val,
+    beliefprop::CheckerboardPart checkerboard_to_update,
+    unsigned int width_checkerboard_level,
+    unsigned int width_checkerboard_run_processing,
+    size_t simd_data_size);
 
   // compute current message
   template<RunData_t T, RunDataVect_t U, unsigned int DISP_VALS>
@@ -856,6 +865,31 @@ void beliefprop_cpu::RunBPIterationUpdateMsgValsUseSIMDVectors(
     disc_k_bp_vect, data_aligned, bp_settings_disp_vals);
 }
 
+//retrieve attributes needed for SIMD processing where SIMD
+//vectors are used to process multiple pixels in parallel
+inline std::tuple<unsigned int, unsigned int, unsigned int, int> beliefprop_cpu::setupSIMDProcessing(
+  unsigned int y_val,
+  beliefprop::CheckerboardPart checkerboard_to_update,
+  unsigned int width_checkerboard_level,
+  unsigned int width_checkerboard_run_processing,
+  size_t simd_data_size)
+{
+  //checkerboard_adjustment used for indexing into current checkerboard to update
+  const unsigned int checkerboard_adjustment =
+    (checkerboard_to_update == beliefprop::CheckerboardPart::kCheckerboardPart0) ?
+    ((y_val) % 2) :
+    ((y_val + 1) % 2);
+  const unsigned int start_x = (checkerboard_adjustment == 1) ? 0 : 1;
+  const unsigned int end_final = 
+    std::min(
+      width_checkerboard_level - checkerboard_adjustment,
+      width_checkerboard_run_processing);
+  const int end_x_simd_vect_start =
+      std::max(0, (int)(end_final / simd_data_size) * (int)simd_data_size - (int)simd_data_size);
+
+  return {checkerboard_adjustment, start_x, end_final, end_x_simd_vect_start};
+}
+
 template<RunData_t T, RunDataVect_t U, unsigned int DISP_VALS>
 void beliefprop_cpu::RunBPIterationUsingCheckerboardUpdatesUseSIMDVectorsProcess(
   beliefprop::CheckerboardPart checkerboard_to_update,
@@ -896,19 +930,14 @@ void beliefprop_cpu::RunBPIterationUsingCheckerboardUpdatesUseSIMDVectorsProcess
 #if defined(__APPLE__) && !defined(DONT_USE_GRAND_CENTRAL_DISPATCH)
       const unsigned int y_val = y_index + 1;
 #endif //__APPLE__
-
-      //checkerboard_adjustment used for indexing into current checkerboard to update
-      const unsigned int checkerboard_adjustment =
-        (checkerboard_to_update == beliefprop::CheckerboardPart::kCheckerboardPart0) ?
-          ((y_val) % 2) :
-          ((y_val + 1) % 2);
-      const unsigned int start_x = (checkerboard_adjustment == 1) ? 0 : 1;
-      const unsigned int end_final = 
-        std::min(
-          current_bp_level.width_checkerboard_level_ - checkerboard_adjustment,
-          width_checkerboard_run_processing);
-      const int end_x_simd_vect_start =
-        std::max(0, (int)(end_final / simd_data_size) * (int)simd_data_size - (int)simd_data_size);
+      
+      //retrieve attributes needed for SIMD processing
+      const auto [checkerboard_adjustment, start_x, end_final, end_x_simd_vect_start] = 
+        setupSIMDProcessing(y_val,
+                            checkerboard_to_update,
+                            current_bp_level.width_checkerboard_level_,
+                            width_checkerboard_run_processing,
+                            simd_data_size);
 
       for (unsigned int x_val = 0; x_val < end_final; x_val += simd_data_size) {
         unsigned int x_val_process = x_val;
@@ -1068,19 +1097,14 @@ void beliefprop_cpu::RunBPIterationUsingCheckerboardUpdatesUseSIMDVectorsProcess
 #if defined(__APPLE__) && !defined(DONT_USE_GRAND_CENTRAL_DISPATCH)
       const unsigned int y_val = y_index + 1;
 #endif //__APPLE__
-
-      //checkerboard_adjustment used for indexing into current checkerboard to update
-      const unsigned int checkerboard_adjustment =
-        (checkerboard_to_update == beliefprop::CheckerboardPart::kCheckerboardPart0) ?
-          ((y_val) % 2) :
-          ((y_val + 1) % 2);
-      const unsigned int start_x = (checkerboard_adjustment == 1) ? 0 : 1;
-      const unsigned int end_final =
-        std::min(
-          current_bp_level.width_checkerboard_level_ - checkerboard_adjustment,
-          width_checkerboard_run_processing);
-      const int end_x_simd_vect_start =
-        std::max(0, (int)(end_final / simd_data_size) * (int)simd_data_size - (int)simd_data_size);
+      
+      //retrieve attributes needed for SIMD processing
+      const auto [checkerboard_adjustment, start_x, end_final, end_x_simd_vect_start] = 
+        setupSIMDProcessing(y_val,
+                            checkerboard_to_update,
+                            current_bp_level.width_checkerboard_level_,
+                            width_checkerboard_run_processing,
+                            simd_data_size);
 
       for (unsigned int x_val = 0; x_val < end_final; x_val += simd_data_size) {
         unsigned int x_val_process = x_val;
@@ -1555,8 +1579,8 @@ void beliefprop_cpu::RetrieveOutputDisparityUseSIMDVectors(
       current_bp_level.bytes_align_memory_, 2 * num_data_disp_checkerboard * sizeof(V)));
 #endif
 
-  for (const auto checkerboardGetDispMap : {beliefprop::CheckerboardPart::kCheckerboardPart0,
-                                            beliefprop::CheckerboardPart::kCheckerboardPart1})
+  for (const auto checkerboard_get_disp_map : {beliefprop::CheckerboardPart::kCheckerboardPart0,
+                                               beliefprop::CheckerboardPart::kCheckerboardPart1})
   {
 #if !defined(__APPLE__) || defined(DONT_USE_GRAND_CENTRAL_DISPATCH)
 #if defined(SET_THREAD_COUNT_INDIVIDUAL_KERNELS_CPU)
@@ -1582,19 +1606,14 @@ void beliefprop_cpu::RetrieveOutputDisparityUseSIMDVectors(
 #if defined(__APPLE__) && !defined(DONT_USE_GRAND_CENTRAL_DISPATCH)
       const unsigned int y_val = y_index + 1;
 #endif //__APPLE__
-
-      //checkerboard_adjustment used for indexing into current checkerboard to retrieve best disparities
-      const unsigned int checkerboard_adjustment = 
-        (checkerboardGetDispMap == beliefprop::CheckerboardPart::kCheckerboardPart0) ?
-          ((y_val) % 2) :
-          ((y_val + 1) % 2);
-      const unsigned int start_x = (checkerboard_adjustment == 1) ? 0 : 1;
-      const unsigned int end_final =
-        std::min(
-          current_bp_level.width_checkerboard_level_ - checkerboard_adjustment,
-          width_checkerboard_run_processing);
-      const int end_x_simd_vect_start =
-        std::max(0, (int)(end_final / simd_data_size) * (int)simd_data_size - (int)simd_data_size);
+      
+      //retrieve attributes needed for SIMD processing
+      const auto [checkerboard_adjustment, start_x, end_final, end_x_simd_vect_start] = 
+        setupSIMDProcessing(y_val,
+                            checkerboard_get_disp_map,
+                            current_bp_level.width_checkerboard_level_,
+                            width_checkerboard_run_processing,
+                            simd_data_size);
 
       for (unsigned int x_val = 0; x_val < end_final; x_val += simd_data_size) {
         unsigned int x_val_process = x_val;
@@ -1623,16 +1642,13 @@ void beliefprop_cpu::RetrieveOutputDisparityUseSIMDVectors(
             current_bp_level.bytes_align_memory_,
             current_bp_level.padded_width_checkerboard_level_);
 
-        //declare SIMD vectors for data and message values at each disparity
-        //U data_message, prev_u_message, prev_d_message, prev_l_message, prev_r_message;
-
         //declare SIMD vectors for current best values and best disparities
         W best_vals, best_disparities, val_at_disp;
 
         //load using aligned instructions when possible
         if constexpr (DISP_VALS > 0) {
           for (unsigned int current_disparity = 0; current_disparity < DISP_VALS; current_disparity++) {
-            if (checkerboardGetDispMap == beliefprop::CheckerboardPart::kCheckerboardPart0) {
+            if (checkerboard_get_disp_map == beliefprop::CheckerboardPart::kCheckerboardPart0) {
               if (data_aligned_x_val) {
                 //retrieve and get sum of message and data values
                 val_at_disp = simd_processing::AddVals<U, U, W>(
@@ -1668,7 +1684,7 @@ void beliefprop_cpu::RetrieveOutputDisparityUseSIMDVectors(
                     current_disparity, current_bp_level, DISP_VALS, data_cost_checkerboard_0));
               }
             }
-            else //checkerboardGetDispMap == beliefprop::CheckerboardPart::kCheckerboardPart1
+            else //checkerboard_get_disp_map == beliefprop::CheckerboardPart::kCheckerboardPart1
             {
               if (data_aligned_x_val) {
                 //retrieve and get sum of message and data values
@@ -1719,22 +1735,22 @@ void beliefprop_cpu::RetrieveOutputDisparityUseSIMDVectors(
             }
           }
           if (data_aligned_x_val) {
-            if (checkerboardGetDispMap == beliefprop::CheckerboardPart::kCheckerboardPart0) {
+            if (checkerboard_get_disp_map == beliefprop::CheckerboardPart::kCheckerboardPart0) {
               simd_processing::StorePackedDataAligned<V, W>(
                 index_output, disparity_checkerboard, best_disparities);
             }
-            else //checkerboardGetDispMap == beliefprop::CheckerboardPart::kCheckerboardPart1
+            else //checkerboard_get_disp_map == beliefprop::CheckerboardPart::kCheckerboardPart1
             {
               simd_processing::StorePackedDataAligned<V, W>(
                 num_data_disp_checkerboard + index_output, disparity_checkerboard, best_disparities);
             }
           }
           else {
-            if (checkerboardGetDispMap == beliefprop::CheckerboardPart::kCheckerboardPart0) {
+            if (checkerboard_get_disp_map == beliefprop::CheckerboardPart::kCheckerboardPart0) {
               simd_processing::StorePackedDataUnaligned<V, W>(
                 index_output, disparity_checkerboard, best_disparities);
             }
-            else //checkerboardGetDispMap == beliefprop::CheckerboardPart::kCheckerboardPart1
+            else //checkerboard_get_disp_map == beliefprop::CheckerboardPart::kCheckerboardPart1
             {
               simd_processing::StorePackedDataUnaligned<V, W>(
                 num_data_disp_checkerboard + index_output, disparity_checkerboard, best_disparities);
@@ -1743,7 +1759,7 @@ void beliefprop_cpu::RetrieveOutputDisparityUseSIMDVectors(
         }
         else {
           for (unsigned int current_disparity = 0; current_disparity < bp_settings_disp_vals; current_disparity++) {
-            if (checkerboardGetDispMap == beliefprop::CheckerboardPart::kCheckerboardPart0) {
+            if (checkerboard_get_disp_map == beliefprop::CheckerboardPart::kCheckerboardPart0) {
               if (data_aligned_x_val) {
                 //retrieve and get sum of message and data values
                 val_at_disp = simd_processing::AddVals<U, U, W>(
@@ -1779,7 +1795,7 @@ void beliefprop_cpu::RetrieveOutputDisparityUseSIMDVectors(
                     current_disparity, current_bp_level, bp_settings_disp_vals, data_cost_checkerboard_0));
               }
             }
-            else //checkerboardGetDispMap == beliefprop::CheckerboardPart::kCheckerboardPart1
+            else //checkerboard_get_disp_map == beliefprop::CheckerboardPart::kCheckerboardPart1
             {
               if (data_aligned_x_val) {
                 //retrieve and get sum of message and data values
@@ -1834,22 +1850,22 @@ void beliefprop_cpu::RetrieveOutputDisparityUseSIMDVectors(
           }
           //store best disparities in checkerboard being updated
           if (data_aligned_x_val) {
-            if (checkerboardGetDispMap == beliefprop::CheckerboardPart::kCheckerboardPart0) {
+            if (checkerboard_get_disp_map == beliefprop::CheckerboardPart::kCheckerboardPart0) {
               simd_processing::StorePackedDataAligned<V, W>(
                 index_output, disparity_checkerboard, best_disparities);
             }
-            else //checkerboardGetDispMap == beliefprop::CheckerboardPart::kCheckerboardPart1
+            else //checkerboard_get_disp_map == beliefprop::CheckerboardPart::kCheckerboardPart1
             {
               simd_processing::StorePackedDataAligned<V, W>(
                 num_data_disp_checkerboard + index_output, disparity_checkerboard, best_disparities);
             }
           }
           else {
-            if (checkerboardGetDispMap == beliefprop::CheckerboardPart::kCheckerboardPart0) {
+            if (checkerboard_get_disp_map == beliefprop::CheckerboardPart::kCheckerboardPart0) {
               simd_processing::StorePackedDataUnaligned<V, W>(
                 index_output, disparity_checkerboard, best_disparities);
             }
-            else //checkerboardGetDispMap == beliefprop::CheckerboardPart::kCheckerboardPart1
+            else //checkerboard_get_disp_map == beliefprop::CheckerboardPart::kCheckerboardPart1
             {
               simd_processing::StorePackedDataUnaligned<V, W>(
                 num_data_disp_checkerboard + index_output, disparity_checkerboard, best_disparities);
