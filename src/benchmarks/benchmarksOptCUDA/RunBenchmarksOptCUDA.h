@@ -1,5 +1,5 @@
 /*
-Copyright (C) 2024 Scott Grauer-Gray
+Copyright (C) 2026 Scott Grauer-Gray
 
 This program is free software; you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
