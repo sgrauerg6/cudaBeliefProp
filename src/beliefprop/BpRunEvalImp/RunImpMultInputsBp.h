@@ -36,7 +36,6 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 /**
  * @brief Child class of RunImpMultInputs to run specified belief propagation implementation on a
  * number of inputs.
- * 
  */
 class RunImpMultInputsBp final : public RunImpMultInputs {
 public:
