@@ -87,9 +87,9 @@ run_environment::AccSetting RunImpMultTypesAccels::FastestAvailableAcc(
      run_environment::AccSetting::kNEON})
   {
     if (std::ranges::any_of(run_benchmark_imps_w_acc,
-                           [&acceleration](const auto& run_imp) { 
-                             return run_imp->AccelerationSetting() == acceleration;
-                           }))
+                            [&acceleration](const auto& run_imp) { 
+                              return run_imp->AccelerationSetting() == acceleration;
+                            }))
     {
       //return acceleration as fastest acceleration if equal to acceleration
       //setting of any input run implementation
