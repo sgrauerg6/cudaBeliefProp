@@ -48,8 +48,8 @@ DRIVER_BENCHMARK_CUDA_OBJECT_CUSTOM = ${OBJ_DIR}/DriverBpStereoCUDA_customRun.o
 DEPS := $(OBJECTS:.o=.d)
 
 # executables for belief propagation CUDA implementations
-DRIVER_BENCHMARK_CUDA = driverCudaBp
-DRIVER_BENCHMARK_CUDA_CUSTOM = driverCudaBpCustom
+DRIVER_BENCHMARK_CPU = driverCPUBnchmrks
+DRIVER_BENCHMARK_CPU_CUSTOM = driverCPUBnchmrksCustom
 
 all: impDriverCUDA impDriverCUDACustom
 

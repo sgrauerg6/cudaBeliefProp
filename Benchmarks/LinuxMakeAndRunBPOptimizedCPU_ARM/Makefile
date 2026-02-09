@@ -36,8 +36,8 @@ DRIVER_BENCHMARK_CPU_OBJECT_CUSTOM = ${OBJ_DIR}/DriverBpStereoCPU_customRun.o
 DEPS := $(OBJECTS:.o=.d)
 
 # executables for belief propagation CPU implementations
-DRIVER_BENCHMARK_CPU = driverCPUBp
-DRIVER_BENCHMARK_CPU_CUSTOM = driverCPUBpCustom
+DRIVER_BENCHMARK_CPU = driverCPUBnchmrks
+DRIVER_BENCHMARK_CPU_CUSTOM = driverCPUBnchmrksCustom
 
 all: impDriverCPU impDriverCPUCustom
 
