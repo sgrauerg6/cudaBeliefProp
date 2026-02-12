@@ -268,19 +268,19 @@ template<> inline __m256h simd_processing::GetMinByElement<__m256h>(
 #endif //FLOAT16_VECTORIZATION
 
 template<> inline void simd_processing::StorePackedDataAligned<float, __m256>(
-  unsigned int indexDataStore, float* locationDataStore, const __m256& dataToStore)
+  size_t indexDataStore, float* locationDataStore, const __m256& dataToStore)
 {
   _mm256_store_ps(&locationDataStore[indexDataStore], dataToStore);
 }
 
 template<> inline void simd_processing::StorePackedDataAligned<short, __m256>(
-  unsigned int indexDataStore, short* locationDataStore, const __m256& dataToStore)
+  size_t indexDataStore, short* locationDataStore, const __m256& dataToStore)
 {
   _mm_store_si128((__m128i*)(&locationDataStore[indexDataStore]), _mm256_cvtps_ph(dataToStore, 0));
 }
 
 template<> inline void simd_processing::StorePackedDataAligned<double, __m256d>(
-  unsigned int indexDataStore, double* locationDataStore, const __m256d& dataToStore)
+  size_t indexDataStore, double* locationDataStore, const __m256d& dataToStore)
 {
   _mm256_store_pd(&locationDataStore[indexDataStore], dataToStore);
 }
@@ -288,7 +288,7 @@ template<> inline void simd_processing::StorePackedDataAligned<double, __m256d>(
 #if defined(FLOAT16_VECTORIZATION)
 
 template<> inline void simd_processing::StorePackedDataAligned<_Float16, __m256h>(
-  unsigned int indexDataStore, _Float16* locationDataStore, const __m256h& dataToStore)
+  size_t indexDataStore, _Float16* locationDataStore, const __m256h& dataToStore)
 {
   _mm256_store_ph(&locationDataStore[indexDataStore], dataToStore);
 }
@@ -296,19 +296,19 @@ template<> inline void simd_processing::StorePackedDataAligned<_Float16, __m256h
 #endif //FLOAT16_VECTORIZATION
 
 template<> inline void simd_processing::StorePackedDataUnaligned<float, __m256>(
-  unsigned int indexDataStore, float* locationDataStore, const __m256& dataToStore)
+  size_t indexDataStore, float* locationDataStore, const __m256& dataToStore)
 {
   _mm256_storeu_ps(&locationDataStore[indexDataStore], dataToStore);
 }
 
 template<> inline void simd_processing::StorePackedDataUnaligned<short, __m256>(
-  unsigned int indexDataStore, short* locationDataStore, const __m256& dataToStore)
+  size_t indexDataStore, short* locationDataStore, const __m256& dataToStore)
 {
   _mm_storeu_si128((__m128i*)(&locationDataStore[indexDataStore]), _mm256_cvtps_ph(dataToStore, 0));
 }
 
 template<> inline void simd_processing::StorePackedDataUnaligned<double, __m256d>(
-  unsigned int indexDataStore, double* locationDataStore, const __m256d& dataToStore)
+  size_t indexDataStore, double* locationDataStore, const __m256d& dataToStore)
 {
   _mm256_storeu_pd(&locationDataStore[indexDataStore], dataToStore);
 }
@@ -316,7 +316,7 @@ template<> inline void simd_processing::StorePackedDataUnaligned<double, __m256d
 #if defined(FLOAT16_VECTORIZATION)
 
 template<> inline void simd_processing::StorePackedDataUnaligned<_Float16, __m256h>(
-  unsigned int indexDataStore, _Float16* locationDataStore, const __m256h& dataToStore)
+  size_t indexDataStore, _Float16* locationDataStore, const __m256h& dataToStore)
 {
   _mm256_storeu_ph(&locationDataStore[indexDataStore], dataToStore);
 }

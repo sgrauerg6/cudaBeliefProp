@@ -32,7 +32,7 @@ void SmoothImageCUDA::operator()(const BpImage<unsigned int>& in_image, float si
 {
   // setup execution parameters
   const auto kernel_thread_block_dims = this->parallel_params_.OptParamsForKernel(
-    {static_cast<unsigned int>(beliefprop::BpKernel::kBlurImages), 0});
+    {static_cast<size_t>(beliefprop::BpKernel::kBlurImages), 0});
   const dim3 threads{kernel_thread_block_dims[0], kernel_thread_block_dims[1]};
   const dim3 grid{(unsigned int)(ceil((float)in_image.Width() / (float)threads.x)),
                   (unsigned int)(ceil((float)in_image.Height() / (float)threads.y))};

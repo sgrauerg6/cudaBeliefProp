@@ -37,7 +37,7 @@ __global__ void beliefprop::PrintDataAndMessageValsAtPointKernel(
   if (((x_val + y_val) % 2) == 0) {
     printf("x_val: %d\n", x_val);
     printf("y_val: %d\n", y_val);
-    for (unsigned int current_disparity = 0; current_disparity < DISP_VALS; current_disparity++) {
+    for (size_t current_disparity = 0; current_disparity < DISP_VALS; current_disparity++) {
       printf("DISP: %d\n", current_disparity);
       printf("messageUPrevStereoCheckerboard: %f \n",
           (float) message_u_checkerboard_0[beliefprop::RetrieveIndexInDataAndMessage(
@@ -63,7 +63,7 @@ __global__ void beliefprop::PrintDataAndMessageValsAtPointKernel(
   } else {
     printf("x_val: %d\n", x_val);
     printf("y_val: %d\n", y_val);
-    for (unsigned int current_disparity = 0; current_disparity < DISP_VALS; current_disparity++) {
+    for (size_t current_disparity = 0; current_disparity < DISP_VALS; current_disparity++) {
       printf("DISP: %d\n", current_disparity);
       printf("messageUPrevStereoCheckerboard: %f \n",
           (float) message_u_checkerboard_1[beliefprop::RetrieveIndexInDataAndMessage(
@@ -103,7 +103,7 @@ __device__ void printDataAndMessageValsAtPointDevice(
   if (((x_val + y_val) % 2) == 0) {
     printf("x_val: %d\n", x_val);
     printf("y_val: %d\n", y_val);
-    for (unsigned int current_disparity = 0; current_disparity < DISP_VALS; current_disparity++) {
+    for (size_t current_disparity = 0; current_disparity < DISP_VALS; current_disparity++) {
       printf("DISP: %d\n", current_disparity);
       printf("messageUPrevStereoCheckerboard: %f \n",
           (float) message_u_checkerboard_0[beliefprop::RetrieveIndexInDataAndMessage(
@@ -129,7 +129,7 @@ __device__ void printDataAndMessageValsAtPointDevice(
   } else {
     printf("x_val: %d\n", x_val);
     printf("y_val: %d\n", y_val);
-    for (unsigned int current_disparity = 0; current_disparity < DISP_VALS; current_disparity++) {
+    for (size_t current_disparity = 0; current_disparity < DISP_VALS; current_disparity++) {
       printf("DISP: %d\n", current_disparity);
       printf("messageUPrevStereoCheckerboard: %f \n",
           (float) message_u_checkerboard_1[beliefprop::RetrieveIndexInDataAndMessage(
@@ -170,7 +170,7 @@ __global__ void beliefprop::PrintDataAndMessageValsToPointKernel(
   if (((x_val + y_val) % 2) == 0) {
     printf("x_val: %d\n", x_val);
     printf("y_val: %d\n", y_val);
-    for (unsigned int current_disparity = 0; current_disparity < DISP_VALS; current_disparity++) {
+    for (size_t current_disparity = 0; current_disparity < DISP_VALS; current_disparity++) {
       printf("DISP: %d\n", current_disparity);
       printf("messageUPrevStereoCheckerboard: %f \n",
           (float) message_u_checkerboard_1[beliefprop::RetrieveIndexInDataAndMessage(
@@ -196,7 +196,7 @@ __global__ void beliefprop::PrintDataAndMessageValsToPointKernel(
   } else {
     printf("x_val: %d\n", x_val);
     printf("y_val: %d\n", y_val);
-    for (unsigned int current_disparity = 0; current_disparity < DISP_VALS; current_disparity++) {
+    for (size_t current_disparity = 0; current_disparity < DISP_VALS; current_disparity++) {
       printf("DISP: %d\n", current_disparity);
       printf("messageUPrevStereoCheckerboard: %f \n",
           (float) message_u_checkerboard_0[beliefprop::RetrieveIndexInDataAndMessage(
@@ -238,7 +238,7 @@ __device__ void printDataAndMessageValsToPointDevice(
   if (((x_val + y_val) % 2) == 0) {
     printf("x_val: %d\n", x_val);
     printf("y_val: %d\n", y_val);
-    for (unsigned int current_disparity = 0; current_disparity < DISP_VALS; current_disparity++) {
+    for (size_t current_disparity = 0; current_disparity < DISP_VALS; current_disparity++) {
       printf("DISP: %d\n", current_disparity);
       printf("messageUPrevStereoCheckerboard: %f \n",
           (float) message_u_checkerboard_1[beliefprop::RetrieveIndexInDataAndMessage(
@@ -264,7 +264,7 @@ __device__ void printDataAndMessageValsToPointDevice(
   } else {
     printf("x_val: %d\n", x_val);
     printf("y_val: %d\n", y_val);
-    for (unsigned int current_disparity = 0; current_disparity < DISP_VALS; current_disparity++) {
+    for (size_t current_disparity = 0; current_disparity < DISP_VALS; current_disparity++) {
       printf("DISP: %d\n", current_disparity);
       printf("messageUPrevStereoCheckerboard: %f \n",
           (float) message_u_checkerboard_0[beliefprop::RetrieveIndexInDataAndMessage(

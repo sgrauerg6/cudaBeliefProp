@@ -186,7 +186,7 @@ namespace simd_processing
    * @param dataToStore 
    */
   template<RunData_t T, RunDataVectProcess_t U>
-  void StorePackedDataAligned(unsigned int indexDataStore, T* locationDataStore, const U& dataToStore) {
+  void StorePackedDataAligned(size_t indexDataStore, T* locationDataStore, const U& dataToStore) {
     locationDataStore[indexDataStore] = dataToStore;
   }
 
@@ -203,7 +203,7 @@ namespace simd_processing
    * @param dataToStore 
    */
   template<RunData_t T, RunDataVectProcess_t U>
-  void StorePackedDataUnaligned(unsigned int indexDataStore, T* locationDataStore, const U& dataToStore) {
+  void StorePackedDataUnaligned(size_t indexDataStore, T* locationDataStore, const U& dataToStore) {
     locationDataStore[indexDataStore] = dataToStore;
   }
 };

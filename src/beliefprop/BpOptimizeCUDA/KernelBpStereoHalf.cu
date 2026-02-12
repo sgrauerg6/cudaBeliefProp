@@ -29,13 +29,13 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  */
 
 //set constexpr unsigned int values for number of disparity values for each stereo set used
-constexpr unsigned int kDispVals0{beliefprop::kStereoSetsToProcess[0].num_disp_vals};
-constexpr unsigned int kDispVals1{beliefprop::kStereoSetsToProcess[1].num_disp_vals};
-constexpr unsigned int kDispVals2{beliefprop::kStereoSetsToProcess[2].num_disp_vals};
-constexpr unsigned int kDispVals3{beliefprop::kStereoSetsToProcess[3].num_disp_vals};
-constexpr unsigned int kDispVals4{beliefprop::kStereoSetsToProcess[4].num_disp_vals};
-constexpr unsigned int kDispVals5{beliefprop::kStereoSetsToProcess[5].num_disp_vals};
-constexpr unsigned int kDispVals6{beliefprop::kStereoSetsToProcess[6].num_disp_vals};
+constexpr unsigned int kDispVals0{beliefprop::kStereoSetsToProcess[static_cast<size_t>(beliefprop::Stereo_Set::kTsukubaSetHalfSize)].num_disp_vals};
+constexpr unsigned int kDispVals1{beliefprop::kStereoSetsToProcess[static_cast<size_t>(beliefprop::Stereo_Set::kTsukubaSet)].num_disp_vals};
+constexpr unsigned int kDispVals2{beliefprop::kStereoSetsToProcess[static_cast<size_t>(beliefprop::Stereo_Set::kVenus)].num_disp_vals};
+constexpr unsigned int kDispVals3{beliefprop::kStereoSetsToProcess[static_cast<size_t>(beliefprop::Stereo_Set::kBarn1)].num_disp_vals};
+constexpr unsigned int kDispVals4{beliefprop::kStereoSetsToProcess[static_cast<size_t>(beliefprop::Stereo_Set::kConesQuarterSize)].num_disp_vals};
+constexpr unsigned int kDispVals5{beliefprop::kStereoSetsToProcess[static_cast<size_t>(beliefprop::Stereo_Set::kConesHalfSize)].num_disp_vals};
+constexpr unsigned int kDispVals6{beliefprop::kStereoSetsToProcess[static_cast<size_t>(beliefprop::Stereo_Set::kConesFullSizeCropped)].num_disp_vals};
 
 //device function to process messages using half precision with number of disparity values
 //given in template parameter
@@ -49,7 +49,7 @@ __device__ inline void MsgStereoHalf(unsigned int x_val, unsigned int y_val,
   half minimum = beliefprop::kHighValBp<half>;
   half dst[DISP_VALS];
 
-  for (unsigned int current_disparity = 0; current_disparity < DISP_VALS; current_disparity++) {
+  for (size_t current_disparity = 0; current_disparity < DISP_VALS; current_disparity++) {
     dst[current_disparity] = messages_neighbor_1[current_disparity] +
                             messages_neighbor_2[current_disparity] +
                             messages_neighbor_3[current_disparity] +
@@ -68,7 +68,7 @@ __device__ inline void MsgStereoHalf(unsigned int x_val, unsigned int y_val,
   // normalize
   half val_to_normalize = 0;
 
-  for (unsigned int current_disparity = 0; current_disparity < DISP_VALS; current_disparity++)
+  for (size_t current_disparity = 0; current_disparity < DISP_VALS; current_disparity++)
   {
     if (minimum < dst[current_disparity]) {
       dst[current_disparity] = minimum;
@@ -85,7 +85,7 @@ __device__ inline void MsgStereoHalf(unsigned int x_val, unsigned int y_val,
       current_bp_level.LevelProperties().height_level_, 0,
       DISP_VALS);
 
-    for (unsigned int current_disparity = 0; current_disparity < DISP_VALS; current_disparity++) {
+    for (size_t current_disparity = 0; current_disparity < DISP_VALS; current_disparity++) {
       dst_message_array[dest_message_array_index] = (half) 0.0;
       if constexpr (beliefprop::kOptimizedIndexingSetting) {
         dest_message_array_index += current_bp_level.LevelProperties().padded_width_checkerboard_level_;
@@ -104,7 +104,7 @@ __device__ inline void MsgStereoHalf(unsigned int x_val, unsigned int y_val,
       current_bp_level.LevelProperties().height_level_, 0,
       DISP_VALS);
 
-    for (unsigned int current_disparity = 0; current_disparity < DISP_VALS; current_disparity++)
+    for (size_t current_disparity = 0; current_disparity < DISP_VALS; current_disparity++)
     {
       dst[current_disparity] -= val_to_normalize;
       dst_message_array[dest_message_array_index] = dst[current_disparity];
@@ -138,7 +138,7 @@ __device__ inline void MsgStereoHalf(unsigned int x_val, unsigned int y_val,
     bp_settings_disp_vals);
   unsigned int proc_array_idx{proc_array_idx_disp_0};
 
-  for (unsigned int current_disparity = 0; current_disparity < bp_settings_disp_vals; current_disparity++)
+  for (size_t current_disparity = 0; current_disparity < bp_settings_disp_vals; current_disparity++)
   {
     //set initial dst processing array value corresponding to disparity for M message type
     beliefprop::SetInitDstProcessing<half, half, M>(x_val, y_val, current_bp_level, prev_u_messageArray, prev_d_messageArray,
@@ -168,7 +168,7 @@ __device__ inline void MsgStereoHalf(unsigned int x_val, unsigned int y_val,
   half val_to_normalize{(half)0.0};
 
   proc_array_idx = proc_array_idx_disp_0;
-  for (unsigned int current_disparity = 0; current_disparity < bp_settings_disp_vals; current_disparity++) {
+  for (size_t current_disparity = 0; current_disparity < bp_settings_disp_vals; current_disparity++) {
     if (minimum < dst_processing[proc_array_idx]) {
       dst_processing[proc_array_idx] = minimum;
     }
@@ -190,7 +190,7 @@ __device__ inline void MsgStereoHalf(unsigned int x_val, unsigned int y_val,
     //dst processing index and message array index are the same for each disparity value in this processing
     proc_array_idx = proc_array_idx_disp_0;
 
-    for (unsigned int current_disparity = 0; current_disparity < bp_settings_disp_vals; current_disparity++) {
+    for (size_t current_disparity = 0; current_disparity < bp_settings_disp_vals; current_disparity++) {
       dst_message_array[proc_array_idx] = (half)0.0;
       if constexpr (beliefprop::kOptimizedIndexingSetting) {
         proc_array_idx += current_bp_level.LevelProperties().padded_width_checkerboard_level_;
@@ -207,7 +207,7 @@ __device__ inline void MsgStereoHalf(unsigned int x_val, unsigned int y_val,
     //dst processing index and message array index are the same for each disparity value in this processing
     proc_array_idx = proc_array_idx_disp_0;
 
-    for (unsigned int current_disparity = 0; current_disparity < bp_settings_disp_vals; current_disparity++) {
+    for (size_t current_disparity = 0; current_disparity < bp_settings_disp_vals; current_disparity++) {
       dst_processing[proc_array_idx] -= val_to_normalize;
       dst_message_array[proc_array_idx] = ConvertValToDifferentDataTypeIfNeeded<half, half>(dst_processing[proc_array_idx]);
       if constexpr (beliefprop::kOptimizedIndexingSetting) {

@@ -32,7 +32,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 //constructor to set parallel parameters with default dimensions for each kernel
 ParallelParamsBp::ParallelParamsBp(
     run_environment::OptParallelParamsSetting opt_parallel_params_setting,
-    unsigned int num_levels,
+    size_t num_levels,
     const std::array<unsigned int, 2>& default_parallel_dims) : 
     opt_parallel_params_setting_{opt_parallel_params_setting},
     num_levels_{num_levels}
@@ -55,17 +55,17 @@ ParallelParamsBp::ParallelParamsBp(
 void ParallelParamsBp::SetParallelDims(
   const std::array<unsigned int, 2>& parallel_dims)
 {
-  parallel_dims_each_kernel_[static_cast<unsigned int>(beliefprop::BpKernel::kBlurImages)] =
+  parallel_dims_each_kernel_[static_cast<size_t>(beliefprop::BpKernel::kBlurImages)] =
     {parallel_dims};
-  parallel_dims_each_kernel_[static_cast<unsigned int>(beliefprop::BpKernel::kDataCostsAtLevel)] =
+  parallel_dims_each_kernel_[static_cast<size_t>(beliefprop::BpKernel::kDataCostsAtLevel)] =
     std::vector<std::array<unsigned int, 2>>(num_levels_, parallel_dims);
-  parallel_dims_each_kernel_[static_cast<unsigned int>(beliefprop::BpKernel::kInitMessageVals)] =
+  parallel_dims_each_kernel_[static_cast<size_t>(beliefprop::BpKernel::kInitMessageVals)] =
     {parallel_dims};
-  parallel_dims_each_kernel_[static_cast<unsigned int>(beliefprop::BpKernel::kBpAtLevel)] =
+  parallel_dims_each_kernel_[static_cast<size_t>(beliefprop::BpKernel::kBpAtLevel)] =
     std::vector<std::array<unsigned int, 2>>(num_levels_, parallel_dims);
-  parallel_dims_each_kernel_[static_cast<unsigned int>(beliefprop::BpKernel::kCopyAtLevel)] =
+  parallel_dims_each_kernel_[static_cast<size_t>(beliefprop::BpKernel::kCopyAtLevel)] =
     std::vector<std::array<unsigned int, 2>>(num_levels_, parallel_dims);
-  parallel_dims_each_kernel_[static_cast<unsigned int>(beliefprop::BpKernel::kOutputDisp)] =
+  parallel_dims_each_kernel_[static_cast<size_t>(beliefprop::BpKernel::kOutputDisp)] =
     {parallel_dims};
 }
 
@@ -83,32 +83,32 @@ RunData ParallelParamsBp::AsRunData() const
 
   //add parallel parameters for each kernel
   curr_run_data.AddDataWHeader(std::string(beliefprop::kBlurImagesPDimsHeader),
-    std::to_string(parallel_dims_each_kernel_[static_cast<unsigned int>(beliefprop::BpKernel::kBlurImages)][0][0]) + " x " +
-    std::to_string(parallel_dims_each_kernel_[static_cast<unsigned int>(beliefprop::BpKernel::kBlurImages)][0][1]));
+    std::to_string(parallel_dims_each_kernel_[static_cast<size_t>(beliefprop::BpKernel::kBlurImages)][0][0]) + " x " +
+    std::to_string(parallel_dims_each_kernel_[static_cast<size_t>(beliefprop::BpKernel::kBlurImages)][0][1]));
   curr_run_data.AddDataWHeader(std::string(beliefprop::kInitMValsPDimsHeader),
-    std::to_string(parallel_dims_each_kernel_[static_cast<unsigned int>(beliefprop::BpKernel::kInitMessageVals)][0][0]) + " x " +
-    std::to_string(parallel_dims_each_kernel_[static_cast<unsigned int>(beliefprop::BpKernel::kInitMessageVals)][0][1]));
-  for (unsigned int level=0; level < parallel_dims_each_kernel_[static_cast<unsigned int>(beliefprop::BpKernel::kDataCostsAtLevel)].size(); level++) {
+    std::to_string(parallel_dims_each_kernel_[static_cast<size_t>(beliefprop::BpKernel::kInitMessageVals)][0][0]) + " x " +
+    std::to_string(parallel_dims_each_kernel_[static_cast<size_t>(beliefprop::BpKernel::kInitMessageVals)][0][1]));
+  for (size_t level=0; level < parallel_dims_each_kernel_[static_cast<size_t>(beliefprop::BpKernel::kDataCostsAtLevel)].size(); level++) {
     curr_run_data.AddDataWHeader(
       std::string(beliefprop::kLevelText) + " " + std::to_string(level) + " " + std::string(beliefprop::kDataCostsPDimsHeader),
-      std::to_string(parallel_dims_each_kernel_[static_cast<unsigned int>(beliefprop::BpKernel::kDataCostsAtLevel)][level][0]) + " x " +
-      std::to_string(parallel_dims_each_kernel_[static_cast<unsigned int>(beliefprop::BpKernel::kDataCostsAtLevel)][level][1]));
+      std::to_string(parallel_dims_each_kernel_[static_cast<size_t>(beliefprop::BpKernel::kDataCostsAtLevel)][level][0]) + " x " +
+      std::to_string(parallel_dims_each_kernel_[static_cast<size_t>(beliefprop::BpKernel::kDataCostsAtLevel)][level][1]));
   }
-  for (unsigned int level=0; level < parallel_dims_each_kernel_[static_cast<unsigned int>(beliefprop::BpKernel::kBpAtLevel)].size(); level++) {
+  for (size_t level=0; level < parallel_dims_each_kernel_[static_cast<size_t>(beliefprop::BpKernel::kBpAtLevel)].size(); level++) {
     curr_run_data.AddDataWHeader(
       std::string(beliefprop::kLevelText) + " "  + std::to_string(level) + " " + std::string(beliefprop::kBpItersPDimsHeader),
-      std::to_string(parallel_dims_each_kernel_[static_cast<unsigned int>(beliefprop::BpKernel::kBpAtLevel)][level][0]) + " x " +
-      std::to_string(parallel_dims_each_kernel_[static_cast<unsigned int>(beliefprop::BpKernel::kBpAtLevel)][level][1]));
+      std::to_string(parallel_dims_each_kernel_[static_cast<size_t>(beliefprop::BpKernel::kBpAtLevel)][level][0]) + " x " +
+      std::to_string(parallel_dims_each_kernel_[static_cast<size_t>(beliefprop::BpKernel::kBpAtLevel)][level][1]));
   }
-  for (unsigned int level=0; level < parallel_dims_each_kernel_[static_cast<unsigned int>(beliefprop::BpKernel::kCopyAtLevel)].size(); level++) {
+  for (size_t level=0; level < parallel_dims_each_kernel_[static_cast<size_t>(beliefprop::BpKernel::kCopyAtLevel)].size(); level++) {
     curr_run_data.AddDataWHeader(
       std::string(beliefprop::kLevelText) + " " + std::to_string(level) + " " + std::string(beliefprop::kCopyToNextLevelPDimsHeader),
-      std::to_string(parallel_dims_each_kernel_[static_cast<unsigned int>(beliefprop::BpKernel::kCopyAtLevel)][level][0]) + " x " +
-      std::to_string(parallel_dims_each_kernel_[static_cast<unsigned int>(beliefprop::BpKernel::kCopyAtLevel)][level][1]));
+      std::to_string(parallel_dims_each_kernel_[static_cast<size_t>(beliefprop::BpKernel::kCopyAtLevel)][level][0]) + " x " +
+      std::to_string(parallel_dims_each_kernel_[static_cast<size_t>(beliefprop::BpKernel::kCopyAtLevel)][level][1]));
   }
   curr_run_data.AddDataWHeader(std::string(beliefprop::kCompOutputDispPDimsHeader),
-      std::to_string(parallel_dims_each_kernel_[static_cast<unsigned int>(beliefprop::BpKernel::kOutputDisp)][0][0]) + " x " +
-      std::to_string(parallel_dims_each_kernel_[static_cast<unsigned int>(beliefprop::BpKernel::kOutputDisp)][0][1]));
+      std::to_string(parallel_dims_each_kernel_[static_cast<size_t>(beliefprop::BpKernel::kOutputDisp)][0][0]) + " x " +
+      std::to_string(parallel_dims_each_kernel_[static_cast<size_t>(beliefprop::BpKernel::kOutputDisp)][0][1]));
 
   return curr_run_data;
 }
@@ -119,24 +119,24 @@ void ParallelParamsBp::AddTestResultsForParallelParams(const std::array<unsigned
   if (opt_parallel_params_setting_ ==
       run_environment::OptParallelParamsSetting::kAllowDiffKernelParallelParamsInRun)
   {
-    for (unsigned int level=0; level < num_levels_; level++) {
-      p_params_to_run_time_each_kernel_[static_cast<unsigned int>(beliefprop::BpKernel::kDataCostsAtLevel)][level][p_params_curr_run] =
+    for (size_t level=0; level < num_levels_; level++) {
+      p_params_to_run_time_each_kernel_[static_cast<size_t>(beliefprop::BpKernel::kDataCostsAtLevel)][level][p_params_curr_run] =
         *curr_run_data.GetDataAsDouble(
           std::string(beliefprop::kLevelDCostBpTimeCTimeNames[level][0]) + " " + std::string(run_eval::kMedianOfTestRunsDesc));
-      p_params_to_run_time_each_kernel_[static_cast<unsigned int>(beliefprop::BpKernel::kBpAtLevel)][level][p_params_curr_run] = 
+      p_params_to_run_time_each_kernel_[static_cast<size_t>(beliefprop::BpKernel::kBpAtLevel)][level][p_params_curr_run] = 
         *curr_run_data.GetDataAsDouble(
           std::string(beliefprop::kLevelDCostBpTimeCTimeNames[level][1]) + " " + std::string(run_eval::kMedianOfTestRunsDesc));
-      p_params_to_run_time_each_kernel_[static_cast<unsigned int>(beliefprop::BpKernel::kCopyAtLevel)][level][p_params_curr_run] =
+      p_params_to_run_time_each_kernel_[static_cast<size_t>(beliefprop::BpKernel::kCopyAtLevel)][level][p_params_curr_run] =
         *curr_run_data.GetDataAsDouble(
           std::string(beliefprop::kLevelDCostBpTimeCTimeNames[level][2]) + " " + std::string(run_eval::kMedianOfTestRunsDesc));
     }
-    p_params_to_run_time_each_kernel_[static_cast<unsigned int>(beliefprop::BpKernel::kBlurImages)][0][p_params_curr_run] =
+    p_params_to_run_time_each_kernel_[static_cast<size_t>(beliefprop::BpKernel::kBlurImages)][0][p_params_curr_run] =
       *curr_run_data.GetDataAsDouble(
         std::string(beliefprop::kTimingNames.at(beliefprop::Runtime_Type::kSmoothing)) + " " + std::string(run_eval::kMedianOfTestRunsDesc));
-    p_params_to_run_time_each_kernel_[static_cast<unsigned int>(beliefprop::BpKernel::kInitMessageVals)][0][p_params_curr_run] =
+    p_params_to_run_time_each_kernel_[static_cast<size_t>(beliefprop::BpKernel::kInitMessageVals)][0][p_params_curr_run] =
       *curr_run_data.GetDataAsDouble(
         std::string(beliefprop::kTimingNames.at(beliefprop::Runtime_Type::kInitMessagesKernel)) + " " + std::string(run_eval::kMedianOfTestRunsDesc));
-    p_params_to_run_time_each_kernel_[static_cast<unsigned int>(beliefprop::BpKernel::kOutputDisp)][0][p_params_curr_run] =
+    p_params_to_run_time_each_kernel_[static_cast<size_t>(beliefprop::BpKernel::kOutputDisp)][0][p_params_curr_run] =
       *curr_run_data.GetDataAsDouble(
         std::string(beliefprop::kTimingNames.at(beliefprop::Runtime_Type::kOutputDisparity)) + " " + std::string(run_eval::kMedianOfTestRunsDesc));
   }

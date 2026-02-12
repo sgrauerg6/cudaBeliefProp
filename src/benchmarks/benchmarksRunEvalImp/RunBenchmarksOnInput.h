@@ -17,18 +17,20 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 */
 
 /**
- * @file RunEvalBenchmarks.h
+ * @file RunBenchmarksOnInput.h
  * @author Scott Grauer-Gray
  * @brief
  * 
  * @copyright Copyright (c) 2026
  */
 
-#ifndef RUN_EVAL_BENCHMARKS_H
-#define RUN_EVAL_BENCHMARKS_H
+#ifndef RUN_BENCHMARKS_ON_INPUT_H_
+#define RUN_BENCHMARKS_ON_INPUT_H_
 
-class RunEvalBenchmarks {
+#include "RunImpOnInput.h"
+
+class RunBenchmarksOnInput : public RunImpOnInput {
 
 };
 
-#endif //RUN_EVAL_BENCHMARKS_H
+#endif //RUN_BENCHMARKS_ON_INPUT_H_

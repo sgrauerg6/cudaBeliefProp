@@ -270,8 +270,8 @@ private:
   {
     beliefprop::CheckerboardMessages<T*> output_checkerboard_messages;
     for (const auto checkerboard_num :
-      {static_cast<unsigned int>(beliefprop::CheckerboardPart::kCheckerboardPart0),
-       static_cast<unsigned int>(beliefprop::CheckerboardPart::kCheckerboardPart1)})
+      {static_cast<size_t>(beliefprop::CheckerboardPart::kCheckerboardPart0),
+       static_cast<size_t>(beliefprop::CheckerboardPart::kCheckerboardPart1)})
     {
       for (unsigned int i = 0;
            i < output_checkerboard_messages[checkerboard_num].size();
@@ -358,8 +358,8 @@ private:
 
     beliefprop::CheckerboardMessages<T*> messages_device_all_levels;
     for (const auto checkerboard_num : 
-      {static_cast<unsigned int>(beliefprop::CheckerboardPart::kCheckerboardPart0),
-       static_cast<unsigned int>(beliefprop::CheckerboardPart::kCheckerboardPart1)})
+      {static_cast<size_t>(beliefprop::CheckerboardPart::kCheckerboardPart0),
+       static_cast<size_t>(beliefprop::CheckerboardPart::kCheckerboardPart1)})
     {
       for (unsigned int i = 0;
            i < messages_device_all_levels[checkerboard_num].size();

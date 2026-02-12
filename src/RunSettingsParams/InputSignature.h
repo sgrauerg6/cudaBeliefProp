@@ -60,8 +60,8 @@ public:
    * @param use_templated_loop_iters 
    */
   explicit InputSignature(
-    std::optional<unsigned int> data_type_size,
-    std::optional<unsigned int> eval_set_num,
+    std::optional<size_t> data_type_size,
+    std::optional<size_t> eval_set_num,
     std::optional<bool> use_templated_loop_iters);
 
   /**
@@ -124,9 +124,9 @@ public:
     }
   }
 
-  unsigned int EvalSetNum() const {
+  size_t EvalSetNum() const {
     if (!eval_set_num_) {
-      return std::numeric_limits<unsigned int>::max();
+      return std::numeric_limits<size_t>::max();
     }
     else {
       return *eval_set_num_;
@@ -172,8 +172,8 @@ public:
     const InputSignature& eval_input_sig);
 
 private:
-  std::optional<unsigned int> data_type_size_;
-  std::optional<unsigned int> eval_set_num_;
+  std::optional<size_t> data_type_size_;
+  std::optional<size_t> eval_set_num_;
   std::optional<bool> use_templated_loop_iters_;
 };
 

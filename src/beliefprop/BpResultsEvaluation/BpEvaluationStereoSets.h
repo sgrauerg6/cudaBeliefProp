@@ -31,6 +31,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 
 #include <string_view>
 #include <array>
+#include <unordered_map>
 #include "BpRunProcessing/BpSettings.h"
 #include "RunSettingsParams/InputSignature.h"
 
@@ -44,6 +45,23 @@ namespace beliefprop
   /** @brief Header for number of evaluation runs (can differ across stereo
    * sets) */
   constexpr std::string_view kNumEvalRuns{"Number of evaluation runs"};
+
+  /**
+   * @brief Enum type where each named constant corresponds to a
+   * stereo set that can be processed and evaluated
+   * Underlying size_t value for each constant must match index of
+   * stereo set in kStereoSetsToProcess array
+   */
+  enum class Stereo_Set : size_t {
+    kTsukubaSetHalfSize = 0,
+    kTsukubaSet,
+    kVenus,
+    kBarn1,
+    kConesQuarterSize,
+    kConesHalfSize,
+    kConesFullSizeCropped,
+    kConesFullSize
+  };
   
   /**
    * @brief Structure with stereo set name, disparity count, and scale factor
@@ -56,7 +74,15 @@ namespace beliefprop
   };
 
   /** @brief Declare stereo sets to process with name, num disparity values, and scale factor
-   *  currently conesFullSize is not used */
+   *  currently conesFullSize is not used
+   * 
+   * Index for each stereo set must match corresponding enum value in Stereo_Set enum
+   * 
+   * Reason array is used is that the data structure must be constexpr due to the number
+   * of disparity values being used as a template parameter where the value must be known
+   * at compile time...otherwise would be unordered_map with Stereo_Set enum as the key
+   * (in C++20 array can be constexpr but unordered_map can't be)
+   */
   constexpr std::array<BpStereoSet, 8> kStereoSetsToProcess{
     BpStereoSet{"tsukubaSetHalfSize", 8, 32},
     BpStereoSet{"tsukubaSet", 16, 16},
@@ -73,17 +99,29 @@ namespace beliefprop
    *  The last three stereo sets (excluding "conesFullSized") are labeled as "largest 3 stereo sets"*/
   const std::vector<std::pair<std::string, std::vector<InputSignature>>> kEvalDataSubsets{
     {"smallest 3 stereo sets", 
-      {InputSignature({}, 0, {}), InputSignature({}, 1, {}), InputSignature({}, 2, {})}},
+      {InputSignature({}, static_cast<size_t>(Stereo_Set::kTsukubaSetHalfSize), {}),
+       InputSignature({}, static_cast<size_t>(Stereo_Set::kTsukubaSet), {}),
+       InputSignature({}, static_cast<size_t>(Stereo_Set::kVenus), {})}},
     {"largest 3 stereo sets",
-      {InputSignature({}, 4, {}), InputSignature({}, 5, {}), InputSignature({}, 6, {})}},
+      {InputSignature({}, static_cast<size_t>(Stereo_Set::kBarn1), {}),
+       InputSignature({}, static_cast<size_t>(Stereo_Set::kConesQuarterSize), {}),
+       InputSignature({}, static_cast<size_t>(Stereo_Set::kConesFullSizeCropped), {})}},
     {"smallest 3 stereo sets (disparity count templated only)", 
-      {InputSignature({}, 0, true), InputSignature({}, 1, true), InputSignature({}, 2, true)}},
+      {InputSignature({}, static_cast<size_t>(Stereo_Set::kTsukubaSetHalfSize), true),
+       InputSignature({}, static_cast<size_t>(Stereo_Set::kTsukubaSet), true),
+       InputSignature({}, static_cast<size_t>(Stereo_Set::kVenus), true)}},
     {"largest 3 stereo sets (disparity count templated only)",
-      {InputSignature({}, 4, true), InputSignature({}, 5, true), InputSignature({}, 6, true)}},
+      {InputSignature({}, static_cast<size_t>(Stereo_Set::kBarn1), true),
+       InputSignature({}, static_cast<size_t>(Stereo_Set::kConesQuarterSize), true),
+       InputSignature({}, static_cast<size_t>(Stereo_Set::kConesFullSizeCropped), true)}},
     {"smallest 3 stereo sets (disparity count not templated only)", 
-      {InputSignature({}, 0, false), InputSignature({}, 1, false), InputSignature({}, 2, false)}},
+      {InputSignature({}, static_cast<size_t>(Stereo_Set::kTsukubaSetHalfSize), false),
+       InputSignature({}, static_cast<size_t>(Stereo_Set::kTsukubaSet), false),
+       InputSignature({}, static_cast<size_t>(Stereo_Set::kVenus), false)}},
     {"largest 3 stereo sets (disparity count not templated only)",
-      {InputSignature({}, 4, false), InputSignature({}, 5, false), InputSignature({}, 6, false)}},
+      {InputSignature({}, static_cast<size_t>(Stereo_Set::kBarn1), false),
+       InputSignature({}, static_cast<size_t>(Stereo_Set::kConesQuarterSize), false),
+       InputSignature({}, static_cast<size_t>(Stereo_Set::kConesFullSizeCropped), false)}},
     {"runs w/ disparity count templated",
       {InputSignature({}, {}, true)}},
     {"runs w/ disparity count not templated",

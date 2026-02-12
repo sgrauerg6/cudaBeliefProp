@@ -91,7 +91,7 @@ inline std::map<std::array<filepathtype, 2>, std::tuple<std::chrono::duration<do
  * @tparam OPT_IMP_ACCEL 
  * @tparam NUM_INPUT 
  */
-template<RunData_t T, run_environment::AccSetting OPT_IMP_ACCEL, unsigned int NUM_INPUT>
+template<RunData_t T, run_environment::AccSetting OPT_IMP_ACCEL, size_t NUM_INPUT>
 class RunImpOnInputBp final : public RunImpOnInput<T, OPT_IMP_ACCEL, NUM_INPUT> {
 public:
   /**
@@ -180,7 +180,7 @@ private:
 //data type used in implementation specified by T
 //bp implemenation optimization specified by OPT_IMP_ACCEL
 //evaluation stereo set to run implementation on specified by NUM_INPUT
-template<RunData_t T, run_environment::AccSetting OPT_IMP_ACCEL, unsigned int NUM_INPUT>
+template<RunData_t T, run_environment::AccSetting OPT_IMP_ACCEL, size_t NUM_INPUT>
 MultRunData RunImpOnInputBp<T, OPT_IMP_ACCEL, NUM_INPUT>::operator()(
   const run_environment::RunImpSettings& run_imp_settings)
 {
@@ -243,7 +243,7 @@ MultRunData RunImpOnInputBp<T, OPT_IMP_ACCEL, NUM_INPUT>::operator()(
 
 //set up parallel parameters for running belief propagation in parallel on
 //CPU or GPU
-template<RunData_t T, run_environment::AccSetting OPT_IMP_ACCEL, unsigned int NUM_INPUT>
+template<RunData_t T, run_environment::AccSetting OPT_IMP_ACCEL, size_t NUM_INPUT>
 std::shared_ptr<ParallelParams>
 RunImpOnInputBp<T, OPT_IMP_ACCEL, NUM_INPUT>::SetUpParallelParams(
   const run_environment::RunImpSettings& run_imp_settings) const
@@ -258,7 +258,7 @@ RunImpOnInputBp<T, OPT_IMP_ACCEL, NUM_INPUT>::SetUpParallelParams(
 
 //get input data and parameter info about current benchmark (belief propagation
 //in this case) and return as RunData type
-template<RunData_t T, run_environment::AccSetting OPT_IMP_ACCEL, unsigned int NUM_INPUT>
+template<RunData_t T, run_environment::AccSetting OPT_IMP_ACCEL, size_t NUM_INPUT>
 RunData RunImpOnInputBp<T, OPT_IMP_ACCEL, NUM_INPUT>::InputAndParamsForCurrBenchmark(
   bool loop_iters_templated) const
 {
@@ -276,7 +276,7 @@ RunData RunImpOnInputBp<T, OPT_IMP_ACCEL, NUM_INPUT>::InputAndParamsForCurrBench
 //single-threaded stereo implementations on the reference and test images
 //specified by numStereoSet
 //run only optimized implementation if run_opt_imp_only is true
-template<RunData_t T, run_environment::AccSetting OPT_IMP_ACCEL, unsigned int NUM_INPUT>
+template<RunData_t T, run_environment::AccSetting OPT_IMP_ACCEL, size_t NUM_INPUT>
 std::optional<RunData> RunImpOnInputBp<T, OPT_IMP_ACCEL, NUM_INPUT>::RunImpsAndCompare(
   std::shared_ptr<ParallelParams> parallel_params,
   bool run_opt_imp_only,

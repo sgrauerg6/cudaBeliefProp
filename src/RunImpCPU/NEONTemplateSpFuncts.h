@@ -179,37 +179,37 @@ template<> inline float64x2_t simd_processing::GetMinByElement<float64x2_t>(
 }
 
 template<> inline void simd_processing::StorePackedDataAligned<float, float32x4_t>(
-  unsigned int indexDataStore, float* locationDataStore, const float32x4_t& dataToStore)
+  size_t indexDataStore, float* locationDataStore, const float32x4_t& dataToStore)
 {
   vst1q_f32(&locationDataStore[indexDataStore], dataToStore);
 }
 
 template<> inline void simd_processing::StorePackedDataAligned<float16_t, float32x4_t>(
-  unsigned int indexDataStore, float16_t* locationDataStore, const float32x4_t& dataToStore)
+  size_t indexDataStore, float16_t* locationDataStore, const float32x4_t& dataToStore)
 {
   vst1_f16(&locationDataStore[indexDataStore], vcvt_f16_f32(dataToStore));
 }
 
 template<> inline void simd_processing::StorePackedDataAligned<double, float64x2_t>(
-  unsigned int indexDataStore, double* locationDataStore, const float64x2_t& dataToStore)
+  size_t indexDataStore, double* locationDataStore, const float64x2_t& dataToStore)
 {
   vst1q_f64(&locationDataStore[indexDataStore], dataToStore);
 }
 
 template<> inline void simd_processing::StorePackedDataUnaligned<float, float32x4_t>(
-  unsigned int indexDataStore, float* locationDataStore, const float32x4_t& dataToStore)
+  size_t indexDataStore, float* locationDataStore, const float32x4_t& dataToStore)
 {
   vst1q_f32(&locationDataStore[indexDataStore], dataToStore);
 }
 
 template<> inline void simd_processing::StorePackedDataUnaligned<float16_t, float32x4_t>(
-  unsigned int indexDataStore, float16_t* locationDataStore, const float32x4_t& dataToStore)
+  size_t indexDataStore, float16_t* locationDataStore, const float32x4_t& dataToStore)
 {
   vst1_f16(&locationDataStore[indexDataStore], vcvt_f16_f32(dataToStore));
 }
 
 template<> inline void simd_processing::StorePackedDataUnaligned<double, float64x2_t>(
-  unsigned int indexDataStore, double* locationDataStore, const float64x2_t& dataToStore)
+  size_t indexDataStore, double* locationDataStore, const float64x2_t& dataToStore)
 {
   vst1q_f64(&locationDataStore[indexDataStore], dataToStore);
 }

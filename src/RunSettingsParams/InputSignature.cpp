@@ -32,7 +32,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 //constructor to generate evaluation input signature from string array with
 //strings corresponding to each part
 InputSignature::InputSignature(const std::array<std::string_view, 3>& in_sig_strings) {
-  const std::map<std::string_view, unsigned int> datatype_str_to_size{
+  const std::map<std::string_view, size_t> datatype_str_to_size{
     {run_environment::kDataSizeToNameMap.at(sizeof(float)), sizeof(float)},
     {run_environment::kDataSizeToNameMap.at(sizeof(double)), sizeof(double)},
     {run_environment::kDataSizeToNameMap.at(sizeof(short)), sizeof(short)}};
@@ -51,8 +51,8 @@ InputSignature::InputSignature(const std::array<std::string_view, 3>& in_sig_str
 //constructor to generate evaluation input signature from parameters
 //corresponding to each part
 InputSignature::InputSignature(
-  std::optional<unsigned int> data_type_size,
-  std::optional<unsigned int> eval_set_num,
+  std::optional<size_t> data_type_size,
+  std::optional<size_t> eval_set_num,
   std::optional<bool> use_templated_loop_iters) :
   data_type_size_(data_type_size),
   eval_set_num_(eval_set_num),
@@ -70,7 +70,7 @@ bool InputSignature::operator<(const InputSignature& rhs) const {
     //compare datatype
     //order is float, double, half
     //define mapping of datatype string to value for comparison
-    const std::map<unsigned int, unsigned int> datatype_size_to_order_num{
+    const std::map<size_t, size_t> datatype_size_to_order_num{
       {sizeof(float), 0},
       {sizeof(double), 1},
       {sizeof(short), 2}};
@@ -105,10 +105,10 @@ bool InputSignature::operator==(const InputSignature& rhs) const {
 //in cases where one side is "ANY" for the attribute as indicated
 //by "no value" for std::optional object
 bool InputSignature::EqualsUsingAny(const InputSignature& rhs) const {
-  return (std::tie(rhs.data_type_size_ ? data_type_size_ : std::optional<unsigned int>(),
-                   rhs.eval_set_num_ ? eval_set_num_ : std::optional<unsigned int>(),
+  return (std::tie(rhs.data_type_size_ ? data_type_size_ : std::optional<size_t>(),
+                   rhs.eval_set_num_ ? eval_set_num_ : std::optional<size_t>(),
                    rhs.use_templated_loop_iters_ ? use_templated_loop_iters_ : std::optional<bool>()) ==
-          std::tie(data_type_size_ ? rhs.data_type_size_ : std::optional<unsigned int>(),
-                   eval_set_num_ ? rhs.eval_set_num_ : std::optional<unsigned int>(),
+          std::tie(data_type_size_ ? rhs.data_type_size_ : std::optional<size_t>(),
+                   eval_set_num_ ? rhs.eval_set_num_ : std::optional<size_t>(),
                    use_templated_loop_iters_ ? rhs.use_templated_loop_iters_ : std::optional<bool>()));
 }

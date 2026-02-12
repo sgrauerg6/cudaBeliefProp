@@ -66,7 +66,7 @@ public:
    */
   explicit ParallelParamsBp(
     run_environment::OptParallelParamsSetting opt_parallel_params_setting,
-    unsigned int num_levels,
+    size_t num_levels,
     const std::array<unsigned int, 2>& default_parallel_dims);
 
   /**
@@ -123,7 +123,7 @@ private:
   const run_environment::OptParallelParamsSetting opt_parallel_params_setting_;
   
   /** @brief Number of levels in bp processing hierarchy */
-  const unsigned int num_levels_;
+  const size_t num_levels_;
 
   /** @brief Stores the current parallel parameters for each processing kernel */
   std::array<std::vector<std::array<unsigned int, 2>>, beliefprop::kNumKernels>

@@ -596,7 +596,7 @@ void beliefprop_cpu::InitializeBottomLevelData(
 #if defined(SET_THREAD_COUNT_INDIVIDUAL_KERNELS_CPU)
   int num_threads_kernel{
     (int)opt_cpu_params.OptParamsForKernel(
-      {static_cast<unsigned int>(beliefprop::BpKernel::kDataCostsAtLevel), 0})[0]};
+      {static_cast<size_t>(beliefprop::BpKernel::kDataCostsAtLevel), 0})[0]};
   #pragma omp parallel for num_threads(num_threads_kernel)
 #else
   #pragma omp parallel for
@@ -639,7 +639,7 @@ void beliefprop_cpu::InitializeCurrentLevelData(
 #if !defined(__APPLE__) || defined(DONT_USE_GRAND_CENTRAL_DISPATCH)
 #if defined(SET_THREAD_COUNT_INDIVIDUAL_KERNELS_CPU)
   int num_threads_kernel{(int)opt_cpu_params.OptParamsForKernel(
-    {static_cast<unsigned int>(beliefprop::BpKernel::kDataCostsAtLevel), current_bp_level.level_num_})[0]};
+    {static_cast<size_t>(beliefprop::BpKernel::kDataCostsAtLevel), current_bp_level.level_num_})[0]};
   #pragma omp parallel for num_threads(num_threads_kernel)
 #else
   #pragma omp parallel for
@@ -701,7 +701,7 @@ void beliefprop_cpu::InitializeMessageValsToDefaultKernel(
 #if defined(SET_THREAD_COUNT_INDIVIDUAL_KERNELS_CPU)
   int num_threads_kernel{
     (int)opt_cpu_params.OptParamsForKernel(
-      {static_cast<unsigned int>(beliefprop::BpKernel::kInitMessageVals), 0})[0]};
+      {static_cast<size_t>(beliefprop::BpKernel::kInitMessageVals), 0})[0]};
   #pragma omp parallel for num_threads(num_threads_kernel)
 #else
   #pragma omp parallel for
@@ -756,7 +756,7 @@ void beliefprop_cpu::RunBPIterationUsingCheckerboardUpdatesNoPackedInstructions(
 #if !defined(__APPLE__) || defined(DONT_USE_GRAND_CENTRAL_DISPATCH)
 #if defined(SET_THREAD_COUNT_INDIVIDUAL_KERNELS_CPU)
   int num_threads_kernel{(int)opt_cpu_params.OptParamsForKernel(
-    {static_cast<unsigned int>(beliefprop::BpKernel::kBpAtLevel), current_bp_level.level_num_})[0]};
+    {static_cast<size_t>(beliefprop::BpKernel::kBpAtLevel), current_bp_level.level_num_})[0]};
   #pragma omp parallel for num_threads(num_threads_kernel)
 #else
   #pragma omp parallel for
@@ -910,7 +910,7 @@ void beliefprop_cpu::RunBPIterationUsingCheckerboardUpdatesUseSIMDVectorsProcess
 #if !defined(__APPLE__) || defined(DONT_USE_GRAND_CENTRAL_DISPATCH)
 #if defined(SET_THREAD_COUNT_INDIVIDUAL_KERNELS_CPU)
     int num_threads_kernel{(int)opt_cpu_params.OptParamsForKernel(
-      {static_cast<unsigned int>(beliefprop::BpKernel::kBpAtLevel), current_bp_level.level_num_})[0]};
+      {static_cast<size_t>(beliefprop::BpKernel::kBpAtLevel), current_bp_level.level_num_})[0]};
     #pragma omp parallel for num_threads(num_threads_kernel)
 #else
     #pragma omp parallel for
@@ -973,7 +973,7 @@ void beliefprop_cpu::RunBPIterationUsingCheckerboardUpdatesUseSIMDVectorsProcess
 
         if (checkerboard_to_update == beliefprop::CheckerboardPart::kCheckerboardPart0) {
           //updating checkerboard part 0
-          for (unsigned int current_disparity = 0; current_disparity < DISP_VALS; current_disparity++) {
+          for (size_t current_disparity = 0; current_disparity < DISP_VALS; current_disparity++) {
             if (data_aligned_x_val) 
             {
               //load using aligned instructions when possible
@@ -1009,7 +1009,7 @@ void beliefprop_cpu::RunBPIterationUsingCheckerboardUpdatesUseSIMDVectorsProcess
         } 
         else //checkerboard_part_update == beliefprop::CheckerboardPart::kCheckerboardPart1
         {
-          for (unsigned int current_disparity = 0; current_disparity < DISP_VALS; current_disparity++) {
+          for (size_t current_disparity = 0; current_disparity < DISP_VALS; current_disparity++) {
             if (data_aligned_x_val)
             {
               data_message[current_disparity] = simd_processing::LoadPackedDataAligned<T, U>(
@@ -1070,7 +1070,7 @@ void beliefprop_cpu::RunBPIterationUsingCheckerboardUpdatesUseSIMDVectorsProcess
 #if defined(SET_THREAD_COUNT_INDIVIDUAL_KERNELS_CPU)
     int num_threads_kernel{
       (int)opt_cpu_params.OptParamsForKernel(
-        {static_cast<unsigned int>(beliefprop::BpKernel::kBpAtLevel), current_bp_level.level_num_})[0]};
+        {static_cast<size_t>(beliefprop::BpKernel::kBpAtLevel), current_bp_level.level_num_})[0]};
     #pragma omp parallel for num_threads(num_threads_kernel)
 #else
     #pragma omp parallel for
@@ -1133,7 +1133,7 @@ void beliefprop_cpu::RunBPIterationUsingCheckerboardUpdatesUseSIMDVectorsProcess
 
         if (checkerboard_to_update == beliefprop::CheckerboardPart::kCheckerboardPart0) {
           //updating checkerboard part 0
-          for (unsigned int current_disparity = 0; current_disparity < bp_settings_disp_vals; current_disparity++) {
+          for (size_t current_disparity = 0; current_disparity < bp_settings_disp_vals; current_disparity++) {
             if (data_aligned_x_val) 
             {
               //load using aligned instructions when possible
@@ -1169,7 +1169,7 @@ void beliefprop_cpu::RunBPIterationUsingCheckerboardUpdatesUseSIMDVectorsProcess
         }
         else //checkerboard_part_update == beliefprop::CheckerboardPart::kCheckerboardPart1
         {
-          for (unsigned int current_disparity = 0; current_disparity < bp_settings_disp_vals; current_disparity++) {
+          for (size_t current_disparity = 0; current_disparity < bp_settings_disp_vals; current_disparity++) {
             if (data_aligned_x_val)
             {
               data_message[current_disparity] = simd_processing::LoadPackedDataAligned<T, U>(
@@ -1369,7 +1369,7 @@ void beliefprop_cpu::CopyMsgDataToNextLevel(
 #if !defined(__APPLE__) || defined(DONT_USE_GRAND_CENTRAL_DISPATCH)
 #if defined(SET_THREAD_COUNT_INDIVIDUAL_KERNELS_CPU)
   int num_threads_kernel{(int)opt_cpu_params.OptParamsForKernel(
-    {static_cast<unsigned int>(beliefprop::BpKernel::kCopyAtLevel), current_bp_level.level_num_})[0]};
+    {static_cast<size_t>(beliefprop::BpKernel::kCopyAtLevel), current_bp_level.level_num_})[0]};
   #pragma omp parallel for num_threads(num_threads_kernel)
 #else
   #pragma omp parallel for
@@ -1423,7 +1423,7 @@ void beliefprop_cpu::RetrieveOutputDisparity(
 #if defined(SET_THREAD_COUNT_INDIVIDUAL_KERNELS_CPU)
     int num_threads_kernel{
       (int)opt_cpu_params.OptParamsForKernel(
-        {static_cast<unsigned int>(beliefprop::BpKernel::kOutputDisp), 0})[0]};
+        {static_cast<size_t>(beliefprop::BpKernel::kOutputDisp), 0})[0]};
     #pragma omp parallel for num_threads(num_threads_kernel)
 #else
     #pragma omp parallel for
@@ -1558,7 +1558,7 @@ void beliefprop_cpu::RetrieveOutputDisparityUseSIMDVectors(
 #if defined(SET_THREAD_COUNT_INDIVIDUAL_KERNELS_CPU)
     int num_threads_kernel{
       (int)opt_cpu_params.OptParamsForKernel(
-        {static_cast<unsigned int>(beliefprop::BpKernel::kOutputDisp), 0})[0]};
+        {static_cast<size_t>(beliefprop::BpKernel::kOutputDisp), 0})[0]};
     #pragma omp parallel for num_threads(num_threads_kernel)
 #else
     #pragma omp parallel for
@@ -1620,7 +1620,7 @@ void beliefprop_cpu::RetrieveOutputDisparityUseSIMDVectors(
         W best_vals, best_disparities, vals_at_disp;
 
         if constexpr (DISP_VALS > 0) {
-          for (unsigned int current_disparity = 0; current_disparity < DISP_VALS; current_disparity++) {
+          for (size_t current_disparity = 0; current_disparity < DISP_VALS; current_disparity++) {
             if (checkerboard_get_disp_map == beliefprop::CheckerboardPart::kCheckerboardPart0) {
               if (data_aligned_x_val) {
                 //use aligned load where possible
@@ -1740,7 +1740,7 @@ void beliefprop_cpu::RetrieveOutputDisparityUseSIMDVectors(
           }
         }
         else {
-          for (unsigned int current_disparity = 0; current_disparity < bp_settings_disp_vals; current_disparity++) {
+          for (size_t current_disparity = 0; current_disparity < bp_settings_disp_vals; current_disparity++) {
             if (checkerboard_get_disp_map == beliefprop::CheckerboardPart::kCheckerboardPart0) {
               if (data_aligned_x_val) {
                 //retrieve and get sum of message and data values
@@ -1868,7 +1868,7 @@ void beliefprop_cpu::RetrieveOutputDisparityUseSIMDVectors(
 #if defined(SET_THREAD_COUNT_INDIVIDUAL_KERNELS_CPU)
   int num_threads_kernel{
     (int)opt_cpu_params.OptParamsForKernel(
-      {static_cast<unsigned int>(beliefprop::BpKernel::kOutputDisp), 0})[0]};
+      {static_cast<size_t>(beliefprop::BpKernel::kOutputDisp), 0})[0]};
   #pragma omp parallel for num_threads(num_threads_kernel)
 #else
   #pragma omp parallel for
@@ -1980,7 +1980,7 @@ void beliefprop_cpu::MsgStereoSIMDProcessing(
   W minimum = simd_processing::ConvertValToDatatype<W, V>(beliefprop::kHighValBp<V>);
   W dst[DISP_VALS];
 
-  for (unsigned int current_disparity = 0; current_disparity < DISP_VALS; current_disparity++)
+  for (size_t current_disparity = 0; current_disparity < DISP_VALS; current_disparity++)
   {
     //dst[current_disparity] = messages_neighbor_1[current_disparity] + messages_neighbor_2[current_disparity] +
     //                         messages_neighbor_3[current_disparity] + data_costs[current_disparity];
@@ -2020,7 +2020,7 @@ void beliefprop_cpu::MsgStereoSIMDProcessing(
   //T val_to_normalize = 0;
   W val_to_normalize = simd_processing::ConvertValToDatatype<W, V>(0.0);
 
-  for (unsigned int current_disparity = 0; current_disparity < DISP_VALS; current_disparity++)
+  for (size_t current_disparity = 0; current_disparity < DISP_VALS; current_disparity++)
   {
     /*if (minimum < dst[current_disparity]) {
       dst[current_disparity] = minimum;
@@ -2043,12 +2043,12 @@ void beliefprop_cpu::MsgStereoSIMDProcessing(
       val_to_normalize,
       simd_processing::ConvertValToDatatype<W, V>((double)DISP_VALS));
 
-  unsigned int dest_message_array_index =
+  size_t dest_message_array_index =
     beliefprop::RetrieveIndexInDataAndMessage(
       x_val, y_val, current_bp_level.padded_width_checkerboard_level_,
       current_bp_level.height_level_, 0, DISP_VALS);
 
-  for (unsigned int current_disparity = 0; current_disparity < DISP_VALS; current_disparity++)
+  for (size_t current_disparity = 0; current_disparity < DISP_VALS; current_disparity++)
   {
     //dst[current_disparity] -= val_to_normalize;
     dst[current_disparity] =
@@ -2135,7 +2135,7 @@ void beliefprop_cpu::MsgStereoSIMDProcessing(
   W minimum = simd_processing::ConvertValToDatatype<W, V>(beliefprop::kHighValBp<V>);
   W* dst = new W[bp_settings_disp_vals];
 
-  for (unsigned int current_disparity = 0; current_disparity < bp_settings_disp_vals; current_disparity++)
+  for (size_t current_disparity = 0; current_disparity < bp_settings_disp_vals; current_disparity++)
   {
     //dst[current_disparity] = messages_neighbor_1[current_disparity] + messages_neighbor_2[current_disparity] +
     //                         messages_neighbor_3[current_disparity] + data_costs[current_disparity];
@@ -2175,7 +2175,7 @@ void beliefprop_cpu::MsgStereoSIMDProcessing(
   //T val_to_normalize = 0;
   W val_to_normalize = simd_processing::ConvertValToDatatype<W, V>(0.0f);
 
-  for (unsigned int current_disparity = 0; current_disparity < bp_settings_disp_vals; current_disparity++)
+  for (size_t current_disparity = 0; current_disparity < bp_settings_disp_vals; current_disparity++)
   {
     //if (minimum < dst[current_disparity]) {
     //  dst[current_disparity] = minimum;
@@ -2198,12 +2198,12 @@ void beliefprop_cpu::MsgStereoSIMDProcessing(
       val_to_normalize,
       simd_processing::ConvertValToDatatype<W, V>((float)bp_settings_disp_vals));
 
-  unsigned int dest_message_array_index =
+  size_t dest_message_array_index =
     beliefprop::RetrieveIndexInDataAndMessage(
       x_val, y_val, current_bp_level.padded_width_checkerboard_level_,
       current_bp_level.height_level_, 0, bp_settings_disp_vals);
 
-  for (unsigned int current_disparity = 0; current_disparity < bp_settings_disp_vals; current_disparity++)
+  for (size_t current_disparity = 0; current_disparity < bp_settings_disp_vals; current_disparity++)
   {
     //dst[current_disparity] -= val_to_normalize;
     dst[current_disparity] =
@@ -2282,7 +2282,7 @@ void beliefprop_cpu::PrintDataAndMessageValsAtPointKernel(
   if (((x_val + y_val) % 2) == 0) {
     printf("x_val: %u\n", x_val);
     printf("y_val: %u\n", y_val);
-    for (unsigned int current_disparity = 0; current_disparity < DISP_VALS; current_disparity++) {
+    for (size_t current_disparity = 0; current_disparity < DISP_VALS; current_disparity++) {
       printf("DISP: %u\n", current_disparity);
       printf("messageUPrevStereoCheckerboard: %f \n",
         (float)message_u_checkerboard_0[beliefprop::RetrieveIndexInDataAndMessage(
@@ -2308,7 +2308,7 @@ void beliefprop_cpu::PrintDataAndMessageValsAtPointKernel(
   } else {
     printf("x_val: %u\n", x_val);
     printf("y_val: %u\n", y_val);
-    for (unsigned int current_disparity = 0; current_disparity < DISP_VALS; current_disparity++) {
+    for (size_t current_disparity = 0; current_disparity < DISP_VALS; current_disparity++) {
       printf("DISP: %u\n", current_disparity);
       printf("messageUPrevStereoCheckerboard: %f \n",
         (float)message_u_checkerboard_1[beliefprop::RetrieveIndexInDataAndMessage(
@@ -2350,7 +2350,7 @@ void beliefprop_cpu::PrintDataAndMessageValsToPointKernel(
     //std::cout << std::format("x_val: {}", x_val) << std::endl;
     printf("x_val: %u\n", x_val);
     printf("y_val: %u\n", y_val);
-    for (unsigned int current_disparity = 0; current_disparity < DISP_VALS; current_disparity++) {
+    for (size_t current_disparity = 0; current_disparity < DISP_VALS; current_disparity++) {
       printf("DISP: %u\n", current_disparity);
       printf("messageUPrevStereoCheckerboard: %f \n",
         (float) message_u_checkerboard_1[beliefprop::RetrieveIndexInDataAndMessage(
@@ -2377,7 +2377,7 @@ void beliefprop_cpu::PrintDataAndMessageValsToPointKernel(
   else {
     printf("x_val: %u\n", x_val);
     printf("y_val: %u\n", y_val);
-    for (unsigned int current_disparity = 0; current_disparity < DISP_VALS; current_disparity++) {
+    for (size_t current_disparity = 0; current_disparity < DISP_VALS; current_disparity++) {
       printf("DISP: %u\n", current_disparity);
       printf("messageUPrevStereoCheckerboard: %f \n",
         (float) message_u_checkerboard_0[beliefprop::RetrieveIndexInDataAndMessage(

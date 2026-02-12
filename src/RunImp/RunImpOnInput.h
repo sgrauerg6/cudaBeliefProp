@@ -49,7 +49,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  * @tparam OPT_IMP_ACCEL 
  * @tparam NUM_INPUT 
  */
-template<RunData_t T, run_environment::AccSetting OPT_IMP_ACCEL, unsigned int NUM_INPUT>
+template<RunData_t T, run_environment::AccSetting OPT_IMP_ACCEL, size_t NUM_INPUT>
 class RunImpOnInput {
 public:
   virtual MultRunData operator()(

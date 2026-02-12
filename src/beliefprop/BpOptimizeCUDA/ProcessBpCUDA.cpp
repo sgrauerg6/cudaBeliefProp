@@ -66,7 +66,7 @@ run_eval::Status ProcessBpCUDA<T, DISP_VALS, ACCELERATION>::RunBPAtCurrentLevel(
   cudaDeviceSetCacheConfig(cudaFuncCachePreferL1);
   const auto kernel_thread_block_dims =
     this->parallel_params_.OptParamsForKernel(
-      {static_cast<unsigned int>(beliefprop::BpKernel::kBpAtLevel), 
+      {static_cast<size_t>(beliefprop::BpKernel::kBpAtLevel), 
        current_bp_level.LevelProperties().level_num_});
   const dim3 threads{kernel_thread_block_dims[0], kernel_thread_block_dims[1]};
   //only updating half at a time
@@ -95,28 +95,28 @@ run_eval::Status ProcessBpCUDA<T, DISP_VALS, ACCELERATION>::RunBPAtCurrentLevel(
       beliefprop_cuda::RunBPIterationUsingCheckerboardUpdates<T, DISP_VALS> <<<grid, threads>>> (
         checkerboard_part_update, current_bp_level.LevelProperties(),
         data_costs_device[0], data_costs_device[1],
-        messages_device[static_cast<unsigned int>(CheckerboardPart::kCheckerboardPart0)][static_cast<unsigned int>(MessageArrays::kMessagesUCheckerboard)],
-        messages_device[static_cast<unsigned int>(CheckerboardPart::kCheckerboardPart0)][static_cast<unsigned int>(MessageArrays::kMessagesDCheckerboard)],
-        messages_device[static_cast<unsigned int>(CheckerboardPart::kCheckerboardPart0)][static_cast<unsigned int>(MessageArrays::kMessagesLCheckerboard)],
-        messages_device[static_cast<unsigned int>(CheckerboardPart::kCheckerboardPart0)][static_cast<unsigned int>(MessageArrays::kMessagesRCheckerboard)],
-        messages_device[static_cast<unsigned int>(CheckerboardPart::kCheckerboardPart1)][static_cast<unsigned int>(MessageArrays::kMessagesUCheckerboard)],
-        messages_device[static_cast<unsigned int>(CheckerboardPart::kCheckerboardPart1)][static_cast<unsigned int>(MessageArrays::kMessagesDCheckerboard)],
-        messages_device[static_cast<unsigned int>(CheckerboardPart::kCheckerboardPart1)][static_cast<unsigned int>(MessageArrays::kMessagesLCheckerboard)],
-        messages_device[static_cast<unsigned int>(CheckerboardPart::kCheckerboardPart1)][static_cast<unsigned int>(MessageArrays::kMessagesRCheckerboard)],
+        messages_device[static_cast<size_t>(CheckerboardPart::kCheckerboardPart0)][static_cast<size_t>(MessageArrays::kMessagesUCheckerboard)],
+        messages_device[static_cast<size_t>(CheckerboardPart::kCheckerboardPart0)][static_cast<size_t>(MessageArrays::kMessagesDCheckerboard)],
+        messages_device[static_cast<size_t>(CheckerboardPart::kCheckerboardPart0)][static_cast<size_t>(MessageArrays::kMessagesLCheckerboard)],
+        messages_device[static_cast<size_t>(CheckerboardPart::kCheckerboardPart0)][static_cast<size_t>(MessageArrays::kMessagesRCheckerboard)],
+        messages_device[static_cast<size_t>(CheckerboardPart::kCheckerboardPart1)][static_cast<size_t>(MessageArrays::kMessagesUCheckerboard)],
+        messages_device[static_cast<size_t>(CheckerboardPart::kCheckerboardPart1)][static_cast<size_t>(MessageArrays::kMessagesDCheckerboard)],
+        messages_device[static_cast<size_t>(CheckerboardPart::kCheckerboardPart1)][static_cast<size_t>(MessageArrays::kMessagesLCheckerboard)],
+        messages_device[static_cast<size_t>(CheckerboardPart::kCheckerboardPart1)][static_cast<size_t>(MessageArrays::kMessagesRCheckerboard)],
         alg_settings.disc_k_bp, data_aligned, alg_settings.num_disp_vals);
     }
     else {
       beliefprop_cuda::RunBPIterationUsingCheckerboardUpdates<T, DISP_VALS> <<<grid, threads>>> (
         checkerboard_part_update, current_bp_level.LevelProperties(),
         data_costs_device[0], data_costs_device[1],
-        messages_device[static_cast<unsigned int>(CheckerboardPart::kCheckerboardPart0)][static_cast<unsigned int>(MessageArrays::kMessagesUCheckerboard)],
-        messages_device[static_cast<unsigned int>(CheckerboardPart::kCheckerboardPart0)][static_cast<unsigned int>(MessageArrays::kMessagesDCheckerboard)],
-        messages_device[static_cast<unsigned int>(CheckerboardPart::kCheckerboardPart0)][static_cast<unsigned int>(MessageArrays::kMessagesLCheckerboard)],
-        messages_device[static_cast<unsigned int>(CheckerboardPart::kCheckerboardPart0)][static_cast<unsigned int>(MessageArrays::kMessagesRCheckerboard)],
-        messages_device[static_cast<unsigned int>(CheckerboardPart::kCheckerboardPart1)][static_cast<unsigned int>(MessageArrays::kMessagesUCheckerboard)],
-        messages_device[static_cast<unsigned int>(CheckerboardPart::kCheckerboardPart1)][static_cast<unsigned int>(MessageArrays::kMessagesDCheckerboard)],
-        messages_device[static_cast<unsigned int>(CheckerboardPart::kCheckerboardPart1)][static_cast<unsigned int>(MessageArrays::kMessagesLCheckerboard)],
-        messages_device[static_cast<unsigned int>(CheckerboardPart::kCheckerboardPart1)][static_cast<unsigned int>(MessageArrays::kMessagesRCheckerboard)],
+        messages_device[static_cast<size_t>(CheckerboardPart::kCheckerboardPart0)][static_cast<size_t>(MessageArrays::kMessagesUCheckerboard)],
+        messages_device[static_cast<size_t>(CheckerboardPart::kCheckerboardPart0)][static_cast<size_t>(MessageArrays::kMessagesDCheckerboard)],
+        messages_device[static_cast<size_t>(CheckerboardPart::kCheckerboardPart0)][static_cast<size_t>(MessageArrays::kMessagesLCheckerboard)],
+        messages_device[static_cast<size_t>(CheckerboardPart::kCheckerboardPart0)][static_cast<size_t>(MessageArrays::kMessagesRCheckerboard)],
+        messages_device[static_cast<size_t>(CheckerboardPart::kCheckerboardPart1)][static_cast<size_t>(MessageArrays::kMessagesUCheckerboard)],
+        messages_device[static_cast<size_t>(CheckerboardPart::kCheckerboardPart1)][static_cast<size_t>(MessageArrays::kMessagesDCheckerboard)],
+        messages_device[static_cast<size_t>(CheckerboardPart::kCheckerboardPart1)][static_cast<size_t>(MessageArrays::kMessagesLCheckerboard)],
+        messages_device[static_cast<size_t>(CheckerboardPart::kCheckerboardPart1)][static_cast<size_t>(MessageArrays::kMessagesRCheckerboard)],
         alg_settings.disc_k_bp, data_aligned, alg_settings.num_disp_vals, allocated_memory);
     }
 
@@ -142,7 +142,7 @@ run_eval::Status ProcessBpCUDA<T, DISP_VALS, ACCELERATION>::CopyMessageValuesToN
 {
   const auto kernel_thread_block_dims =
     this->parallel_params_.OptParamsForKernel(
-      {static_cast<unsigned int>(beliefprop::BpKernel::kCopyAtLevel),
+      {static_cast<size_t>(beliefprop::BpKernel::kCopyAtLevel),
        current_bp_level.LevelProperties().level_num_});
   const dim3 threads{kernel_thread_block_dims[0], kernel_thread_block_dims[1]};
   const dim3 grid{
@@ -162,22 +162,22 @@ run_eval::Status ProcessBpCUDA<T, DISP_VALS, ACCELERATION>::CopyMessageValuesToN
     //storing the current message values
     beliefprop_cuda::CopyMsgDataToNextLevel<T, DISP_VALS> <<< grid, threads >>> (
       checkerboard_part, current_bp_level.LevelProperties(), next_bp_level.LevelProperties(),
-      messages_device_copy_from[static_cast<unsigned int>(CheckerboardPart::kCheckerboardPart0)][static_cast<unsigned int>(MessageArrays::kMessagesUCheckerboard)],
-      messages_device_copy_from[static_cast<unsigned int>(CheckerboardPart::kCheckerboardPart0)][static_cast<unsigned int>(MessageArrays::kMessagesDCheckerboard)],
-      messages_device_copy_from[static_cast<unsigned int>(CheckerboardPart::kCheckerboardPart0)][static_cast<unsigned int>(MessageArrays::kMessagesLCheckerboard)],
-      messages_device_copy_from[static_cast<unsigned int>(CheckerboardPart::kCheckerboardPart0)][static_cast<unsigned int>(MessageArrays::kMessagesRCheckerboard)],
-      messages_device_copy_from[static_cast<unsigned int>(CheckerboardPart::kCheckerboardPart1)][static_cast<unsigned int>(MessageArrays::kMessagesUCheckerboard)],
-      messages_device_copy_from[static_cast<unsigned int>(CheckerboardPart::kCheckerboardPart1)][static_cast<unsigned int>(MessageArrays::kMessagesDCheckerboard)],
-      messages_device_copy_from[static_cast<unsigned int>(CheckerboardPart::kCheckerboardPart1)][static_cast<unsigned int>(MessageArrays::kMessagesLCheckerboard)],
-      messages_device_copy_from[static_cast<unsigned int>(CheckerboardPart::kCheckerboardPart1)][static_cast<unsigned int>(MessageArrays::kMessagesRCheckerboard)],
-      messages_device_copy_to[static_cast<unsigned int>(CheckerboardPart::kCheckerboardPart0)][static_cast<unsigned int>(MessageArrays::kMessagesUCheckerboard)],
-      messages_device_copy_to[static_cast<unsigned int>(CheckerboardPart::kCheckerboardPart0)][static_cast<unsigned int>(MessageArrays::kMessagesDCheckerboard)],
-      messages_device_copy_to[static_cast<unsigned int>(CheckerboardPart::kCheckerboardPart0)][static_cast<unsigned int>(MessageArrays::kMessagesLCheckerboard)],
-      messages_device_copy_to[static_cast<unsigned int>(CheckerboardPart::kCheckerboardPart0)][static_cast<unsigned int>(MessageArrays::kMessagesRCheckerboard)],
-      messages_device_copy_to[static_cast<unsigned int>(CheckerboardPart::kCheckerboardPart1)][static_cast<unsigned int>(MessageArrays::kMessagesUCheckerboard)],
-      messages_device_copy_to[static_cast<unsigned int>(CheckerboardPart::kCheckerboardPart1)][static_cast<unsigned int>(MessageArrays::kMessagesDCheckerboard)],
-      messages_device_copy_to[static_cast<unsigned int>(CheckerboardPart::kCheckerboardPart1)][static_cast<unsigned int>(MessageArrays::kMessagesLCheckerboard)],
-      messages_device_copy_to[static_cast<unsigned int>(CheckerboardPart::kCheckerboardPart1)][static_cast<unsigned int>(MessageArrays::kMessagesRCheckerboard)],
+      messages_device_copy_from[static_cast<size_t>(CheckerboardPart::kCheckerboardPart0)][static_cast<size_t>(MessageArrays::kMessagesUCheckerboard)],
+      messages_device_copy_from[static_cast<size_t>(CheckerboardPart::kCheckerboardPart0)][static_cast<size_t>(MessageArrays::kMessagesDCheckerboard)],
+      messages_device_copy_from[static_cast<size_t>(CheckerboardPart::kCheckerboardPart0)][static_cast<size_t>(MessageArrays::kMessagesLCheckerboard)],
+      messages_device_copy_from[static_cast<size_t>(CheckerboardPart::kCheckerboardPart0)][static_cast<size_t>(MessageArrays::kMessagesRCheckerboard)],
+      messages_device_copy_from[static_cast<size_t>(CheckerboardPart::kCheckerboardPart1)][static_cast<size_t>(MessageArrays::kMessagesUCheckerboard)],
+      messages_device_copy_from[static_cast<size_t>(CheckerboardPart::kCheckerboardPart1)][static_cast<size_t>(MessageArrays::kMessagesDCheckerboard)],
+      messages_device_copy_from[static_cast<size_t>(CheckerboardPart::kCheckerboardPart1)][static_cast<size_t>(MessageArrays::kMessagesLCheckerboard)],
+      messages_device_copy_from[static_cast<size_t>(CheckerboardPart::kCheckerboardPart1)][static_cast<size_t>(MessageArrays::kMessagesRCheckerboard)],
+      messages_device_copy_to[static_cast<size_t>(CheckerboardPart::kCheckerboardPart0)][static_cast<size_t>(MessageArrays::kMessagesUCheckerboard)],
+      messages_device_copy_to[static_cast<size_t>(CheckerboardPart::kCheckerboardPart0)][static_cast<size_t>(MessageArrays::kMessagesDCheckerboard)],
+      messages_device_copy_to[static_cast<size_t>(CheckerboardPart::kCheckerboardPart0)][static_cast<size_t>(MessageArrays::kMessagesLCheckerboard)],
+      messages_device_copy_to[static_cast<size_t>(CheckerboardPart::kCheckerboardPart0)][static_cast<size_t>(MessageArrays::kMessagesRCheckerboard)],
+      messages_device_copy_to[static_cast<size_t>(CheckerboardPart::kCheckerboardPart1)][static_cast<size_t>(MessageArrays::kMessagesUCheckerboard)],
+      messages_device_copy_to[static_cast<size_t>(CheckerboardPart::kCheckerboardPart1)][static_cast<size_t>(MessageArrays::kMessagesDCheckerboard)],
+      messages_device_copy_to[static_cast<size_t>(CheckerboardPart::kCheckerboardPart1)][static_cast<size_t>(MessageArrays::kMessagesLCheckerboard)],
+      messages_device_copy_to[static_cast<size_t>(CheckerboardPart::kCheckerboardPart1)][static_cast<size_t>(MessageArrays::kMessagesRCheckerboard)],
       bp_settings_num_disp_vals);
 
     cudaDeviceSynchronize();
@@ -207,7 +207,7 @@ run_eval::Status ProcessBpCUDA<T, DISP_VALS, ACCELERATION>::InitializeDataCosts(
   //the thread size remains constant throughout but the grid size is adjusted based on the current level/kernel to run
   const auto kernel_thread_block_dims =
     this->parallel_params_.OptParamsForKernel(
-      {static_cast<unsigned int>(beliefprop::BpKernel::kDataCostsAtLevel),
+      {static_cast<size_t>(beliefprop::BpKernel::kDataCostsAtLevel),
        0});
   const dim3 threads{kernel_thread_block_dims[0], kernel_thread_block_dims[1]};
   //kernel run on full-sized image to retrieve data costs at the "bottom" level of the pyramid
@@ -239,7 +239,7 @@ run_eval::Status ProcessBpCUDA<T, DISP_VALS, ACCELERATION>::InitializeMessageVal
 {
   const auto kernel_thread_block_dims =
     this->parallel_params_.OptParamsForKernel(
-      {static_cast<unsigned int>(beliefprop::BpKernel::kInitMessageVals), 0});
+      {static_cast<size_t>(beliefprop::BpKernel::kInitMessageVals), 0});
   const dim3 threads{kernel_thread_block_dims[0], kernel_thread_block_dims[1]};
   const dim3 grid{
     (unsigned int)ceil((float)current_bp_level.LevelProperties().width_checkerboard_level_ / (float)threads.x),
@@ -249,14 +249,14 @@ run_eval::Status ProcessBpCUDA<T, DISP_VALS, ACCELERATION>::InitializeMessageVal
   //initialize all the message values for each pixel at each possible movement to the default value in the kernel
   beliefprop_cuda::InitializeMessageValsToDefaultKernel<T, DISP_VALS> <<< grid, threads >>> (
     current_bp_level.LevelProperties(),
-    messages_device[static_cast<unsigned int>(CheckerboardPart::kCheckerboardPart0)][static_cast<unsigned int>(MessageArrays::kMessagesUCheckerboard)],
-    messages_device[static_cast<unsigned int>(CheckerboardPart::kCheckerboardPart0)][static_cast<unsigned int>(MessageArrays::kMessagesDCheckerboard)],
-    messages_device[static_cast<unsigned int>(CheckerboardPart::kCheckerboardPart0)][static_cast<unsigned int>(MessageArrays::kMessagesLCheckerboard)],
-    messages_device[static_cast<unsigned int>(CheckerboardPart::kCheckerboardPart0)][static_cast<unsigned int>(MessageArrays::kMessagesRCheckerboard)],
-    messages_device[static_cast<unsigned int>(CheckerboardPart::kCheckerboardPart1)][static_cast<unsigned int>(MessageArrays::kMessagesUCheckerboard)],
-    messages_device[static_cast<unsigned int>(CheckerboardPart::kCheckerboardPart1)][static_cast<unsigned int>(MessageArrays::kMessagesDCheckerboard)],
-    messages_device[static_cast<unsigned int>(CheckerboardPart::kCheckerboardPart1)][static_cast<unsigned int>(MessageArrays::kMessagesLCheckerboard)],
-    messages_device[static_cast<unsigned int>(CheckerboardPart::kCheckerboardPart1)][static_cast<unsigned int>(MessageArrays::kMessagesRCheckerboard)],
+    messages_device[static_cast<size_t>(CheckerboardPart::kCheckerboardPart0)][static_cast<size_t>(MessageArrays::kMessagesUCheckerboard)],
+    messages_device[static_cast<size_t>(CheckerboardPart::kCheckerboardPart0)][static_cast<size_t>(MessageArrays::kMessagesDCheckerboard)],
+    messages_device[static_cast<size_t>(CheckerboardPart::kCheckerboardPart0)][static_cast<size_t>(MessageArrays::kMessagesLCheckerboard)],
+    messages_device[static_cast<size_t>(CheckerboardPart::kCheckerboardPart0)][static_cast<size_t>(MessageArrays::kMessagesRCheckerboard)],
+    messages_device[static_cast<size_t>(CheckerboardPart::kCheckerboardPart1)][static_cast<size_t>(MessageArrays::kMessagesUCheckerboard)],
+    messages_device[static_cast<size_t>(CheckerboardPart::kCheckerboardPart1)][static_cast<size_t>(MessageArrays::kMessagesDCheckerboard)],
+    messages_device[static_cast<size_t>(CheckerboardPart::kCheckerboardPart1)][static_cast<size_t>(MessageArrays::kMessagesLCheckerboard)],
+    messages_device[static_cast<size_t>(CheckerboardPart::kCheckerboardPart1)][static_cast<size_t>(MessageArrays::kMessagesRCheckerboard)],
     bp_settings_num_disp_vals);
   cudaDeviceSynchronize();
   
@@ -276,7 +276,7 @@ run_eval::Status ProcessBpCUDA<T, DISP_VALS, ACCELERATION>::InitializeDataCurren
 {
   const auto kernel_thread_block_dims =
     this->parallel_params_.OptParamsForKernel(
-      {static_cast<unsigned int>(beliefprop::BpKernel::kDataCostsAtLevel),
+      {static_cast<size_t>(beliefprop::BpKernel::kDataCostsAtLevel),
        current_bp_level.LevelProperties().level_num_});
   const dim3 threads{kernel_thread_block_dims[0], kernel_thread_block_dims[1]};
   //each pixel "checkerboard" is half the width of the level and there are two of them
@@ -323,7 +323,7 @@ float* ProcessBpCUDA<T, DISP_VALS, ACCELERATION>::RetrieveOutputDisparity(
 
   const auto kernel_thread_block_dims =
     this->parallel_params_.OptParamsForKernel(
-      {static_cast<unsigned int>(beliefprop::BpKernel::kOutputDisp),
+      {static_cast<size_t>(beliefprop::BpKernel::kOutputDisp),
        0});
   const dim3 threads{kernel_thread_block_dims[0], kernel_thread_block_dims[1]};
   const dim3 grid{
@@ -334,14 +334,14 @@ float* ProcessBpCUDA<T, DISP_VALS, ACCELERATION>::RetrieveOutputDisparity(
   beliefprop_cuda::RetrieveOutputDisparity<T, DISP_VALS> <<<grid, threads>>> (
     current_bp_level.LevelProperties(),
     data_costs_device[0], data_costs_device[1],
-    messages_device[static_cast<unsigned int>(CheckerboardPart::kCheckerboardPart0)][static_cast<unsigned int>(MessageArrays::kMessagesUCheckerboard)],
-    messages_device[static_cast<unsigned int>(CheckerboardPart::kCheckerboardPart0)][static_cast<unsigned int>(MessageArrays::kMessagesDCheckerboard)],
-    messages_device[static_cast<unsigned int>(CheckerboardPart::kCheckerboardPart0)][static_cast<unsigned int>(MessageArrays::kMessagesLCheckerboard)],
-    messages_device[static_cast<unsigned int>(CheckerboardPart::kCheckerboardPart0)][static_cast<unsigned int>(MessageArrays::kMessagesRCheckerboard)],
-    messages_device[static_cast<unsigned int>(CheckerboardPart::kCheckerboardPart1)][static_cast<unsigned int>(MessageArrays::kMessagesUCheckerboard)],
-    messages_device[static_cast<unsigned int>(CheckerboardPart::kCheckerboardPart1)][static_cast<unsigned int>(MessageArrays::kMessagesDCheckerboard)],
-    messages_device[static_cast<unsigned int>(CheckerboardPart::kCheckerboardPart1)][static_cast<unsigned int>(MessageArrays::kMessagesLCheckerboard)],
-    messages_device[static_cast<unsigned int>(CheckerboardPart::kCheckerboardPart1)][static_cast<unsigned int>(MessageArrays::kMessagesRCheckerboard)],
+    messages_device[static_cast<size_t>(CheckerboardPart::kCheckerboardPart0)][static_cast<size_t>(MessageArrays::kMessagesUCheckerboard)],
+    messages_device[static_cast<size_t>(CheckerboardPart::kCheckerboardPart0)][static_cast<size_t>(MessageArrays::kMessagesDCheckerboard)],
+    messages_device[static_cast<size_t>(CheckerboardPart::kCheckerboardPart0)][static_cast<size_t>(MessageArrays::kMessagesLCheckerboard)],
+    messages_device[static_cast<size_t>(CheckerboardPart::kCheckerboardPart0)][static_cast<size_t>(MessageArrays::kMessagesRCheckerboard)],
+    messages_device[static_cast<size_t>(CheckerboardPart::kCheckerboardPart1)][static_cast<size_t>(MessageArrays::kMessagesUCheckerboard)],
+    messages_device[static_cast<size_t>(CheckerboardPart::kCheckerboardPart1)][static_cast<size_t>(MessageArrays::kMessagesDCheckerboard)],
+    messages_device[static_cast<size_t>(CheckerboardPart::kCheckerboardPart1)][static_cast<size_t>(MessageArrays::kMessagesLCheckerboard)],
+    messages_device[static_cast<size_t>(CheckerboardPart::kCheckerboardPart1)][static_cast<size_t>(MessageArrays::kMessagesRCheckerboard)],
     result_disp_map_device, bp_settings_num_disp_vals);
   cudaDeviceSynchronize();
   if (ErrorCheck(__FILE__, __LINE__) != run_eval::Status::kNoError) {
@@ -352,26 +352,26 @@ float* ProcessBpCUDA<T, DISP_VALS, ACCELERATION>::RetrieveOutputDisparity(
 }
 
 template class ProcessBpCUDA<float, 0, run_environment::AccSetting::kCUDA>;
-template class ProcessBpCUDA<float, beliefprop::kStereoSetsToProcess[0].num_disp_vals, run_environment::AccSetting::kCUDA>;
-template class ProcessBpCUDA<float, beliefprop::kStereoSetsToProcess[1].num_disp_vals, run_environment::AccSetting::kCUDA>;
-template class ProcessBpCUDA<float, beliefprop::kStereoSetsToProcess[2].num_disp_vals, run_environment::AccSetting::kCUDA>;
-template class ProcessBpCUDA<float, beliefprop::kStereoSetsToProcess[3].num_disp_vals, run_environment::AccSetting::kCUDA>;
-template class ProcessBpCUDA<float, beliefprop::kStereoSetsToProcess[4].num_disp_vals, run_environment::AccSetting::kCUDA>;
-template class ProcessBpCUDA<float, beliefprop::kStereoSetsToProcess[5].num_disp_vals, run_environment::AccSetting::kCUDA>;
-template class ProcessBpCUDA<float, beliefprop::kStereoSetsToProcess[6].num_disp_vals, run_environment::AccSetting::kCUDA>;
+template class ProcessBpCUDA<float, beliefprop::kStereoSetsToProcess[static_cast<size_t>(beliefprop::Stereo_Set::kTsukubaSetHalfSize)].num_disp_vals, run_environment::AccSetting::kCUDA>;
+template class ProcessBpCUDA<float, beliefprop::kStereoSetsToProcess[static_cast<size_t>(beliefprop::Stereo_Set::kTsukubaSet)].num_disp_vals, run_environment::AccSetting::kCUDA>;
+template class ProcessBpCUDA<float, beliefprop::kStereoSetsToProcess[static_cast<size_t>(beliefprop::Stereo_Set::kVenus)].num_disp_vals, run_environment::AccSetting::kCUDA>;
+template class ProcessBpCUDA<float, beliefprop::kStereoSetsToProcess[static_cast<size_t>(beliefprop::Stereo_Set::kBarn1)].num_disp_vals, run_environment::AccSetting::kCUDA>;
+template class ProcessBpCUDA<float, beliefprop::kStereoSetsToProcess[static_cast<size_t>(beliefprop::Stereo_Set::kConesQuarterSize)].num_disp_vals, run_environment::AccSetting::kCUDA>;
+template class ProcessBpCUDA<float, beliefprop::kStereoSetsToProcess[static_cast<size_t>(beliefprop::Stereo_Set::kConesHalfSize)].num_disp_vals, run_environment::AccSetting::kCUDA>;
+template class ProcessBpCUDA<float, beliefprop::kStereoSetsToProcess[static_cast<size_t>(beliefprop::Stereo_Set::kConesFullSizeCropped)].num_disp_vals, run_environment::AccSetting::kCUDA>;
 template class ProcessBpCUDA<double, 0, run_environment::AccSetting::kCUDA>;
-template class ProcessBpCUDA<double, beliefprop::kStereoSetsToProcess[0].num_disp_vals, run_environment::AccSetting::kCUDA>;
-template class ProcessBpCUDA<double, beliefprop::kStereoSetsToProcess[1].num_disp_vals, run_environment::AccSetting::kCUDA>;
-template class ProcessBpCUDA<double, beliefprop::kStereoSetsToProcess[2].num_disp_vals, run_environment::AccSetting::kCUDA>;
-template class ProcessBpCUDA<double, beliefprop::kStereoSetsToProcess[3].num_disp_vals, run_environment::AccSetting::kCUDA>;
-template class ProcessBpCUDA<double, beliefprop::kStereoSetsToProcess[4].num_disp_vals, run_environment::AccSetting::kCUDA>;
-template class ProcessBpCUDA<double, beliefprop::kStereoSetsToProcess[5].num_disp_vals, run_environment::AccSetting::kCUDA>;
-template class ProcessBpCUDA<double, beliefprop::kStereoSetsToProcess[6].num_disp_vals, run_environment::AccSetting::kCUDA>;
+template class ProcessBpCUDA<double, beliefprop::kStereoSetsToProcess[static_cast<size_t>(beliefprop::Stereo_Set::kTsukubaSetHalfSize)].num_disp_vals, run_environment::AccSetting::kCUDA>;
+template class ProcessBpCUDA<double, beliefprop::kStereoSetsToProcess[static_cast<size_t>(beliefprop::Stereo_Set::kTsukubaSet)].num_disp_vals, run_environment::AccSetting::kCUDA>;
+template class ProcessBpCUDA<double, beliefprop::kStereoSetsToProcess[static_cast<size_t>(beliefprop::Stereo_Set::kVenus)].num_disp_vals, run_environment::AccSetting::kCUDA>;
+template class ProcessBpCUDA<double, beliefprop::kStereoSetsToProcess[static_cast<size_t>(beliefprop::Stereo_Set::kBarn1)].num_disp_vals, run_environment::AccSetting::kCUDA>;
+template class ProcessBpCUDA<double, beliefprop::kStereoSetsToProcess[static_cast<size_t>(beliefprop::Stereo_Set::kConesQuarterSize)].num_disp_vals, run_environment::AccSetting::kCUDA>;
+template class ProcessBpCUDA<double, beliefprop::kStereoSetsToProcess[static_cast<size_t>(beliefprop::Stereo_Set::kConesHalfSize)].num_disp_vals, run_environment::AccSetting::kCUDA>;
+template class ProcessBpCUDA<double, beliefprop::kStereoSetsToProcess[static_cast<size_t>(beliefprop::Stereo_Set::kConesFullSizeCropped)].num_disp_vals, run_environment::AccSetting::kCUDA>;
 template class ProcessBpCUDA<halftype, 0, run_environment::AccSetting::kCUDA>;
-template class ProcessBpCUDA<halftype, beliefprop::kStereoSetsToProcess[0].num_disp_vals, run_environment::AccSetting::kCUDA>;
-template class ProcessBpCUDA<halftype, beliefprop::kStereoSetsToProcess[1].num_disp_vals, run_environment::AccSetting::kCUDA>;
-template class ProcessBpCUDA<halftype, beliefprop::kStereoSetsToProcess[2].num_disp_vals, run_environment::AccSetting::kCUDA>;
-template class ProcessBpCUDA<halftype, beliefprop::kStereoSetsToProcess[3].num_disp_vals, run_environment::AccSetting::kCUDA>;
-template class ProcessBpCUDA<halftype, beliefprop::kStereoSetsToProcess[4].num_disp_vals, run_environment::AccSetting::kCUDA>;
-template class ProcessBpCUDA<halftype, beliefprop::kStereoSetsToProcess[5].num_disp_vals, run_environment::AccSetting::kCUDA>;
-template class ProcessBpCUDA<halftype, beliefprop::kStereoSetsToProcess[6].num_disp_vals, run_environment::AccSetting::kCUDA>;
+template class ProcessBpCUDA<halftype, beliefprop::kStereoSetsToProcess[static_cast<size_t>(beliefprop::Stereo_Set::kTsukubaSetHalfSize)].num_disp_vals, run_environment::AccSetting::kCUDA>;
+template class ProcessBpCUDA<halftype, beliefprop::kStereoSetsToProcess[static_cast<size_t>(beliefprop::Stereo_Set::kTsukubaSet)].num_disp_vals, run_environment::AccSetting::kCUDA>;
+template class ProcessBpCUDA<halftype, beliefprop::kStereoSetsToProcess[static_cast<size_t>(beliefprop::Stereo_Set::kVenus)].num_disp_vals, run_environment::AccSetting::kCUDA>;
+template class ProcessBpCUDA<halftype, beliefprop::kStereoSetsToProcess[static_cast<size_t>(beliefprop::Stereo_Set::kBarn1)].num_disp_vals, run_environment::AccSetting::kCUDA>;
+template class ProcessBpCUDA<halftype, beliefprop::kStereoSetsToProcess[static_cast<size_t>(beliefprop::Stereo_Set::kConesQuarterSize)].num_disp_vals, run_environment::AccSetting::kCUDA>;
+template class ProcessBpCUDA<halftype, beliefprop::kStereoSetsToProcess[static_cast<size_t>(beliefprop::Stereo_Set::kConesHalfSize)].num_disp_vals, run_environment::AccSetting::kCUDA>;
+template class ProcessBpCUDA<halftype, beliefprop::kStereoSetsToProcess[static_cast<size_t>(beliefprop::Stereo_Set::kConesFullSizeCropped)].num_disp_vals, run_environment::AccSetting::kCUDA>;

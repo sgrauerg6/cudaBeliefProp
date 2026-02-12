@@ -76,7 +76,7 @@ void SmoothImageCPU::ConvertUnsignedIntImageToFloatCPU(
 #if !defined(__APPLE__) || defined(DONT_USE_GRAND_CENTRAL_DISPATCH)
 #if defined(SET_THREAD_COUNT_INDIVIDUAL_KERNELS_CPU)
   int num_threads_kernel{
-    (int)opt_cpu_params.OptParamsForKernel({static_cast<unsigned int>(beliefprop::BpKernel::kBlurImages), 0})[0]};
+    (int)opt_cpu_params.OptParamsForKernel({static_cast<size_t>(beliefprop::BpKernel::kBlurImages), 0})[0]};
   #pragma omp parallel for num_threads(num_threads_kernel)
 #else
   #pragma omp parallel for
@@ -114,7 +114,7 @@ void SmoothImageCPU::FilterImageAcrossCPU(
 #if defined(SET_THREAD_COUNT_INDIVIDUAL_KERNELS_CPU)
   int num_threads_kernel{
     (int)opt_cpu_params.OptParamsForKernel(
-      {static_cast<unsigned int>(beliefprop::BpKernel::kBlurImages), 0})[0]};
+      {static_cast<size_t>(beliefprop::BpKernel::kBlurImages), 0})[0]};
   #pragma omp parallel for num_threads(num_threads_kernel)
 #else
   #pragma omp parallel for
@@ -153,7 +153,7 @@ void SmoothImageCPU::FilterImageVerticalCPU(
 #if !defined(__APPLE__) || defined(DONT_USE_GRAND_CENTRAL_DISPATCH)
 #if defined(SET_THREAD_COUNT_INDIVIDUAL_KERNELS_CPU)
   int num_threads_kernel{
-    (int)opt_cpu_params.OptParamsForKernel({static_cast<unsigned int>(beliefprop::BpKernel::kBlurImages), 0})[0]};
+    (int)opt_cpu_params.OptParamsForKernel({static_cast<size_t>(beliefprop::BpKernel::kBlurImages), 0})[0]};
   #pragma omp parallel for num_threads(num_threads_kernel)
 #else
   #pragma omp parallel for
