@@ -82,15 +82,6 @@ public:
   void AddDataWHeader(const std::string& header, unsigned int data);
 
   /**
-   * @brief Add size_t data with header describing added data
-   * Currently size_t data is converted and stored as unsigned int
-   * 
-   * @param header 
-   * @param data 
-   */
-  void AddDataWHeader(const std::string& header, size_t data);
-
-  /**
    * @brief Return data headers in order
    * 
    * @return Data headers in order

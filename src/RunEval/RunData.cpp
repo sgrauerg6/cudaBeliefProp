@@ -95,15 +95,6 @@ void RunData::AddDataWHeader(
   headers_w_data_[header_to_add] = data;
 }
 
-void RunData::AddDataWHeader(
-  const std::string& header,
-  size_t data)
-{
-  const auto header_to_add{GetHeaderToAdd(header)};
-  headers_in_order_.push_back(header_to_add);
-  headers_w_data_[header_to_add] = static_cast<unsigned int>(data);
-}
-
 //append current RunData with input RunData
 void RunData::AppendData(const RunData& rundata)
 {

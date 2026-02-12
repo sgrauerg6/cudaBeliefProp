@@ -65,10 +65,13 @@ inline RunData RunSettings() {
     std::string(kNumCPUThreadsHeader),
     std::thread::hardware_concurrency());
 
-  //add acceleration setting to run data
+  //add bytes boundary needed for data alignment in current
+  //acceleration setting to run data
+  //convert to unsigned int since size_t type is not supported
+  //in run data
   curr_run_data.AddDataWHeader(
     std::string(kBytesAlignMemHeader),
-    GetBytesAlignMemory(ACCELERATION_SETTING));
+    static_cast<unsigned int>(GetBytesAlignMemory(ACCELERATION_SETTING)));
 
   //add CPU threads picked to socket info to run data
   curr_run_data.AppendData(
