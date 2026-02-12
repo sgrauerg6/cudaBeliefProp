@@ -40,7 +40,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 
 namespace run_environment {
 
-inline unsigned int GetBytesAlignMemory(AccSetting accel_setting) {
+inline size_t GetBytesAlignMemory(AccSetting accel_setting) {
   //avx512 requires data to be aligned on 64 bytes
   return ((accel_setting == AccSetting::kAVX512) ||
           (accel_setting == AccSetting::kAVX512_F16)) ?
