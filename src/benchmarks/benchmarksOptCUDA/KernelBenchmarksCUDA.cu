@@ -44,10 +44,11 @@ namespace benchmarks_cuda {
    * @param mtrx_height
    * @param matrix_sum
    */
+  template <RunData_t T>
   __global__ void addMatrices(
-    const float* matrix_0, const float* matrix_1,
+    const T* matrix_0, const T* matrix_1,
     unsigned int mtrx_width, unsigned int mtrx_height,
-    float* matrix_sum)
+    T* matrix_sum)
   {
     //get x and y indices corresponding to current CUDA thread
     const unsigned int x_val = blockIdx.x * blockDim.x + threadIdx.x;

@@ -60,10 +60,9 @@ using timingType = std::chrono::time_point<std::chrono::system_clock>;
  * target device.
  * 
  * @tparam T 
- * @tparam DISP_VALS 
  * @tparam ACCELERATION 
  */
-template<RunData_t T, unsigned int DISP_VALS, run_environment::AccSetting ACCELERATION>
+template<RunData_t T, run_environment::AccSetting ACCELERATION>
 class ProcessBenchmarks {
 public:
   explicit ProcessBenchmarks(
@@ -111,11 +110,17 @@ private:
    * @brief Pure virtual function to run add matrices benchmark on device<br>
    * Must be defined in child class corresponding to device
    * 
-   * @param benchmark_size 
+   * @param mat_0
+   * @param mat_1
+   * @param mat_2
+   * @param mat_w_h
    * @return Status of "no error" if successful, "error" status otherwise
    */
   virtual run_eval::Status AddMatrices(
-    const unsigned int benchmark_size) const = 0;
+    const T* mat_0,
+    const T* mat_1,
+    const T* mat_2,
+    const unsigned int mat_w_h) const = 0;
 };
 
 #endif //PROCESS_BENCHMARKS_H_

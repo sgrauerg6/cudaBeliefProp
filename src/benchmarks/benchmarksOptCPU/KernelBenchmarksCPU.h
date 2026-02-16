@@ -35,10 +35,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #endif //__APPLE__
 
 #include <math.h>
-#include <algorithm>
 #include <iostream>
-//TODO: switch use of printf with std::format when it is supported on compiler used for development
-//#include <format>
 #include "RunEval/RunTypeConstraints.h"
 #include "RunImp/UtilityFuncts.h"
 #include "RunImpCPU/RunCPUSettings.h"
@@ -50,7 +47,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  * @brief Namespace to define global kernel functions for optimized benchmark
  * processing on the CPU using OpenMP and SIMD vectorization.
  */
-namespace beliefprop_cpu
+namespace benchmarks_cpu
 {
   /**
    * @brief Sum two matrices element-by-element using parallelism but not
@@ -62,10 +59,11 @@ namespace beliefprop_cpu
    * @param mtrx_height
    * @param matrix_sum
    */
+  template <RunData_t T>
   void AddMatricesNoPackedInstructions(
-    const float* matrix_0, const float* matrix_1,
+    const T* matrix_0, const T* matrix_1,
     unsigned int mtrx_width, unsigned int mtrx_height,
-    float* matrix_sum)
+    T* matrix_sum)
   {
     for (unsigned int y=0; y < mtrx_height; y++)
     {
