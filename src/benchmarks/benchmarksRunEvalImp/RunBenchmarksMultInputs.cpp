@@ -1,5 +1,5 @@
 /*
-Copyright (C) 2024 Scott Grauer-Gray
+Copyright (C) 2026 Scott Grauer-Gray
 
 This program is free software; you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -17,17 +17,17 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 */
 
 /**
- * @file RunImpMultInputsBp.cpp
+ * @file RunBenchmarksMultInputs.cpp
  * @author Scott Grauer-Gray
  * @brief 
  * 
- * @copyright Copyright (c) 2024
+ * @copyright Copyright (c) 2026
  */
 
-#include "RunImpOnInputBp.h"
+#include "RunBenchmarksOnInput.h"
 #include "RunBenchmarksMultInputs.h"
 
-MultRunData RunImpMultInputsBp::RunEvalImpMultDataSets(
+MultRunData RunBenchmarksMultInputs::RunEvalImpMultDataSets(
   const run_environment::RunImpSettings& run_imp_settings,
   size_t data_type_size) const 
 {
@@ -95,22 +95,8 @@ MultRunData RunImpMultInputsBp::RunEvalImpMultDataSets(
 {
   //run and evaluate bp implementation on all stereo sets used for benchmarking
   std::vector<MultRunData> run_results;
-  run_results.push_back(RunImpOnInputBp<T, OPT_IMP_ACCEL, static_cast<size_t>(
-    beliefprop::Stereo_Set::kTsukubaSetHalfSize)>().operator()(run_imp_settings));
-  run_results.push_back(RunImpOnInputBp<T, OPT_IMP_ACCEL, static_cast<size_t>(
-    beliefprop::Stereo_Set::kTsukubaSet)>().operator()(run_imp_settings));
-  run_results.push_back(RunImpOnInputBp<T, OPT_IMP_ACCEL, static_cast<size_t>(
-    beliefprop::Stereo_Set::kVenus)>().operator()(run_imp_settings));
-  run_results.push_back(RunImpOnInputBp<T, OPT_IMP_ACCEL, static_cast<size_t>(
-    beliefprop::Stereo_Set::kBarn1)>().operator()(run_imp_settings));
-  run_results.push_back(RunImpOnInputBp<T, OPT_IMP_ACCEL, static_cast<size_t>(
-    beliefprop::Stereo_Set::kConesQuarterSize)>().operator()(run_imp_settings));
-#ifndef SMALLER_SETS_ONLY
-  run_results.push_back(RunImpOnInputBp<T, OPT_IMP_ACCEL, static_cast<size_t>(
-    beliefprop::Stereo_Set::kConesHalfSize)>().operator()(run_imp_settings));
-  run_results.push_back(RunImpOnInputBp<T, OPT_IMP_ACCEL, static_cast<size_t>(
-    beliefprop::Stereo_Set::kConesFullSizeCropped)>().operator()(run_imp_settings));
-#endif //SMALLER_SETS_ONLY
+  run_results.push_back(RunBenchmarksOnInput<
+    T, OPT_IMP_ACCEL, static_cast<size_t>(0)>().operator()(run_imp_settings));
 
   //merge results for each input to overall results
   MultRunData run_data_all_runs;

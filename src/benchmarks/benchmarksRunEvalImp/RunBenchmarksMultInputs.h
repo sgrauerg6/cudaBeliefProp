@@ -34,12 +34,12 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #include "RunEval/EvaluateImpAliases.h"
 
 /**
- * @brief Child class of RunImpMultInputs to run specified belief propagation implementation on a
+ * @brief Child class of RunImpMultInputs to run specified benchmark implementation on a
  * number of inputs.
  */
-class RunImpMultInputsBp final : public RunImpMultInputs {
+class RunBenchmarksMultInputs final : public RunImpMultInputs {
 public:
-  explicit RunImpMultInputsBp(
+  explicit RunBenchmarksMultInputs(
     run_environment::AccSetting opt_imp_accel) : 
     RunImpMultInputs(opt_imp_accel) {}
 

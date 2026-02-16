@@ -67,7 +67,7 @@ private:
   }
 
   /**
-   * @brief Input parameters that are showed in evaluation across runs with
+   * @brief Input parameters that are shown in evaluation across runs with
    * runtimes
    * 
    * @return BP input parameters to show in evaluation across runtimes

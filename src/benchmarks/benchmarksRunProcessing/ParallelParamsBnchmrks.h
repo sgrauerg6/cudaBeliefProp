@@ -55,10 +55,9 @@ public:
    * each kernel
    * 
    * @param opt_parallel_params_setting 
-   * @param num_levels 
    * @param default_parallel_dims 
    */
-  explicit ParallelParamsBp(
+  explicit ParallelParamsBnchmrks(
     run_environment::OptParallelParamsSetting opt_parallel_params_setting,
     const std::array<unsigned int, 2>& default_parallel_dims);
 
@@ -90,8 +89,9 @@ public:
 
   /**
    * @brief Get optimized parallel parameters for parallel processing kernel
-   * for kernel that is indexed as an array of two unsigned integers that
-   * correspond to the kernel name and bp level
+   * specified by index
+   * Currently only one kernel so returning optimized parallel params for that
+   * kernel
    * 
    * @param kernel_location 
    * @return Optimized parallel parameters for indexed kernel
@@ -99,7 +99,7 @@ public:
   std::array<unsigned int, 2> OptParamsForKernel(
     const std::array<unsigned int, 2>& kernel_location) const override
   {
-    return parallel_dims_each_kernel_[kernel_location[0]][kernel_location[1]];
+    return parallel_dims_;
   }
 
   /**

@@ -106,7 +106,7 @@ public:
   virtual ~RunBpOnStereoSet() {}
 
   /**
-   * @brief Pure virtual operator() overload that must be defined in child class
+   * @brief Pure virtual operator() that must be defined in child class
    * 
    * @param ref_test_image_path 
    * @param alg_settings 

@@ -96,9 +96,8 @@ public:
   void SetOptimizedParams() override;
 
   /**
-   * @brief Get optimized parallel parameters for parallel processing kernel
-   * for kernel that is indexed as an array of two unsigned integers that
-   * correspond to the kernel name and bp level
+   * @brief Get parallel parameters for kernel that is indexed as an array of
+   * two unsigned integers that correspond to the kernel name and bp level
    * 
    * @param kernel_location 
    * @return Optimized parallel parameters for indexed kernel

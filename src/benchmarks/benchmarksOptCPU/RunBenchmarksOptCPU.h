@@ -27,7 +27,9 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #ifndef RUN_BENCHMARKS_OPT_CPU_H
 #define RUN_BENCHMARKS_OPT_CPU_H
 
-class RunBenchmarksOptCPU {
+#include "benchmarksRunProcessing/RunBenchmarks.h"
+
+class RunBenchmarksOptCPU : public RunBenchmarks {
 
 };
 
