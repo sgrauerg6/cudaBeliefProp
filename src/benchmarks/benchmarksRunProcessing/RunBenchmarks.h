@@ -47,6 +47,7 @@ struct BnchmrksRunOutput
  * @tparam T 
  * @tparam ACCELERATION 
  */
+template<RunData_t T, run_environment::AccSetting ACCELERATION>
 class RunBenchmarks {
   /**
    * @brief Pure virtual function to return run description corresponding to
@@ -92,38 +93,74 @@ protected:
 //device using pointers to acceleration-specific smooth image,
 //process BP, and memory management child class objects
 template<RunData_t T, run_environment::AccSetting ACCELERATION>
-std::optional<benchmarks::BpRunOutput> RunBenchmarks<T, DISP_VALS, ACCELERATION>::ProcessBenchmarks(
+std::optional<benchmarks::BpRunOutput> RunBenchmarks<T, ACCELERATION>::ProcessBenchmarks(
   unsigned int size,
+  ProcessBenchmarks<T, ACCELERATION>* proc_bnchmrks_device,
   const MemoryManagement<T>* mem_management) const
 {
-//allocate data for bp processing on target device ahead of runs if option selected
-  T* bp_data{nullptr};
-  T* bp_proc_store{nullptr};
-  if constexpr (beliefprop::kAllocateFreeBpMemoryOutsideRuns) {
-    //allocate memory on device for bp processing
-    const std::size_t num_data =
-      BpLevel<T>::TotalDataForAlignedMemoryAllLevels(
-        width_height_images,
-        alg_settings.num_disp_vals,
-        alg_settings.num_levels,
-        ACCELERATION);
-    bp_data = 
-      run_bp_on_device.mem_management_bp_run->AllocateAlignedMemoryOnDevice(
-        10*num_data,
-        ACCELERATION);
-    if (run_bp_on_device.run_bp_stereo->ErrorCheck(__FILE__, __LINE__) !=
-        run_eval::Status::kNoError) { return {}; }
+  //allocate data for benchmark processing on target device
+  T* mat_0_device{nullptr};
+  T* mat_1_device{nullptr};
+  T* mat_2_device{nullptr};
 
-    BpLevel<T> bottom_bp_level(width_height_images, 0, 0, ACCELERATION);
-    const std::size_t total_data_bottom_level =
-      bottom_bp_level.NumDataInBpArrays(alg_settings.num_disp_vals);
-    bp_proc_store =
-      run_bp_on_device.mem_management_bp_run->AllocateAlignedMemoryOnDevice(
-        total_data_bottom_level,
-        ACCELERATION);
-    if (run_bp_on_device.run_bp_stereo->ErrorCheck(__FILE__, __LINE__) !=
-        run_eval::Status::kNoError) { return {}; }
+  //allocate memory on device for benchmark processing
+  const std::size_t num_data_mat = size * size;
+  mat_0 = mem_management->AllocateAlignedMemoryOnDevice(num_data_mat, ACCELERATION);
+  mat_1 = mem_management->AllocateAlignedMemoryOnDevice(num_data_mat, ACCELERATION);
+  mat_2 = mem_management->AllocateAlignedMemoryOnDevice(num_data_mat, ACCELERATION);
+
+  //generate vector of random values of type T for mat_0_host and mat_1_host
+  std::vector<T> mat_0_host(num_data_mat);
+  std::vector<T> mat_1_host(num_data_mat);
+
+  //allocate space on host for output matrix
+  T* out_mat_host = new T[num_data_mat];
+  
+  //Initialize a random number engine with a seed
+  //Using steady_clock provides a non-deterministic seed
+  unsigned seed = std::chrono::steady_clock::now().time_since_epoch().count();
+  std::mt19937 mersenne_engine(seed); //Mersenne Twister engine
+
+  //Define the distribution to be values from -999 to 999
+  std::uniform_int_distribution<T> dist(-999, 999);
+
+  //Use std::generate to fill the vector
+  //A lambda function is used to bind the distribution and engine
+  auto generator = [&]() { return dist(mersenne_engine); };
+  std::generate(mat_0_host.begin(), mat_0_host.end(), generator);
+  std::generate(mat_1_host.begin(), mat_1_host.end(), generator);
+
+  //transfer matrices from host to device
+  mem_management->TransferDataFromHostToDevice(
+    mat_0_device,
+    mat_0_host.data(),
+    num_data_mat);
+  mem_management->TransferDataFromHostToDevice(
+    mat_1_device,
+    mat_1_host.data(),
+    num_data_mat);
+
+  //run benchmark on device
+  proc_bnchmrks_device()
+
+  //transfer output data from device to host
+  mem_management->TransferDataFromDeviceToHost(
+    out_mat_host,
+    mat_2_device,
+    num_data_mat);
+
+  //free aligned memory on device
+  mem_management->FreeAlignedMemoryOnDevice(mat_0);
+  mem_management->FreeAlignedMemoryOnDevice(mat_1);
+  mem_management->FreeAlignedMemoryOnDevice(mat_2);
+
+  //print output matrix
+  for (size_t i=0; i < num_data_mat; i++) {
+    std::cout << out_mat_host[i] << " ";
   }
+
+  //free output matrix on host
+  delete [] out_mat_host;
 }
 
 #endif //RUN_BENCHMARKS_H

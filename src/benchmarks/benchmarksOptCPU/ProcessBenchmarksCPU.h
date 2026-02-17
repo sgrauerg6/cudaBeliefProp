@@ -38,20 +38,20 @@ private:
   /**
    * @brief Function to run add matrices benchmark on device
    * 
-   * @param mat_0
-   * @param mat_1
-   * @param mat_2
    * @param mat_w_h
+   * @param mat_addend_0
+   * @param mat_addend_1
+   * @param mat_sum
    * @return Status of "no error" if successful, "error" status otherwise
    */
   run_eval::Status AddMatrices(
-    const T* mat_0,
-    const T* mat_1,
-    const T* mat_2,
-    const unsigned int mat_w_h) const override
+    const unsigned int mat_w_h,
+    const T* mat_addend_0,
+    const T* mat_addend_1,
+    T* mat_sum) const override
   {
     benchmarks_cpu::AddMatricesNoPackedInstructions<T>(
-      mat_0, mat_1, mat_w_h, mat_w_h, mat_2);
+      mat_w_h, mat_w_h, mat_addend_0, mat_addend_1, mat_sum);
     return run_eval::Status::kNoError;
   }
 };

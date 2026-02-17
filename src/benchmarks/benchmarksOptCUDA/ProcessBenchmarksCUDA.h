@@ -42,17 +42,17 @@ private:
   /**
    * @brief Function to run add matrices benchmark on device<br>
    * 
-   * @param mat_0
-   * @param mat_1
-   * @param mat_2
    * @param mat_w_h
+   * @param mat_addend_0
+   * @param mat_addend_1
+   * @param mat_sum
    * @return Status of "no error" if successful, "error" status otherwise
    */
   run_eval::Status AddMatrices(
-    const T* mat_0,
-    const T* mat_1,
-    const T* mat_2,
-    const unsigned int mat_w_h) const override
+    const unsigned int mat_w_h,
+    const T* mat_addend_0,
+    const T* mat_addend_1,
+    T* mat_sum) const override
   {
     if (ErrorCheck(__FILE__, __LINE__) != run_eval::Status::kNoError) {
       return run_eval::Status::kError;
@@ -72,7 +72,7 @@ private:
 
     //initialize the data the the "bottom" of the image pyramid
     benchmarks_cuda::addMatrices<T> <<<grid, threads>>> (
-      mat_0, mat_1, mat_w_h, mat_w_h, mat_3);
+      mat_w_h, mat_w_h, mat_addend_0, mat_addend_1, mat_sum);
     cudaDeviceSynchronize();
 
     if (ErrorCheck(__FILE__, __LINE__) != run_eval::Status::kNoError) {

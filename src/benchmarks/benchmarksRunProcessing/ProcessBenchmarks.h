@@ -84,23 +84,21 @@ public:
   
   /**
    * @brief Run benchmarks implementation.<br>
-   * Input is benchmark size<br>
+   * Input is benchmark size, input matrices, and
+   * allocated space for output matrix on device<br>
    * Output is runtimes
    * 
    * @param benchmark_size 
-   * @param alg_settings 
-   * @param width_height_images 
-   * @param allocated_mem_bp_processing 
-   * @param allocated_memory 
-   * @param mem_management
+   * @param mat_input_0 
+   * @param mat_input_1 
+   * @param mat_output
    * @return std::optional<std::pair<float*, DetailedTimings<beliefprop::Runtime_Type>>> 
    */
   std::optional<std::pair<float*, DetailedTimings<beliefprop::Runtime_Type>>> operator()(
     const unsigned int benchmark_size,
-    T* mat_0_allocated_memory,
-    T* mat_1_allocated_memory,
-    T* mat_2_allocated_memory,
-    const MemoryManagement<T>* mem_management) const;
+    const T* mat_input_0,
+    const T* mat_input_1,
+    T* mat_output) const;
 
 protected:
   const ParallelParams& parallel_params_;
@@ -110,17 +108,17 @@ private:
    * @brief Pure virtual function to run add matrices benchmark on device<br>
    * Must be defined in child class corresponding to device
    * 
-   * @param mat_0
-   * @param mat_1
-   * @param mat_2
    * @param mat_w_h
+   * @param mat_addend_0
+   * @param mat_addend_1
+   * @param mat_sum
    * @return Status of "no error" if successful, "error" status otherwise
    */
   virtual run_eval::Status AddMatrices(
-    const T* mat_0,
-    const T* mat_1,
-    const T* mat_2,
-    const unsigned int mat_w_h) const = 0;
+    const unsigned int mat_w_h,
+    const T* mat_addend_0,
+    const T* mat_addend_1,
+    T* mat_sum) const = 0;
 };
 
 #endif //PROCESS_BENCHMARKS_H_

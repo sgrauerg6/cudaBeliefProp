@@ -53,16 +53,16 @@ namespace benchmarks_cpu
    * @brief Sum two matrices element-by-element using parallelism but not
    * SIMD instructions
    * 
-   * @param matrix_0
-   * @param matrix_1
    * @param mtrx_width
    * @param mtrx_height
+   * @param matrix_addend_0
+   * @param matrix_addend_1
    * @param matrix_sum
    */
   template <RunData_t T>
   void AddMatricesNoPackedInstructions(
-    const T* matrix_0, const T* matrix_1,
     unsigned int mtrx_width, unsigned int mtrx_height,
+    const T* matrix_addend_0, const T* matrix_addend_1,
     T* matrix_sum)
   {
     for (unsigned int y=0; y < mtrx_height; y++)
@@ -82,7 +82,7 @@ namespace benchmarks_cpu
 #endif //__APPLE__
       {
         const unsigned int val_idx = y*mtrx_width + x;
-        matrix_sum[val_idx] = matrix_0[val_idx] + matrix_1[val_idx];
+        matrix_sum[val_idx] = matrix_addend_0[val_idx] + matrix_addend_1[val_idx];
       }
     }
   }
