@@ -94,11 +94,14 @@ public:
    * @param mat_output
    * @return std::optional<std::pair<float*, DetailedTimings<beliefprop::Runtime_Type>>> 
    */
-  std::optional<std::pair<float*, DetailedTimings<beliefprop::Runtime_Type>>> operator()(
+  std::optional<DetailedTimings<benchmarks::Runtime_Type>> operator()(
     const unsigned int benchmark_size,
     const T* mat_input_0,
     const T* mat_input_1,
-    T* mat_output) const;
+    T* mat_output) const
+  {
+    AddMatrices(benchmark_size, mat_input_0, mat_input_1, mat_output);
+  }
 
 protected:
   const ParallelParams& parallel_params_;
