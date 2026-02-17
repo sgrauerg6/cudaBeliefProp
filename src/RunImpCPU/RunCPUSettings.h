@@ -68,6 +68,16 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  */
 namespace run_cpu {
 
+/** @brief Constant that specifies that run is optimized CPU */
+constexpr std::string_view kBpOptimizeCPUDesc{"Optimized CPU"};
+
+/** @brief Constant for header corresponding to number of parallel
+ * CPU threads in run */
+constexpr std::string_view kNumParallelCPUThreadsHeader{"Number of parallel CPU threads in run"};
+
+/** @brief Constant that for header corresponding to vectorization setting */
+constexpr std::string_view kCPUVectorizationHeader{"Vectorization"};
+
 /** @brief Constant that specifies that run is simulating single CPU on a
  *  dual-CPU system */
 constexpr std::string_view kSimulateSingleCPU{"SimulateSingleCPU"};
