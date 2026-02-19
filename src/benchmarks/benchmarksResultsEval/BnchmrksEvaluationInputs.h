@@ -39,6 +39,12 @@ namespace benchmarks
   constexpr std::string_view kMatWidthHeader{"Matrix Width"};
   constexpr std::string_view kMatHeightHeader{"Matrix Height"};
 
+  //constants for evaluation
+  constexpr std::string_view kBenchmarksDirectoryName{"Benchmarks"};
+  /*constexpr std::string_view kBaselineRunDataPath{
+    "../../Benchmarks/ImpResults/RunResults/AMDRome48Cores_RunResults.csv"};
+  constexpr std::string_view kBaselineRunDesc{"AMD Rome (48 Cores)"};*/
+
   /** @brief Define subsets for evaluating run results on specified inputs */
   const std::vector<std::pair<std::string, std::vector<InputSignature>>> kEvalDataSubsets{};
 };

@@ -42,14 +42,15 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  * parent class
  */
 class EvaluateImpResultsBp final : public EvaluateImpResults {
-private:
+public:
   /**
-   * @brief Retrieve path of belief propagation implementation results
-   * 
-   * @return Path of belief propagation implementation results directory
+   * @brief Constructor for initialization and to set name of directory
+   * with results
    */
-  std::filesystem::path GetImpResultsPath() const override;
+  EvaluateImpResultsBp(const std::string& results_dir_name) : 
+    EvaluateImpResults(results_dir_name) {}
 
+private:
   /**
    * @brief Get text at top of evaluation across runs file with each
    * string in the vector corresponding to a separate line

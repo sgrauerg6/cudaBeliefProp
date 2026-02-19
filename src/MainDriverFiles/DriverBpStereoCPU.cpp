@@ -147,7 +147,7 @@ void runImp(int argc, char** argv, RunImpSetting impSetting)
      {std::make_shared<RunImpMultInputsBp>(run_environment::AccSetting::kAVX256)},
      {std::make_shared<RunImpMultInputsBp>(run_environment::AccSetting::kNone)}},
     run_imp_settings,
-    std::make_unique<EvaluateImpResultsBp>());
+    std::make_unique<EvaluateImpResultsBp>(std::string(beliefprop::kBeliefPropDirectoryName));
 #elif (CPU_VECTORIZATION_DEFINE == AVX_512_F16_DEFINE)
   //run belief propagation with AVX512 w/ f16 vectorization, AVX512 without f16
   //vectorization, AVX256 w/ f16 vectorization, AVX256 without f16
@@ -160,7 +160,7 @@ void runImp(int argc, char** argv, RunImpSetting impSetting)
      {std::make_shared<RunImpMultInputsBp>(run_environment::AccSetting::kAVX256)},
      {std::make_shared<RunImpMultInputsBp>(run_environment::AccSetting::kNone)}},
     run_imp_settings,
-    std::make_unique<EvaluateImpResultsBp>());
+    std::make_unique<EvaluateImpResultsBp>(std::string(beliefprop::kBeliefPropDirectoryName)));
 #elif (CPU_VECTORIZATION_DEFINE == AVX_256_DEFINE)
   //run belief propagation with AVX256 and no vectorization implementations,
   //with the AVX256 implementation given first as the expected fastest implementation
@@ -168,7 +168,7 @@ void runImp(int argc, char** argv, RunImpSetting impSetting)
     {{std::make_shared<RunImpMultInputsBp>(run_environment::AccSetting::kAVX256)},
      {std::make_shared<RunImpMultInputsBp>(run_environment::AccSetting::kNone)}},
     run_imp_settings,
-    std::make_unique<EvaluateImpResultsBp>());
+    std::make_unique<EvaluateImpResultsBp>(std::string(beliefprop::kBeliefPropDirectoryName)));
 #elif (CPU_VECTORIZATION_DEFINE == NEON_DEFINE)
   //run belief propagation with NEON and no vectorization implementations,
   //with the NEON implementation given first as the expected fastest implementation
@@ -176,7 +176,7 @@ void runImp(int argc, char** argv, RunImpSetting impSetting)
     {{std::make_shared<RunImpMultInputsBp>(run_environment::AccSetting::kNEON)},
      {std::make_shared<RunImpMultInputsBp>(run_environment::AccSetting::kNone)}},
     run_imp_settings,
-    std::make_unique<EvaluateImpResultsBp>());
+    std::make_unique<EvaluateImpResultsBp>(std::string(beliefprop::kBeliefPropDirectoryName)));
 #endif //CPU_VECTORIZATION_DEFINE
 }
 

@@ -56,6 +56,7 @@ enum class BaseTargetDiff {
  */
 class EvaluateImpResults {
 public:
+
   /**
    * @brief Virtual destructor
    */
@@ -93,14 +94,24 @@ public:
     const run_environment::RunImpSettings& run_imp_settings,
     run_environment::AccSetting opt_imp_acc) const;
 
+protected:
+  /**
+   * @brief Constructor for initialization and to set name of directory
+   * with results<br>
+   * Constructor is protected to force child class corresponding to specific
+   * implementation to call it since that is where name of results directory
+   * is known
+   */
+  EvaluateImpResults(const std::string& results_dir_name) : 
+    results_dir_name_(results_dir_name) {}
+
 private:
   /**
    * @brief Retrieve file path of implementation run results
-   * must be defined in child class
    * 
    * @return File path of implementation run results
    */
-  virtual std::filesystem::path GetImpResultsPath() const = 0;
+  std::filesystem::path GetImpResultsPath() const;
   
   /**
    * @brief Get text at top of results across runs with each string in the
@@ -317,6 +328,12 @@ private:
     MultRunData& run_results,
     std::string_view speedup_header,
     const run_environment::RunImpSettings& run_imp_settings) const;
+
+  /**
+   * @brief Member variable set in child class to specifies name of results
+   * directory
+   */
+  const std::string results_dir_name_;
 };
 
 #endif //EVALUATE_IMP_RESULTS_H_

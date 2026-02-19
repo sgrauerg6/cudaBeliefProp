@@ -93,7 +93,7 @@ int main(int argc, char** argv)
   RunImpMultTypesAccels().operator()(
     {{std::make_shared<RunImpMultInputsBp>(run_environment::AccSetting::kCUDA)}},
     run_imp_settings,
-    std::make_unique<EvaluateImpResultsBp>());
+    std::make_unique<EvaluateImpResultsBp>(std::string(beliefprop::kBeliefPropDirectoryName)));
 
   return 0;
 }
