@@ -27,11 +27,11 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #ifndef PROCESS_BENCHMARKS_CPU_H_
 #define PROCESS_BENCHMARKS_CPU_H_
 
-#include "benchmarksRunProcessing/ProcessBenchmarks.h"
+#include "benchmarksRunProcessing/ProcessBenchmarksDevice.h"
 #include "KernelBenchmarksCPU.h"
 
 template<RunData_t T, run_environment::AccSetting ACCELERATION>
-class ProcessBenchmarksCPU : public ProcessBenchmarks<T, ACCELERATION> {
+class ProcessBenchmarksCPU : public ProcessBenchmarksDevice<T, ACCELERATION> {
 public:
 
 private:

@@ -17,7 +17,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 */
 
 /**
- * @file ProcessBenchmarks.h
+ * @file ProcessBenchmarksDevice.h
  * @author Scott Grauer-Gray
  * @brief Declares abstract class to run benchmarks on target device.
  * Some of the class functions need to be overridden for processing on
@@ -26,8 +26,8 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  * @copyright Copyright (c) 2026
  */
 
-#ifndef PROCESS_BENCHMARKS_H_
-#define PROCESS_BENCHMARKS_H_
+#ifndef PROCESS_BENCHMARKS_DEVICE_H_
+#define PROCESS_BENCHMARKS_DEVICE_H_
 
 #include <math.h>
 #include <chrono>
@@ -63,16 +63,16 @@ using timingType = std::chrono::time_point<std::chrono::system_clock>;
  * @tparam ACCELERATION 
  */
 template<RunData_t T, run_environment::AccSetting ACCELERATION>
-class ProcessBenchmarks {
+class ProcessBenchmarksDevice {
 public:
-  explicit ProcessBenchmarks(
+  explicit ProcessBenchmarksDevice(
     const ParallelParams& parallel_params) :
     parallel_params_{parallel_params} {}
   
   /**
    * @brief Virtual destructor
    */
-  virtual ~ProcessBenchmarks() {}
+  virtual ~ProcessBenchmarksDevice() {}
 
   virtual run_eval::Status ErrorCheck(
     const char *file = "",
@@ -124,4 +124,4 @@ private:
     T* mat_sum) const = 0;
 };
 
-#endif //PROCESS_BENCHMARKS_H_
+#endif //PROCESS_BENCHMARKS_DEVICE_H_

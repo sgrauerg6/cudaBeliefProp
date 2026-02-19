@@ -29,13 +29,13 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 
 #include <cuda_runtime.h>
 #include <cuda_fp16.h>
-#include "benchmarksRunProcessing/ProcessBenchmarks.h"
+#include "benchmarksRunProcessing/ProcessBenchmarksDevice.h"
 #include "RunEval/RunTypeConstraints.h"
 #include "RunEval/RunEvalConstsEnums.h"
 #include "KernelBenchmarksCUDA.cu"
 
 template<RunData_t T, run_environment::AccSetting ACCELERATION>
-class ProcessBenchmarksCUDA : public ProcessBenchmarks<T, ACCELERATION> {
+class ProcessBenchmarksCUDA : public ProcessBenchmarksDevice<T, ACCELERATION> {
 public:
 
 private:

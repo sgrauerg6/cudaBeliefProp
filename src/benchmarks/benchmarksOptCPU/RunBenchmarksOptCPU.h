@@ -35,14 +35,13 @@ public:
   std::string BnchmarksRunDescription() const override { return std::string(run_cpu::kBpOptimizeCPUDesc); }
 
   //run the benchmark(s) using the optimized CPU implementation
-  std::optional<beliefprop::BpRunOutput> operator()(
-    const std::array<std::string, 2>& ref_test_image_path,
-    const beliefprop::BpSettings& alg_settings,
+  std::optional<benchmarks::BnchmrksRunOutput> operator()(
+    unsigned int size,
     const ParallelParams& parallel_params) const override;
 };
 
 template<RunData_t T, run_environment::AccSetting ACCELERATION>
-inline std::optional<beliefprop::BpRunOutput> RunBpOnStereoSetOptimizedCPU<T, DISP_VALS, ACCELERATION>::operator()(
+inline std::optional<benchmarks::BnchmrksRunOutput> RunBpOnStereoSetOptimizedCPU<T, DISP_VALS, ACCELERATION>::operator()(
   unsigned int size,
   const ParallelParams& parallel_params) const
 {
@@ -62,11 +61,6 @@ inline std::optional<beliefprop::BpRunOutput> RunBpOnStereoSetOptimizedCPU<T, DI
   run_data.AddDataWHeader(
     std::string(run_cpu::kCPUVectorizationHeader),
     std::string(run_environment::AccelerationString<ACCELERATION>()));
-
-ProcessBenchmarks(
-  unsigned int size,
-  ProcessBenchmarks<T, ACCELERATION>* proc_bnchmrks_device,
-  const MemoryManagement<T>* mem_management
 
   //generate struct with pointers to objects for running optimized CPU implementation and call
   //function to run optimized CPU implementation

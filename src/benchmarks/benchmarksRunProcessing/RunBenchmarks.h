@@ -30,7 +30,8 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 namespace benchmarks {
 
 /**
- * @brief Structure with output runtime and other evaluation data
+ * @brief Structure with output runtime and other evaluation data from running
+ * benchmarks implementation
  */
 struct BnchmrksRunOutput
 {
@@ -55,7 +56,7 @@ class RunBenchmarks {
    * 
    * @return Description of run using specified acceleration
    */
-  virtual std::string BpRunDescription() const = 0;
+  virtual std::string BnchmrksRunDescription() const = 0;
 
   /**
    * @brief Virtual destructor
@@ -65,12 +66,11 @@ class RunBenchmarks {
   /**
    * @brief Pure virtual operator() that must be defined in child class
    * 
-   * @param ref_test_image_path 
-   * @param alg_settings 
+   * @param size 
    * @param parallel_params 
    * @return Output from benchmarks run or null output if error
    */
-  virtual std::optional<beliefprop::BnchmrksRunOutput> operator()(
+  virtual std::optional<benchmarks::BnchmrksRunOutput> operator()(
     unsigned int size,
     const MemoryManagement<T>* mem_management, 
     const ParallelParams& parallel_params) const = 0;
@@ -80,12 +80,15 @@ protected:
    * @brief Protected function to set up, run, and evaluate benchmarks on
    * target device
    * 
+   * @param size
+   * @param proc_bnchmrks_device
    * @param mem_management memory management for device 
    * @return Output from running benchmarks or null if
    * error in run
    */
-  std::optional<benchmarks::BpRunOutput> ProcessBenchmarks(
+  std::optional<benchmarks::BnchmrksRunOutput> ProcessBenchmarks(
     unsigned int size,
+    ProcessBenchmarksDevice<T, ACCELERATION>* proc_bnchmrks_device,
     const MemoryManagement<T>* mem_management) const;
 };
 
@@ -93,9 +96,9 @@ protected:
 //device using pointers to acceleration-specific smooth image,
 //process BP, and memory management child class objects
 template<RunData_t T, run_environment::AccSetting ACCELERATION>
-std::optional<benchmarks::BpRunOutput> RunBenchmarks<T, ACCELERATION>::ProcessBenchmarks(
+std::optional<benchmarks::BnchmrksRunOutput> RunBenchmarks<T, ACCELERATION>::ProcessBenchmarks(
   unsigned int size,
-  ProcessBenchmarks<T, ACCELERATION>* proc_bnchmrks_device,
+  ProcessBenchmarksDevice<T, ACCELERATION>* proc_bnchmrks_device,
   const MemoryManagement<T>* mem_management) const
 {
   //allocate data for benchmark processing on target device
