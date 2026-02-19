@@ -39,9 +39,6 @@ namespace benchmarks
   constexpr std::string_view kMatWidthHeader{"Matrix Width"};
   constexpr std::string_view kMatHeightHeader{"Matrix Height"};
 
-  /** @brief Header for number of evaluation runs (can differ across inputs) */
-  constexpr std::string_view kNumEvalRuns{"Number of evaluation runs"};
-
   /** @brief Define subsets for evaluating run results on specified inputs */
   const std::vector<std::pair<std::string, std::vector<InputSignature>>> kEvalDataSubsets{};
 };

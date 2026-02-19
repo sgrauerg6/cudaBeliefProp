@@ -318,7 +318,7 @@ std::optional<beliefprop::BpRunOutput> RunBpOnStereoSet<T, DISP_VALS, ACCELERATI
     std::string(beliefprop::kImageHeightHeader),
     width_height_images[1]);
   run_data.AddDataWHeader(
-    std::string(beliefprop::kNumEvalRuns),
+    std::string(run_eval::kNumEvalRuns),
     num_evaluation_runs);
   run_data.AppendData(detailed_bp_timings.AsRunData());
 

@@ -91,6 +91,9 @@ enum class MiddleValData { kAverage, kMedian };
   /** @brief Constant for "all runs" string */
   constexpr std::string_view kAllRunsStr{"All Runs"};
 
+  /** @brief Header for number of evaluation runs (can differ across inputs) */
+  constexpr std::string_view kNumEvalRuns{"Number of evaluation runs"};
+
   //constants for output results for individual and sets of runs
   constexpr std::string_view kRunResultsDescFileName{"RunResults"};
   constexpr std::string_view kRunResultsDefaultPParamsDescFileName{"RunResultsDefaultPParams"};

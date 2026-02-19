@@ -42,10 +42,6 @@ namespace beliefprop
   constexpr std::string_view kImageHeightHeader{"Image Height"};
   constexpr std::string_view kStereoSetHeader{"Stereo Set"};
 
-  /** @brief Header for number of evaluation runs (can differ across stereo
-   * sets) */
-  constexpr std::string_view kNumEvalRuns{"Number of evaluation runs"};
-
   /**
    * @brief Enum type where each named constant corresponds to a
    * stereo set that can be processed and evaluated
