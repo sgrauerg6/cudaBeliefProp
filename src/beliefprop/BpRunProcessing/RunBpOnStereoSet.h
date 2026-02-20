@@ -249,7 +249,7 @@ std::optional<beliefprop::BpRunOutput> RunBpOnStereoSet<T, DISP_VALS, ACCELERATI
     //run belief propagation on device as specified by input pointer to
     //ProcessBp object run_bp_stereo
     //returns detailed timings for bp run
-    auto bp_stereo_output =
+    const auto bp_stereo_output =
       (*(run_bp_on_device.run_bp_stereo))(
         smoothed_images,
         alg_settings,
