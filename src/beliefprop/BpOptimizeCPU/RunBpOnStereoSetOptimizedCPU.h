@@ -50,7 +50,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 template <RunData_t T, unsigned int DISP_VALS, run_environment::AccSetting ACCELERATION>
 class RunBpOnStereoSetOptimizedCPU final : public RunBpOnStereoSet<T, DISP_VALS, ACCELERATION> {
 public:
-  std::string BpRunDescription() const override { return std::string(run_cpu::kBpOptimizeCPUDesc); }
+  std::string RunDescription() const override { return std::string(run_cpu::kBpOptimizeCPUDesc); }
 
   //run the disparity map estimation BP on a series of stereo images and save the results between each set of images if desired
   std::optional<beliefprop::BpRunOutput> operator()(
@@ -84,7 +84,7 @@ inline std::optional<beliefprop::BpRunOutput> RunBpOnStereoSetOptimizedCPU<T, DI
 
   //generate struct with pointers to objects for running optimized CPU implementation and call
   //function to run optimized CPU implementation
-  auto process_set_output = this->ProcessStereoSet(
+  auto process_set_output = this->ProcessImplementation(
     ref_test_image_path,
     alg_settings, 
     beliefprop::BpOnDevice<T, DISP_VALS, ACCELERATION>{

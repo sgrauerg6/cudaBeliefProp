@@ -56,7 +56,7 @@ public:
    * @brief Returns description of bp implementation using CUDA
    * @return Description of BP implementation using CUDA
    */
-  std::string BpRunDescription() const override { 
+  std::string RunDescription() const override { 
     return std::string(run_cuda::kOptimizeCUDADesc); }
 
   /**
@@ -84,7 +84,7 @@ public:
     RunData run_data;
     run_data.AppendData(run_cuda::retrieveDeviceProperties(0));
     auto process_set_output = 
-      this->ProcessStereoSet(
+      this->ProcessImplementation(
         ref_test_image_path,
         alg_settings,
         beliefprop::BpOnDevice<T, DISP_VALS, ACCELERATION>{

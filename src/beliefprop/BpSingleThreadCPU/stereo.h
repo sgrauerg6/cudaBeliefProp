@@ -74,7 +74,7 @@ public:
   std::optional<beliefprop::BpRunOutput> operator()(const std::array<std::string, 2>& ref_test_image_path,
       const beliefprop::BpSettings& alg_settings,
       const ParallelParams& parallel_params) const override;
-  std::string BpRunDescription() const override { return "Single-Thread CPU"; }
+  std::string RunDescription() const override { return "Single-Thread CPU"; }
 
 private:
   // compute message
@@ -386,7 +386,7 @@ public:
   std::optional<beliefprop::BpRunOutput> operator()(const std::array<std::string, 2>& ref_test_image_path,
       const beliefprop::BpSettings& alg_settings,
       const ParallelParams& parallel_params) const override;
-  std::string BpRunDescription() const override { return "Single-Thread CPU"; }
+  std::string RunDescription() const override { return "Single-Thread CPU"; }
 
 private:
   // compute message
@@ -706,7 +706,7 @@ public:
   std::optional<beliefprop::BpRunOutput> operator()(const std::array<std::string, 2>& ref_test_image_path,
       const beliefprop::BpSettings& alg_settings,
       const ParallelParams& parallel_params) const override;
-  std::string BpRunDescription() const override { return "Single-Thread CPU"; }
+  std::string RunDescription() const override { return "Single-Thread CPU"; }
 
 private:
   // compute message

@@ -303,13 +303,13 @@ std::optional<RunData> RunImpOnInputBp<T, OPT_IMP_ACCEL, NUM_INPUT>::RunImpsAndC
   //std::cout stream
   const std::string opt_imp_run_description{
     run_imp_templated_loop_iters ?
-      run_opt_bp_num_iters_templated_->BpRunDescription() :
-      run_opt_bp_num_iters_no_template_->BpRunDescription()};
+      run_opt_bp_num_iters_templated_->RunDescription() :
+      run_opt_bp_num_iters_no_template_->RunDescription()};
   std::cout << "Running belief propagation on reference image "
             << ref_test_image_path[0] << " and test image "
             << ref_test_image_path[1] << " on " << opt_imp_run_description;
   if (!run_opt_imp_only) {
-    std::cout << " and " << run_bp_stereo_single_thread_->BpRunDescription();
+    std::cout << " and " << run_bp_stereo_single_thread_->RunDescription();
   }
   std::cout << std::endl;
   std::cout << "Data size: " << sizeof(T) << std::endl;
@@ -409,7 +409,7 @@ std::optional<RunData> RunImpOnInputBp<T, OPT_IMP_ACCEL, NUM_INPUT>::RunImpsAndC
   for (unsigned int i = 0; i < num_imps_run; i++) {
     const std::string run_description{(i == 0) ?
       opt_imp_run_description :
-      run_bp_stereo_single_thread_->BpRunDescription()};
+      run_bp_stereo_single_thread_->RunDescription()};
     std::cout << "Output disparity map from " << run_description 
               << " run at " << output_disp[i] << std::endl;
   }
@@ -430,7 +430,7 @@ std::optional<RunData> RunImpOnInputBp<T, OPT_IMP_ACCEL, NUM_INPUT>::RunImpsAndC
       beliefprop::DisparityMapEvaluationParams()).AsRunData());
   if (!run_opt_imp_only) {
     run_data.AddDataWHeader(
-      run_bp_stereo_single_thread_->BpRunDescription() + " output vs. Ground Truth result",
+      run_bp_stereo_single_thread_->RunDescription() + " output vs. Ground Truth result",
       std::string());
     run_data.AppendData(
       run_output[run_environment::AccSetting::kNone]->out_disparity_map.OutputComparison(
@@ -438,7 +438,7 @@ std::optional<RunData> RunImpOnInputBp<T, OPT_IMP_ACCEL, NUM_INPUT>::RunImpsAndC
         beliefprop::DisparityMapEvaluationParams()).AsRunData());
     run_data.AddDataWHeader(
       opt_imp_run_description + " output vs. " + 
-        run_bp_stereo_single_thread_->BpRunDescription() + " result",
+        run_bp_stereo_single_thread_->RunDescription() + " result",
       std::string());
     run_data.AppendData(
       run_output[OPT_IMP_ACCEL]->out_disparity_map.OutputComparison(

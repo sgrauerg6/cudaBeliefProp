@@ -98,7 +98,7 @@ public:
    * 
    * @return Description of run using specified acceleration
    */
-  virtual std::string BpRunDescription() const = 0;
+  virtual std::string RunDescription() const = 0;
 
   /**
    * @brief Virtual destructor
@@ -130,7 +130,7 @@ protected:
    * @return Output from running belief propagation on stereo set or null if
    * error in run
    */
-  std::optional<beliefprop::BpRunOutput> ProcessStereoSet(
+  std::optional<beliefprop::BpRunOutput> ProcessImplementation(
     const std::array<std::string, 2>& ref_test_image_path,
     const beliefprop::BpSettings& alg_settings,
     const beliefprop::BpOnDevice<T, DISP_VALS, ACCELERATION>& run_bp_on_device) const;
@@ -140,7 +140,7 @@ protected:
 //device using pointers to acceleration-specific smooth image,
 //process BP, and memory management child class objects
 template<RunData_t T, unsigned int DISP_VALS, run_environment::AccSetting ACCELERATION>
-std::optional<beliefprop::BpRunOutput> RunBpOnStereoSet<T, DISP_VALS, ACCELERATION>::ProcessStereoSet(
+std::optional<beliefprop::BpRunOutput> RunBpOnStereoSet<T, DISP_VALS, ACCELERATION>::ProcessImplementation(
   const std::array<std::string, 2>& ref_test_image_path,
   const beliefprop::BpSettings& alg_settings,
   const beliefprop::BpOnDevice<T, DISP_VALS, ACCELERATION>& run_bp_on_device) const
