@@ -39,10 +39,10 @@ using RunBnchmrksOptimized = RunBenchmarksOptCPU<T, DISP_VALS, ACCELERATION>;
 //check if CUDA run defined and make any necessary additions to support it
 #if defined(OPTIMIZED_CUDA_RUN)
 //needed to run the CUDA implementation
-#include "benchmarksOptCUDA/RunBenchmarksOptCUDA.h"
+#include "benchmarksOptCUDA/RunBenchmarksCUDA.h"
 //set RunBpOptimized alias to correspond to CUDA implementation
 template <RunData_t T, unsigned int DISP_VALS, run_environment::AccSetting ACCELERATION>
-using RunBnchmrksOptimized = RunBenchmarksOptCUDA<T, DISP_VALS, ACCELERATION>;
+using RunBnchmrksOptimized = RunBenchmarksCUDA<T, DISP_VALS, ACCELERATION>;
 #endif //OPTIMIZED_CUDA_RUN
 
 #include "RunImpOnInput.h"

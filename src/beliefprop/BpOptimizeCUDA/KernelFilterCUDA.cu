@@ -24,7 +24,6 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  * @copyright Copyright (c) 2024
  */
 
-#include "KernelFilterCUDA.cuh"
 #include <cuda_runtime.h>
 #include <cuda.h>
 #include "BpSharedFuncts/SharedSmoothImageFuncts.h"
