@@ -33,7 +33,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #include "RunImpCPU/RunCPUSettings.h"
 #include "RunImp/RunImpMultTypesAccels.h"
 #include "BpRunProcessing/RunBpImp.h"
-#include "BpOptimizeCPU/RunBpImpOptCPU.h"
+#include "BpOptCPU/RunBpImpOptCPU.h"
 #include "BpSingleThreadCPU/RunBpImpSingleThreadCPU.h"
 
 /**

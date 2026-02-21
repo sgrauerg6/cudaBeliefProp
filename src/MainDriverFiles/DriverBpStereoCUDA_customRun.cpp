@@ -35,10 +35,10 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #include "RunImpCPU/RunCPUSettings.h"
 #include "RunImp/RunImpMultTypesAccels.h"
 #include "BpRunProcessing/RunBpImp.h"
-#include "BpOptimizeCUDA/RunBpImpCUDA.h"
+#include "BpCUDA/RunBpImpCUDA.h"
 #include "BpSingleThreadCPU/RunBpImpSingleThreadCPU.h"
 //needed to run the implementation a stereo set using CUDA
-#include "BpOptimizeCUDA/RunBpImpCUDA.h"
+#include "BpCUDA/RunBpImpCUDA.h"
 
 /**
  * @brief main() function to run optimized CUDA belief propagation implementation

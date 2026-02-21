@@ -61,10 +61,10 @@ ${OBJ_DIR}/%.o: ${SRC_DIR_BP}/*/%.cpp
 
 # specify compile commands using NVCC compiler for objects with CUDA for processing on GPU
 ${OBJ_DIR}/ProcessBpCUDA.o:
-	$(NVCC) -x cu -c ${SRC_DIR_BP}/BpOptimizeCUDA/ProcessBpCUDA.cpp -Xptxas -v -o $@ $(CUDA_IMP_INCLUDES) $(CUDA_IMP_COMPILE_FLAGS_NVCC)
+	$(NVCC) -x cu -c ${SRC_DIR_BP}/BpCUDA/ProcessBpCUDA.cpp -Xptxas -v -o $@ $(CUDA_IMP_INCLUDES) $(CUDA_IMP_COMPILE_FLAGS_NVCC)
 
 ${OBJ_DIR}/SmoothImageCUDA.o:
-	$(NVCC) -x cu -c ${SRC_DIR_BP}/BpOptimizeCUDA/SmoothImageCUDA.cpp -o $@ $(CUDA_IMP_INCLUDES) $(CUDA_IMP_COMPILE_FLAGS_NVCC)
+	$(NVCC) -x cu -c ${SRC_DIR_BP}/BpCUDA/SmoothImageCUDA.cpp -o $@ $(CUDA_IMP_INCLUDES) $(CUDA_IMP_COMPILE_FLAGS_NVCC)
 
 impDriverCUDA: ${OBJECTS} ${DRIVER_BENCHMARK_CUDA_OBJECT}
 	$(CC) ${DRIVER_BENCHMARK_CUDA_OBJECT} ${OBJECTS} $(CUDA_IMP_LIBS) -fopenmp $(CUDA_LINK_FLAGS) -o ${DRIVER_BENCHMARK_CUDA} -O

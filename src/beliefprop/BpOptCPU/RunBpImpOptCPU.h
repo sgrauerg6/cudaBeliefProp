@@ -50,7 +50,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 template <RunData_t T, unsigned int DISP_VALS, run_environment::AccSetting ACCELERATION>
 class RunBpImpOptCPU final : public RunBpImp<T, DISP_VALS, ACCELERATION> {
 public:
-  std::string RunDescription() const override { return std::string(run_cpu::kBpOptimizeCPUDesc); }
+  std::string RunDescription() const override { return std::string(run_cpu::kBpOptCPUDesc); }
 
   //run the disparity map estimation BP on a series of stereo images and save the results between each set of images if desired
   std::optional<beliefprop::BpRunOutput> operator()(

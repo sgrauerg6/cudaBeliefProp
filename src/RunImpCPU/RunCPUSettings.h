@@ -69,7 +69,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 namespace run_cpu {
 
 /** @brief Constant that specifies that run is optimized CPU */
-constexpr std::string_view kBpOptimizeCPUDesc{"Optimized CPU"};
+constexpr std::string_view kBpOptCPUDesc{"Optimized CPU"};
 
 /** @brief Constant for header corresponding to number of parallel
  * CPU threads in run */
