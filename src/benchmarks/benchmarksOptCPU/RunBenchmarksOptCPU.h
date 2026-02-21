@@ -64,7 +64,7 @@ inline std::optional<benchmarks::BnchmrksRunOutput> RunBpImpOptCPU<T, DISP_VALS,
 
   //generate struct with pointers to objects for running optimized CPU implementation and call
   //function to run optimized CPU implementation
-  auto process_set_output = this->ProcessBenchmarks(
+  const auto process_set_output = this->ProcessBenchmarks(
     size,
     std::make_unique<ProcessBenchmarks<T, ACCELERATION>>(parallel_params),
     std::make_unique<MemoryManagement<T>>());
