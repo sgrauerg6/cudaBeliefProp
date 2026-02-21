@@ -36,10 +36,17 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  */
 namespace beliefprop_cuda {
 
-//kernel to convert the unsigned int pixels to float pixels in an image when
-//smoothing is not desired but the pixels need to be converted to floats
-//the input image is stored as unsigned ints
-//output filtered image stored in float_image_pixels
+/**
+ * @brief Kernel to convert the unsigned int pixels to float pixels in an image when
+ * smoothing is not desired but the pixels need to be converted to floats
+ * Input image is stored as unsigned ints
+ * Output filtered image stored in float_image_pixels
+ * 
+ * @param uint_image_pixels 
+ * @param float_image_pixels 
+ * @param width_images 
+ * @param height_images 
+ */
 __global__ void convertUnsignedIntImageToFloat(
   unsigned int* uint_image_pixels, float* float_image_pixels,
   unsigned int width_images, unsigned int height_images)
@@ -55,9 +62,19 @@ __global__ void convertUnsignedIntImageToFloat(
   }
 }
 
-//kernel to apply a horizontal filter on each pixel of the image in parallel
-//input image stored in texture imagePixelsFloatToFilterTexture
-//output filtered image stored in filtered_image
+/**
+ * @brief Kernel to apply a horizontal filter on each pixel of the image in parallel
+ * Input image to filter is stored as template parameter type T
+ * Output filtered image is array of floats
+ * 
+ * @tparam T 
+ * @param image_to_filter 
+ * @param filtered_image 
+ * @param width_images 
+ * @param height_images 
+ * @param image_filter 
+ * @param size_filter 
+ */
 template<BpImData_t T>
 __global__ void FilterImageAcross(
   const T* image_to_filter, float* filtered_image,
@@ -75,9 +92,19 @@ __global__ void FilterImageAcross(
   }
 }
 
-//kernel to apply a vertical filter on each pixel of the image in parallel
-//input image stored in texture imagePixelsFloatToFilterTexture
-//output filtered image stored in filtered_image
+/**
+ * @brief Kernel to apply a vertical filter on each pixel of the image in parallel
+ * Input image to filter is stored as template parameter type T
+ * Output filtered image is array of floats
+ * 
+ * @tparam T 
+ * @param image_to_filter 
+ * @param filtered_image 
+ * @param width_images 
+ * @param height_images 
+ * @param image_filter 
+ * @param size_filter 
+ */
 template<BpImData_t T>
 __global__ void FilterImageVertical(
   const T* image_to_filter, float* filtered_image,
