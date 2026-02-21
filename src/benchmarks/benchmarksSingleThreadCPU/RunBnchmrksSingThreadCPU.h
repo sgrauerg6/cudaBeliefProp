@@ -17,11 +17,18 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 */
 
 /**
- * @file RunBenchmarksSingThreadCPU.cpp
+ * @file RunBnchmrksSingThreadCPU.h
  * @author Scott Grauer-Gray
  * @brief
  * 
  * @copyright Copyright (c) 2026
  */
 
-#include "RunBenchmarksSingThreadCPU.h"
+#ifndef RUN_BNCHMRKS_SING_THREAD_CPU_H_
+#define RUN_BNCHMRKS_SING_THREAD_CPU_H_
+
+class RunBnchmrksSingThreadCPU {
+
+};
+
+#endif //RUN_BNCHMRKS_SING_THREAD_CPU_H_

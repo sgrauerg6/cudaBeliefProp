@@ -17,25 +17,25 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 */
 
 /**
- * @file ProcessBenchmarksCUDA.h
+ * @file ProcessBnchmrksCUDA.h
  * @author Scott Grauer-Gray
  * @brief
  * 
  * @copyright Copyright (c) 2026
  */
 
-#ifndef PROCESS_BENCHMARKS_CUDA_H_
-#define PROCESS_BENCHMARKS_CUDA_H_
+#ifndef PROCESS_BNCHMRKS_CUDA_H_
+#define PROCESS_BNCHMRKS_CUDA_H_
 
 #include <cuda_runtime.h>
 #include <cuda_fp16.h>
-#include "benchmarksRunProcessing/ProcessBenchmarksDevice.h"
+#include "benchmarksRunProcessing/ProcessBnchmrksDevice.h"
 #include "RunEval/RunTypeConstraints.h"
 #include "RunEval/RunEvalConstsEnums.h"
-#include "KernelBenchmarksCUDA.cu"
+#include "KernelBnchmrksCUDA.cu"
 
 template<RunData_t T, run_environment::AccSetting ACCELERATION>
-class ProcessBenchmarksCUDA : public ProcessBenchmarksDevice<T, ACCELERATION> {
+class ProcessBnchmrksCUDA : public ProcessBnchmrksDevice<T, ACCELERATION> {
 public:
 
 private:
@@ -83,4 +83,4 @@ private:
   }
 };
 
-#endif //PROCESS_BENCHMARKS_CUDA_H_
+#endif //PROCESS_BNCHMRKS_CUDA_H_

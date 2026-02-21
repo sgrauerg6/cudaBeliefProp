@@ -17,7 +17,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 */
 
 /**
- * @file KernelBenchmarksCUDA.cu
+ * @file KernelBnchmrksCUDA.cu
  * @author Scott Grauer-Gray
  * @brief Kernel functions to run benchmarks on the GPU using CUDA
  * 

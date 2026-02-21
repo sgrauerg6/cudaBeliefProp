@@ -17,21 +17,21 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 */
 
 /**
- * @file ProcessBenchmarksOptCPU.h
+ * @file ProcessBnchmrksOptCPU.h
  * @author Scott Grauer-Gray
  * @brief
  * 
  * @copyright Copyright (c) 2026
  */
 
-#ifndef PROCESS_BENCHMARKS_OPT_CPU_H_
-#define PROCESS_BENCHMARKS_OPT_CPU_H_
+#ifndef PROCESS_BNCHMRKS_OPT_CPU_H_
+#define PROCESS_BNCHMRKS_OPT_CPU_H_
 
-#include "benchmarksRunProcessing/ProcessBenchmarksDevice.h"
-#include "KernelBenchmarksOptCPU.h"
+#include "benchmarksRunProcessing/ProcessBnchmrksDevice.h"
+#include "KernelBnchmrksOptCPU.h"
 
 template<RunData_t T, run_environment::AccSetting ACCELERATION>
-class ProcessBenchmarksOptCPU : public ProcessBenchmarksDevice<T, ACCELERATION> {
+class ProcessBnchmrksOptCPU : public ProcessBnchmrksDevice<T, ACCELERATION> {
 public:
 
 private:
@@ -56,4 +56,4 @@ private:
   }
 };
 
-#endif //PROCESS_BENCHMARKS_OPT_CPU_H_
+#endif //PROCESS_BNCHMRKS_OPT_CPU_H_

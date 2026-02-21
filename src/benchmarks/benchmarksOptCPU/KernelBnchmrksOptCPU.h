@@ -17,7 +17,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 */
 
 /**
- * @file KernelBenchmarksOptCPU.h
+ * @file KernelBnchmrksOptCPU.h
  * @author Scott Grauer-Gray
  * @brief This header declares the kernel functions to run optimized benchmarks
  * on CPU
@@ -25,8 +25,8 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  * @copyright Copyright (c) 2026
  */
 
-#ifndef KERNEL_BENCHMARKS_OPT_CPU_H
-#define KERNEL_BENCHMARKS_OPT_CPU_H
+#ifndef KERNEL_BNCHMRKS_OPT_CPU_H
+#define KERNEL_BNCHMRKS_OPT_CPU_H
 
 #ifndef __APPLE__
 #include <omp.h>
@@ -88,4 +88,4 @@ namespace benchmarks_cpu
   }
 };
 
-#endif //KERNEL_BENCHMARKS_OPT_CPU_H
+#endif //KERNEL_BNCHMRKS_OPT_CPU_H

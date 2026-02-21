@@ -17,32 +17,32 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 */
 
 /**
- * @file RunBenchmarksOnInput.h
+ * @file RunImpOnInputBnchmrks.h
  * @author Scott Grauer-Gray
  * @brief
  * 
  * @copyright Copyright (c) 2026
  */
 
-#ifndef RUN_BENCHMARKS_ON_INPUT_H_
-#define RUN_BENCHMARKS_ON_INPUT_H_
+#ifndef RUN_IMP_ON_INPUT_BNCHMRKS_H_
+#define RUN_IMP_ON_INPUT_BNCHMRKS_H_
 
 //check if optimized CPU run defined and make any necessary additions to support it
 #if defined(OPTIMIZED_CPU_RUN)
 //needed to run the optimized CPU implementation
-#include "benchmarksOptCPU/RunBenchmarksOptCPU.h"
+#include "benchmarksOptCPU/RunBnchmrksOptCPU.h"
 //set RunBpOptimized alias to correspond to optimized CPU implementation
 template <RunData_t T, run_environment::AccSetting ACCELERATION>
-using RunBnchmrksOptimized = RunBenchmarksOptCPU<T, ACCELERATION>;
+using RunBnchmrksOptimized = RunBnchmrksOptCPU<T, ACCELERATION>;
 #endif //OPTIMIZED_CPU_RUN
 
 //check if CUDA run defined and make any necessary additions to support it
 #if defined(OPTIMIZED_CUDA_RUN)
 //needed to run the CUDA implementation
-#include "benchmarksCUDA/RunBenchmarksCUDA.h"
+#include "benchmarksCUDA/RunBnchmrksCUDA.h"
 //set RunBpOptimized alias to correspond to CUDA implementation
 template <RunData_t T, run_environment::AccSetting ACCELERATION>
-using RunBnchmrksOptimized = RunBenchmarksCUDA<T, ACCELERATION>;
+using RunBnchmrksOptimized = RunBnchmrksCUDA<T, ACCELERATION>;
 #endif //OPTIMIZED_CUDA_RUN
 
 #include "RunImpOnInput.h"
@@ -56,7 +56,7 @@ using RunBnchmrksOptimized = RunBenchmarksCUDA<T, ACCELERATION>;
  * @tparam NUM_INPUT 
  */
 template<RunData_t T, run_environment::AccSetting OPT_IMP_ACCEL, size_t NUM_INPUT>
-class RunBenchmarksOnInput final : public RunImpOnInput<T, OPT_IMP_ACCEL, NUM_INPUT> {
+class RunImpOnInputBnchmrks final : public RunImpOnInput<T, OPT_IMP_ACCEL, NUM_INPUT> {
 public:
   MultRunData operator()(
     const run_environment::RunImpSettings& run_imp_settings) override;
@@ -114,7 +114,7 @@ private:
 //bp implemenation optimization specified by OPT_IMP_ACCEL
 //evaluation stereo set to run implementation on specified by NUM_INPUT
 template<RunData_t T, run_environment::AccSetting OPT_IMP_ACCEL, size_t NUM_INPUT>
-MultRunData RunBenchmarksOnInput<T, OPT_IMP_ACCEL, NUM_INPUT>::operator()(
+MultRunData RunImpOnInputBnchmrks<T, OPT_IMP_ACCEL, NUM_INPUT>::operator()(
   const run_environment::RunImpSettings& run_imp_settings)
 {
   //set up BP settings for current run
@@ -178,7 +178,7 @@ MultRunData RunBenchmarksOnInput<T, OPT_IMP_ACCEL, NUM_INPUT>::operator()(
 //CPU or GPU
 template<RunData_t T, run_environment::AccSetting OPT_IMP_ACCEL, size_t NUM_INPUT>
 std::shared_ptr<ParallelParams>
-RunBenchmarksOnInput<T, OPT_IMP_ACCEL, NUM_INPUT>::SetUpParallelParams(
+RunImpOnInputBnchmrks<T, OPT_IMP_ACCEL, NUM_INPUT>::SetUpParallelParams(
   const run_environment::RunImpSettings& run_imp_settings) const
 {
   //parallel parameters initialized with default thread count dimensions at
@@ -192,7 +192,7 @@ RunBenchmarksOnInput<T, OPT_IMP_ACCEL, NUM_INPUT>::SetUpParallelParams(
 //get input data and parameter info about current benchmark (belief propagation
 //in this case) and return as RunData type
 template<RunData_t T, run_environment::AccSetting OPT_IMP_ACCEL, size_t NUM_INPUT>
-RunData RunBenchmarksOnInput<T, OPT_IMP_ACCEL, NUM_INPUT>::InputAndParamsForCurrBenchmark(
+RunData RunImpOnInputBnchmrks<T, OPT_IMP_ACCEL, NUM_INPUT>::InputAndParamsForCurrBenchmark(
   bool loop_iters_templated) const
 {
   RunData curr_run_data;
@@ -210,7 +210,7 @@ RunData RunBenchmarksOnInput<T, OPT_IMP_ACCEL, NUM_INPUT>::InputAndParamsForCurr
 //specified by numStereoSet
 //run only optimized implementation if run_opt_imp_only is true
 template<RunData_t T, run_environment::AccSetting OPT_IMP_ACCEL, size_t NUM_INPUT>
-std::optional<RunData> RunBenchmarksOnInput<T, OPT_IMP_ACCEL, NUM_INPUT>::RunImpsAndCompare(
+std::optional<RunData> RunImpOnInputBnchmrks<T, OPT_IMP_ACCEL, NUM_INPUT>::RunImpsAndCompare(
   std::shared_ptr<ParallelParams> parallel_params,
   bool run_opt_imp_only,
   bool run_imp_templated_loop_iters) const
@@ -383,4 +383,4 @@ std::optional<RunData> RunBenchmarksOnInput<T, OPT_IMP_ACCEL, NUM_INPUT>::RunImp
   return run_data;
 }
 
-#endif //RUN_BENCHMARKS_ON_INPUT_H_
+#endif //RUN_IMP_ON_INPUT_BNCHMRKS_H_

@@ -17,11 +17,11 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 */
 
 /**
- * @file RunBenchmarks.cpp
+ * @file ProcessBnchmrksDevice.cpp
  * @author Scott Grauer-Gray
  * @brief
  * 
  * @copyright Copyright (c) 2026
  */
 
-#include "RunBenchmarks.h"
+#include "ProcessBnchmrksDevice.h"

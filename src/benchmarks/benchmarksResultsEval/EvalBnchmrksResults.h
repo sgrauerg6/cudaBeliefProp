@@ -17,15 +17,15 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 */
 
 /**
- * @file EvalBenchmarkResults.h
+ * @file EvalBnchmrksResults.h
  * @author Scott Grauer-Gray
  * @brief
  * 
  * @copyright Copyright (c) 2026
  */
 
-#ifndef EVAL_BENCHMARK_RESULTS_H
-#define EVAL_BENCHMARK_RESULTS_H
+#ifndef EVAL_BNCHMRKS_RESULTS_H
+#define EVAL_BNCHMRKS_RESULTS_H
 
 #include "RunEval/EvaluateImpResults.h"
 #include "RunEval/RunEvalConstsEnums.h"
@@ -39,13 +39,13 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  * benchmarks evaluation which override pure virtual functions in
  * parent class
  */
-class EvalBenchmarkResults final : public EvaluateImpResults {
+class EvalBnchmrksResults final : public EvaluateImpResults {
 public:
   /**
    * @brief Constructor for initialization and to set name of directory
    * with results
    */
-  EvalBenchmarkResults(const std::string& results_dir_name) : 
+  EvalBnchmrksResults(const std::string& results_dir_name) : 
     EvaluateImpResults(results_dir_name) {}
 
 private:
@@ -76,4 +76,4 @@ private:
   }
 };
 
-#endif //EVAL_BENCHMARK_RESULTS_H
+#endif //EVAL_BNCHMRKS_RESULTS_H

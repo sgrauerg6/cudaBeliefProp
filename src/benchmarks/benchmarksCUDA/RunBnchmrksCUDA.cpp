@@ -17,11 +17,11 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 */
 
 /**
- * @file EvalBenchmarkResults.cpp
+ * @file RunBnchmrksCUDA.cpp
  * @author Scott Grauer-Gray
  * @brief
  * 
  * @copyright Copyright (c) 2026
  */
 
-#include "EvalBenchmarkResults.h"
+#include "RunBnchmrksCUDA.h"

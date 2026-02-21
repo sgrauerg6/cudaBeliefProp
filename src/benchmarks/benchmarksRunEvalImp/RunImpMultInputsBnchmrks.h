@@ -17,7 +17,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 */
 
 /**
- * @file RunBenchmarksMultInputs.h
+ * @file RunImpMultInputsBnchmrks.h
  * @author Scott Grauer-Gray
  * @brief Declares child class of RunImpMultInputs to run specified belief
  * propagation implementation on a number of inputs.
@@ -25,8 +25,8 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  * @copyright Copyright (c) 2026
  */
 
-#ifndef RUN_IMP_MULT_INPUTS_BP_H_
-#define RUN_IMP_MULT_INPUTS_BP_H_
+#ifndef RUN_IMP_MULT_INPUTS_BNCHMRKS_H_
+#define RUN_IMP_MULT_INPUTS_BNCHMRKS_H_
 
 #include "RunSettingsParams/RunSettings.h"
 #include "RunImp/RunImpMultInputs.h"
@@ -37,9 +37,9 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  * @brief Child class of RunImpMultInputs to run specified benchmark implementation on a
  * number of inputs.
  */
-class RunBenchmarksMultInputs final : public RunImpMultInputs {
+class RunImpMultInputsBnchmrks final : public RunImpMultInputs {
 public:
-  explicit RunBenchmarksMultInputs(
+  explicit RunImpMultInputsBnchmrks(
     run_environment::AccSetting opt_imp_accel) : 
     RunImpMultInputs(opt_imp_accel) {}
 
@@ -86,4 +86,4 @@ private:
     const run_environment::RunImpSettings& run_imp_settings) const;
 };
 
-#endif /* RUN_IMP_MULT_INPUTS_BP_H_ */
+#endif /* RUN_IMP_MULT_INPUTS_BNCHMRKS_H_ */

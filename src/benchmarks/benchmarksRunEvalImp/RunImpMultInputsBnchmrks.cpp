@@ -17,17 +17,17 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 */
 
 /**
- * @file RunBenchmarksMultInputs.cpp
+ * @file RunImpMultInputsBnchmrks.cpp
  * @author Scott Grauer-Gray
  * @brief 
  * 
  * @copyright Copyright (c) 2026
  */
 
-#include "RunBenchmarksOnInput.h"
-#include "RunBenchmarksMultInputs.h"
+#include "RunImpOnInputBnchmrks.h"
+#include "RunImpMultInputsBnchmrks.h"
 
-MultRunData RunBenchmarksMultInputs::RunEvalImpMultDataSets(
+MultRunData RunImpMultInputsBnchmrks::RunEvalImpMultDataSets(
   const run_environment::RunImpSettings& run_imp_settings,
   size_t data_type_size) const 
 {
@@ -54,7 +54,7 @@ MultRunData RunBenchmarksMultInputs::RunEvalImpMultDataSets(
 }
 
 template <run_environment::AccSetting OPT_IMP_ACCEL>
-MultRunData RunImpMultInputsBp::RunEvalImpMultDataSets(
+MultRunData RunImpMultInputsBnchmrks::RunEvalImpMultDataSets(
   const run_environment::RunImpSettings& run_imp_settings,
   size_t data_type_size) const
 {
@@ -90,12 +90,12 @@ MultRunData RunImpMultInputsBp::RunEvalImpMultDataSets(
 
 //run and evaluate optimized bp implementation on evaluation stereo sets
 template <RunData_t T, run_environment::AccSetting OPT_IMP_ACCEL>
-MultRunData RunImpMultInputsBp::RunEvalImpMultDataSets(
+MultRunData RunImpMultInputsBnchmrks::RunEvalImpMultDataSets(
   const run_environment::RunImpSettings& run_imp_settings) const
 {
   //run and evaluate bp implementation on all stereo sets used for benchmarking
   std::vector<MultRunData> run_results;
-  run_results.push_back(RunBenchmarksOnInput<
+  run_results.push_back(RunImpOnInputBnchmrks<
     T, OPT_IMP_ACCEL, static_cast<size_t>(0)>().operator()(run_imp_settings));
 
   //merge results for each input to overall results

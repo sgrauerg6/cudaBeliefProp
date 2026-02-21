@@ -17,15 +17,15 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 */
 
 /**
- * @file RunBenchmarks.h
+ * @file RunBnchmrks.h
  * @author Scott Grauer-Gray
  * @brief
  * 
  * @copyright Copyright (c) 2026
  */
 
-#ifndef RUN_BENCHMARKS_H
-#define RUN_BENCHMARKS_H
+#ifndef RUN_BNCHMRKS_H
+#define RUN_BNCHMRKS_H
 
 #include <chrono>
 #include <optional>
@@ -36,7 +36,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #include "RunEval/RunData.h
 #include "RunEval/RunTypeConstraints.h"
 #include "RunImp/MemoryManagement.h"
-#include "ProcessBenchmarksDevice.h"
+#include "ProcessBnchmrksDevice.h"
 
 namespace benchmarks {
 
@@ -60,7 +60,7 @@ struct BnchmrksRunOutput
  * @tparam ACCELERATION 
  */
 template<RunData_t T, run_environment::AccSetting ACCELERATION>
-class RunBenchmarks {
+class RunBnchmrks {
   /**
    * @brief Pure virtual function to return run description corresponding to
    * target acceleration
@@ -72,7 +72,7 @@ class RunBenchmarks {
   /**
    * @brief Virtual destructor
    */
-  virtual ~RunBenchmarks() {}
+  virtual ~RunBnchmrks() {}
 
   /**
    * @brief Pure virtual operator() that must be defined in child class
@@ -99,7 +99,7 @@ protected:
    */
   std::optional<benchmarks::BnchmrksRunOutput> ProcessBenchmarks(
     unsigned int size,
-    ProcessBenchmarksDevice<T, ACCELERATION>* proc_bnchmrks_device,
+    ProcessBnchmrksDevice<T, ACCELERATION>* proc_bnchmrks_device,
     const MemoryManagement<T>* mem_management) const;
 };
 
@@ -107,7 +107,7 @@ protected:
 //device using pointers to acceleration-specific smooth image,
 //process BP, and memory management child class objects
 template<RunData_t T, run_environment::AccSetting ACCELERATION>
-std::optional<benchmarks::BnchmrksRunOutput> RunBenchmarks<T, ACCELERATION>::ProcessBenchmarks(
+std::optional<benchmarks::BnchmrksRunOutput> RunBnchmrks<T, ACCELERATION>::ProcessBenchmarks(
   unsigned int size,
   ProcessBenchmarksDevice<T, ACCELERATION>* proc_bnchmrks_device,
   const MemoryManagement<T>* mem_management) const
@@ -177,4 +177,4 @@ std::optional<benchmarks::BnchmrksRunOutput> RunBenchmarks<T, ACCELERATION>::Pro
   delete [] out_mat_host;
 }
 
-#endif //RUN_BENCHMARKS_H
+#endif //RUN_BNCHMRKS_H

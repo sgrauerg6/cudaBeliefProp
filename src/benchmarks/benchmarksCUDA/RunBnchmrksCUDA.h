@@ -17,11 +17,20 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 */
 
 /**
- * @file ProcessBenchmarksOptCPU.cpp
+ * @file RunBnchmrksCUDA.h
  * @author Scott Grauer-Gray
  * @brief
  * 
  * @copyright Copyright (c) 2026
  */
 
-#include "ProcessBenchmarksOptCPU.h"
+#ifndef RUN_BNCHMRKS_CUDA_H
+#define RUN_BNCHMRKS_CUDA_H
+
+#include "benchmarksRunProcessing/RunBnchmrks.h"
+
+class RunBnchmrksCUDA : public RunBnchmrks {
+
+};
+
+#endif //RUN_BNCHMRKS_OPT_CUDA_H

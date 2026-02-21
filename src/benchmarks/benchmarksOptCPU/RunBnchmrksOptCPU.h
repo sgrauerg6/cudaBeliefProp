@@ -17,20 +17,20 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 */
 
 /**
- * @file RunBenchmarksOptCPU.h
+ * @file RunBnchmrksOptCPU.h
  * @author Scott Grauer-Gray
  * @brief
  * 
  * @copyright Copyright (c) 2026
  */
 
-#ifndef RUN_BENCHMARKS_OPT_CPU_H
-#define RUN_BENCHMARKS_OPT_CPU_H
+#ifndef RUN_BNCHMRKS_OPT_CPU_H
+#define RUN_BNCHMRKS_OPT_CPU_H
 
-#include "benchmarksRunProcessing/RunBenchmarks.h"
+#include "benchmarksRunProcessing/RunBnchmrks.h"
 
 template<RunData_t T, run_environment::AccSetting ACCELERATION>
-class RunBenchmarksOptCPU : public RunBenchmarks<T, ACCELERATION> {
+class RunBnchmrksOptCPU : public RunBnchmrks<T, ACCELERATION> {
 public:
   std::string BnchmarksRunDescription() const override { return std::string(run_cpu::kBpOptCPUDesc); }
 
@@ -66,7 +66,7 @@ inline std::optional<benchmarks::BnchmrksRunOutput> RunBpImpOptCPU<T, DISP_VALS,
   //function to run optimized CPU implementation
   const auto process_set_output = this->ProcessBenchmarks(
     size,
-    std::make_unique<ProcessBenchmarks<T, ACCELERATION>>(parallel_params),
+    std::make_unique<ProcessBnchmrks<T, ACCELERATION>>(parallel_params),
     std::make_unique<MemoryManagement<T>>());
   if (process_set_output) {
     run_data.AppendData(std::move(process_set_output->run_data));
@@ -78,4 +78,4 @@ inline std::optional<benchmarks::BnchmrksRunOutput> RunBpImpOptCPU<T, DISP_VALS,
 
 };
 
-#endif //RUN_BENCHMARKS_OPT_CPU_H
+#endif //RUN_BNCHMRKS_OPT_CPU_H
