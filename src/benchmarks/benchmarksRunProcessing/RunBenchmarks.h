@@ -27,6 +27,17 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #ifndef RUN_BENCHMARKS_H
 #define RUN_BENCHMARKS_H
 
+#include <chrono>
+#include <optional>
+#include <vector>
+#include <random>
+#include <algorithm>
+#include "RunSettingsParams/RunSettingsConstsEnums.h"
+#include "RunEval/RunData.h
+#include "RunEval/RunTypeConstraints.h"
+#include "RunImp/MemoryManagement.h"
+#include "ProcessBenchmarksDevice.h"
+
 namespace benchmarks {
 
 /**
@@ -56,7 +67,7 @@ class RunBenchmarks {
    * 
    * @return Description of run using specified acceleration
    */
-  virtual std::string BnchmrksRunDescription() const = 0;
+  virtual std::string RunDescription() const = 0;
 
   /**
    * @brief Virtual destructor

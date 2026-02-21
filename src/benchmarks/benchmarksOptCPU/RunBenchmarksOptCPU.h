@@ -45,10 +45,10 @@ inline std::optional<benchmarks::BnchmrksRunOutput> RunBpImpOptCPU<T, DISP_VALS,
   unsigned int size,
   const ParallelParams& parallel_params) const
 {
-    //set number of threads to use when running code in parallel using OpenMP from input parallel parameters
+  //set number of threads to use when running code in parallel using OpenMP from input parallel parameters
   //current setting on CPU is to execute all parallel processing in a run using the same number of parallel threads
   const unsigned int nthreads = 
-    parallel_params.OptParamsForKernel({static_cast<size_t>(beliefprop::BpKernel::kBlurImages), 0})[0];
+    parallel_params.OptParamsForKernel({0, 0})[0];
   #ifndef __APPLE__
     omp_set_num_threads(nthreads);
   #endif //__APPLE__

@@ -32,8 +32,8 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 //needed to run the optimized CPU implementation
 #include "benchmarksOptCPU/RunBenchmarksOptCPU.h"
 //set RunBpOptimized alias to correspond to optimized CPU implementation
-template <RunData_t T, unsigned int DISP_VALS, run_environment::AccSetting ACCELERATION>
-using RunBnchmrksOptimized = RunBenchmarksOptCPU<T, DISP_VALS, ACCELERATION>;
+template <RunData_t T, run_environment::AccSetting ACCELERATION>
+using RunBnchmrksOptimized = RunBenchmarksOptCPU<T, ACCELERATION>;
 #endif //OPTIMIZED_CPU_RUN
 
 //check if CUDA run defined and make any necessary additions to support it
@@ -41,8 +41,8 @@ using RunBnchmrksOptimized = RunBenchmarksOptCPU<T, DISP_VALS, ACCELERATION>;
 //needed to run the CUDA implementation
 #include "benchmarksCUDA/RunBenchmarksCUDA.h"
 //set RunBpOptimized alias to correspond to CUDA implementation
-template <RunData_t T, unsigned int DISP_VALS, run_environment::AccSetting ACCELERATION>
-using RunBnchmrksOptimized = RunBenchmarksCUDA<T, DISP_VALS, ACCELERATION>;
+template <RunData_t T, run_environment::AccSetting ACCELERATION>
+using RunBnchmrksOptimized = RunBenchmarksCUDA<T, ACCELERATION>;
 #endif //OPTIMIZED_CUDA_RUN
 
 #include "RunImpOnInput.h"
@@ -99,19 +99,13 @@ protected:
 private:
   /** @brief Unique pointer to run benchmarks object for single thread
    *  implementation */
-  std::unique_ptr<RunBpImp<
-    T,
-    0,
-    run_environment::AccSetting::kNone>>
-  run_benchmarks_single_thread_;
+  std::unique_ptr<RunBnchmrksOptimized<T, run_environment::AccSetting::kNone>>
+    run_benchmarks_single_thread_;
   
   /** @brief Unique pointer to run benchmarks object for optimized 
    *  implementation */
-  std::unique_ptr<RunBpImp<
-    T,
-    0,
-    OPT_IMP_ACCEL>>
-      run_benchmarks_opt_;
+  std::unique_ptr<RunBnchmrksOptimized<T, OPT_IMP_ACCEL>>
+    run_benchmarks_opt_;
 };
 
 //run and evaluate optimized belief propagation implementation on evaluation

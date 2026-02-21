@@ -42,13 +42,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #include "RunEval/RunTypeConstraints.h"
 #include "RunEval/RunEvalConstsEnums.h"
 #include "RuntimeTiming/DetailedTimings.h"
-#include "BpRunProcessing/BpConstsEnumsAliases.h"
-#include "BpResultsEvaluation/BpEvaluationStereoSets.h"
-#include "BpResultsEvaluation/DetailedTimingBpConsts.h"
-#include "BpSettings.h"
-#include "BpRunUtils.h"
-#include "ParallelParamsBp.h"
-#include "BpLevel.h"
+#include "ParallelParamsBnchmrks.h"
 
 /** @brief Alias for time point for start and end time for each timing
  *  segment */
