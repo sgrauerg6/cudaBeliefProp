@@ -17,7 +17,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 */
 
 /**
- * @file SmoothImageCPU.h
+ * @file SmoothImageOptCPU.h
  * @author Scott Grauer-Gray
  * @brief Declares child class of SmoothImage for smoothing images in the
  * optimized CPU implementation
@@ -25,8 +25,8 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  * @copyright Copyright (c) 2024
  */
 
-#ifndef SMOOTHIMAGECPU_H_
-#define SMOOTHIMAGECPU_H_
+#ifndef SMOOTH_IMAGE_OPT_CPU_H_
+#define SMOOTH_IMAGE_OPT_CPU_H_
 
 #include <utility>
 #include <memory>
@@ -40,9 +40,9 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  * @brief Child class of SmoothImage for smoothing images in the optimized CPU implementation
  * 
  */
-class SmoothImageCPU final : public SmoothImage {
+class SmoothImageOptCPU final : public SmoothImage {
 public:
-  explicit SmoothImageCPU(const ParallelParams& opt_cpu_params) : SmoothImage(opt_cpu_params) {}
+  explicit SmoothImageOptCPU(const ParallelParams& opt_cpu_params) : SmoothImage(opt_cpu_params) {}
 
   //function to use the CPU image filter to apply a guassian filter to the a single images
   //input images have each pixel stored as an unsigned in (value between 0 and 255 assuming 8-bit grayscale image used)
@@ -76,4 +76,4 @@ private:
     const ParallelParams& opt_cpu_params) const;
 };
 
-#endif /* SMOOTHIMAGECPU_H_ */
+#endif /* SMOOTH_IMAGE_OPT_CPU_H_ */

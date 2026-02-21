@@ -17,30 +17,30 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 */
 
 /**
- * @file RunBpOnStereoSetOptimizedCPU.h
+ * @file RunBpImpOptCPU.h
  * @author Scott Grauer-Gray
- * @brief Declares child class of RunBpOnStereoSet to run optimized CPU
+ * @brief Declares child class of RunBpImp to run optimized CPU
  * implementation of belief propagation on a given stereo set as defined
  * by reference and test image file paths
  * 
  * @copyright Copyright (c) 2024
  */
 
-#ifndef RUN_BP_ON_STEREO_SET_OPTIMIZED_CPU_H_
-#define RUN_BP_ON_STEREO_SET_OPTIMIZED_CPU_H_
+#ifndef RUN_BP_IMP_OPT_CPU_H_
+#define RUN_BP_IMP_OPT_CPU_H_
 
 #include <string>
 #include <memory>
 #include <array>
-#include "BpRunProcessing/RunBpOnStereoSet.h"
-#include "BpRunProcessing/ProcessBp.h"
+#include "BpRunProcessing/RunBpImp.h"
+#include "BpRunProcessing/ProcessBpDevice.h"
 #include "BpRunProcessing/ParallelParamsBp.h"
 #include "RunEval/RunTypeConstraints.h"
-#include "SmoothImageCPU.h"
-#include "ProcessBpOptimizedCPU.h"
+#include "SmoothImageOptCPU.h"
+#include "ProcessBpOptCPU.h"
 
 /**
- * @brief Child class of RunBpOnStereoSet to run optimized CPU implementation of belief propagation on a
+ * @brief Child class of RunBpImp to run optimized CPU implementation of belief propagation on a
  * given stereo set as defined by reference and test image file paths
  * 
  * @tparam T 
@@ -48,7 +48,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  * @tparam ACCELERATION 
  */
 template <RunData_t T, unsigned int DISP_VALS, run_environment::AccSetting ACCELERATION>
-class RunBpOnStereoSetOptimizedCPU final : public RunBpOnStereoSet<T, DISP_VALS, ACCELERATION> {
+class RunBpImpOptCPU final : public RunBpImp<T, DISP_VALS, ACCELERATION> {
 public:
   std::string RunDescription() const override { return std::string(run_cpu::kBpOptimizeCPUDesc); }
 
@@ -60,7 +60,7 @@ public:
 };
 
 template<RunData_t T, unsigned int DISP_VALS, run_environment::AccSetting ACCELERATION>
-inline std::optional<beliefprop::BpRunOutput> RunBpOnStereoSetOptimizedCPU<T, DISP_VALS, ACCELERATION>::operator()(
+inline std::optional<beliefprop::BpRunOutput> RunBpImpOptCPU<T, DISP_VALS, ACCELERATION>::operator()(
   const std::array<std::string, 2>& ref_test_image_path,
   const beliefprop::BpSettings& alg_settings,
   const ParallelParams& parallel_params) const
@@ -88,8 +88,8 @@ inline std::optional<beliefprop::BpRunOutput> RunBpOnStereoSetOptimizedCPU<T, DI
     ref_test_image_path,
     alg_settings, 
     beliefprop::BpOnDevice<T, DISP_VALS, ACCELERATION>{
-      std::make_unique<SmoothImageCPU>(parallel_params),
-      std::make_unique<ProcessBpOptimizedCPU<T, DISP_VALS, ACCELERATION>>(parallel_params),
+      std::make_unique<SmoothImageOptCPU>(parallel_params),
+      std::make_unique<ProcessBpOptCPU<T, DISP_VALS, ACCELERATION>>(parallel_params),
       std::make_unique<MemoryManagement<T>>(),
       std::make_unique<MemoryManagement<float>>()});
   if (process_set_output) {
@@ -100,4 +100,4 @@ inline std::optional<beliefprop::BpRunOutput> RunBpOnStereoSetOptimizedCPU<T, DI
   return process_set_output;
 }
 
-#endif /* RUN_BP_ON_STEREO_SET_OPTIMIZED_CPU_H_ */
+#endif /* RUN_BP_IMP_OPT_CPU_H_ */

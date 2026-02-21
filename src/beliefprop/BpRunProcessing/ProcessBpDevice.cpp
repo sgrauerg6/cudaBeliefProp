@@ -17,11 +17,11 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 */
 
 /**
- * @file RunBpOnStereoSetOptimizedCPU.cpp
+ * @file ProcessBpDevice.cpp
  * @author Scott Grauer-Gray
  * @brief 
  * 
  * @copyright Copyright (c) 2024
  */
 
-#include "RunBpOnStereoSetOptimizedCPU.h"
+#include "ProcessBpDevice.h"

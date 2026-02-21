@@ -17,7 +17,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 */
 
 /**
- * @file RunBpOnStereoSet.h
+ * @file RunBpImp.h
  * @author Scott Grauer-Gray
  * @brief Declares abstract class to set up and run belief propagation on target device using
  * specified acceleration
@@ -25,8 +25,8 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  * @copyright Copyright (c) 2024
  */
 
-#ifndef RUNBPSTEREOSET_H_
-#define RUNBPSTEREOSET_H_
+#ifndef RUN_BP_IMP_H_
+#define RUN_BP_IMP_H_
 
 #include <array>
 #include <string>
@@ -47,7 +47,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #include "BpResultsEvaluation/BpEvaluationStereoSets.h"
 #include "BpResultsEvaluation/DetailedTimingBpConsts.h"
 #include "ParallelParamsBp.h"
-#include "ProcessBp.h"
+#include "ProcessBpDevice.h"
 
 namespace beliefprop {
 
@@ -74,7 +74,7 @@ struct BpRunOutput
 template <RunData_t T, unsigned int DISP_VALS, run_environment::AccSetting ACCELERATION>
 struct BpOnDevice {
   const std::unique_ptr<SmoothImage>& smooth_image;
-  const std::unique_ptr<ProcessBp<T, DISP_VALS, ACCELERATION>>& run_bp_stereo;
+  const std::unique_ptr<ProcessBpDevice<T, DISP_VALS, ACCELERATION>>& run_bp_stereo;
   const std::unique_ptr<MemoryManagement<T>>& mem_management_bp_run;
   const std::unique_ptr<MemoryManagement<float>>& mem_management_images;
 };
@@ -90,7 +90,7 @@ struct BpOnDevice {
  * @tparam ACCELERATION 
  */
 template <RunData_t T, unsigned int DISP_VALS, run_environment::AccSetting ACCELERATION>
-class RunBpOnStereoSet {
+class RunBpImp {
 public:
   /**
    * @brief Pure virtual function to return run description corresponding to
@@ -103,7 +103,7 @@ public:
   /**
    * @brief Virtual destructor
    */
-  virtual ~RunBpOnStereoSet() {}
+  virtual ~RunBpImp() {}
 
   /**
    * @brief Pure virtual operator() that must be defined in child class
@@ -140,7 +140,7 @@ protected:
 //device using pointers to acceleration-specific smooth image,
 //process BP, and memory management child class objects
 template<RunData_t T, unsigned int DISP_VALS, run_environment::AccSetting ACCELERATION>
-std::optional<beliefprop::BpRunOutput> RunBpOnStereoSet<T, DISP_VALS, ACCELERATION>::ProcessImplementation(
+std::optional<beliefprop::BpRunOutput> RunBpImp<T, DISP_VALS, ACCELERATION>::ProcessImplementation(
   const std::array<std::string, 2>& ref_test_image_path,
   const beliefprop::BpSettings& alg_settings,
   const beliefprop::BpOnDevice<T, DISP_VALS, ACCELERATION>& run_bp_on_device) const
@@ -247,7 +247,7 @@ std::optional<beliefprop::BpRunOutput> RunBpOnStereoSet<T, DISP_VALS, ACCELERATI
       std::chrono::system_clock::now();
 
     //run belief propagation on device as specified by input pointer to
-    //ProcessBp object run_bp_stereo
+    //ProcessBpDevice object run_bp_stereo
     //returns detailed timings for bp run
     const auto bp_stereo_output =
       (*(run_bp_on_device.run_bp_stereo))(
@@ -331,4 +331,4 @@ std::optional<beliefprop::BpRunOutput> RunBpOnStereoSet<T, DISP_VALS, ACCELERATI
       std::move(run_data)}};
 }
 
-#endif /* RUNBPSTEREOSET_H_ */
+#endif /* RUN_BP_IMP_H_ */

@@ -17,7 +17,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 */
 
 /**
- * @file KernelBpStereoCPU_AVX256TemplateSpFuncts.h
+ * @file KernelBpOptCPU_AVX256.h
  * @author Scott Grauer-Gray
  * @brief Defines functions used in processing belief propagation that are
  * specific to implementation with AVX256 vectorization
@@ -25,8 +25,8 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  * @copyright Copyright (c) 2024
  */
 
-#ifndef KERNELBPSTEREOCPU_AVX256TEMPLATESPFUNCTS_H_
-#define KERNELBPSTEREOCPU_AVX256TEMPLATESPFUNCTS_H_
+#ifndef KERNEL_BP_OPT_CPU_AVX256_H_
+#define KERNEL_BP_OPT_CPU_AVX256_H_
 #ifdef _WIN32
 #include <intrin.h>
 #else
@@ -377,4 +377,4 @@ template<> inline void beliefprop_cpu::MsgStereoSIMD<short, __m128i>(unsigned in
     dst_message_array, disc_k_bp, data_aligned, bp_settings_disp_vals);
 }
 
-#endif /* KERNELBPSTEREOCPU_AVX256TEMPLATESPFUNCTS_H_ */
+#endif /* KERNEL_BP_OPT_CPU_AVX256_H_ */

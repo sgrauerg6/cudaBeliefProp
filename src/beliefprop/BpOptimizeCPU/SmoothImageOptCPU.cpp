@@ -17,7 +17,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 */
 
 /**
- * @file SmoothImageCPU.cpp
+ * @file SmoothImageOptCPU.cpp
  * @author Scott Grauer-Gray
  * @brief 
  * 
@@ -31,12 +31,12 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #endif //__APPLE__
 
 #include "BpSharedFuncts/SharedSmoothImageFuncts.h"
-#include "SmoothImageCPU.h"
+#include "SmoothImageOptCPU.h"
 
 //function to use the CPU-image filter to apply a guassian filter to the a single images
 //input images have each pixel stored as an unsigned in (value between 0 and 255 assuming 8-bit grayscale image used)
 //output filtered images have each pixel stored as a float after the image has been smoothed with a Gaussian filter of sigma
-void SmoothImageCPU::operator()(const BpImage<unsigned int>& in_image, float sigma, float* smoothed_image) const
+void SmoothImageOptCPU::operator()(const BpImage<unsigned int>& in_image, float sigma, float* smoothed_image) const
 {
   //if sigma < kMinSigmaValSmooth, then don't smooth image...just convert the input image
   //of unsigned ints to an output image of float values
@@ -68,7 +68,7 @@ void SmoothImageCPU::operator()(const BpImage<unsigned int>& in_image, float sig
 //smoothing is not desired but the pixels need to be converted to floats
 //the input image is stored as unsigned ints in the texture uint_image_pixels
 //output filtered image stored in float_image_pixels
-void SmoothImageCPU::ConvertUnsignedIntImageToFloatCPU(
+void SmoothImageOptCPU::ConvertUnsignedIntImageToFloatCPU(
     const unsigned int* uint_image_pixels, float* float_image_pixels,
     unsigned int width_images, unsigned int height_images,
     const ParallelParams& opt_cpu_params) const
@@ -87,7 +87,7 @@ void SmoothImageCPU::ConvertUnsignedIntImageToFloatCPU(
     float_image_pixels[y_val * width_images + x_val] = 1.0f * uint_image_pixels[y_val * width_images + x_val];
   }
 #else
-  //std::cout << "SmoothImageCPU::ConvertUnsignedIntImageToFloatCPU" << std::endl;
+  //std::cout << "SmoothImageOptCPU::ConvertUnsignedIntImageToFloatCPU" << std::endl;
   // Get a global concurrent queue (system-managed thread pool)
   dispatch_queue_t concurrent_queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
 
@@ -104,7 +104,7 @@ void SmoothImageCPU::ConvertUnsignedIntImageToFloatCPU(
 
 //apply a horizontal filter on each pixel of the image in parallel
 template<BpImData_t U>
-void SmoothImageCPU::FilterImageAcrossCPU(
+void SmoothImageOptCPU::FilterImageAcrossCPU(
   const U* image_to_filter, float* filtered_image,
   unsigned int width_images, unsigned int height_images,
   const float* image_filter, unsigned int size_filter,
@@ -127,7 +127,7 @@ void SmoothImageCPU::FilterImageAcrossCPU(
       width_images, height_images, image_filter, size_filter);
   }
 #else
-  //std::cout << "SmoothImageCPU::FilterImageAcrossCPU" << std::endl;
+  //std::cout << "SmoothImageOptCPU::FilterImageAcrossCPU" << std::endl;
   // Get a global concurrent queue (system-managed thread pool)
   dispatch_queue_t concurrent_queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
 
@@ -144,7 +144,7 @@ void SmoothImageCPU::FilterImageAcrossCPU(
 
 //apply a vertical filter on each pixel of the image in parallel
 template<BpImData_t U>
-void SmoothImageCPU::FilterImageVerticalCPU(
+void SmoothImageOptCPU::FilterImageVerticalCPU(
   const U* image_to_filter, float* filtered_image,
   unsigned int width_images, unsigned int height_images,
   const float* image_filter, unsigned int size_filter,
@@ -166,7 +166,7 @@ void SmoothImageCPU::FilterImageVerticalCPU(
       width_images, height_images, image_filter, size_filter);
   }
 #else
-  //std::cout << "SmoothImageCPU::FilterImageVerticalCPU" << std::endl;
+  //std::cout << "SmoothImageOptCPU::FilterImageVerticalCPU" << std::endl;
   // Get a global concurrent queue (system-managed thread pool)
   dispatch_queue_t concurrent_queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
 
@@ -187,12 +187,12 @@ void SmoothImageCPU::FilterImageVerticalCPU(
 //so not clear if needed or not
 //explicit instantiations for FilterImageAcrossCPU member
 //function
-template void SmoothImageCPU::FilterImageAcrossCPU<float>(
+template void SmoothImageOptCPU::FilterImageAcrossCPU<float>(
   const float* image_to_filter, float* filtered_image,
   unsigned int width_images, unsigned int height_images,
   const float* image_filter, unsigned int size_filter,
   const ParallelParams& opt_cpu_params) const;
-template void SmoothImageCPU::FilterImageAcrossCPU<unsigned int>(
+template void SmoothImageOptCPU::FilterImageAcrossCPU<unsigned int>(
   const unsigned int* image_to_filter, float* filtered_image,
   unsigned int width_images, unsigned int height_images,
   const float* image_filter, unsigned int size_filter,
@@ -200,12 +200,12 @@ template void SmoothImageCPU::FilterImageAcrossCPU<unsigned int>(
 
 //explicit instantiations for FilterImageVerticalCPU member
 //function
-template void SmoothImageCPU::FilterImageVerticalCPU<float>(
+template void SmoothImageOptCPU::FilterImageVerticalCPU<float>(
   const float* image_to_filter, float* filtered_image,
   unsigned int width_images, unsigned int height_images,
   const float* image_filter, unsigned int size_filter,
   const ParallelParams& opt_cpu_params) const;
-template void SmoothImageCPU::FilterImageVerticalCPU<unsigned int>(
+template void SmoothImageOptCPU::FilterImageVerticalCPU<unsigned int>(
   const unsigned int* image_to_filter, float* filtered_image,
   unsigned int width_images, unsigned int height_images,
   const float* image_filter, unsigned int size_filter,

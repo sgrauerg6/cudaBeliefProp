@@ -17,22 +17,22 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 */
 
 /**
- * @file RunBpOnStereoSetCUDA.h
+ * @file RunBpImpCUDA.h
  * @author Scott Grauer-Gray
- * @brief Declares child class of RunBpOnStereoSet to run CUDA implementation
+ * @brief Declares child class of RunBpImp to run CUDA implementation
  * of belief propagation on a given stereo set as defined by reference and test
  * image file paths
  * 
  * @copyright Copyright (c) 2024
  */
 
-#ifndef RUN_BP_ON_STEREO_STEREO_CUDA_H
-#define RUN_BP_ON_STEREO_STEREO_CUDA_H
+#ifndef RUN_BP_IMP_CUDA_H
+#define RUN_BP_IMP_CUDA_H
 
 #include <array>
 #include <cuda_runtime.h>
-#include "BpRunProcessing/RunBpOnStereoSet.h"
-#include "BpRunProcessing/ProcessBp.h"
+#include "BpRunProcessing/RunBpImp.h"
+#include "BpRunProcessing/ProcessBpDevice.h"
 #include "BpRunProcessing/ParallelParamsBp.h"
 #include "RunEval/RunTypeConstraints.h"
 #include "RunImpCUDA/MemoryManagementCUDA.h"
@@ -40,7 +40,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #include "SmoothImageCUDA.h"
 
 /**
- * @brief Child class of RunBpOnStereoSet to run CUDA implementation of belief
+ * @brief Child class of RunBpImp to run CUDA implementation of belief
  * propagation on a given stereo set as defined by reference and test image
  * file paths
  * 
@@ -49,7 +49,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  * @tparam ACCELERATION 
  */
 template <RunData_t T, unsigned int DISP_VALS, run_environment::AccSetting ACCELERATION>
-class RunBpOnStereoSetCUDA final : public RunBpOnStereoSet<T, DISP_VALS, ACCELERATION>
+class RunBpImpCUDA final : public RunBpImp<T, DISP_VALS, ACCELERATION>
 {
 public:
   /**
@@ -101,4 +101,4 @@ public:
   }
 };
 
-#endif //RUN_BP_ON_STEREO_STEREO_CUDA_H
+#endif //RUN_BP_IMP_CUDA_H

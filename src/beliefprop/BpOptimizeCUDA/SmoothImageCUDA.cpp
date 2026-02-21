@@ -25,7 +25,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  */
 
 #include "SmoothImageCUDA.h"
-#include "KernelFilter.cu"
+#include "KernelFilterCUDA.cu"
 
 //for the CUDA smoothing, the input image is on the host and the output image is on the device (GPU)
 void SmoothImageCUDA::operator()(const BpImage<unsigned int>& in_image, float sigma, float* smoothed_image) const

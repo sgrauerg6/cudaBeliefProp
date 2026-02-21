@@ -17,12 +17,12 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 */
 
 /**
- * @file RunBpOnStereoSetCUDA.cpp
+ * @file RunBpImpCUDA.cpp
  * @author Scott Grauer-Gray
  * @brief Defines the methods to run BP Stereo implementation on a series of images using various options
  * 
  * @copyright Copyright (c) 2024
  */
 
-#include "RunBpOnStereoSetCUDA.h"
+#include "RunBpImpCUDA.h"
 

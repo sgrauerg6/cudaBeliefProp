@@ -35,7 +35,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #include "BpRunProcessing/ParallelParamsBp.h"
 
 //include for the kernel functions to be run on the GPU
-#include "KernelFilterHeader.cuh"
+#include "KernelFilterCUDA.cuh"
 
 /**
  * @brief Child class of SmoothImage for smoothing images in the CUDA implementation

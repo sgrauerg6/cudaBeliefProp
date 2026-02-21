@@ -17,7 +17,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 */
 
 /**
- * @file KernelBpStereo.cu
+ * @file KernelBpCUDA.cu
  * @author Scott Grauer-Gray
  * @brief This file defines the methods to perform belief propagation
  * for disparity map estimation from stereo images on CUDA
@@ -34,11 +34,11 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 //#define CHECK_VAL_TO_NORMALIZE_VALID_CUDA_HALF
 
 #if defined(CHECK_VAL_TO_NORMALIZE_VALID_CUDA_HALF)
-#include "KernelBpStereoHalf.cu"
+#include "KernelBpCUDAHalf.cu"
 #endif //CHECK_VAL_TO_NORMALIZE_VALID_CUDA_HALF
 
 //uncomment for CUDA kernel debug functions for belief propagation processing
-//#include "KernelBpStereoDebug.h"
+//#include "KernelBpCUDADebug.h"
 
 /**
  * @brief Namespace to define global kernel functions for parallel belief propagation

@@ -29,7 +29,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #include "RunImp/UtilityFuncts.h"
 #include "BpRunProcessing/BpConstsEnumsAliases.h"
 #include "ProcessBpCUDA.h"
-#include "KernelBpStereo.cu"
+#include "KernelBpCUDA.cu"
 
 //return whether or not there was an error in CUDA processing
 template<RunData_t T, unsigned int DISP_VALS, run_environment::AccSetting ACCELERATION>

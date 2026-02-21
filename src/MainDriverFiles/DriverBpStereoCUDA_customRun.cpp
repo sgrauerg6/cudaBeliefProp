@@ -34,11 +34,11 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #include "BpRunEvalImp/RunImpOnInputBp.h"
 #include "RunImpCPU/RunCPUSettings.h"
 #include "RunImp/RunImpMultTypesAccels.h"
-#include "BpRunProcessing/RunBpOnStereoSet.h"
-#include "BpOptimizeCUDA/RunBpOnStereoSetCUDA.h"
-#include "BpSingleThreadCPU/stereo.h"
+#include "BpRunProcessing/RunBpImp.h"
+#include "BpOptimizeCUDA/RunBpImpCUDA.h"
+#include "BpSingleThreadCPU/RunBpImpSingleThreadCPU.h"
 //needed to run the implementation a stereo set using CUDA
-#include "BpOptimizeCUDA/RunBpOnStereoSetCUDA.h"
+#include "BpOptimizeCUDA/RunBpImpCUDA.h"
 
 /**
  * @brief main() function to run optimized CUDA belief propagation implementation
@@ -71,9 +71,9 @@ int main(int argc, char** argv)
 
   //generate optimized CUDA implementation object to run belief propagation on
   //input stereo set
-  std::unique_ptr<RunBpOnStereoSet<float, 0, run_environment::AccSetting::kCUDA>>
+  std::unique_ptr<RunBpImp<float, 0, run_environment::AccSetting::kCUDA>>
     runOptBpNumItersNoTemplate =
-      std::make_unique<RunBpOnStereoSetCUDA<float, 0, run_environment::AccSetting::kCUDA>>();
+      std::make_unique<RunBpImpCUDA<float, 0, run_environment::AccSetting::kCUDA>>();
   
   //run optimized CUDA belief propagation implementation on GPU on
   //stereo set using specified algorithm settings and parallel parameters
@@ -97,8 +97,8 @@ int main(int argc, char** argv)
   //only works if disparity count known at compile time since the single-thread
   //CPU implementation only works with disparity count given as template value
   /*if ((argc > 5) && (std::string(argv[5]) == "comp")) {
-    std::unique_ptr<RunBpOnStereoSet<float, 64, run_environment::AccSetting::kNone>> runBpStereoSingleThread = 
-      std::make_unique<RunBpOnStereoSetSingleThreadCPU<float, 64, run_environment::AccSetting::kNone>>();
+    std::unique_ptr<RunBpImp<float, 64, run_environment::AccSetting::kNone>> runBpStereoSingleThread = 
+      std::make_unique<RunBpImpSingleThreadCPU<float, 64, run_environment::AccSetting::kNone>>();
     auto run_output_single_thread = runBpStereoSingleThread->operator()({refTestImPath[0], refTestImPath[1]}, alg_settings, parallel_params);
     std::cout << "BP processing runtime (single threaded imp): " << run_output_single_thread->run_time.count() << std::endl;
     const auto outComp = run_output_single_thread->out_disparity_map.OutputComparison(run_output->out_disparity_map, beliefprop::DisparityMapEvaluationParams());

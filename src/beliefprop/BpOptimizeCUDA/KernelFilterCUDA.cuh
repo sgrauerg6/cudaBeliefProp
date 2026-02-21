@@ -17,15 +17,15 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 */
 
 /**
- * @file KernelFilterHeader.cuh
+ * @file KernelFilterCUDA.cuh
  * @author Scott Grauer-Gray
  * @brief Header for the kernel to apply a horizontal/vertical filter to image data
  * 
  * @copyright Copyright (c) 2024
  */
 
-#ifndef KERNEL_FILTER_HEADER_CUH
-#define KERNEL_FILTER_HEADER_CUH
+#ifndef KERNEL_FILTER_CUDA_CUH
+#define KERNEL_FILTER_CUDA_CUH
 
 #include <cuda_runtime.h>
 #include <type_traits>
@@ -92,4 +92,4 @@ __global__ void FilterImageVertical(
 
 };
 
-#endif //KERNEL_FILTER_HEADER_CUH
+#endif //KERNEL_FILTER_CUDA_CUH

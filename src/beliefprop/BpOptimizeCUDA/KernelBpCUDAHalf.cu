@@ -17,7 +17,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 */
 
 /**
- * @file KernelBpStereoHalf.cu
+ * @file KernelBpCUDAHalf.cu
  * @author Scott Grauer-Gray
  * @brief This file defines the template specialization to perform belief propagation using half precision for
  * disparity map estimation from stereo images on CUDA to prevent overflow in val_to_normalize

@@ -17,14 +17,14 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 */
 
 /**
- * @file KernelFilter.cu
+ * @file KernelFilterCUDA.cu
  * @author Scott Grauer-Gray
  * @brief This kernel is used to filter the image with the given filter in the vertical and horizontal directions
  * 
  * @copyright Copyright (c) 2024
  */
 
-#include "KernelFilterHeader.cuh"
+#include "KernelFilterCUDA.cuh"
 #include <cuda_runtime.h>
 #include <cuda.h>
 #include "BpSharedFuncts/SharedSmoothImageFuncts.h"

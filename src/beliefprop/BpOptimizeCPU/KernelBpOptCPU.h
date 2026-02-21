@@ -17,7 +17,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 */
 
 /**
- * @file KernelBpStereoCPU.h
+ * @file KernelBpOptCPU.h
  * @author Scott Grauer-Gray
  * @brief This header declares the kernel functions to run optimized belief
  * propagation on CPU
@@ -566,16 +566,16 @@ namespace beliefprop_cpu
 #if defined(COMPILING_FOR_ARM)
 
 #if (CPU_VECTORIZATION_DEFINE == NEON_DEFINE)
-#include "KernelBpStereoCPU_NEON.h"
+#include "KernelBpOptCPU_NEON.h"
 #endif //CPU_VECTORIZATION_DEFINE == NEON_DEFINE
 
 #else
 
 #if ((CPU_VECTORIZATION_DEFINE == AVX_256_DEFINE) || (CPU_VECTORIZATION_DEFINE == AVX_256_F16_DEFINE))
-#include "KernelBpStereoCPU_AVX256TemplateSpFuncts.h"
+#include "KernelBpOptCPU_AVX256.h"
 #elif ((CPU_VECTORIZATION_DEFINE == AVX_512_DEFINE) || (CPU_VECTORIZATION_DEFINE == AVX_512_F16_DEFINE))
-#include "KernelBpStereoCPU_AVX256TemplateSpFuncts.h"
-#include "KernelBpStereoCPU_AVX512TemplateSpFuncts.h"
+#include "KernelBpOptCPU_AVX256.h"
+#include "KernelBpOptCPU_AVX512.h"
 #endif //CPU_VECTORIZATION_DEFINE
 
 #endif //COMPILING_FOR_ARM
@@ -603,7 +603,7 @@ void beliefprop_cpu::InitializeBottomLevelData(
 #endif
   for (unsigned int val = 0; val < (current_bp_level.width_level_*current_bp_level.height_level_); val++)
 #else
-  //std::cout << "SmoothImageCPU::ConvertUnsignedIntImageToFloatCPU" << std::endl;
+  //std::cout << "SmoothImageOptCPU::ConvertUnsignedIntImageToFloatCPU" << std::endl;
   // Get a global concurrent queue (system-managed thread pool)
   dispatch_queue_t concurrent_queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
 
@@ -646,7 +646,7 @@ void beliefprop_cpu::InitializeCurrentLevelData(
 #endif
   for (unsigned int val = 0; val < (current_bp_level.width_checkerboard_level_*current_bp_level.height_level_); val++)
 #else
-  //std::cout << "SmoothImageCPU::ConvertUnsignedIntImageToFloatCPU" << std::endl;
+  //std::cout << "SmoothImageOptCPU::ConvertUnsignedIntImageToFloatCPU" << std::endl;
   // Get a global concurrent queue (system-managed thread pool)
   dispatch_queue_t concurrent_queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
 
@@ -708,7 +708,7 @@ void beliefprop_cpu::InitializeMessageValsToDefaultKernel(
 #endif
   for (unsigned int val = 0; val < (current_bp_level.width_checkerboard_level_*current_bp_level.height_level_); val++)
 #else
-  //std::cout << "SmoothImageCPU::ConvertUnsignedIntImageToFloatCPU" << std::endl;
+  //std::cout << "SmoothImageOptCPU::ConvertUnsignedIntImageToFloatCPU" << std::endl;
   // Get a global concurrent queue (system-managed thread pool)
   dispatch_queue_t concurrent_queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
 
@@ -763,7 +763,7 @@ void beliefprop_cpu::RunBPIterationUsingCheckerboardUpdatesNoPackedInstructions(
 #endif
   for (unsigned int val = 0; val < (width_checkerboard_run_processing * current_bp_level.height_level_); val++)
 #else
-  //std::cout << "SmoothImageCPU::ConvertUnsignedIntImageToFloatCPU" << std::endl;
+  //std::cout << "SmoothImageOptCPU::ConvertUnsignedIntImageToFloatCPU" << std::endl;
   // Get a global concurrent queue (system-managed thread pool)
   dispatch_queue_t concurrent_queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
 
@@ -917,7 +917,7 @@ void beliefprop_cpu::RunBPIterationUsingCheckerboardUpdatesUseSIMDVectorsProcess
 #endif
     for (unsigned int y_val = 1; y_val < current_bp_level.height_level_ - 1; y_val++)
 #else
-    //std::cout << "SmoothImageCPU::ConvertUnsignedIntImageToFloatCPU" << std::endl;
+    //std::cout << "SmoothImageOptCPU::ConvertUnsignedIntImageToFloatCPU" << std::endl;
     // Get a global concurrent queue (system-managed thread pool)
     dispatch_queue_t concurrent_queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
 
@@ -1077,7 +1077,7 @@ void beliefprop_cpu::RunBPIterationUsingCheckerboardUpdatesUseSIMDVectorsProcess
 #endif
     for (unsigned int y_val = 1; y_val < current_bp_level.height_level_ - 1; y_val++)
 #else
-    //std::cout << "SmoothImageCPU::ConvertUnsignedIntImageToFloatCPU" << std::endl;
+    //std::cout << "SmoothImageOptCPU::ConvertUnsignedIntImageToFloatCPU" << std::endl;
     // Get a global concurrent queue (system-managed thread pool)
     dispatch_queue_t concurrent_queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
 
@@ -1376,7 +1376,7 @@ void beliefprop_cpu::CopyMsgDataToNextLevel(
 #endif
   for (unsigned int val = 0; val < (current_bp_level.width_checkerboard_level_*current_bp_level.height_level_); val++)
 #else
-  //std::cout << "SmoothImageCPU::ConvertUnsignedIntImageToFloatCPU" << std::endl;
+  //std::cout << "SmoothImageOptCPU::ConvertUnsignedIntImageToFloatCPU" << std::endl;
   // Get a global concurrent queue (system-managed thread pool)
   dispatch_queue_t concurrent_queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
 
@@ -1430,7 +1430,7 @@ void beliefprop_cpu::RetrieveOutputDisparity(
 #endif
     for (unsigned int val = 0; val < (current_bp_level.width_checkerboard_level_*current_bp_level.height_level_); val++)
 #else
-    //std::cout << "SmoothImageCPU::ConvertUnsignedIntImageToFloatCPU" << std::endl;
+    //std::cout << "SmoothImageOptCPU::ConvertUnsignedIntImageToFloatCPU" << std::endl;
     // Get a global concurrent queue (system-managed thread pool)
     dispatch_queue_t concurrent_queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
 
@@ -1565,7 +1565,7 @@ void beliefprop_cpu::RetrieveOutputDisparityUseSIMDVectors(
 #endif
     for (unsigned int y_val = 1; y_val < current_bp_level.height_level_ - 1; y_val++)
 #else
-    //std::cout << "SmoothImageCPU::ConvertUnsignedIntImageToFloatCPU" << std::endl;
+    //std::cout << "SmoothImageOptCPU::ConvertUnsignedIntImageToFloatCPU" << std::endl;
     // Get a global concurrent queue (system-managed thread pool)
     dispatch_queue_t concurrent_queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
 
@@ -1875,7 +1875,7 @@ void beliefprop_cpu::RetrieveOutputDisparityUseSIMDVectors(
 #endif
   for (unsigned int y=0; y < current_bp_level.height_level_; y++)
 #else
-    //std::cout << "SmoothImageCPU::ConvertUnsignedIntImageToFloatCPU" << std::endl;
+    //std::cout << "SmoothImageOptCPU::ConvertUnsignedIntImageToFloatCPU" << std::endl;
     // Get a global concurrent queue (system-managed thread pool)
     dispatch_queue_t concurrent_queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
 

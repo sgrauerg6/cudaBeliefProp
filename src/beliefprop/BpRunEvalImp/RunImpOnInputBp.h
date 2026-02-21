@@ -39,7 +39,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #include "BpFileProcessing/BpFileHandling.h"
 #include "BpRunProcessing/BpConstsEnumsAliases.h"
 #include "BpResultsEvaluation/BpEvaluationStereoSets.h"
-#include "BpSingleThreadCPU/stereo.h"
+#include "BpSingleThreadCPU/RunBpImpSingleThreadCPU.h"
 
 #ifndef RUN_IMP_ON_INPUT_BP_H_
 #define RUN_IMP_ON_INPUT_BP_H_
@@ -49,19 +49,19 @@ using filepathtype = std::filesystem::path;
 //check if optimized CPU run defined and make any necessary additions to support it
 #if defined(OPTIMIZED_CPU_RUN)
 //needed to run the optimized implementation a stereo set using CPU
-#include "BpOptimizeCPU/RunBpOnStereoSetOptimizedCPU.h"
+#include "BpOptimizeCPU/RunBpImpOptCPU.h"
 //set RunBpOptimized alias to correspond to optimized CPU implementation
 template <RunData_t T, unsigned int DISP_VALS, run_environment::AccSetting ACCELERATION>
-using RunBpOptimized = RunBpOnStereoSetOptimizedCPU<T, DISP_VALS, ACCELERATION>;
+using RunBpOptimized = RunBpImpOptCPU<T, DISP_VALS, ACCELERATION>;
 #endif //OPTIMIZED_CPU_RUN
 
 //check if CUDA run defined and make any necessary additions to support it
 #if defined(OPTIMIZED_CUDA_RUN)
 //needed to run the implementation a stereo set using CUDA
-#include "BpOptimizeCUDA/RunBpOnStereoSetCUDA.h"
+#include "BpOptimizeCUDA/RunBpImpCUDA.h"
 //set RunBpOptimized alias to correspond to CUDA implementation
 template <RunData_t T, unsigned int DISP_VALS, run_environment::AccSetting ACCELERATION>
-using RunBpOptimized = RunBpOnStereoSetCUDA<T, DISP_VALS, ACCELERATION>;
+using RunBpOptimized = RunBpImpCUDA<T, DISP_VALS, ACCELERATION>;
 #endif //OPTIMIZED_CUDA_RUN
 
 /**
@@ -152,7 +152,7 @@ protected:
 private:
   /** @brief Unique pointer to run bp implementation object for single thread
    *  implementation */
-  std::unique_ptr<RunBpOnStereoSet<
+  std::unique_ptr<RunBpImp<
     T,
     beliefprop::kStereoSetsToProcess[NUM_INPUT].num_disp_vals,
     run_environment::AccSetting::kNone>>
@@ -160,7 +160,7 @@ private:
   
   /** @brief Unique pointer to run bp implementation object for optimized 
    *  implementation with loop iters templated */
-  std::unique_ptr<RunBpOnStereoSet<
+  std::unique_ptr<RunBpImp<
     T,
     beliefprop::kStereoSetsToProcess[NUM_INPUT].num_disp_vals,
     OPT_IMP_ACCEL>>
@@ -168,7 +168,7 @@ private:
 
   /** @brief Unique pointer to run bp implementation object for optimized
    *  implementation with loop iters not templated */
-  std::unique_ptr<RunBpOnStereoSet<T, 0, OPT_IMP_ACCEL>>
+  std::unique_ptr<RunBpImp<T, 0, OPT_IMP_ACCEL>>
     run_opt_bp_num_iters_no_template_;
 
   /** @brief Bp parameter settings */
@@ -195,7 +195,7 @@ MultRunData RunImpOnInputBp<T, OPT_IMP_ACCEL, NUM_INPUT>::operator()(
 
   //set up unoptimized single threaded bp stereo implementation
   run_bp_stereo_single_thread_ =
-    std::make_unique<RunBpOnStereoSetSingleThreadCPU<
+    std::make_unique<RunBpImpSingleThreadCPU<
       T,
       beliefprop::kStereoSetsToProcess[NUM_INPUT].num_disp_vals,
       run_environment::AccSetting::kNone>>();

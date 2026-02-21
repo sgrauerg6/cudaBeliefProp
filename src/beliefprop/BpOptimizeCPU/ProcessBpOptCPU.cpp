@@ -17,11 +17,11 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 */
 
 /**
- * @file ProcessBpOptimizedCPU.cpp
+ * @file ProcessBpOptCPU.cpp
  * @author Scott Grauer-Gray
  * @brief Defines the functions to run the CUDA implementation of 2-D Stereo estimation using BP
  * 
  * @copyright Copyright (c) 2024
  */
 
-#include "ProcessBpOptimizedCPU.h"
+#include "ProcessBpOptCPU.h"

@@ -17,7 +17,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 */
 
 /**
- * @file KernelBpStereoDebug.cu
+ * @file KernelBpCUDADebug.cu
  * @author Scott Grauer-Gray
  * @brief This file defines CUDA kernel functions for debugging belief propagation processing
  * 

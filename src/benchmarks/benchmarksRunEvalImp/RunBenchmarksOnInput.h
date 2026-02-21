@@ -99,7 +99,7 @@ protected:
 private:
   /** @brief Unique pointer to run benchmarks object for single thread
    *  implementation */
-  std::unique_ptr<RunBpOnStereoSet<
+  std::unique_ptr<RunBpImp<
     T,
     0,
     run_environment::AccSetting::kNone>>
@@ -107,7 +107,7 @@ private:
   
   /** @brief Unique pointer to run benchmarks object for optimized 
    *  implementation */
-  std::unique_ptr<RunBpOnStereoSet<
+  std::unique_ptr<RunBpImp<
     T,
     0,
     OPT_IMP_ACCEL>>
@@ -134,7 +134,7 @@ MultRunData RunBenchmarksOnInput<T, OPT_IMP_ACCEL, NUM_INPUT>::operator()(
 
   //set up unoptimized single threaded bp stereo implementation
   run_bp_stereo_single_thread_ =
-    std::make_unique<RunBpOnStereoSetSingleThreadCPU<
+    std::make_unique<RunBpImpSingleThreadCPU<
       T,
       beliefprop::kStereoSetsToProcess[NUM_INPUT].num_disp_vals,
       run_environment::AccSetting::kNone>>();

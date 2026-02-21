@@ -32,9 +32,9 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #include "BpRunEvalImp/RunImpOnInputBp.h"
 #include "RunImpCPU/RunCPUSettings.h"
 #include "RunImp/RunImpMultTypesAccels.h"
-#include "BpRunProcessing/RunBpOnStereoSet.h"
-#include "BpOptimizeCPU/RunBpOnStereoSetOptimizedCPU.h"
-#include "BpSingleThreadCPU/stereo.h"
+#include "BpRunProcessing/RunBpImp.h"
+#include "BpOptimizeCPU/RunBpImpOptCPU.h"
+#include "BpSingleThreadCPU/RunBpImpSingleThreadCPU.h"
 
 /**
  * @brief main() function to run optimized CPU belief propagation implementation
@@ -70,25 +70,25 @@ int main(int argc, char** argv)
   //implementation is optimized using OpenMP and vectorization, with specific
   //vectorization dependent on what's available on the target architecture
 #if (CPU_VECTORIZATION_DEFINE == AVX_512_DEFINE)
-  std::unique_ptr<RunBpOnStereoSet<float, 0, run_environment::AccSetting::kAVX512>>
+  std::unique_ptr<RunBpImp<float, 0, run_environment::AccSetting::kAVX512>>
     runOptBpNumItersNoTemplate =
-      std::make_unique<RunBpOnStereoSetOptimizedCPU<float, 0, run_environment::AccSetting::kAVX512>>();
+      std::make_unique<RunBpImpOptCPU<float, 0, run_environment::AccSetting::kAVX512>>();
 #elif (CPU_VECTORIZATION_DEFINE == AVX_512_F16_DEFINE)
-  std::unique_ptr<RunBpOnStereoSet<float, 0, run_environment::AccSetting::kAVX512_F16>>
+  std::unique_ptr<RunBpImp<float, 0, run_environment::AccSetting::kAVX512_F16>>
     runOptBpNumItersNoTemplate =
-      std::make_unique<RunBpOnStereoSetOptimizedCPU<float, 0, run_environment::AccSetting::kAVX512_F16>>();
+      std::make_unique<RunBpImpOptCPU<float, 0, run_environment::AccSetting::kAVX512_F16>>();
 #elif (CPU_VECTORIZATION_DEFINE == AVX_256_DEFINE)
-  std::unique_ptr<RunBpOnStereoSet<float, 0, run_environment::AccSetting::kAVX256>>
+  std::unique_ptr<RunBpImp<float, 0, run_environment::AccSetting::kAVX256>>
     runOptBpNumItersNoTemplate =
-      std::make_unique<RunBpOnStereoSetOptimizedCPU<float, 0, run_environment::AccSetting::kAVX256>>();
+      std::make_unique<RunBpImpOptCPU<float, 0, run_environment::AccSetting::kAVX256>>();
 #elif (CPU_VECTORIZATION_DEFINE == AVX_256_F16_DEFINE)
-  std::unique_ptr<RunBpOnStereoSet<float, 0, run_environment::AccSetting::kAVX256_F16>>
+  std::unique_ptr<RunBpImp<float, 0, run_environment::AccSetting::kAVX256_F16>>
     runOptBpNumItersNoTemplate =
-      std::make_unique<RunBpOnStereoSetOptimizedCPU<float, 0, run_environment::AccSetting::kAVX256_F16>>();
+      std::make_unique<RunBpImpOptCPU<float, 0, run_environment::AccSetting::kAVX256_F16>>();
 #elif (CPU_VECTORIZATION_DEFINE == NEON_DEFINE)
-  std::unique_ptr<RunBpOnStereoSet<float, 0, run_environment::AccSetting::kNEON>>
+  std::unique_ptr<RunBpImp<float, 0, run_environment::AccSetting::kNEON>>
     runOptBpNumItersNoTemplate =
-      std::make_unique<RunBpOnStereoSetOptimizedCPU<float, 0, run_environment::AccSetting::kNEON>>();
+      std::make_unique<RunBpImpOptCPU<float, 0, run_environment::AccSetting::kNEON>>();
 #endif //CPU_VECTORIZATION_DEFINE
   //run optimized belief propagation implementation on CPU on specified input stereo set
   //using specified algorithm settings and parallel parameters
@@ -107,8 +107,8 @@ int main(int argc, char** argv)
   //only works if disparity count known at compile time since the single-thread
   //CPU implementation only works with disparity count given as template value
   if ((argc > 5) && (std::string(argv[5]) == "comp")) {
-    std::unique_ptr<RunBpOnStereoSet<float, 0, run_environment::AccSetting::kNone>> runBpStereoSingleThread = 
-      std::make_unique<RunBpOnStereoSetSingleThreadCPU<float, 0, run_environment::AccSetting::kNone>>();
+    std::unique_ptr<RunBpImp<float, 0, run_environment::AccSetting::kNone>> runBpStereoSingleThread = 
+      std::make_unique<RunBpImpSingleThreadCPU<float, 0, run_environment::AccSetting::kNone>>();
     auto run_output_single_thread = runBpStereoSingleThread->operator()({refTestImPath[0], refTestImPath[1]}, alg_settings, parallel_params);
     std::cout << "BP processing runtime (single threaded imp): " << run_output_single_thread->run_time.count() << std::endl;
     const auto outComp = run_output_single_thread->out_disparity_map.OutputComparison(run_output->out_disparity_map, beliefprop::DisparityMapEvaluationParams());

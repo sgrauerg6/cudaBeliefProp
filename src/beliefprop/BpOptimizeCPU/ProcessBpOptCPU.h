@@ -17,16 +17,16 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 */
 
 /**
- * @file ProcessBpOptimizedCPU.h
+ * @file ProcessBpOptCPU.h
  * @author Scott Grauer-Gray
- * @brief Declares child class of ProcessBp that defines functions used in
+ * @brief Declares child class of ProcessBpDevice that defines functions used in
  * processing bp in the optimized CPU implementation
  * 
  * @copyright Copyright (c) 2024
  */
 
-#ifndef PROCESS_BP_OPTIMIZED_CPU_H_
-#define PROCESS_BP_OPTIMIZED_CPU_H_
+#ifndef PROCESS_BP_OPT_CPU_H_
+#define PROCESS_BP_OPT_CPU_H_
 
 //malloc.h include causes error when compiled on Apple
 //and thinking that it isn't necessary and can be removed
@@ -37,7 +37,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #include <algorithm>
 #include <chrono>
 #include <stdlib.h>
-#include "BpRunProcessing/ProcessBp.h"
+#include "BpRunProcessing/ProcessBpDevice.h"
 #include "BpResultsEvaluation/BpEvaluationStereoSets.h"
 #include "BpRunProcessing/BpConstsEnumsAliases.h"
 #include "BpRunProcessing/ParallelParamsBp.h"
@@ -46,10 +46,10 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #include "RunEval/RunEvalConstsEnums.h"
 
 //include for the "kernel" functions to be run on the CPU
-#include "KernelBpStereoCPU.h"
+#include "KernelBpOptCPU.h"
 
 /**
- * @brief Child class of ProcessBp that defines functions used in processing bp
+ * @brief Child class of ProcessBpDevice that defines functions used in processing bp
  * in the optimized CPU implementation
  * 
  * @tparam T 
@@ -57,11 +57,11 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  * @tparam ACCELERATION 
  */
 template<RunData_t T, unsigned int DISP_VALS, run_environment::AccSetting ACCELERATION>
-class ProcessBpOptimizedCPU final : public ProcessBp<T, DISP_VALS, ACCELERATION>
+class ProcessBpOptCPU final : public ProcessBpDevice<T, DISP_VALS, ACCELERATION>
 {
 public:
-  explicit ProcessBpOptimizedCPU(const ParallelParams& opt_cpu_params) : 
-    ProcessBp<T, DISP_VALS, ACCELERATION>(opt_cpu_params) {}
+  explicit ProcessBpOptCPU(const ParallelParams& opt_cpu_params) : 
+    ProcessBpDevice<T, DISP_VALS, ACCELERATION>(opt_cpu_params) {}
 
 private:
   run_eval::Status InitializeDataCosts(
@@ -107,7 +107,7 @@ private:
 
 //run the given number of iterations of BP at the current level using the given message values in global device memory
 template<RunData_t T, unsigned int DISP_VALS, run_environment::AccSetting ACCELERATION>
-inline run_eval::Status ProcessBpOptimizedCPU<T, DISP_VALS, ACCELERATION>::RunBPAtCurrentLevel(
+inline run_eval::Status ProcessBpOptCPU<T, DISP_VALS, ACCELERATION>::RunBPAtCurrentLevel(
   const beliefprop::BpSettings& alg_settings,
   const BpLevel<T>& current_bp_level,
   const beliefprop::DataCostsCheckerboards<T*>& data_costs_device,
@@ -144,7 +144,7 @@ inline run_eval::Status ProcessBpOptimizedCPU<T, DISP_VALS, ACCELERATION>::RunBP
 //in the next level down
 //need two different "sets" of message values to avoid read-write conflicts
 template<RunData_t T, unsigned int DISP_VALS, run_environment::AccSetting ACCELERATION>
-inline run_eval::Status ProcessBpOptimizedCPU<T, DISP_VALS, ACCELERATION>::CopyMessageValuesToNextLevelDown(
+inline run_eval::Status ProcessBpOptCPU<T, DISP_VALS, ACCELERATION>::CopyMessageValuesToNextLevelDown(
   const BpLevel<T>& current_bp_level,
   const BpLevel<T>& next_bp_level,
   const beliefprop::CheckerboardMessages<T*>& messages_device_copy_from,
@@ -182,7 +182,7 @@ inline run_eval::Status ProcessBpOptimizedCPU<T, DISP_VALS, ACCELERATION>::CopyM
 
 //initialize the data cost at each pixel with no estimated Stereo values...only the data and discontinuity costs are used
 template<RunData_t T, unsigned int DISP_VALS, run_environment::AccSetting ACCELERATION>
-inline run_eval::Status ProcessBpOptimizedCPU<T, DISP_VALS, ACCELERATION>::InitializeDataCosts(
+inline run_eval::Status ProcessBpOptCPU<T, DISP_VALS, ACCELERATION>::InitializeDataCosts(
   const beliefprop::BpSettings& alg_settings, const BpLevel<T>& current_bp_level,
   const std::array<float*, 2>& images_target_device, const beliefprop::DataCostsCheckerboards<T*>& data_costs_device) const
 {
@@ -198,7 +198,7 @@ inline run_eval::Status ProcessBpOptimizedCPU<T, DISP_VALS, ACCELERATION>::Initi
 
 //initialize the message values with no previous message values...all message values are set to 0
 template<RunData_t T, unsigned int DISP_VALS, run_environment::AccSetting ACCELERATION>
-inline run_eval::Status ProcessBpOptimizedCPU<T, DISP_VALS, ACCELERATION>::InitializeMessageValsToDefault(
+inline run_eval::Status ProcessBpOptCPU<T, DISP_VALS, ACCELERATION>::InitializeMessageValsToDefault(
   const BpLevel<T>& current_bp_level,
   const beliefprop::CheckerboardMessages<T*>& messages_device,
   unsigned int bp_settings_num_disp_vals) const
@@ -222,7 +222,7 @@ inline run_eval::Status ProcessBpOptimizedCPU<T, DISP_VALS, ACCELERATION>::Initi
 
 
 template<RunData_t T, unsigned int DISP_VALS, run_environment::AccSetting ACCELERATION>
-inline run_eval::Status ProcessBpOptimizedCPU<T, DISP_VALS, ACCELERATION>::InitializeDataCurrentLevel(
+inline run_eval::Status ProcessBpOptCPU<T, DISP_VALS, ACCELERATION>::InitializeDataCurrentLevel(
   const BpLevel<T>& current_bp_level,
   const BpLevel<T>& prev_bp_level,
   const beliefprop::DataCostsCheckerboards<T*>& data_costs_device,
@@ -250,7 +250,7 @@ inline run_eval::Status ProcessBpOptimizedCPU<T, DISP_VALS, ACCELERATION>::Initi
 }
 
 template<RunData_t T, unsigned int DISP_VALS, run_environment::AccSetting ACCELERATION>
-inline float* ProcessBpOptimizedCPU<T, DISP_VALS, ACCELERATION>::RetrieveOutputDisparity(
+inline float* ProcessBpOptCPU<T, DISP_VALS, ACCELERATION>::RetrieveOutputDisparity(
   const BpLevel<T>& current_bp_level,
   const beliefprop::DataCostsCheckerboards<T*>& data_costs_device,
   const beliefprop::CheckerboardMessages<T*>& messages_device,
@@ -277,4 +277,4 @@ inline float* ProcessBpOptimizedCPU<T, DISP_VALS, ACCELERATION>::RetrieveOutputD
   return result_disp_map_device;
 }
 
-#endif //PROCESS_BP_OPTIMIZED_CPU_H_
+#endif //PROCESS_BP_OPT_CPU_H_

@@ -17,7 +17,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 */
 
 /**
- * @file KernelBpStereoCPU_NEON.h
+ * @file KernelBpOptCPU_NEON.h
  * @author Scott Grauer-Gray
  * @brief Defines functions used in processing belief propagation that are
  * specific to implementation with NEON vectorization
@@ -25,8 +25,8 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  * @copyright Copyright (c) 2024
  */
 
-#ifndef KERNELBPSTEREOCPU_NEON_H_
-#define KERNELBPSTEREOCPU_NEON_H_
+#ifndef KERNEL_BP_OPT_CPU_NEON_H_
+#define KERNEL_BP_OPT_CPU_NEON_H_
 
 //this is only used when processing using an ARM CPU with NEON instructions
 #include <arm_neon.h>
@@ -303,4 +303,4 @@ template<> inline void beliefprop_cpu::MsgStereoSIMD<float16_t, float16x4_t>(
     dst_message_array, disc_k_bp, data_aligned, bp_settings_disp_vals);
 }
 
-#endif /* KERNELBPSTEREOCPU_NEON_H_ */
+#endif /* KERNEL_BP_OPT_CPU_NEON_H_ */

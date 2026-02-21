@@ -41,7 +41,7 @@ public:
 };
 
 template<RunData_t T, run_environment::AccSetting ACCELERATION>
-inline std::optional<benchmarks::BnchmrksRunOutput> RunBpOnStereoSetOptimizedCPU<T, DISP_VALS, ACCELERATION>::operator()(
+inline std::optional<benchmarks::BnchmrksRunOutput> RunBpImpOptCPU<T, DISP_VALS, ACCELERATION>::operator()(
   unsigned int size,
   const ParallelParams& parallel_params) const
 {
