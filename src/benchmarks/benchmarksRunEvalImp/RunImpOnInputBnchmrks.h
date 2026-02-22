@@ -82,7 +82,7 @@ protected:
     bool loop_iters_templated) const override;
 
   /**
-   * @brief Run one or two implementations of benchmark and compare results if
+   * @brief Run one or two implementations of benchmarks and compare results if
    * running multiple implementations
    * 
    * @param parallel_params 
@@ -106,6 +106,9 @@ private:
    *  implementation */
   std::unique_ptr<RunBnchmrksOptimized<T, OPT_IMP_ACCEL>>
     run_benchmarks_opt_;
+
+  /** @brief width and height of matrix used in benchmarks */
+  unsigned int matrix_wh_;
 };
 
 //run and evaluate optimized belief propagation implementation on evaluation
@@ -117,58 +120,30 @@ template<RunData_t T, run_environment::AccSetting OPT_IMP_ACCEL, size_t NUM_INPU
 MultRunData RunImpOnInputBnchmrks<T, OPT_IMP_ACCEL, NUM_INPUT>::operator()(
   const run_environment::RunImpSettings& run_imp_settings)
 {
-  //set up BP settings for current run
-  alg_settings_.num_disp_vals =
-    beliefprop::kStereoSetsToProcess[NUM_INPUT].num_disp_vals;
-  alg_settings_.disc_k_bp =
-    (float)alg_settings_.num_disp_vals / 7.5f;
+  //set up matrix settings for current run
+  matrix_wh_ =
+    benchmarks::kMtrxsToProcess[NUM_INPUT].mtrx_wh;
 
   //initialize run results across multiple implementations
   MultRunData run_results;
 
-  //set up unoptimized single threaded bp stereo implementation
-  run_bp_stereo_single_thread_ =
-    std::make_unique<RunBpImpSingThreadCPU<
-      T,
-      beliefprop::kStereoSetsToProcess[NUM_INPUT].num_disp_vals,
-      run_environment::AccSetting::kNone>>();
+  //set up unoptimized single threaded benchmarks implementation
+  run_bnchmrks_single_thread_ =
+    std::make_unique<RunBnchmrksSingThreadCPU<T, run_environment::AccSetting::kNone>>();
 
-  //set up and run bp stereo using optimized implementation (optimized CPU and
+  //set up and run benchmarks using optimized implementation (optimized CPU and
   //CUDA implementations supported) as well as unoptimized implementation for
   //comparison
-  //run optimized implementation with and/or without disparity value count
-  //templated depending on setting
-  if (run_imp_settings.templated_iters_setting !=
-      run_environment::TemplatedItersSetting::kRunOnlyNonTemplated)
-  {
-    run_opt_bp_num_iters_templated_ =
-      std::make_unique<RunBpOptimized<
-        T,
-        beliefprop::kStereoSetsToProcess[NUM_INPUT].num_disp_vals,
-        OPT_IMP_ACCEL>>();
-    constexpr bool run_w_loop_iters_templated{true};
-    InputSignature input_sig(
-      sizeof(T), NUM_INPUT, run_w_loop_iters_templated);
-    run_results.insert(
-      {input_sig,
-       this->RunEvalBenchmark(
-        run_imp_settings,
-        run_w_loop_iters_templated)});
-  }
-  if (run_imp_settings.templated_iters_setting !=
-      run_environment::TemplatedItersSetting::kRunOnlyTempated)
-  {
-    run_opt_bp_num_iters_no_template_ =
-      std::make_unique<RunBpOptimized<T, 0, OPT_IMP_ACCEL>>();
-    constexpr bool run_w_loop_iters_templated{false};
-    InputSignature input_sig(
-      sizeof(T), NUM_INPUT, run_w_loop_iters_templated);
-    run_results.insert(
-      {input_sig,
-       this->RunEvalBenchmark(
-        run_imp_settings,
-        run_w_loop_iters_templated)});
-  }
+  run_opt_bnchmrks =
+    std::make_unique<RunBnchmrksOptimized<T, OPT_IMP_ACCEL>>();
+  constexpr bool run_w_loop_iters_templated{false};
+  InputSignature input_sig(
+    sizeof(T), NUM_INPUT, run_w_loop_iters_templated);
+  run_results.insert(
+    {input_sig,
+      this->RunEvalBenchmark(
+      run_imp_settings,
+      run_w_loop_iters_templated)});
 
   //return bp run results across multiple implementations
   return run_results; 
@@ -183,9 +158,8 @@ RunImpOnInputBnchmrks<T, OPT_IMP_ACCEL, NUM_INPUT>::SetUpParallelParams(
 {
   //parallel parameters initialized with default thread count dimensions at
   //every level
-  return std::make_shared<ParallelParamsBp>(
+  return std::make_shared<ParallelParamsBnchmrks>(
     run_imp_settings.opt_parallel_params_setting,
-    alg_settings_.num_levels,
     run_imp_settings.p_params_default_alt_options.first);
 }
 
@@ -215,57 +189,30 @@ std::optional<RunData> RunImpOnInputBnchmrks<T, OPT_IMP_ACCEL, NUM_INPUT>::RunIm
   bool run_opt_imp_only,
   bool run_imp_templated_loop_iters) const
 {
-  //get properties of input stereo set from stereo set number
-  BpFileHandling bp_file_settings(
-    std::string(beliefprop::kStereoSetsToProcess[NUM_INPUT].name));
-  const std::array<filepathtype, 2> ref_test_image_path{
-    bp_file_settings.RefImagePath(),
-    bp_file_settings.TestImagePath()};
-
   //get number of implementations to run output disparity map file path(s)
   //if run_opt_imp_only is false, run single-threaded implementation in
   //addition to optimized implementation
   const unsigned int num_imps_run{run_opt_imp_only ? 1u : 2u};
-  std::array<filepathtype, 2> output_disp;
-  for (unsigned int i=0; i < num_imps_run; i++) {
-    output_disp[i] =
-      bp_file_settings.GetCurrentOutputDisparityFilePathAndIncrement();
-  }
 
   //get optimized implementation description and write info about run to
   //std::cout stream
   const std::string opt_imp_run_description{
-    run_imp_templated_loop_iters ?
-      run_opt_bp_num_iters_templated_->RunDescription() :
-      run_opt_bp_num_iters_no_template_->RunDescription()};
-  std::cout << "Running belief propagation on reference image "
-            << ref_test_image_path[0] << " and test image "
-            << ref_test_image_path[1] << " on " << opt_imp_run_description;
+    run_benchmarks_opt_->RunDescription()};
+  std::cout << "Running benchmarks with height/width of " << matrix_wh_ << " on " << opt_imp_run_description;
   if (!run_opt_imp_only) {
-    std::cout << " and " << run_bp_stereo_single_thread_->RunDescription();
+    std::cout << " and " << run_bnchmrks_single_thread_->RunDescription();
   }
   std::cout << std::endl;
   std::cout << "Data size: " << sizeof(T) << std::endl;
-  std::cout << "run_imp_templated_loop_iters: " << run_imp_templated_loop_iters << std::endl;
   std::cout << "Acceleration: " << run_environment::AccelerationString<OPT_IMP_ACCEL>() << std::endl;
   std::cout << std::endl;
       
   //run optimized implementation and retrieve structure with runtime and output
   //disparity map
-  std::map<run_environment::AccSetting, std::optional<beliefprop::BpRunOutput>>
+  std::map<run_environment::AccSetting, std::optional<benchmarks::BnchmrksRunOutput>>
     run_output;
-  if (run_imp_templated_loop_iters) {
-    run_output[OPT_IMP_ACCEL] = run_opt_bp_num_iters_templated_->operator()(
-      {ref_test_image_path[0].string(), ref_test_image_path[1].string()},
-      alg_settings_,
-      *parallel_params);
-  }
-  else {
-    run_output[OPT_IMP_ACCEL] = run_opt_bp_num_iters_no_template_->operator()(
-      {ref_test_image_path[0].string(), ref_test_image_path[1].string()},
-      alg_settings_,
-      *parallel_params);
-  }
+  run_output[OPT_IMP_ACCEL] =
+    run_benchmarks_opt_->operator()(matrix_wh_, *parallel_params);
     
   //check if error in run
   RunData run_data;
@@ -288,10 +235,7 @@ std::optional<RunData> RunImpOnInputBnchmrks<T, OPT_IMP_ACCEL, NUM_INPUT>::RunIm
     //run single-threaded implementation and retrieve structure with runtime
     //and output disparity map
     run_output[run_environment::AccSetting::kNone] =
-      run_bp_stereo_single_thread_->operator()(
-        {ref_test_image_path[0].string(), ref_test_image_path[1].string()},
-        alg_settings_,
-        *parallel_params);
+      run_benchmarks_single_thread_->operator()(matrix_wh_, *parallel_params);
     if (!(run_output[run_environment::AccSetting::kNone])) {
       return {};
     }

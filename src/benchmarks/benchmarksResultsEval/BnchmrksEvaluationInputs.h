@@ -39,6 +39,52 @@ namespace benchmarks
   constexpr std::string_view kMatWidthHeader{"Matrix Width"};
   constexpr std::string_view kMatHeightHeader{"Matrix Height"};
 
+  /**
+   * @brief Enum type where each named constant corresponds to a
+   * matrix width and height that can be processed and evaluated
+   * Underlying size_t value for each constant must match index of
+   * stereo set in kStereoSetsToProcess array
+   */
+  enum class MtrxWH : size_t {
+    kMtrxWH_32 = 0,
+    kMtrxWH_64,
+    kMtrxWH_128,
+    kMtrxWH_256,
+    kMtrxWH_512,
+    kMtrxWH_1024,
+    kMtrxWH_2048,
+    kMtrxWH_4096
+  };
+  
+  /**
+   * @brief Structure with matrix size name and corresponding width/height
+   */
+  struct MtrxNameWH {
+    const std::string_view name;
+    const unsigned int mtrx_wh;
+  };
+
+  /** 
+   * @brief Declare matrix to process with name and width/height
+   * 
+   * Index for each matrix must match corresponding enum value in MtrxWH enum
+   * 
+   * Reason array is used is that the data structure must be constexpr due to height/width
+   * potentially being used as a template parameter where the value must be known
+   * at compile time...otherwise would be unordered_map with MtrxWH enum as the key
+   * (in C++20 array can be constexpr but unordered_map can't be)
+   */
+  constexpr std::array<MtrxNameWH, 8> kMtrxsToProcess{
+    MtrxNameWH{"kMtrxWH_32", 32},
+    MtrxNameWH{"kMtrxWH_64", 64},
+    MtrxNameWH{"kMtrxWH_128", 128},
+    MtrxNameWH{"kMtrxWH_256", 256},
+    MtrxNameWH{"kMtrxWH_512", 512},
+    MtrxNameWH{"kMtrxWH_1024", 1024},
+    MtrxNameWH{"kMtrxWH_2048", 2048},
+    MtrxNameWH{"kMtrxWH_4096", 4096}
+  };
+
   //constants for evaluation
   constexpr std::string_view kBenchmarksDirectoryName{"Benchmarks"};
   /*constexpr std::string_view kBaselineRunDataPath{
