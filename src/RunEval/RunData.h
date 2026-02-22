@@ -146,6 +146,14 @@ public:
    * @param rundata 
    */
   void AppendData(const RunData& rundata);
+
+  /**
+   * @brief Clear all data
+   */
+  void ClearData() {
+    headers_w_data_.clear();
+    headers_in_order_.clear();
+  }
   
   /**
    * @brief Overloaded << operator for output to stream
