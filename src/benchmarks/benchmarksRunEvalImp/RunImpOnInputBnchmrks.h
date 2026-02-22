@@ -198,13 +198,15 @@ std::optional<RunData> RunImpOnInputBnchmrks<T, OPT_IMP_ACCEL, NUM_INPUT>::RunIm
   //std::cout stream
   const std::string opt_imp_run_description{
     run_benchmarks_opt_->RunDescription()};
-  std::cout << "Running benchmarks with height/width of " << matrix_wh_ << " on " << opt_imp_run_description;
+  std::cout << "Running benchmarks with height/width of " << matrix_wh_
+            << " on " << opt_imp_run_description;
   if (!run_opt_imp_only) {
     std::cout << " and " << run_bnchmrks_single_thread_->RunDescription();
   }
   std::cout << std::endl;
   std::cout << "Data size: " << sizeof(T) << std::endl;
-  std::cout << "Acceleration: " << run_environment::AccelerationString<OPT_IMP_ACCEL>() << std::endl;
+  std::cout << "Acceleration: "
+            << run_environment::AccelerationString<OPT_IMP_ACCEL>() << std::endl;
   std::cout << std::endl;
       
   //run optimized implementation and retrieve structure with runtime and output
