@@ -39,7 +39,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #include "BpFileProcessing/BpFileHandling.h"
 #include "BpRunProcessing/BpConstsEnumsAliases.h"
 #include "BpResultsEvaluation/BpEvaluationStereoSets.h"
-#include "BpSingleThreadCPU/RunBpImpSingleThreadCPU.h"
+#include "BpSingleThreadCPU/RunBpImpSingThreadCPU.h"
 
 #ifndef RUN_IMP_ON_INPUT_BP_H_
 #define RUN_IMP_ON_INPUT_BP_H_
@@ -195,7 +195,7 @@ MultRunData RunImpOnInputBp<T, OPT_IMP_ACCEL, NUM_INPUT>::operator()(
 
   //set up unoptimized single threaded bp stereo implementation
   run_bp_stereo_single_thread_ =
-    std::make_unique<RunBpImpSingleThreadCPU<
+    std::make_unique<RunBpImpSingThreadCPU<
       T,
       beliefprop::kStereoSetsToProcess[NUM_INPUT].num_disp_vals,
       run_environment::AccSetting::kNone>>();

@@ -34,7 +34,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #include "RunImp/RunImpMultTypesAccels.h"
 #include "BpRunProcessing/RunBpImp.h"
 #include "BpOptCPU/RunBpImpOptCPU.h"
-#include "BpSingleThreadCPU/RunBpImpSingleThreadCPU.h"
+#include "BpSingleThreadCPU/RunBpImpSingThreadCPU.h"
 
 /**
  * @brief main() function to run optimized CPU belief propagation implementation
@@ -108,7 +108,7 @@ int main(int argc, char** argv)
   //CPU implementation only works with disparity count given as template value
   if ((argc > 5) && (std::string(argv[5]) == "comp")) {
     std::unique_ptr<RunBpImp<float, 0, run_environment::AccSetting::kNone>> runBpStereoSingleThread = 
-      std::make_unique<RunBpImpSingleThreadCPU<float, 0, run_environment::AccSetting::kNone>>();
+      std::make_unique<RunBpImpSingThreadCPU<float, 0, run_environment::AccSetting::kNone>>();
     auto run_output_single_thread = runBpStereoSingleThread->operator()({refTestImPath[0], refTestImPath[1]}, alg_settings, parallel_params);
     std::cout << "BP processing runtime (single threaded imp): " << run_output_single_thread->run_time.count() << std::endl;
     const auto outComp = run_output_single_thread->out_disparity_map.OutputComparison(run_output->out_disparity_map, beliefprop::DisparityMapEvaluationParams());

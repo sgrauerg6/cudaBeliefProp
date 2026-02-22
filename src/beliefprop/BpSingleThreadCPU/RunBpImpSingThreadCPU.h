@@ -17,21 +17,21 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 */
 
 /**
- * @file RunBpImpSingleThreadCPU.h
+ * @file RunBpImpSingThreadCPU.h
  * @author Scott Grauer-Gray
  * @brief 
  * 
  * @copyright Copyright (c) 2024
  */
 /*
- * RunBpImpSingleThreadCPU.h
+ * RunBpImpSingThreadCPU.h
  *
  *  Created on: Feb 4, 2017
  *      Author: scottgg
  */
 
-#ifndef RUN_BP_IMP_SINGLE_THREAD_CPU_H_
-#define RUN_BP_IMP_SINGLE_THREAD_CPU_H_
+#ifndef RUN_BP_IMP_SING_THREAD_CPU_H_
+#define RUN_BP_IMP_SING_THREAD_CPU_H_
 
 #ifndef __APPLE__
 #include <omp.h>
@@ -68,7 +68,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  * @tparam ACCELERATION 
  */
 template<typename T, unsigned int DISP_VALS, run_environment::AccSetting ACCELERATION>
-class RunBpImpSingleThreadCPU  : public RunBpImp<T, DISP_VALS, ACCELERATION>
+class RunBpImpSingThreadCPU  : public RunBpImp<T, DISP_VALS, ACCELERATION>
 {
 public:
   std::optional<beliefprop::BpRunOutput> operator()(const std::array<std::string, 2>& ref_test_image_path,
@@ -94,7 +94,7 @@ private:
 
 // dt of 1d function
 template<typename T, unsigned int DISP_VALS, run_environment::AccSetting ACCELERATION>
-inline void RunBpImpSingleThreadCPU<T, DISP_VALS, ACCELERATION>::dt(float f[DISP_VALS]) const {
+inline void RunBpImpSingThreadCPU<T, DISP_VALS, ACCELERATION>::dt(float f[DISP_VALS]) const {
   for (unsigned int q = 1; q < DISP_VALS; q++) {
     float prev = f[q - 1] + 1.0F;
     if (prev < f[q])
@@ -109,7 +109,7 @@ inline void RunBpImpSingleThreadCPU<T, DISP_VALS, ACCELERATION>::dt(float f[DISP
 
 // compute message
 template<typename T, unsigned int DISP_VALS, run_environment::AccSetting ACCELERATION>
-inline void RunBpImpSingleThreadCPU<T, DISP_VALS, ACCELERATION>::msg(float s1[DISP_VALS],
+inline void RunBpImpSingThreadCPU<T, DISP_VALS, ACCELERATION>::msg(float s1[DISP_VALS],
     float s2[DISP_VALS], float s3[DISP_VALS],
     float s4[DISP_VALS], float dst[DISP_VALS],
     float disc_k_bp) const {
@@ -144,7 +144,7 @@ inline void RunBpImpSingleThreadCPU<T, DISP_VALS, ACCELERATION>::msg(float s1[DI
 
 // computation of data costs
 template<typename T, unsigned int DISP_VALS, run_environment::AccSetting ACCELERATION>
-inline bp_single_thread_imp::image<float[DISP_VALS]> * RunBpImpSingleThreadCPU<T, DISP_VALS, ACCELERATION>::comp_data(
+inline bp_single_thread_imp::image<float[DISP_VALS]> * RunBpImpSingThreadCPU<T, DISP_VALS, ACCELERATION>::comp_data(
     bp_single_thread_imp::image<uchar> *img1, bp_single_thread_imp::image<uchar> *img2, const beliefprop::BpSettings& alg_settings) const {
   unsigned int width{(unsigned int)img1->width()};
   unsigned int height{(unsigned int)img1->height()};
@@ -175,7 +175,7 @@ inline bp_single_thread_imp::image<float[DISP_VALS]> * RunBpImpSingleThreadCPU<T
 
 // generate output from current messages
 template<typename T, unsigned int DISP_VALS, run_environment::AccSetting ACCELERATION>
-inline bp_single_thread_imp::image<uchar> * RunBpImpSingleThreadCPU<T, DISP_VALS, ACCELERATION>::output(bp_single_thread_imp::image<float[DISP_VALS]> *u,
+inline bp_single_thread_imp::image<uchar> * RunBpImpSingThreadCPU<T, DISP_VALS, ACCELERATION>::output(bp_single_thread_imp::image<float[DISP_VALS]> *u,
     bp_single_thread_imp::image<float[DISP_VALS]> *d, bp_single_thread_imp::image<float[DISP_VALS]> *l,
     bp_single_thread_imp::image<float[DISP_VALS]> *r, bp_single_thread_imp::image<float[DISP_VALS]> *data) const {
   unsigned int width{(unsigned int)data->width()};
@@ -209,7 +209,7 @@ inline bp_single_thread_imp::image<uchar> * RunBpImpSingleThreadCPU<T, DISP_VALS
 
 // belief propagation using checkerboard update scheme
 template<typename T, unsigned int DISP_VALS, run_environment::AccSetting ACCELERATION>
-inline void RunBpImpSingleThreadCPU<T, DISP_VALS, ACCELERATION>::bp_cb(bp_single_thread_imp::image<float[DISP_VALS]> *u, bp_single_thread_imp::image<float[DISP_VALS]> *d,
+inline void RunBpImpSingThreadCPU<T, DISP_VALS, ACCELERATION>::bp_cb(bp_single_thread_imp::image<float[DISP_VALS]> *u, bp_single_thread_imp::image<float[DISP_VALS]> *d,
     bp_single_thread_imp::image<float[DISP_VALS]> *l, bp_single_thread_imp::image<float[DISP_VALS]> *r,
     bp_single_thread_imp::image<float[DISP_VALS]> *data, unsigned int iter, float disc_k_bp) const {
   unsigned int width{(unsigned int)data->width()};
@@ -238,7 +238,7 @@ inline void RunBpImpSingleThreadCPU<T, DISP_VALS, ACCELERATION>::bp_cb(bp_single
 
 // multiscale belief propagation for image restoration
 template<typename T, unsigned int DISP_VALS, run_environment::AccSetting ACCELERATION>
-inline std::pair<bp_single_thread_imp::image<uchar>*, RunData> RunBpImpSingleThreadCPU<T, DISP_VALS, ACCELERATION>::stereo_ms(bp_single_thread_imp::image<uchar> *img1, bp_single_thread_imp::image<uchar> *img2,
+inline std::pair<bp_single_thread_imp::image<uchar>*, RunData> RunBpImpSingThreadCPU<T, DISP_VALS, ACCELERATION>::stereo_ms(bp_single_thread_imp::image<uchar> *img1, bp_single_thread_imp::image<uchar> *img2,
   const beliefprop::BpSettings& alg_settings, std::chrono::duration<double>& runtime) const {
   std::vector<bp_single_thread_imp::image<float[DISP_VALS]>*> u(alg_settings.num_levels);
   std::vector<bp_single_thread_imp::image<float[DISP_VALS]>*> d(alg_settings.num_levels);
@@ -329,7 +329,7 @@ inline std::pair<bp_single_thread_imp::image<uchar>*, RunData> RunBpImpSingleThr
 }
 
 template<typename T, unsigned int DISP_VALS, run_environment::AccSetting ACCELERATION>
-inline std::optional<beliefprop::BpRunOutput> RunBpImpSingleThreadCPU<T, DISP_VALS, ACCELERATION>::operator()(const std::array<std::string, 2>& ref_test_image_path,
+inline std::optional<beliefprop::BpRunOutput> RunBpImpSingThreadCPU<T, DISP_VALS, ACCELERATION>::operator()(const std::array<std::string, 2>& ref_test_image_path,
     const beliefprop::BpSettings& alg_settings, const ParallelParams& parallel_params) const
 {
   //return no value if acceleration setting is not NONE
@@ -380,7 +380,7 @@ inline std::optional<beliefprop::BpRunOutput> RunBpImpSingleThreadCPU<T, DISP_VA
  * @tparam ACCELERATION 
  */
 /*template<typename T, run_environment::AccSetting ACCELERATION>
-class RunBpImpSingleThreadCPU<T, 0, ACCELERATION> : public RunBpImp<T, 0, ACCELERATION>
+class RunBpImpSingThreadCPU<T, 0, ACCELERATION> : public RunBpImp<T, 0, ACCELERATION>
 {
 public:
   std::optional<beliefprop::BpRunOutput> operator()(const std::array<std::string, 2>& ref_test_image_path,
@@ -405,7 +405,7 @@ private:
 
 // dt of 1d function
 template<typename T, run_environment::AccSetting ACCELERATION>
-inline void RunBpImpSingleThreadCPU<T, 0, ACCELERATION>::dt(float* f, unsigned int num_disp_vals) const {
+inline void RunBpImpSingThreadCPU<T, 0, ACCELERATION>::dt(float* f, unsigned int num_disp_vals) const {
   for (unsigned int q = 1; q < num_disp_vals; q++) {
     float prev = f[q - 1] + 1.0F;
     if (prev < f[q])
@@ -420,7 +420,7 @@ inline void RunBpImpSingleThreadCPU<T, 0, ACCELERATION>::dt(float* f, unsigned i
 
 // compute message
 template<typename T, run_environment::AccSetting ACCELERATION>
-inline void RunBpImpSingleThreadCPU<T, 0, ACCELERATION>::msg(float* s1,
+inline void RunBpImpSingThreadCPU<T, 0, ACCELERATION>::msg(float* s1,
     float* s2, float* s3,
     float* s4, float* dst,
     float disc_k_bp, unsigned int num_disp_vals) const {
@@ -455,7 +455,7 @@ inline void RunBpImpSingleThreadCPU<T, 0, ACCELERATION>::msg(float* s1,
 
 // computation of data costs
 template<typename T, run_environment::AccSetting ACCELERATION>
-inline bp_single_thread_imp::imageWDisp<float> * RunBpImpSingleThreadCPU<T, 0, ACCELERATION>::comp_data(
+inline bp_single_thread_imp::imageWDisp<float> * RunBpImpSingThreadCPU<T, 0, ACCELERATION>::comp_data(
     bp_single_thread_imp::image<uchar> *img1, bp_single_thread_imp::image<uchar> *img2, const beliefprop::BpSettings& alg_settings) const
 {
   unsigned int width{(unsigned int)img1->width()};
@@ -488,7 +488,7 @@ inline bp_single_thread_imp::imageWDisp<float> * RunBpImpSingleThreadCPU<T, 0, A
 
 // generate output from current messages
 template<typename T, run_environment::AccSetting ACCELERATION>
-inline bp_single_thread_imp::image<uchar> * RunBpImpSingleThreadCPU<T, 0, ACCELERATION>::output(bp_single_thread_imp::imageWDisp<float> *u,
+inline bp_single_thread_imp::image<uchar> * RunBpImpSingThreadCPU<T, 0, ACCELERATION>::output(bp_single_thread_imp::imageWDisp<float> *u,
     bp_single_thread_imp::imageWDisp<float> *d, bp_single_thread_imp::imageWDisp<float> *l,
     bp_single_thread_imp::imageWDisp<float> *r, bp_single_thread_imp::imageWDisp<float> *data, unsigned int num_disp_vals) const {
   unsigned int width{(unsigned int)data->width()};
@@ -522,7 +522,7 @@ inline bp_single_thread_imp::image<uchar> * RunBpImpSingleThreadCPU<T, 0, ACCELE
 
 // belief propagation using checkerboard update scheme
 template<typename T, run_environment::AccSetting ACCELERATION>
-inline void RunBpImpSingleThreadCPU<T, 0, ACCELERATION>::bp_cb(
+inline void RunBpImpSingThreadCPU<T, 0, ACCELERATION>::bp_cb(
   bp_single_thread_imp::imageWDisp<float> *u,
   bp_single_thread_imp::imageWDisp<float> *d,
   bp_single_thread_imp::imageWDisp<float> *l,
@@ -557,7 +557,7 @@ inline void RunBpImpSingleThreadCPU<T, 0, ACCELERATION>::bp_cb(
 
 // multiscale belief propagation for image restoration
 template<typename T, run_environment::AccSetting ACCELERATION>
-inline std::pair<bp_single_thread_imp::image<uchar>*, RunData> RunBpImpSingleThreadCPU<T, 0, ACCELERATION>::stereo_ms(bp_single_thread_imp::image<uchar> *img1, bp_single_thread_imp::image<uchar> *img2,
+inline std::pair<bp_single_thread_imp::image<uchar>*, RunData> RunBpImpSingThreadCPU<T, 0, ACCELERATION>::stereo_ms(bp_single_thread_imp::image<uchar> *img1, bp_single_thread_imp::image<uchar> *img2,
   const beliefprop::BpSettings& alg_settings, std::chrono::duration<double>& runtime) const {
   bp_single_thread_imp::imageWDisp<float> *u[alg_settings.num_levels];
   bp_single_thread_imp::imageWDisp<float> *d[alg_settings.num_levels];
@@ -648,7 +648,7 @@ inline std::pair<bp_single_thread_imp::image<uchar>*, RunData> RunBpImpSingleThr
 }
 
 template<typename T, run_environment::AccSetting ACCELERATION>
-inline std::optional<beliefprop::BpRunOutput> RunBpImpSingleThreadCPU<T, 0, ACCELERATION>::operator()(const std::array<std::string, 2>& ref_test_image_path,
+inline std::optional<beliefprop::BpRunOutput> RunBpImpSingThreadCPU<T, 0, ACCELERATION>::operator()(const std::array<std::string, 2>& ref_test_image_path,
     const beliefprop::BpSettings& alg_settings, const ParallelParams& parallel_params) const
 {
   //return no value if acceleration setting is not NONE
@@ -700,7 +700,7 @@ inline std::optional<beliefprop::BpRunOutput> RunBpImpSingleThreadCPU<T, 0, ACCE
  * @tparam ACCELERATION 
  */
 template<typename T, run_environment::AccSetting ACCELERATION>
-class RunBpImpSingleThreadCPU<T, 0, ACCELERATION> : public RunBpImp<T, 0, ACCELERATION>
+class RunBpImpSingThreadCPU<T, 0, ACCELERATION> : public RunBpImp<T, 0, ACCELERATION>
 {
 public:
   std::optional<beliefprop::BpRunOutput> operator()(const std::array<std::string, 2>& ref_test_image_path,
@@ -733,7 +733,7 @@ private:
 
 // dt of 1d function
 template<typename T, run_environment::AccSetting ACCELERATION>
-inline void RunBpImpSingleThreadCPU<T, 0, ACCELERATION>::dt(std::span<float> f) const {
+inline void RunBpImpSingThreadCPU<T, 0, ACCELERATION>::dt(std::span<float> f) const {
   for (unsigned int q = 1; q < f.size(); q++) {
     float prev = f[q - 1] + 1.0F;
     if (prev < f[q])
@@ -748,7 +748,7 @@ inline void RunBpImpSingleThreadCPU<T, 0, ACCELERATION>::dt(std::span<float> f) 
 
 // compute message
 template<typename T, run_environment::AccSetting ACCELERATION>
-inline std::vector<float> RunBpImpSingleThreadCPU<T, 0, ACCELERATION>::msg(
+inline std::vector<float> RunBpImpSingThreadCPU<T, 0, ACCELERATION>::msg(
   const std::vector<float>& s1, const std::vector<float>& s2, const std::vector<float>& s3,
   const std::vector<float>& s4, float disc_k_bp) const
 {
@@ -784,7 +784,7 @@ inline std::vector<float> RunBpImpSingleThreadCPU<T, 0, ACCELERATION>::msg(
 
 // dt of 1d function
 template<typename T, run_environment::AccSetting ACCELERATION>
-inline void RunBpImpSingleThreadCPU<T, 0, ACCELERATION>::dt(
+inline void RunBpImpSingThreadCPU<T, 0, ACCELERATION>::dt(
   float* f, unsigned int num_disp_vals, unsigned int index_offset_disp) const
 {
   for (unsigned int q = index_offset_disp; q < num_disp_vals*index_offset_disp; q += index_offset_disp) {
@@ -801,7 +801,7 @@ inline void RunBpImpSingleThreadCPU<T, 0, ACCELERATION>::dt(
 
 // compute message
 template<typename T, run_environment::AccSetting ACCELERATION>
-inline void RunBpImpSingleThreadCPU<T, 0, ACCELERATION>::msg(
+inline void RunBpImpSingThreadCPU<T, 0, ACCELERATION>::msg(
   const float* s1, const float* s2, const float* s3, const float* s4, float disc_k_bp,
   unsigned int num_disp_vals, float* dst, unsigned int index_offset_disp) const
 {
@@ -835,7 +835,7 @@ inline void RunBpImpSingleThreadCPU<T, 0, ACCELERATION>::msg(
 
 // computation of data costs
 template<typename T, run_environment::AccSetting ACCELERATION>
-inline bp_single_thread_imp::BpVector<float> RunBpImpSingleThreadCPU<T, 0, ACCELERATION>::comp_data(
+inline bp_single_thread_imp::BpVector<float> RunBpImpSingThreadCPU<T, 0, ACCELERATION>::comp_data(
     bp_single_thread_imp::image<uchar> *img1,
     bp_single_thread_imp::image<uchar> *img2,
     const beliefprop::BpSettings& alg_settings) const
@@ -870,7 +870,7 @@ inline bp_single_thread_imp::BpVector<float> RunBpImpSingleThreadCPU<T, 0, ACCEL
 
 // generate output from current messages
 template<typename T, run_environment::AccSetting ACCELERATION>
-inline bp_single_thread_imp::image<uchar> * RunBpImpSingleThreadCPU<T, 0, ACCELERATION>::output(
+inline bp_single_thread_imp::image<uchar> * RunBpImpSingThreadCPU<T, 0, ACCELERATION>::output(
   const bp_single_thread_imp::BpVector<float>& u,
   const bp_single_thread_imp::BpVector<float>& d,
   const bp_single_thread_imp::BpVector<float>& l,
@@ -909,7 +909,7 @@ inline bp_single_thread_imp::image<uchar> * RunBpImpSingleThreadCPU<T, 0, ACCELE
 
 // belief propagation using checkerboard update scheme
 template<typename T, run_environment::AccSetting ACCELERATION>
-inline void RunBpImpSingleThreadCPU<T, 0, ACCELERATION>::bp_cb(
+inline void RunBpImpSingThreadCPU<T, 0, ACCELERATION>::bp_cb(
   bp_single_thread_imp::BpVector<float>& u, bp_single_thread_imp::BpVector<float>& d,
   bp_single_thread_imp::BpVector<float>& l, bp_single_thread_imp::BpVector<float>& r,
   const bp_single_thread_imp::BpVector<float>& data, unsigned int iter, float disc_k_bp) const
@@ -955,7 +955,7 @@ inline void RunBpImpSingleThreadCPU<T, 0, ACCELERATION>::bp_cb(
 
 // multiscale belief propagation for image restoration
 template<typename T, run_environment::AccSetting ACCELERATION>
-inline std::pair<bp_single_thread_imp::image<uchar>*, RunData> RunBpImpSingleThreadCPU<T, 0, ACCELERATION>::stereo_ms(
+inline std::pair<bp_single_thread_imp::image<uchar>*, RunData> RunBpImpSingThreadCPU<T, 0, ACCELERATION>::stereo_ms(
   bp_single_thread_imp::image<uchar> *img1, bp_single_thread_imp::image<uchar> *img2,
   const beliefprop::BpSettings& alg_settings, std::chrono::duration<double>& runtime) const {
   std::vector<bp_single_thread_imp::BpVector<float>> u(alg_settings.num_levels);
@@ -1046,7 +1046,7 @@ inline std::pair<bp_single_thread_imp::image<uchar>*, RunData> RunBpImpSingleThr
 }
 
 template<typename T, run_environment::AccSetting ACCELERATION>
-inline std::optional<beliefprop::BpRunOutput> RunBpImpSingleThreadCPU<T, 0, ACCELERATION>::operator()(const std::array<std::string, 2>& ref_test_image_path,
+inline std::optional<beliefprop::BpRunOutput> RunBpImpSingThreadCPU<T, 0, ACCELERATION>::operator()(const std::array<std::string, 2>& ref_test_image_path,
     const beliefprop::BpSettings& alg_settings, const ParallelParams& parallel_params) const
 {
   std::cout << "SINGLE THREAD BELIEF PROP WITH DISPARITY NOT KNOWN AT COMPILE TIME" << std::endl;
@@ -1089,4 +1089,4 @@ inline std::optional<beliefprop::BpRunOutput> RunBpImpSingleThreadCPU<T, 0, ACCE
   return output;
 }
 
-#endif /* RUN_BP_IMP_SINGLE_THREAD_CPU_H_ */
+#endif /* RUN_BP_IMP_SING_THREAD_CPU_H_ */

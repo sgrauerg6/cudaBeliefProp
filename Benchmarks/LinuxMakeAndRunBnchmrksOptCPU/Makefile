@@ -28,12 +28,11 @@ COMPILE_FLAGS = -DUNIX -DOPTIMIZED_CPU_RUN ${CPU_VECTORIZATION_DEFINE} ${FLOAT16
 # define directory for compiled objects and object files to generate during compilation
 OBJ_DIR = obj
 OBJECTS = ${OBJ_DIR}/EvaluateAcrossRuns.o ${OBJ_DIR}/InputSignature.o ${OBJ_DIR}/RunResultsSpeedups.o \
-${OBJ_DIR}/EvaluateImpResultsBp.o ${OBJ_DIR}/EvaluateImpResults.o ${OBJ_DIR}/RunImpMultTypesAccels.o \
-${OBJ_DIR}/RunData.o ${OBJ_DIR}/ParallelParamsBp.o ${OBJ_DIR}/BpLevel.o ${OBJ_DIR}/ParallelParams.o \
-${OBJ_DIR}/RunImpMultInputsBp.o ${OBJ_DIR}/RunImpMultInputs.o ${OBJ_DIR}/BpFileHandling.o ${OBJ_DIR}/DisparityMap.o \
-${OBJ_DIR}/DisparityMapEvaluation.o ${OBJ_DIR}/RunBpImpSingleThreadCPU.o ${OBJ_DIR}/RunBpImp.o ${OBJ_DIR}/BpImage.o \
-${OBJ_DIR}/SmoothImage.o ${OBJ_DIR}/SmoothImageOptCPU.o ${OBJ_DIR}/ProcessBpDevice.o ${OBJ_DIR}/DetailedTimings.o \
-${OBJ_DIR}/RunBpImpOptCPU.o ${OBJ_DIR}/ProcessBpOptCPU.o
+${OBJ_DIR}/EvalBenchmarkResults.o ${OBJ_DIR}/EvaluateImpResults.o ${OBJ_DIR}/RunImpMultTypesAccels.o \
+${OBJ_DIR}/RunData.o ${OBJ_DIR}/ParallelParamsBnchmrks.o ${OBJ_DIR}/ParallelParams.o \
+${OBJ_DIR}/RunBenchmarksMultInputs.o ${OBJ_DIR}/RunImpMultInputs.o \
+${OBJ_DIR}/DisparityMapEvaluation.o ${OBJ_DIR}/RunBpImpSingThreadCPU.o ${OBJ_DIR}/RunBenchmarksOnInput.o \
+${OBJ_DIR}/DetailedTimings.o ${OBJ_DIR}/RunBenchmarksOptCPU.o ${OBJ_DIR}/RunBenchmarks.o
 DRIVER_BENCHMARK_CPU_OBJECT = ${OBJ_DIR}/DriverBpStereoCPU.o
 DRIVER_BENCHMARK_CPU_OBJECT_CUSTOM = ${OBJ_DIR}/DriverBpStereoCPU_customRun.o
 

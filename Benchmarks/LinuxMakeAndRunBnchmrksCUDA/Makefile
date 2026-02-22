@@ -6,9 +6,6 @@ CUDA_DIR = /usr/local/cuda
 # define the path for the nvcc cuda compiler
 NVCC := $(CUDA_DIR)/bin/nvcc
 
-# define path to belief propatation source code
-SRC_DIR_BP := ../../${SRC_DIR}/beliefprop
-
 # define path to benchmarks source code
 SRC_DIR_BNCHMRKS = ../../${SRC_DIR}/benchmarks
 
@@ -35,21 +32,21 @@ CUDA_LINK_FLAGS = -O3 -march=native -std=c++20
 # define directory for compiled objects and object files to generate during compilation
 OBJ_DIR = obj
 OBJECTS = ${OBJ_DIR}/EvaluateAcrossRuns.o ${OBJ_DIR}/InputSignature.o ${OBJ_DIR}/RunResultsSpeedups.o \
-${OBJ_DIR}/EvaluateImpResultsBp.o ${OBJ_DIR}/EvaluateImpResults.o ${OBJ_DIR}/RunImpMultTypesAccels.o \
-${OBJ_DIR}/RunData.o ${OBJ_DIR}/ParallelParamsBp.o ${OBJ_DIR}/BpLevel.o ${OBJ_DIR}/ParallelParams.o \
-${OBJ_DIR}/RunImpMultInputsBp.o ${OBJ_DIR}/RunImpMultInputs.o ${OBJ_DIR}/BpFileHandling.o ${OBJ_DIR}/DisparityMap.o \
-${OBJ_DIR}/DisparityMapEvaluation.o ${OBJ_DIR}/RunBpImpSingleThreadCPU.o ${OBJ_DIR}/RunBpImp.o ${OBJ_DIR}/BpImage.o \
-${OBJ_DIR}/SmoothImageCUDA.o ${OBJ_DIR}/SmoothImage.o ${OBJ_DIR}/DetailedTimings.o ${OBJ_DIR}/ProcessBpDevice.o \
-${OBJ_DIR}/ProcessBpCUDA.o
-DRIVER_BENCHMARK_CUDA_OBJECT = ${OBJ_DIR}/DriverCudaBp.o
-DRIVER_BENCHMARK_CUDA_OBJECT_CUSTOM = ${OBJ_DIR}/DriverBpStereoCUDA_customRun.o
+${OBJ_DIR}/EvaluateImpResultsBnchmrks.o ${OBJ_DIR}/EvaluateImpResults.o ${OBJ_DIR}/RunImpMultTypesAccels.o \
+${OBJ_DIR}/RunData.o ${OBJ_DIR}/ParallelParamsBnchmrks.o ${OBJ_DIR}/ParallelParams.o \
+${OBJ_DIR}/RunImpMultInputsBnchmrks.o ${OBJ_DIR}/RunImpMultInputs.o \
+${OBJ_DIR}/RunBnchmrksSingThreadCPU.o ${OBJ_DIR}/RunBnchmrks.o \
+${OBJ_DIR}/DetailedTimings.o ${OBJ_DIR}/ProcessBnchmrksDevice.o \
+${OBJ_DIR}/ProcessBnchmrksCUDA.o
+DRIVER_BENCHMARK_CUDA_OBJECT = ${OBJ_DIR}/DriverCudaBnchmrks.o
+DRIVER_BENCHMARK_CUDA_OBJECT_CUSTOM = ${OBJ_DIR}/DriverBnchmrksCUDA_customRun.o
 
 # dependency files corresponding to each object
 DEPS := $(OBJECTS:.o=.d)
 
 # executables for belief propagation CUDA implementations
-DRIVER_BENCHMARK_CPU = driverCPUBnchmrks
-DRIVER_BENCHMARK_CPU_CUSTOM = driverCPUBnchmrksCustom
+DRIVER_BENCHMARK_CUDA = driverCUDABnchmrks
+DRIVER_BENCHMARK_CUDA_CUSTOM = driverCUDABnchmrksCustom
 
 all: impDriverCUDA impDriverCUDACustom
 
@@ -73,7 +70,7 @@ impDriverCUDACustom: ${OBJECTS} ${DRIVER_BENCHMARK_CUDA_OBJECT_CUSTOM}
 	$(CC) ${DRIVER_BENCHMARK_CUDA_OBJECT_CUSTOM} ${OBJECTS} $(CUDA_IMP_LIBS) -fopenmp $(CUDA_LINK_FLAGS) -o ${DRIVER_BENCHMARK_CUDA_CUSTOM} -O
 
 make clean:
-	rm *.o ${OBJ_DIR}/*.o driverCudaBp driverCPUBp driverCudaBpCustom
+	rm *.o ${OBJ_DIR}/*.o driverCUDABnchmrks driverCUDABnchmrksCustom
 
 # include for dependency files
 -include $(DEPS)

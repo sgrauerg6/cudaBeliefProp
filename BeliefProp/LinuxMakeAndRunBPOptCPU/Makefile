@@ -12,13 +12,18 @@ LIB_CPU := -lstdc++fs -lpthread
 OPENMP_LIB := -fopenmp
 
 # setting for CPU vectorization
-# no CPU vectorization define needed for ARM since NEON is
-# only option so that is used
-CPU_VECTORIZATION_DEFINE =
+# switch to -DAVX_256_VECTORIZATION if AVX 512 not supported on target CPU
+# switch to -DAVX_512_F16_VECTORIZATION if half-precision vectorization supported on target CPU
+CPU_VECTORIZATION_DEFINE = -DAVX_512_VECTORIZATION
+
+# setting to enable float16 vectorization
+# needs to be supported on architecture to work (such as support for AVX512_FP16)
+FLOAT16_VECTORIZATION_DEFINE = 
+#-DFLOAT16_VECTORIZATION
 
 # set compile flags and debug setting
 DBG_SETTING    =
-COMPILE_FLAGS = -DUNIX -DOPTIMIZED_CPU_RUN -DCOMPILING_FOR_ARM ${CPU_VECTORIZATION_DEFINE} ${COMMON_IMP_DEFINES} \
+COMPILE_FLAGS = -DUNIX -DOPTIMIZED_CPU_RUN ${CPU_VECTORIZATION_DEFINE} ${FLOAT16_VECTORIZATION_DEFINE} ${COMMON_IMP_DEFINES} \
 				${DBG_SETTING} $(OPENMP_LIB) -O3 -std=c++20 -Wall -march=native -MMD -MP
 
 # define directory for compiled objects and object files to generate during compilation
@@ -27,7 +32,7 @@ OBJECTS = ${OBJ_DIR}/EvaluateAcrossRuns.o ${OBJ_DIR}/InputSignature.o ${OBJ_DIR}
 ${OBJ_DIR}/EvaluateImpResultsBp.o ${OBJ_DIR}/EvaluateImpResults.o ${OBJ_DIR}/RunImpMultTypesAccels.o \
 ${OBJ_DIR}/RunData.o ${OBJ_DIR}/ParallelParamsBp.o ${OBJ_DIR}/BpLevel.o ${OBJ_DIR}/ParallelParams.o \
 ${OBJ_DIR}/RunImpMultInputsBp.o ${OBJ_DIR}/RunImpMultInputs.o ${OBJ_DIR}/BpFileHandling.o ${OBJ_DIR}/DisparityMap.o \
-${OBJ_DIR}/DisparityMapEvaluation.o ${OBJ_DIR}/RunBpImpSingleThreadCPU.o ${OBJ_DIR}/RunBpImp.o ${OBJ_DIR}/BpImage.o \
+${OBJ_DIR}/DisparityMapEvaluation.o ${OBJ_DIR}/RunBpImpSingThreadCPU.o ${OBJ_DIR}/RunBpImp.o ${OBJ_DIR}/BpImage.o \
 ${OBJ_DIR}/SmoothImage.o ${OBJ_DIR}/SmoothImageOptCPU.o ${OBJ_DIR}/ProcessBpDevice.o ${OBJ_DIR}/DetailedTimings.o \
 ${OBJ_DIR}/RunBpImpOptCPU.o ${OBJ_DIR}/ProcessBpOptCPU.o
 DRIVER_BENCHMARK_CPU_OBJECT = ${OBJ_DIR}/DriverBpStereoCPU.o
@@ -54,8 +59,11 @@ impDriverCPU: ${DRIVER_BENCHMARK_CPU_OBJECT} ${OBJECTS}
 impDriverCPUCustom: ${DRIVER_BENCHMARK_CPU_OBJECT_CUSTOM} ${OBJECTS} 
 	$(CC) ${DRIVER_BENCHMARK_CPU_OBJECT_CUSTOM} ${OBJECTS} $(COMPILE_FLAGS) $(LIB_CPU) $(OPENMP_LIB) -o ${DRIVER_BENCHMARK_CPU_CUSTOM}
 
+Float16Test: ${OBJ_DIR}/Float16Test.o 
+	$(CC) ${OBJ_DIR}/Float16Test.o $(COMPILE_FLAGS) $(LIB_CPU) $(OPENMP_LIB) -o float16Test
+
 make clean:
-	rm *.o ${OBJ_DIR}/*.o driverCPUBp driverCPUBpCustom
+	rm *.o ${OBJ_DIR}/*.o driverCPUBp driverCPUBpCustom float16Test
 
 # include for dependency files
 -include $(DEPS)
