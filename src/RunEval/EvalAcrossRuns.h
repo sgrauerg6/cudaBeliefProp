@@ -17,7 +17,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 */
 
 /**
- * @file EvaluateAcrossRuns.h
+ * @file EvalAcrossRuns.h
  * @author Scott Grauer-Gray
  * @brief Declares class with operator function to evaluate implementation runs
  * across multiple architectures. Outputs a file with speedup data on every run
@@ -26,8 +26,8 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  * @copyright Copyright (c) 2024
  */
 
-#ifndef EVALUATE_ACROSS_RUNS_H_
-#define EVALUATE_ACROSS_RUNS_H_
+#ifndef EVAL_ACROSS_RUNS_H_
+#define EVAL_ACROSS_RUNS_H_
 
 #include <string>
 #include <vector>
@@ -51,7 +51,7 @@ struct EvalAcrossRunsData {
  * multiple architectures. Outputs a file with speedup data on every run
  * with the runs ordered from fastest to slowest.
  */
-class EvaluateAcrossRuns {
+class EvalAcrossRuns {
 public:
   /**
    * @brief Evaluate all runs with results in specified file path and
@@ -123,4 +123,4 @@ private:
     const std::vector<std::string>& run_names_ordered) const;
 };
 
-#endif //EVALUATE_ACROSS_RUNS_H_
+#endif //EVAL_ACROSS_RUNS_H_

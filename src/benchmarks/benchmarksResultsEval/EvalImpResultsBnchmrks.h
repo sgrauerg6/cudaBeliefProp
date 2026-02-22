@@ -27,7 +27,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #ifndef EVAL_IMP_RESULTS_BNCHMRKS_H_
 #define EVAL_IMP_RESULTS_BNCHMRKS_H_
 
-#include "RunEval/EvaluateImpResults.h"
+#include "RunEval/EvalImpResults.h"
 #include "RunEval/RunEvalConstsEnums.h"
 #include "BnchmrksEvaluationInputs.h"
 #include <filesystem>
@@ -35,18 +35,18 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #include <string>
 
 /**
- * @brief Child class of EvaluateImpResults that defines member functions for
+ * @brief Child class of EvalImpResults that defines member functions for
  * benchmarks evaluation which override pure virtual functions in
  * parent class
  */
-class EvalImpResultsBnchmrks final : public EvaluateImpResults {
+class EvalImpResultsBnchmrks final : public EvalImpResults {
 public:
   /**
    * @brief Constructor for initialization and to set name of directory
    * with results
    */
   EvalImpResultsBnchmrks(const std::string& results_dir_name) : 
-    EvaluateImpResults(results_dir_name) {}
+    EvalImpResults(results_dir_name) {}
 
 private:
   /**

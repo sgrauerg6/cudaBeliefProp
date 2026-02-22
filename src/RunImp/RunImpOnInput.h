@@ -39,7 +39,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #include "RunSettingsParams/ParallelParams.h"
 #include "RunEval/RunEvalConstsEnums.h"
 #include "RunEval/RunTypeConstraints.h"
-#include "RunEval/EvaluateImpAliases.h"
+#include "RunEval/EvalImpAliases.h"
 
 /**
  * @brief Virtual class to run and evaluate implementation on a input specified

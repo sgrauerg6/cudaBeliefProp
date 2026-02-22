@@ -31,7 +31,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #include "RunSettingsParams/RunSettings.h"
 #include "RunImp/RunImpMultInputs.h"
 #include "RunEval/RunTypeConstraints.h"
-#include "RunEval/EvaluateImpAliases.h"
+#include "RunEval/EvalImpAliases.h"
 
 /**
  * @brief Child class of RunImpMultInputs to run specified belief propagation implementation on a

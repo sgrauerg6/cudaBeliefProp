@@ -17,7 +17,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 */
 
 /**
- * @file EvaluateImpResults.h
+ * @file EvalImpResults.h
  * @author Scott Grauer-Gray
  * @brief Declares class with operator function to evaluate implementations of
  * the same algorithm across different data types and acceleration methods
@@ -25,8 +25,8 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  * @copyright Copyright (c) 2024
  */
 
-#ifndef EVALUATE_IMP_RESULTS_H_
-#define EVALUATE_IMP_RESULTS_H_
+#ifndef EVAL_IMP_RESULTS_H_
+#define EVAL_IMP_RESULTS_H_
 
 #include <filesystem>
 #include <unordered_map>
@@ -37,7 +37,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #include <optional>
 #include "RunSettingsParams/RunSettings.h"
 #include "RunSettingsParams/InputSignature.h"
-#include "EvaluateImpAliases.h"
+#include "EvalImpAliases.h"
 
 #if defined(OPTIMIZED_CUDA_RUN)
 #include "RunImpCUDA/RunCUDASettings.h"
@@ -54,13 +54,13 @@ enum class BaseTargetDiff {
  * @brief Class with operator function to evaluate implementations of the same
  * algorithm across different data types and acceleration methods
  */
-class EvaluateImpResults {
+class EvalImpResults {
 public:
 
   /**
    * @brief Virtual destructor
    */
-  virtual ~EvaluateImpResults() {}
+  virtual ~EvalImpResults() {}
 
   /**
    * @brief Evaluate results for implementation runs on multiple inputs with
@@ -102,7 +102,7 @@ protected:
    * implementation to call it since that is where name of results directory
    * is known
    */
-  EvaluateImpResults(const std::string& results_dir_name) : 
+  EvalImpResults(const std::string& results_dir_name) : 
     results_dir_name_(results_dir_name) {}
 
 private:
@@ -336,4 +336,4 @@ private:
   const std::string results_dir_name_;
 };
 
-#endif //EVALUATE_IMP_RESULTS_H_
+#endif //EVAL_IMP_RESULTS_H_

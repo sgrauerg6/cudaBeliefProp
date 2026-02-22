@@ -24,7 +24,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  * @copyright Copyright (c) 2024
  */
 
-#include "RunEval/EvaluateImpAliases.h"
+#include "RunEval/EvalImpAliases.h"
 #include "RunImpMultTypesAccels.h"
 
 //run and evaluate benchmark using multiple datatypes, inputs, and
@@ -32,7 +32,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 void RunImpMultTypesAccels::operator()(
   const std::vector<std::shared_ptr<RunImpMultInputs>>& run_benchmark_imps_w_acc,
   const run_environment::RunImpSettings& run_imp_settings,
-  std::unique_ptr<EvaluateImpResults> evalResultsPtr) const
+  std::unique_ptr<EvalImpResults> evalResultsPtr) const
 {
   //get expected fastest implementation available based on acceleration used
   //in each implementation

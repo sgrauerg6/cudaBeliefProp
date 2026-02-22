@@ -17,7 +17,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 */
 
 /**
- * @file EvaluateImpAliases.h
+ * @file EvalImpAliases.h
  * @author Scott Grauer-Gray
  * @brief Header for defining aliases for storing run results and evaluating
  * implementations.
@@ -25,8 +25,8 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  * @copyright Copyright (c) 2024
  */
 
-#ifndef EVALUATE_IMP_ALIASES_H_
-#define EVALUATE_IMP_ALIASES_H_
+#ifndef EVAL_IMP_ALIASES_H_
+#define EVAL_IMP_ALIASES_H_
 
 #include <map>
 #include <unordered_map>
@@ -56,4 +56,4 @@ using MultRunDataWSpeedupByAcc =
   std::unordered_map<run_environment::AccSetting, 
                      std::pair<MultRunData, std::vector<RunSpeedupAvgMedian>>>;
 
-#endif //EVALUATE_IMP_ALIASES_H_
+#endif //EVAL_IMP_ALIASES_H_

@@ -31,8 +31,8 @@ CUDA_LINK_FLAGS = -O3 -march=native -std=c++20
 
 # define directory for compiled objects and object files to generate during compilation
 OBJ_DIR = obj
-OBJECTS = ${OBJ_DIR}/EvaluateAcrossRuns.o ${OBJ_DIR}/InputSignature.o ${OBJ_DIR}/RunResultsSpeedups.o \
-${OBJ_DIR}/EvaluateImpResultsBnchmrks.o ${OBJ_DIR}/EvaluateImpResults.o ${OBJ_DIR}/RunImpMultTypesAccels.o \
+OBJECTS = ${OBJ_DIR}/EvalAcrossRuns.o ${OBJ_DIR}/InputSignature.o ${OBJ_DIR}/RunResultsSpeedups.o \
+${OBJ_DIR}/EvalImpResultsBnchmrks.o ${OBJ_DIR}/EvalImpResults.o ${OBJ_DIR}/RunImpMultTypesAccels.o \
 ${OBJ_DIR}/RunData.o ${OBJ_DIR}/ParallelParamsBnchmrks.o ${OBJ_DIR}/ParallelParams.o \
 ${OBJ_DIR}/RunImpMultInputsBnchmrks.o ${OBJ_DIR}/RunImpMultInputs.o \
 ${OBJ_DIR}/RunBnchmrksSingThreadCPU.o ${OBJ_DIR}/RunBnchmrks.o \

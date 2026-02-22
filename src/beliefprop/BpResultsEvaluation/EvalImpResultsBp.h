@@ -17,19 +17,19 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 */
 
 /**
- * @file EvaluateImpResultsBp.h
+ * @file EvalImpResultsBp.h
  * @author Scott Grauer-Gray
- * @brief Declares child class of EvaluateImpResults that defines member
+ * @brief Declares child class of EvalImpResults that defines member
  * functions for belief propagation evaluation which override pure virtual
  * functions in parent class.
  * 
  * @copyright Copyright (c) 2024
  */
 
-#ifndef EVALUATE_BP_IMP_RESULTS_H_
-#define EVALUATE_BP_IMP_RESULTS_H_
+#ifndef EVAL_BP_IMP_RESULTS_H_
+#define EVAL_BP_IMP_RESULTS_H_
 
-#include "RunEval/EvaluateImpResults.h"
+#include "RunEval/EvalImpResults.h"
 #include "RunEval/RunEvalConstsEnums.h"
 #include "BpResultsEvaluation/BpEvaluationStereoSets.h"
 #include <filesystem>
@@ -37,18 +37,18 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #include <string>
 
 /**
- * @brief Child class of EvaluateImpResults that defines member functions for
+ * @brief Child class of EvalImpResults that defines member functions for
  * belief propagation evaluation which override pure virtual functions in
  * parent class
  */
-class EvaluateImpResultsBp final : public EvaluateImpResults {
+class EvalImpResultsBp final : public EvalImpResults {
 public:
   /**
    * @brief Constructor for initialization and to set name of directory
    * with results
    */
-  EvaluateImpResultsBp(const std::string& results_dir_name) : 
-    EvaluateImpResults(results_dir_name) {}
+  EvalImpResultsBp(const std::string& results_dir_name) : 
+    EvalImpResults(results_dir_name) {}
 
 private:
   /**
@@ -84,4 +84,4 @@ private:
   }
 };
 
-#endif //EVALUATE_BP_IMP_RESULTS_H_
+#endif //EVAL_BP_IMP_RESULTS_H_

@@ -31,7 +31,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #include "BpFileProcessing/BpFileHandlingConsts.h"
 #include "BpRunProcessing/BpSettings.h"
 #include "BpRunEvalImp/RunImpMultInputsBp.h"
-#include "BpResultsEvaluation/EvaluateImpResultsBp.h"
+#include "BpResultsEvaluation/EvalImpResultsBp.h"
 
 /**
  * @brief Main() function that drives the optimized CPU
@@ -93,7 +93,7 @@ int main(int argc, char** argv)
   RunImpMultTypesAccels().operator()(
     {{std::make_shared<RunImpMultInputsBp>(run_environment::AccSetting::kCUDA)}},
     run_imp_settings,
-    std::make_unique<EvaluateImpResultsBp>(std::string(beliefprop::kBeliefPropDirectoryName)));
+    std::make_unique<EvalImpResultsBp>(std::string(beliefprop::kBeliefPropDirectoryName)));
 
   return 0;
 }

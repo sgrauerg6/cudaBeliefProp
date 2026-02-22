@@ -27,8 +27,8 @@ COMPILE_FLAGS = -DUNIX -DOPTIMIZED_CPU_RUN ${CPU_VECTORIZATION_DEFINE} ${FLOAT16
 
 # define directory for compiled objects and object files to generate during compilation
 OBJ_DIR = obj
-OBJECTS = ${OBJ_DIR}/EvaluateAcrossRuns.o ${OBJ_DIR}/InputSignature.o ${OBJ_DIR}/RunResultsSpeedups.o \
-${OBJ_DIR}/EvalBenchmarkResults.o ${OBJ_DIR}/EvaluateImpResults.o ${OBJ_DIR}/RunImpMultTypesAccels.o \
+OBJECTS = ${OBJ_DIR}/EvalAcrossRuns.o ${OBJ_DIR}/InputSignature.o ${OBJ_DIR}/RunResultsSpeedups.o \
+${OBJ_DIR}/EvalBenchmarkResults.o ${OBJ_DIR}/EvalImpResults.o ${OBJ_DIR}/RunImpMultTypesAccels.o \
 ${OBJ_DIR}/RunData.o ${OBJ_DIR}/ParallelParamsBnchmrks.o ${OBJ_DIR}/ParallelParams.o \
 ${OBJ_DIR}/RunBenchmarksMultInputs.o ${OBJ_DIR}/RunImpMultInputs.o \
 ${OBJ_DIR}/DisparityMapEvaluation.o ${OBJ_DIR}/RunBpImpSingThreadCPU.o ${OBJ_DIR}/RunBenchmarksOnInput.o \

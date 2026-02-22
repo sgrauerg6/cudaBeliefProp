@@ -31,9 +31,9 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #include <utility>
 #include <memory>
 #include "RunSettingsParams/RunSettings.h"
-#include "RunEval/EvaluateImpResults.h"
+#include "RunEval/EvalImpResults.h"
 #include "RunEval/RunEvalConstsEnums.h"
-#include "RunEval/EvaluateImpAliases.h"
+#include "RunEval/EvalImpAliases.h"
 
 /**
  * @brief Base class for running and evaluating multiple runs of an
@@ -56,7 +56,7 @@ public:
   std::pair<MultRunData, std::vector<RunSpeedupAvgMedian>> operator()(
     const run_environment::RunImpSettings& run_imp_settings,
     size_t data_type_size,
-    std::unique_ptr<EvaluateImpResults>& evalResults) const;
+    std::unique_ptr<EvalImpResults>& evalResults) const;
 
   /**
    * @brief Return acceleration setting for implementation

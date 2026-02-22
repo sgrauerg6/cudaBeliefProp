@@ -31,7 +31,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 std::pair<MultRunData, std::vector<RunSpeedupAvgMedian>> RunImpMultInputs::operator()(
   const run_environment::RunImpSettings& run_imp_settings,
   size_t data_type_size,
-  std::unique_ptr<EvaluateImpResults>& evalResults) const
+  std::unique_ptr<EvalImpResults>& evalResults) const
 {
   //run belief propagation implementation on multiple datasets and
   //return run data for all runs

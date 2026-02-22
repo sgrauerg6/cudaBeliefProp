@@ -17,11 +17,11 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 */
 
 /**
- * @file EvaluateImpResultsBp.cpp
+ * @file EvalImpResultsBp.cpp
  * @author Scott Grauer-Gray
  * @brief
  * 
  * @copyright Copyright (c) 2024
  */
 
-#include "EvaluateImpResultsBp.h"
+#include "EvalImpResultsBp.h"

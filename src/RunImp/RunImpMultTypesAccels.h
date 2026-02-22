@@ -35,7 +35,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #include "RunSettingsParams/RunSettings.h"
 #include "RunImp/RunImpMultInputs.h"
 #include "RunEval/RunEvalConstsEnums.h"
-#include "RunEval/EvaluateImpResults.h"
+#include "RunEval/EvalImpResults.h"
 
 /**
  * @brief Class to run and evaluate implementation(s) of an algorithm using
@@ -55,7 +55,7 @@ public:
   void operator()(
     const std::vector<std::shared_ptr<RunImpMultInputs>>& run_benchmark_imps_w_acc,
     const run_environment::RunImpSettings& run_imp_settings,
-    std::unique_ptr<EvaluateImpResults> evalResultsPtr) const;
+    std::unique_ptr<EvalImpResults> evalResultsPtr) const;
 
 private:
   /**

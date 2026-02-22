@@ -17,7 +17,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 */
 
 /**
- * @file EvaluateAcrossRuns.cpp
+ * @file EvalAcrossRuns.cpp
  * @author Scott Grauer-Gray
  * @brief Definitions of functions in class for evaluating results across
  * multiple runs, potentially on different architectures.
@@ -32,13 +32,13 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #include <iostream>
 #include <algorithm>
 #include "RunSettingsParams/InputSignature.h"
-#include "EvaluateAcrossRuns.h"
+#include "EvalAcrossRuns.h"
 
 //process runtime and speedup data across multiple runs (likely on different
 //architectures) from csv files corresponding to each run and write results to
 //file where the runtimes and speedups for each run are shown in a single file
 //and where the runs are displayed left to right from fastest to slowest
-void EvaluateAcrossRuns::operator()(
+void EvalAcrossRuns::operator()(
   const std::filesystem::path& imp_results_file_path,
   const std::vector<std::string>& eval_across_runs_top_text,
   const std::vector<std::string>& eval_across_runs_in_params_show) const
@@ -98,7 +98,7 @@ void EvaluateAcrossRuns::operator()(
   * @return EvalAcrossRunsData structure with data for evaluating results
   * across runs
   */
-EvalAcrossRunsData EvaluateAcrossRuns::GenEvalAcrossRunsData(
+EvalAcrossRunsData EvalAcrossRuns::GenEvalAcrossRunsData(
   const std::map<std::string, RunResultsSpeedups>& run_results_by_name,
   const std::vector<std::string>& eval_across_runs_in_params_show) const
 {
@@ -197,7 +197,7 @@ EvalAcrossRunsData EvaluateAcrossRuns::GenEvalAcrossRunsData(
  * @param eval_data
  * @param speedup_header
  */
-std::vector<std::string> EvaluateAcrossRuns::OrderedRunNames(
+std::vector<std::string> EvalAcrossRuns::OrderedRunNames(
   const EvalAcrossRunsData& eval_data,
   const std::optional<std::string>& speedup_header) const
 {
@@ -290,7 +290,7 @@ std::vector<std::string> EvaluateAcrossRuns::OrderedRunNames(
 }
 
 //write output evaluation across runs to file
-void EvaluateAcrossRuns::WriteEvalAcrossRunsToFile(
+void EvalAcrossRuns::WriteEvalAcrossRunsToFile(
   const std::filesystem::path& imp_results_file_path,
   const std::vector<std::string>& eval_across_runs_top_text,
   const std::vector<std::string>& eval_across_runs_in_params_show,
@@ -409,7 +409,7 @@ void EvaluateAcrossRuns::WriteEvalAcrossRunsToFile(
 
 //function to get names of runs with results from implementation results
 //file path
-std::vector<std::string> EvaluateAcrossRuns::GetRunNames(
+std::vector<std::string> EvalAcrossRuns::GetRunNames(
   const std::filesystem::path& imp_results_file_path) const
 {
   //iterate through all run results files
