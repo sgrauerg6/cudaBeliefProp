@@ -37,7 +37,6 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #include "RunSettingsParams/ParallelParams.h"
 #include "RunSettingsParams/RunSettings.h"
 #include "RunEval/RunData.h"
-#include "BpRunProcessing/BpConstsEnumsAliases.h"
 
 namespace benchmarks {
   //constant strings for headers and text related to parallel processing
@@ -110,6 +109,11 @@ public:
   RunData AsRunData() const override;
 
 private:
+  /** @brief Setting to determine whether or not to use same parallel
+   *  parameters for all kernels in run or to allow for different
+   *  parallel parameters for each kernel */
+  const run_environment::OptParallelParamsSetting opt_parallel_params_setting_;
+
   /** @brief Stores the current parallel parameters for benchmarks processing */
   std::array<unsigned int, 2> parallel_dims_;
   

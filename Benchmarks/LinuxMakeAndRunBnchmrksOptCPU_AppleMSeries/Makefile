@@ -28,9 +28,9 @@ COMPILE_FLAGS = -DUNIX -DOPTIMIZED_CPU_RUN -DCOMPILING_FOR_ARM ${CPU_VECTORIZATI
 # define directory for compiled objects and object files to generate during compilation
 OBJ_DIR = obj
 OBJECTS = ${OBJ_DIR}/EvalAcrossRuns.o ${OBJ_DIR}/InputSignature.o ${OBJ_DIR}/RunResultsSpeedups.o \
-${OBJ_DIR}/EvalBenchmarkResults.o ${OBJ_DIR}/EvalImpResults.o ${OBJ_DIR}/RunImpMultTypesAccels.o \
+${OBJ_DIR}/EvalImpResultsBnchmrks.o ${OBJ_DIR}/EvalImpResults.o ${OBJ_DIR}/RunImpMultTypesAccels.o \
 ${OBJ_DIR}/RunData.o ${OBJ_DIR}/ParallelParamsBnchmrks.o ${OBJ_DIR}/ParallelParams.o \
-${OBJ_DIR}/RunBenchmarksMultInputs.o ${OBJ_DIR}/RunImpMultInputs.o \
+${OBJ_DIR}/RunImpMultInputsBnchmrks.o ${OBJ_DIR}/RunImpMultInputs.o \
 ${OBJ_DIR}/DisparityMapEvaluation.o ${OBJ_DIR}/RunBpImpSingThreadCPU.o ${OBJ_DIR}/RunBenchmarksOnInput.o \
 ${OBJ_DIR}/DetailedTimings.o ${OBJ_DIR}/RunBenchmarksOptCPU.o ${OBJ_DIR}/RunBenchmarks.o
 DRIVER_BENCHMARK_CPU_OBJECT = ${OBJ_DIR}/DriverBenchmarksCPU.o

@@ -28,6 +28,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #define RUN_BNCHMRKS_OPT_CPU_H
 
 #include "benchmarksRunProcessing/RunBnchmrks.h"
+#include "ProcessBnchmrksOptCPU.h"
 
 template<RunData_t T, run_environment::AccSetting ACCELERATION>
 class RunBnchmrksOptCPU : public RunBnchmrks<T, ACCELERATION> {
@@ -41,7 +42,7 @@ public:
 };
 
 template<RunData_t T, run_environment::AccSetting ACCELERATION>
-inline std::optional<benchmarks::BnchmrksRunOutput> RunBpImpOptCPU<T, DISP_VALS, ACCELERATION>::operator()(
+inline std::optional<benchmarks::BnchmrksRunOutput> RunBnchmrksOptCPU<T, ACCELERATION>::operator()(
   unsigned int size,
   const ParallelParams& parallel_params) const
 {
