@@ -111,6 +111,10 @@ std::optional<benchmarks::BnchmrksRunOutput> RunBnchmrks<T, ACCELERATION>::Proce
   ProcessBenchmarksDevice<T, ACCELERATION>* proc_bnchmrks_device,
   const MemoryManagement<T>* mem_management) const
 {
+  //initialize run data to include timing data and possibly
+  //other info
+  RunData run_data;
+
   //allocate data for benchmark processing on target device
   T* mat_0_device{nullptr};
   T* mat_1_device{nullptr};
@@ -118,9 +122,13 @@ std::optional<benchmarks::BnchmrksRunOutput> RunBnchmrks<T, ACCELERATION>::Proce
 
   //allocate memory on device for benchmark processing
   const std::size_t num_data_mat = size * size;
+  
+  auto start_time = std::chrono::system_clock::now();
   mat_0 = mem_management->AllocateAlignedMemoryOnDevice(num_data_mat, ACCELERATION);
   mat_1 = mem_management->AllocateAlignedMemoryOnDevice(num_data_mat, ACCELERATION);
   mat_2 = mem_management->AllocateAlignedMemoryOnDevice(num_data_mat, ACCELERATION);
+  auto end_time = std::chrono::system_clock::now();
+  auto timeAllocate = end_time - start_time;
 
   //generate vector of random values of type T for mat_0_host and mat_1_host
   std::vector<T> mat_0_host(num_data_mat);
@@ -129,6 +137,7 @@ std::optional<benchmarks::BnchmrksRunOutput> RunBnchmrks<T, ACCELERATION>::Proce
   //allocate space on host for output matrix
   T* out_mat_host = new T[num_data_mat];
   
+  start_time = std::chrono::system_clock::now();
   //Initialize a random number engine with a seed
   //Using steady_clock provides a non-deterministic seed
   unsigned seed = std::chrono::steady_clock::now().time_since_epoch().count();
@@ -142,8 +151,11 @@ std::optional<benchmarks::BnchmrksRunOutput> RunBnchmrks<T, ACCELERATION>::Proce
   auto generator = [&]() { return dist(mersenne_engine); };
   std::generate(mat_0_host.begin(), mat_0_host.end(), generator);
   std::generate(mat_1_host.begin(), mat_1_host.end(), generator);
+  end_time = std::chrono::system_clock::now();
+  auto timeRandGenInMat = end_time - start_time;
 
   //transfer matrices from host to device
+  auto start_time_run_w_transfer = std::chrono::system_clock::now();
   mem_management->TransferDataFromHostToDevice(
     mat_0_device,
     mat_0_host.data(),
@@ -155,6 +167,7 @@ std::optional<benchmarks::BnchmrksRunOutput> RunBnchmrks<T, ACCELERATION>::Proce
 
   //run benchmark on device and retrieve output that includes
   //runtimes and other info about run
+  auto start_time_run_no_transfer = std::chrono::system_clock::now();
   const auto process_bnchmrks_output = (*proc_bnchmrks_device)(
     size,
     std::make_unique<ProcessBnchmrksOptCPU<T, ACCELERATION>>(parallel_params),
@@ -162,12 +175,16 @@ std::optional<benchmarks::BnchmrksRunOutput> RunBnchmrks<T, ACCELERATION>::Proce
   if (!process_bnchmrks_output) {
     return {};
   }
+  auto end_time_run_no_transfer = std::chrono::system_clock::now();
+  auto runtimeNoTransfer = end_time_run_no_transfer - start_time_run_no_transfer;
 
   //transfer output data from device to host
   mem_management->TransferDataFromDeviceToHost(
     out_mat_host,
     mat_2_device,
     num_data_mat);
+  auto end_time_run_w_transfer = std::chrono::system_clock::now();
+  auto runtimeWTransfer = end_time_run_w_transfer - start_time_run_w_transfer;
 
   //free aligned memory on device
   mem_management->FreeAlignedMemoryOnDevice(mat_0);
@@ -178,6 +195,18 @@ std::optional<benchmarks::BnchmrksRunOutput> RunBnchmrks<T, ACCELERATION>::Proce
   for (size_t i=0; i < num_data_mat; i++) {
     std::cout << out_mat_host[i] << " ";
   }
+
+  //add runtime data to data to return with corresponding headers
+  run_data.AddDataWHeader("Time to allocate data in device", timeAllocate.count());
+  run_data.AddDataWHeader("Time to generate random matrices", timeRandGenInMat.count());
+  run_data.AddDataWHeader("Total time (no transfer)", runtimeNoTransfer.count());
+  run_data.AddDataWHeader("Total time (including transfer)", runtimeWTransfer.count());
+
+  BnchmrksRunOutput process_bnchmrks_output;
+  //runtime without transfer time is stored as output runtime
+  //with more detailed breakdowns in the run data
+  process_bnchmrks_output.run_time = runtimeNoTransfer;
+  process_bnchmrks_output.run_data = run_data;
 
   //free output matrix on host
   delete [] out_mat_host;

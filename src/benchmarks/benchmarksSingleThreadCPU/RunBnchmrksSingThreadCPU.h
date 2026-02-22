@@ -57,11 +57,12 @@ inline std::optional<benchmarks::BnchmrksRunOutput> RunBnchmrksSingThreadCPU<T, 
     std::make_unique<ProcessBnchmrks<T, ACCELERATION>>(parallel_params),
     std::make_unique<MemoryManagement<T>>());
   if (process_set_output) {
-      auto timeEnd = std::chrono::system_clock::now();
-      runtime = timeEnd-timeStart;
-      run_data.AddDataWHeader(std::string(run_eval::kSingleThreadRuntimeHeader), runtime.count());
-      run_data.AppendData(std::move(process_set_output->run_data));
-      process_set_output->run_data = std::move(run_data);
+    //clear all returned run data and add only the runtime since that is all that
+    //is used in the single threaded implementation
+    process_set_output->run_data.ClearData();
+    process_set_output->run_data.AddDataWHeader(std::string(run_eval::kSingleThreadRuntimeHeader), runtime.count());
+    run_data.AppendData(std::move(process_set_output->run_data));
+    process_set_output->run_data = std::move(run_data);
   }
 
   return process_set_output;
