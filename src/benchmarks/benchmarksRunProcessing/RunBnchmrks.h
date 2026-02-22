@@ -83,7 +83,6 @@ class RunBnchmrks {
    */
   virtual std::optional<benchmarks::BnchmrksRunOutput> operator()(
     unsigned int size,
-    const MemoryManagement<T>* mem_management, 
     const ParallelParams& parallel_params) const = 0;
 
 protected:
@@ -154,8 +153,15 @@ std::optional<benchmarks::BnchmrksRunOutput> RunBnchmrks<T, ACCELERATION>::Proce
     mat_1_host.data(),
     num_data_mat);
 
-  //run benchmark on device
-  proc_bnchmrks_device()
+  //run benchmark on device and retrieve output that includes
+  //runtimes and other info about run
+  const auto process_bnchmrks_output = (*proc_bnchmrks_device)(
+    size,
+    std::make_unique<ProcessBnchmrksOptCPU<T, ACCELERATION>>(parallel_params),
+    std::make_unique<MemoryManagement<T>>());
+  if (!process_bnchmrks_output) {
+    return {};
+  }
 
   //transfer output data from device to host
   mem_management->TransferDataFromDeviceToHost(
@@ -175,6 +181,9 @@ std::optional<benchmarks::BnchmrksRunOutput> RunBnchmrks<T, ACCELERATION>::Proce
 
   //free output matrix on host
   delete [] out_mat_host;
+
+  //return output runtime and other info
+  return process_bnchmrks_output;
 }
 
 #endif //RUN_BNCHMRKS_H

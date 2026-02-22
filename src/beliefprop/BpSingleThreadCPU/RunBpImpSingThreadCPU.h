@@ -63,9 +63,9 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  * @brief Child class of RunBpImp to run single-threaded CPU implementation of belief propagation on a
  * given stereo set as defined by reference and test image file paths
  * 
- * @tparam T 
- * @tparam DISP_VALS 
- * @tparam ACCELERATION 
+ * @tparam T
+ * @tparam DISP_VALS
+ * @tparam ACCELERATION
  */
 template<typename T, unsigned int DISP_VALS, run_environment::AccSetting ACCELERATION>
 class RunBpImpSingThreadCPU  : public RunBpImp<T, DISP_VALS, ACCELERATION>

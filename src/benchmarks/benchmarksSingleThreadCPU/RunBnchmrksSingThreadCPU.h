@@ -27,8 +27,44 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #ifndef RUN_BNCHMRKS_SING_THREAD_CPU_H_
 #define RUN_BNCHMRKS_SING_THREAD_CPU_H_
 
-class RunBnchmrksSingThreadCPU {
+#include "../benchmarksRunProcessing/RunBnchmrks.h"
 
+/**
+ * @brief Child class of RunBpImp to run single-threaded CPU implementation of benchmarks on a
+ * given stereo set as defined by reference and test image file paths
+ * 
+ * @tparam T
+ * @tparam ACCELERATION
+ */
+template<typename T, run_environment::AccSetting ACCELERATION>
+class RunBnchmrksSingThreadCPU : public RunBnchmrks<T, ACCELERATION> {
+public:
+  std::optional<beliefprop::BpRunOutput> operator()(
+    unsigned int size,
+    const ParallelParams& parallel_params) const override;
+  std::string RunDescription() const override { return "Single-Thread CPU"; }
 };
+
+template<RunData_t T, run_environment::AccSetting ACCELERATION>
+inline std::optional<benchmarks::BnchmrksRunOutput> RunBnchmrksSingThreadCPU<T, ACCELERATION>::operator()(
+  unsigned int size,
+  const ParallelParams& parallel_params) const
+{
+  //generate struct with pointers to objects for running optimized CPU implementation and call
+  //function to run optimized CPU implementation
+  const auto process_set_output = this->ProcessBenchmarks(
+    size,
+    std::make_unique<ProcessBnchmrks<T, ACCELERATION>>(parallel_params),
+    std::make_unique<MemoryManagement<T>>());
+  if (process_set_output) {
+      auto timeEnd = std::chrono::system_clock::now();
+      runtime = timeEnd-timeStart;
+      run_data.AddDataWHeader(std::string(run_eval::kSingleThreadRuntimeHeader), runtime.count());
+      run_data.AppendData(std::move(process_set_output->run_data));
+      process_set_output->run_data = std::move(run_data);
+  }
+
+  return process_set_output;
+}
 
 #endif //RUN_BNCHMRKS_SING_THREAD_CPU_H_

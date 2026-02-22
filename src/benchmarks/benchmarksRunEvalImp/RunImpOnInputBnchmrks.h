@@ -282,102 +282,23 @@ std::optional<RunData> RunImpOnInputBnchmrks<T, OPT_IMP_ACCEL, NUM_INPUT>::RunIm
     std::string(run_eval::kOptimizedRuntimeHeader),
     run_output[OPT_IMP_ACCEL]->run_time.count());
 
-  //save resulting disparity map
-  /*run_output[OPT_IMP_ACCEL]->out_disparity_map.SaveDisparityMap(
-    output_disp[0].string(),
-    beliefprop::kStereoSetsToProcess[NUM_INPUT].scale_factor);*/
-
   //check if only running optimized implementation or if also running
   //single-threaded implementation
   if (!run_opt_imp_only) {
-    //check if running single threaded implementation or using stored results
-    //from previous run
-    /*if ((!(bp_single_thread::kRunSingleThreadOnceForSet)) ||
-        (!(bp_single_thread::single_thread_run_output.contains(ref_test_image_path))))*/
-    {
-      //run single-threaded implementation and retrieve structure with runtime
-      //and output disparity map
-      run_output[run_environment::AccSetting::kNone] =
-        run_bp_stereo_single_thread_->operator()(
-          {ref_test_image_path[0].string(), ref_test_image_path[1].string()},
-          alg_settings_,
-          *parallel_params);
-      if (!(run_output[run_environment::AccSetting::kNone])) {
-        return {};
-      }
-
-      //save resulting disparity map
-      /*run_output[run_environment::AccSetting::kNone]->out_disparity_map.SaveDisparityMap(
-        output_disp[1].string(),
-        beliefprop::kStereoSetsToProcess[NUM_INPUT].scale_factor);*/
-
-      //save run data and result if setting to only run single thread
-      //implementation once for each set
-      /*if (bp_single_thread::kRunSingleThreadOnceForSet) {
-        bp_single_thread::single_thread_run_output.insert(
-          {ref_test_image_path,
-           {run_output[run_environment::AccSetting::kNone]->run_time,
-            run_output[run_environment::AccSetting::kNone]->run_data,
-            output_disp[1]}});
-      }*/
+    //run single-threaded implementation and retrieve structure with runtime
+    //and output disparity map
+    run_output[run_environment::AccSetting::kNone] =
+      run_bp_stereo_single_thread_->operator()(
+        {ref_test_image_path[0].string(), ref_test_image_path[1].string()},
+        alg_settings_,
+        *parallel_params);
+    if (!(run_output[run_environment::AccSetting::kNone])) {
+      return {};
     }
-    /*else {
-      run_output[run_environment::AccSetting::kNone] = beliefprop::BpRunOutput();
-      //retrieve stored results from previous run on single threaded implementation
-      run_output[run_environment::AccSetting::kNone]->run_time =
-        std::get<0>(bp_single_thread::single_thread_run_output.at(ref_test_image_path));
-      run_output[run_environment::AccSetting::kNone]->run_data =
-        std::get<1>(bp_single_thread::single_thread_run_output.at(ref_test_image_path));
-      run_output[run_environment::AccSetting::kNone]->out_disparity_map = 
-        DisparityMap<float>(
-          std::get<2>(bp_single_thread::single_thread_run_output.at(ref_test_image_path)).string(),
-          beliefprop::kStereoSetsToProcess[NUM_INPUT].scale_factor);
-    }*/
     //append run data for single thread run to evaluation run data
     run_data.AppendData(
       run_output[run_environment::AccSetting::kNone]->run_data);
   }
-
-  //write location of output disparity maps for each implementation to std::cout
-  /*for (unsigned int i = 0; i < num_imps_run; i++) {
-    const std::string run_description{(i == 0) ?
-      opt_imp_run_description :
-      run_bp_stereo_single_thread_->RunDescription()};
-    std::cout << "Output disparity map from " << run_description 
-              << " run at " << output_disp[i] << std::endl;
-  }
-  std::cout << std::endl;*/
-
-  //compare resulting disparity maps with ground truth and to each other
-  /*const filepathtype ground_truth_disp{
-    bp_file_settings.GroundTruthDisparityFilePath()};
-  const DisparityMap<float> ground_truth_disparity_map(
-    ground_truth_disp.string(),
-    beliefprop::kStereoSetsToProcess[NUM_INPUT].scale_factor);
-  run_data.AddDataWHeader(
-    opt_imp_run_description + " output vs. Ground Truth result",
-    std::string());
-  run_data.AppendData(
-    run_output[OPT_IMP_ACCEL]->out_disparity_map.OutputComparison(
-      ground_truth_disparity_map,
-      beliefprop::DisparityMapEvaluationParams()).AsRunData());
-  if (!run_opt_imp_only) {
-    run_data.AddDataWHeader(
-      run_bp_stereo_single_thread_->RunDescription() + " output vs. Ground Truth result",
-      std::string());
-    run_data.AppendData(
-      run_output[run_environment::AccSetting::kNone]->out_disparity_map.OutputComparison(
-        ground_truth_disparity_map,
-        beliefprop::DisparityMapEvaluationParams()).AsRunData());
-    run_data.AddDataWHeader(
-      opt_imp_run_description + " output vs. " + 
-        run_bp_stereo_single_thread_->RunDescription() + " result",
-      std::string());
-    run_data.AppendData(
-      run_output[OPT_IMP_ACCEL]->out_disparity_map.OutputComparison(
-        run_output[run_environment::AccSetting::kNone]->out_disparity_map,
-        beliefprop::DisparityMapEvaluationParams()).AsRunData());
-  }*/
 
   //return structure indicating that run succeeded along with data from run
   return run_data;

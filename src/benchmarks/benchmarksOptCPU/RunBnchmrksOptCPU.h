@@ -32,7 +32,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 template<RunData_t T, run_environment::AccSetting ACCELERATION>
 class RunBnchmrksOptCPU : public RunBnchmrks<T, ACCELERATION> {
 public:
-  std::string BnchmarksRunDescription() const override { return std::string(run_cpu::kBpOptCPUDesc); }
+  std::string RunDescription() const override { return std::string(run_cpu::kBpOptCPUDesc); }
 
   //run the benchmark(s) using the optimized CPU implementation
   std::optional<benchmarks::BnchmrksRunOutput> operator()(
@@ -64,16 +64,17 @@ inline std::optional<benchmarks::BnchmrksRunOutput> RunBpImpOptCPU<T, DISP_VALS,
 
   //generate struct with pointers to objects for running optimized CPU implementation and call
   //function to run optimized CPU implementation
-  const auto process_set_output = this->ProcessBenchmarks(
+  const auto process_bnchmrks_output = this->ProcessBenchmarks(
     size,
-    std::make_unique<ProcessBnchmrks<T, ACCELERATION>>(parallel_params),
+    std::make_unique<ProcessBnchmrksOptCPU<T, ACCELERATION>>(parallel_params),
     std::make_unique<MemoryManagement<T>>());
-  if (process_set_output) {
-    run_data.AppendData(std::move(process_set_output->run_data));
-    process_set_output->run_data = std::move(run_data);
+  if (!process_bnchmrks_output) {
+    return {};
   }
+  run_data.AppendData(std::move(process_bnchmrks_output->run_data));
+  process_bnchmrks_output->run_data = std::move(run_data);
 
-  return process_set_output;
+  return process_bnchmrks_output;
 }
 
 };
