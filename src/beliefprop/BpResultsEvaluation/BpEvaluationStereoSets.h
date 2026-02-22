@@ -69,8 +69,9 @@ namespace beliefprop
     const unsigned int scale_factor;
   };
 
-  /** @brief Declare stereo sets to process with name, num disparity values, and scale factor
-   *  currently conesFullSize is not used
+  /** 
+   * @brief Declare stereo sets to process with name, num disparity values, and scale factor
+   * currently conesFullSize is not used
    * 
    * Index for each stereo set must match corresponding enum value in Stereo_Set enum
    * 
@@ -90,9 +91,11 @@ namespace beliefprop
     BpStereoSet{"conesFullSize", 256, 1}
   };
 
-  /** @brief Define subsets for evaluating run results on specified inputs<br>
-   *  The first three stereo sets are labeled as "smallest 3 stereo sets"<br>
-   *  The last three stereo sets (excluding "conesFullSized") are labeled as "largest 3 stereo sets"*/
+  /** 
+   * @brief Define subsets for evaluating run results on specified inputs<br>
+   * The first three stereo sets are labeled as "smallest 3 stereo sets"<br>
+   * The last three stereo sets (excluding "conesFullSized") are labeled as "largest 3 stereo sets"
+   */
   const std::vector<std::pair<std::string, std::vector<InputSignature>>> kEvalDataSubsets{
     {"smallest 3 stereo sets", 
       {InputSignature({}, static_cast<size_t>(Stereo_Set::kTsukubaSetHalfSize), {}),
