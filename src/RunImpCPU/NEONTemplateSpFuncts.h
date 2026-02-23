@@ -25,8 +25,8 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  * @copyright Copyright (c) 2024
  */
 
-#ifndef NEONTEMPLATESPFUNCTS_H_
-#define NEONTEMPLATESPFUNCTS_H_
+#ifndef NEON_TEMPLATE_SP_FUNCTS_H_
+#define NEON_TEMPLATE_SP_FUNCTS_H_
 
 //NEON only used when processing on an ARM CPU that supports NEON instructions
 #include <arm_neon.h>
@@ -189,4 +189,4 @@ template<> inline void simd_processing::StorePackedDataUnaligned<double, float64
   vst1q_f64(&locationDataStore[indexDataStore], dataToStore);
 }
 
-#endif /* NEONTEMPLATESPFUNCTS_H_ */
+#endif /* NEON_TEMPLATE_SP_FUNCTS_H_ */

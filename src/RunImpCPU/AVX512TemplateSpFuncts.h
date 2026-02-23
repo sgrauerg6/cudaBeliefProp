@@ -24,8 +24,8 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  * @copyright Copyright (c) 2024
  */
 
-#ifndef AVX512TEMPLATESPFUNCTS_H_
-#define AVX512TEMPLATESPFUNCTS_H_
+#ifndef AVX512_TEMPLATE_SP_FUNCTS_H_
+#define AVX512_TEMPLATE_SP_FUNCTS_H_
 #ifdef _WIN32
 #include <intrin.h>
 #else
@@ -289,4 +289,4 @@ template<> inline void simd_processing::StorePackedDataUnaligned<_Float16, __m51
 
 #endif //FLOAT16_VECTORIZATION
 
-#endif /* AVX512TEMPLATESPFUNCTS_H_ */
+#endif /* AVX512_TEMPLATE_SP_FUNCTS_H_ */

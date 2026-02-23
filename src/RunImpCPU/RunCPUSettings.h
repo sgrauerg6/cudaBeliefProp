@@ -24,8 +24,8 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  * @copyright Copyright (c) 2024
  */
 
-#ifndef RUNCPUSETTINGS_H_
-#define RUNCPUSETTINGS_H_
+#ifndef RUN_CPU_SETTINGS_H_
+#define RUN_CPU_SETTINGS_H_
 
 #include <vector>
 #include <array>
@@ -123,4 +123,4 @@ const std::set<std::array<unsigned int, 2>> kParallelParameterAltOptions{
 
 };
 
-#endif /* RUNCPUSETTINGS_H_ */
+#endif /* RUN_CPU_SETTINGS_H_ */

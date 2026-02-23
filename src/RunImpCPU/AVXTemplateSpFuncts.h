@@ -24,8 +24,8 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  * @copyright Copyright (c) 2024
  */
 
-#ifndef AVXTEMPLATESPFUNCTS_H_
-#define AVXTEMPLATESPFUNCTS_H_
+#ifndef AVX_TEMPLATE_SP_FUNCTS_H_
+#define AVX_TEMPLATE_SP_FUNCTS_H_
 
 //this is only processed when on x86
 #ifdef _WIN32
@@ -76,4 +76,4 @@ short util_functs::ConvertValToDifferentDataTypeIfNeeded<float, short>(float dat
 #endif
 }
 
-#endif //AVXTEMPLATESPFUNCTS_H_
+#endif //AVX_TEMPLATE_SP_FUNCTS_H_
