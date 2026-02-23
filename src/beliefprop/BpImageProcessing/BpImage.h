@@ -55,7 +55,7 @@ template <class T>
 requires std::is_arithmetic_v<T>
 class BpImage {
 public:
-  BpImage() : width_height_{0, 0} {}
+  explicit BpImage() : width_height_{0, 0} {}
 
   explicit BpImage(const std::array<unsigned int, 2>& width_height) : 
     width_height_{width_height},
