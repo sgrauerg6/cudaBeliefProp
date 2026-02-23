@@ -61,9 +61,7 @@ namespace simd_processing
    * @return SIMD structure with data loaded
    */
   template<RunData_t T, RunDataVect_t U>
-  U LoadPackedDataAligned(unsigned int x, unsigned int y, unsigned int current_disparity,
-    const beliefprop::BpLevelProperties& current_bp_level, unsigned int numDispVals,
-    const T* inData)
+  U LoadPackedDataAligned(size_t indexDataLoad, const T* inData)
   {
     std::cout << "Data type not supported for loading aligned data" << std::endl;
   }
@@ -84,9 +82,7 @@ namespace simd_processing
    * @return SIMD structure with data loaded
    */
   template<RunData_t T, RunDataVect_t U>
-  U LoadPackedDataUnaligned(unsigned int x, unsigned int y, unsigned int current_disparity,
-    const beliefprop::BpLevelProperties& current_bp_level, unsigned int numDispVals,
-    const T* inData)
+  U LoadPackedDataUnaligned(size_t indexDataLoad, const T* inData)
   {
     std::cout << "Data type not supported for loading unaligned data" << std::endl;
   }

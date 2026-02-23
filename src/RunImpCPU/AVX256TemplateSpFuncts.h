@@ -36,91 +36,57 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #include "RunImpCPU/RunCPUSettings.h"
 
 template<> inline __m256d simd_processing::LoadPackedDataAligned<double, __m256d>(
-  unsigned int x, unsigned int y, unsigned int current_disparity,
-  const beliefprop::BpLevelProperties& current_bp_level,
-  unsigned int numDispVals, const double* inData)
+  size_t indexDataLoad, const double* inData)
 {
-  return _mm256_load_pd(&inData[beliefprop::RetrieveIndexInDataAndMessage(
-    x, y, current_bp_level.padded_width_checkerboard_level_,
-    current_bp_level.height_level_, current_disparity, numDispVals)]);
+  return _mm256_load_pd(&inData[indexDataLoad]);
 }
 
 template<> inline __m256 simd_processing::LoadPackedDataAligned<float, __m256>(
-  unsigned int x, unsigned int y, unsigned int current_disparity,
-  const beliefprop::BpLevelProperties& current_bp_level,
-  unsigned int numDispVals, const float* inData)
+  size_t indexDataLoad, const float* inData)
 {
-  return _mm256_load_ps(&inData[beliefprop::RetrieveIndexInDataAndMessage(
-    x, y, current_bp_level.padded_width_checkerboard_level_,
-    current_bp_level.height_level_, current_disparity, numDispVals)]);
+  return _mm256_load_ps(&inData[indexDataLoad]);
 }
 
 template<> inline __m128i simd_processing::LoadPackedDataAligned<short, __m128i>(
-  unsigned int x, unsigned int y, unsigned int current_disparity,
-  const beliefprop::BpLevelProperties& current_bp_level,
-  unsigned int numDispVals, const short* inData)
+  size_t indexDataLoad, const short* inData)
 {
-  return _mm_load_si128((__m128i *)(&inData[beliefprop::RetrieveIndexInDataAndMessage(
-    x, y, current_bp_level.padded_width_checkerboard_level_,
-    current_bp_level.height_level_, current_disparity,
-    numDispVals)]));
+  return _mm_load_si128((__m128i *)(&inData[indexDataLoad]));
 }
 
 #if defined(FLOAT16_VECTORIZATION)
 
 template<> inline __m256h simd_processing::LoadPackedDataAligned<_Float16, __m256h>(
-  unsigned int x, unsigned int y, unsigned int current_disparity,
-  const beliefprop::BpLevelProperties& current_bp_level,
-  unsigned int numDispVals, const _Float16* inData)
+  size_t indexDataLoad, const _Float16* inData)
 {
-  return _mm256_load_ph((__m256h *)(&inData[beliefprop::RetrieveIndexInDataAndMessage(
-    x, y, current_bp_level.padded_width_checkerboard_level_,
-    current_bp_level.height_level_, current_disparity,
-    numDispVals)]));
+  return _mm256_load_ph((__m256h *)(&inData[indexDataLoad]));
 }
 
 #endif //FLOAT16_VECTORIZATION
 
 template<> inline __m256 simd_processing::LoadPackedDataUnaligned<float, __m256>(
-  unsigned int x, unsigned int y, unsigned int current_disparity,
-  const beliefprop::BpLevelProperties& current_bp_level,
-  unsigned int numDispVals, const float* inData)
+  size_t indexDataLoad, const float* inData)
 {
-  return _mm256_loadu_ps(&inData[beliefprop::RetrieveIndexInDataAndMessage(
-    x, y, current_bp_level.padded_width_checkerboard_level_,
-    current_bp_level.height_level_, current_disparity, numDispVals)]);
+  return _mm256_loadu_ps(&inData[indexDataLoad]);
 }
 
 template<> inline __m128i simd_processing::LoadPackedDataUnaligned<short, __m128i>(
-  unsigned int x, unsigned int y, unsigned int current_disparity,
-  const beliefprop::BpLevelProperties& current_bp_level,
-  unsigned int numDispVals, const short* inData)
+  size_t indexDataLoad, const short* inData)
 {
-  return _mm_loadu_si128((__m128i*)(&inData[beliefprop::RetrieveIndexInDataAndMessage(
-    x, y, current_bp_level.padded_width_checkerboard_level_,
-    current_bp_level.height_level_, current_disparity, numDispVals)]));
+  return _mm_loadu_si128((__m128i*)(&inData[indexDataLoad]));
 }
 
 template<> inline __m256d simd_processing::LoadPackedDataUnaligned<double, __m256d>(
-  unsigned int x, unsigned int y, unsigned int current_disparity,
-  const beliefprop::BpLevelProperties& current_bp_level,
-  unsigned int numDispVals, const double* inData)
+  size_t indexDataLoad, const double* inData)
 {
-  return _mm256_loadu_pd(&inData[beliefprop::RetrieveIndexInDataAndMessage(
-    x, y, current_bp_level.padded_width_checkerboard_level_,
-    current_bp_level.height_level_, current_disparity, numDispVals)]);
+  return _mm256_loadu_pd(&inData[indexDataLoad]);
 }
 
 #if defined(FLOAT16_VECTORIZATION)
 
 template<> inline __m256h simd_processing::LoadPackedDataUnaligned<_Float16, __m256h>(
-  unsigned int x, unsigned int y, unsigned int current_disparity,
-  const beliefprop::BpLevelProperties& current_bp_level,
-  unsigned int numDispVals, const _Float16* inData)
+  size_t indexDataLoad, const _Float16* inData)
 {
-  return _mm256_loadu_ph((__m256h *)&inData[beliefprop::RetrieveIndexInDataAndMessage(
-    x, y, current_bp_level.padded_width_checkerboard_level_,
-    current_bp_level.height_level_, current_disparity, numDispVals)]);
+  return _mm256_loadu_ph((__m256h *)&inData[indexDataLoad]);
 }
 
 #endif //FLOAT16_VECTORIZATION

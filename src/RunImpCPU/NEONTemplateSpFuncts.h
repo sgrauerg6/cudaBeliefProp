@@ -32,64 +32,39 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #include <arm_neon.h>
 
 template<> inline float64x2_t simd_processing::LoadPackedDataAligned<double, float64x2_t>(
-  unsigned int x, unsigned int y, unsigned int current_disparity,
-  const beliefprop::BpLevelProperties& current_bp_level,
-  unsigned int numDispVals, const double* inData)
+  size_t indexDataLoad, const double* inData)
 {
-  return vld1q_f64(&inData[beliefprop::RetrieveIndexInDataAndMessage(
-    x, y, current_bp_level.padded_width_checkerboard_level_,
-    current_bp_level.height_level_, current_disparity, numDispVals)]);
+  return vld1q_f64(&inData[indexDataLoad]);
 }
 
 template<> inline float32x4_t simd_processing::LoadPackedDataAligned<float, float32x4_t>(
-  unsigned int x, unsigned int y, unsigned int current_disparity,
-  const beliefprop::BpLevelProperties& current_bp_level,
-  unsigned int numDispVals, const float* inData)
+  size_t indexDataLoad, const float* inData)
 {
-  return vld1q_f32(&inData[beliefprop::RetrieveIndexInDataAndMessage(
-    x, y, current_bp_level.padded_width_checkerboard_level_,
-    current_bp_level.height_level_, current_disparity, numDispVals)]);
+  return vld1q_f32(&inData[indexDataLoad]);
 }
 
 template<> inline float16x4_t simd_processing::LoadPackedDataAligned<float16_t, float16x4_t>(
-  unsigned int x, unsigned int y, unsigned int current_disparity,
-  const beliefprop::BpLevelProperties& current_bp_level,
-  unsigned int numDispVals, const float16_t* inData)
+  size_t indexDataLoad, const float16_t* inData)
 {
-  return vld1_f16(&inData[beliefprop::RetrieveIndexInDataAndMessage(
-    x, y, current_bp_level.padded_width_checkerboard_level_,
-    current_bp_level.height_level_, current_disparity,
-    numDispVals)]);
+  return vld1_f16(&inData[indexDataLoad]);
 }
 
 template<> inline float32x4_t simd_processing::LoadPackedDataUnaligned<float, float32x4_t>(
-  unsigned int x, unsigned int y, unsigned int current_disparity,
-  const beliefprop::BpLevelProperties& current_bp_level,
-  unsigned int numDispVals, const float* inData)
+  size_t indexDataLoad, const float* inData)
 {
-  return vld1q_f32(&inData[beliefprop::RetrieveIndexInDataAndMessage(
-    x, y, current_bp_level.padded_width_checkerboard_level_,
-    current_bp_level.height_level_, current_disparity, numDispVals)]);
+  return vld1q_f32(&inData[indexDataLoad]);
 }
 
 template<> inline float16x4_t simd_processing::LoadPackedDataUnaligned<float16_t, float16x4_t>(
-  unsigned int x, unsigned int y, unsigned int current_disparity,
-  const beliefprop::BpLevelProperties& current_bp_level,
-  unsigned int numDispVals, const float16_t* inData)
+  size_t indexDataLoad, const float16_t* inData)
 {
-  return vld1_f16(&inData[beliefprop::RetrieveIndexInDataAndMessage(
-    x, y, current_bp_level.padded_width_checkerboard_level_,
-    current_bp_level.height_level_, current_disparity, numDispVals)]);
+  return vld1_f16(&inData[indexDataLoad]);
 }
 
 template<> inline float64x2_t simd_processing::LoadPackedDataUnaligned<double, float64x2_t>(
-  unsigned int x, unsigned int y, unsigned int current_disparity,
-  const beliefprop::BpLevelProperties& current_bp_level,
-  unsigned int numDispVals, const double* inData)
+  size_t indexDataLoad, const double* inData)
 {
-  return vld1q_f64(&inData[beliefprop::RetrieveIndexInDataAndMessage(
-    x, y, current_bp_level.padded_width_checkerboard_level_,
-    current_bp_level.height_level_, current_disparity, numDispVals)]);
+  return vld1q_f64(&inData[indexDataLoad]);
 }
 
 template<> inline float32x4_t simd_processing::createSIMDVectorSameData<float32x4_t>(float data) {

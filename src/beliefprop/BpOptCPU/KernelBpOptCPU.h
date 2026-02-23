@@ -978,33 +978,49 @@ void beliefprop_cpu::RunBPIterationUsingCheckerboardUpdatesUseSIMDVectorsProcess
             {
               //load using aligned instructions when possible
               data_message[current_disparity] = simd_processing::LoadPackedDataAligned<T, U>(
-                x_val_process, y_val, current_disparity, current_bp_level,
-                DISP_VALS, data_cost_checkerboard_0);
+                beliefprop::RetrieveIndexInDataAndMessage(
+                  x_val_process, y_val, current_bp_level.padded_width_checkerboard_level_,
+                  current_bp_level.height_level_, current_disparity, DISP_VALS),
+                  data_cost_checkerboard_0);
               prev_u_message[current_disparity] = simd_processing::LoadPackedDataAligned<T, U>(
-                x_val_process, y_val + 1, current_disparity, current_bp_level,
-                DISP_VALS, message_u_checkerboard_1);
+                beliefprop::RetrieveIndexInDataAndMessage(
+                  x_val_process, y_val + 1, current_bp_level.padded_width_checkerboard_level_,
+                  current_bp_level.height_level_, current_disparity, DISP_VALS),
+                  message_u_checkerboard_1);
               prev_d_message[current_disparity] = simd_processing::LoadPackedDataAligned<T, U>(
-                x_val_process, y_val - 1, current_disparity, current_bp_level,
-                DISP_VALS, message_d_checkerboard_1);
+                beliefprop::RetrieveIndexInDataAndMessage(
+                  x_val_process, y_val - 1, current_bp_level.padded_width_checkerboard_level_,
+                  current_bp_level.height_level_, current_disparity, DISP_VALS),
+                  message_d_checkerboard_1);
             }
             else //data not aligned
             {
               data_message[current_disparity] = simd_processing::LoadPackedDataUnaligned<T, U>(
-                x_val_process, y_val, current_disparity, current_bp_level,
-                DISP_VALS, data_cost_checkerboard_0);
+                beliefprop::RetrieveIndexInDataAndMessage(
+                  x_val_process, y_val, current_bp_level.padded_width_checkerboard_level_,
+                  current_bp_level.height_level_, current_disparity, DISP_VALS),
+                  data_cost_checkerboard_0);
               prev_u_message[current_disparity] = simd_processing::LoadPackedDataUnaligned<T, U>(
-                x_val_process, y_val + 1, current_disparity, current_bp_level,
-                DISP_VALS, message_u_checkerboard_1);
+                beliefprop::RetrieveIndexInDataAndMessage(
+                  x_val_process, y_val + 1, current_bp_level.padded_width_checkerboard_level_,
+                  current_bp_level.height_level_, current_disparity, DISP_VALS),
+                  message_u_checkerboard_1);
               prev_d_message[current_disparity] = simd_processing::LoadPackedDataUnaligned<T, U>(
-                x_val_process, y_val - 1, current_disparity, current_bp_level,
-                DISP_VALS, message_d_checkerboard_1);
+                beliefprop::RetrieveIndexInDataAndMessage(
+                  x_val_process, y_val - 1, current_bp_level.padded_width_checkerboard_level_,
+                  current_bp_level.height_level_, current_disparity, DISP_VALS),
+                  message_d_checkerboard_1);
             }
             prev_l_message[current_disparity] = simd_processing::LoadPackedDataUnaligned<T, U>(
-              x_val_process + checkerboard_adjustment, y_val, current_disparity, current_bp_level,
-              DISP_VALS, message_l_checkerboard_1);
+              beliefprop::RetrieveIndexInDataAndMessage(
+                  x_val_process + checkerboard_adjustment, y_val, current_bp_level.padded_width_checkerboard_level_,
+                  current_bp_level.height_level_, current_disparity, DISP_VALS),
+                  message_l_checkerboard_1);
             prev_r_message[current_disparity] = simd_processing::LoadPackedDataUnaligned<T, U>(
-              (x_val_process + checkerboard_adjustment) - 1, y_val, current_disparity, current_bp_level,
-              DISP_VALS, message_r_checkerboard_1);
+              beliefprop::RetrieveIndexInDataAndMessage(
+                  (x_val_process + checkerboard_adjustment) - 1, y_val, current_bp_level.padded_width_checkerboard_level_,
+                  current_bp_level.height_level_, current_disparity, DISP_VALS),
+                  message_r_checkerboard_1);
           }
         } 
         else //checkerboard_part_update == beliefprop::CheckerboardPart::kCheckerboardPart1
@@ -1013,33 +1029,49 @@ void beliefprop_cpu::RunBPIterationUsingCheckerboardUpdatesUseSIMDVectorsProcess
             if (data_aligned_x_val)
             {
               data_message[current_disparity] = simd_processing::LoadPackedDataAligned<T, U>(
-                x_val_process, y_val, current_disparity, current_bp_level,
-                DISP_VALS, data_cost_checkerboard_1);
+                beliefprop::RetrieveIndexInDataAndMessage(
+                  x_val_process, y_val, current_bp_level.padded_width_checkerboard_level_,
+                  current_bp_level.height_level_, current_disparity, DISP_VALS),
+                  data_cost_checkerboard_1);
               prev_u_message[current_disparity] = simd_processing::LoadPackedDataAligned<T, U>(
-                x_val_process, y_val + 1, current_disparity, current_bp_level,
-                DISP_VALS, message_u_checkerboard_0);
+                beliefprop::RetrieveIndexInDataAndMessage(
+                  x_val_process, y_val + 1, current_bp_level.padded_width_checkerboard_level_,
+                  current_bp_level.height_level_, current_disparity, DISP_VALS),
+                  message_u_checkerboard_0);
               prev_d_message[current_disparity] = simd_processing::LoadPackedDataAligned<T, U>(
-                x_val_process, y_val - 1, current_disparity, current_bp_level,
-                DISP_VALS, message_d_checkerboard_0);
+                beliefprop::RetrieveIndexInDataAndMessage(
+                  x_val_process, y_val - 1, current_bp_level.padded_width_checkerboard_level_,
+                  current_bp_level.height_level_, current_disparity, DISP_VALS),
+                  message_d_checkerboard_0);
             }
             else //data not aligned
             {
               data_message[current_disparity] = simd_processing::LoadPackedDataUnaligned<T, U>(
-                x_val_process, y_val, current_disparity, current_bp_level,
-                DISP_VALS, data_cost_checkerboard_1);
+                beliefprop::RetrieveIndexInDataAndMessage(
+                  x_val_process, y_val, current_bp_level.padded_width_checkerboard_level_,
+                  current_bp_level.height_level_, current_disparity, DISP_VALS),
+                  data_cost_checkerboard_1);
               prev_u_message[current_disparity] = simd_processing::LoadPackedDataUnaligned<T, U>(
-                x_val_process, y_val + 1, current_disparity, current_bp_level,
-                DISP_VALS, message_u_checkerboard_0);
+                beliefprop::RetrieveIndexInDataAndMessage(
+                  x_val_process, y_val + 1, current_bp_level.padded_width_checkerboard_level_,
+                  current_bp_level.height_level_, current_disparity, DISP_VALS),
+                  message_u_checkerboard_0);
               prev_d_message[current_disparity] = simd_processing::LoadPackedDataUnaligned<T, U>(
-                x_val_process, y_val - 1, current_disparity, current_bp_level,
-                DISP_VALS, message_d_checkerboard_0);
+                beliefprop::RetrieveIndexInDataAndMessage(
+                  x_val_process, y_val - 1, current_bp_level.padded_width_checkerboard_level_,
+                  current_bp_level.height_level_, current_disparity, DISP_VALS),
+                  message_d_checkerboard_0);
             }
             prev_l_message[current_disparity] = simd_processing::LoadPackedDataUnaligned<T, U>(
-              x_val_process + checkerboard_adjustment, y_val, current_disparity, current_bp_level,
-              DISP_VALS, message_l_checkerboard_0);
+              beliefprop::RetrieveIndexInDataAndMessage(
+                  x_val_process + checkerboard_adjustment, y_val, current_bp_level.padded_width_checkerboard_level_,
+                  current_bp_level.height_level_, current_disparity, DISP_VALS),
+                  message_l_checkerboard_0);
             prev_r_message[current_disparity] = simd_processing::LoadPackedDataUnaligned<T, U>(
-              (x_val_process + checkerboard_adjustment) - 1, y_val, current_disparity, current_bp_level,
-              DISP_VALS, message_r_checkerboard_0);
+              beliefprop::RetrieveIndexInDataAndMessage(
+                  (x_val_process + checkerboard_adjustment) - 1, y_val, current_bp_level.padded_width_checkerboard_level_,
+                  current_bp_level.height_level_, current_disparity, DISP_VALS),
+                  message_r_checkerboard_0);
           }
         }
 
@@ -1138,33 +1170,49 @@ void beliefprop_cpu::RunBPIterationUsingCheckerboardUpdatesUseSIMDVectorsProcess
             {
               //load using aligned instructions when possible
               data_message[current_disparity] = simd_processing::LoadPackedDataAligned<T, U>(
-                x_val_process, y_val, current_disparity, current_bp_level,
-                bp_settings_disp_vals, data_cost_checkerboard_0);
+                beliefprop::RetrieveIndexInDataAndMessage(
+                  x_val_process, y_val, current_bp_level.padded_width_checkerboard_level_,
+                  current_bp_level.height_level_, current_disparity, bp_settings_disp_vals),
+                  data_cost_checkerboard_0);
               prev_u_message[current_disparity] = simd_processing::LoadPackedDataAligned<T, U>(
-                x_val_process, y_val + 1, current_disparity, current_bp_level,
-                bp_settings_disp_vals, message_u_checkerboard_1);
+                beliefprop::RetrieveIndexInDataAndMessage(
+                  x_val_process, y_val + 1, current_bp_level.padded_width_checkerboard_level_,
+                  current_bp_level.height_level_, current_disparity, bp_settings_disp_vals),
+                  message_u_checkerboard_1);
               prev_d_message[current_disparity] = simd_processing::LoadPackedDataAligned<T, U>(
-                x_val_process, y_val - 1, current_disparity, current_bp_level,
-                bp_settings_disp_vals, message_d_checkerboard_1);
+                beliefprop::RetrieveIndexInDataAndMessage(
+                  x_val_process, y_val - 1, current_bp_level.padded_width_checkerboard_level_,
+                  current_bp_level.height_level_, current_disparity, bp_settings_disp_vals),
+                  message_d_checkerboard_1);
             }
             else //data not aligned
             {
               data_message[current_disparity] = simd_processing::LoadPackedDataUnaligned<T, U>(
-                x_val_process, y_val, current_disparity, current_bp_level,
-                bp_settings_disp_vals, data_cost_checkerboard_0);
+                beliefprop::RetrieveIndexInDataAndMessage(
+                  x_val_process, y_val, current_bp_level.padded_width_checkerboard_level_,
+                  current_bp_level.height_level_, current_disparity, bp_settings_disp_vals),
+                  data_cost_checkerboard_0);
               prev_u_message[current_disparity] = simd_processing::LoadPackedDataUnaligned<T, U>(
-                x_val_process, y_val + 1, current_disparity, current_bp_level,
-                bp_settings_disp_vals, message_u_checkerboard_1);
+                beliefprop::RetrieveIndexInDataAndMessage(
+                  x_val_process, y_val + 1, current_bp_level.padded_width_checkerboard_level_,
+                  current_bp_level.height_level_, current_disparity, bp_settings_disp_vals),
+                  message_u_checkerboard_1);
               prev_d_message[current_disparity] = simd_processing::LoadPackedDataUnaligned<T, U>(
-                x_val_process, y_val - 1, current_disparity, current_bp_level,
-                bp_settings_disp_vals, message_d_checkerboard_1);
+                beliefprop::RetrieveIndexInDataAndMessage(
+                  x_val_process, y_val - 1, current_bp_level.padded_width_checkerboard_level_,
+                  current_bp_level.height_level_, current_disparity, bp_settings_disp_vals),
+                  message_d_checkerboard_1);
             }
             prev_l_message[current_disparity] = simd_processing::LoadPackedDataUnaligned<T, U>(
-              x_val_process + checkerboard_adjustment, y_val, current_disparity, current_bp_level,
-              bp_settings_disp_vals, message_l_checkerboard_1);
+              beliefprop::RetrieveIndexInDataAndMessage(
+                  x_val_process + checkerboard_adjustment, y_val, current_bp_level.padded_width_checkerboard_level_,
+                  current_bp_level.height_level_, current_disparity, bp_settings_disp_vals),
+                  message_l_checkerboard_1);
             prev_r_message[current_disparity] = simd_processing::LoadPackedDataUnaligned<T, U>(
-              (x_val_process + checkerboard_adjustment) - 1, y_val, current_disparity, current_bp_level,
-              bp_settings_disp_vals, message_r_checkerboard_1);
+              beliefprop::RetrieveIndexInDataAndMessage(
+                  (x_val_process + checkerboard_adjustment) - 1, y_val, current_bp_level.padded_width_checkerboard_level_,
+                  current_bp_level.height_level_, current_disparity, bp_settings_disp_vals),
+                  message_r_checkerboard_1);
           }
         }
         else //checkerboard_part_update == beliefprop::CheckerboardPart::kCheckerboardPart1
@@ -1173,33 +1221,49 @@ void beliefprop_cpu::RunBPIterationUsingCheckerboardUpdatesUseSIMDVectorsProcess
             if (data_aligned_x_val)
             {
               data_message[current_disparity] = simd_processing::LoadPackedDataAligned<T, U>(
-                x_val_process, y_val, current_disparity, current_bp_level,
-                bp_settings_disp_vals, data_cost_checkerboard_1);
+                beliefprop::RetrieveIndexInDataAndMessage(
+                  x_val_process, y_val, current_bp_level.padded_width_checkerboard_level_,
+                  current_bp_level.height_level_, current_disparity, bp_settings_disp_vals),
+                  data_cost_checkerboard_1);
               prev_u_message[current_disparity] = simd_processing::LoadPackedDataAligned<T, U>(
-                x_val_process, y_val + 1, current_disparity, current_bp_level,
-                bp_settings_disp_vals, message_u_checkerboard_0);
+                beliefprop::RetrieveIndexInDataAndMessage(
+                  x_val_process, y_val + 1, current_bp_level.padded_width_checkerboard_level_,
+                  current_bp_level.height_level_, current_disparity, bp_settings_disp_vals),
+                  message_u_checkerboard_0);
               prev_d_message[current_disparity] = simd_processing::LoadPackedDataAligned<T, U>(
-                x_val_process, y_val - 1, current_disparity, current_bp_level,
-                bp_settings_disp_vals, message_d_checkerboard_0);
+                beliefprop::RetrieveIndexInDataAndMessage(
+                  x_val_process, y_val - 1, current_bp_level.padded_width_checkerboard_level_,
+                  current_bp_level.height_level_, current_disparity, bp_settings_disp_vals),
+                  message_d_checkerboard_0);
             }
             else //data not aligned
             {
               data_message[current_disparity] = simd_processing::LoadPackedDataUnaligned<T, U>(
-                x_val_process, y_val, current_disparity, current_bp_level,
-                bp_settings_disp_vals, data_cost_checkerboard_1);
+                beliefprop::RetrieveIndexInDataAndMessage(
+                  x_val_process, y_val, current_bp_level.padded_width_checkerboard_level_,
+                  current_bp_level.height_level_, current_disparity, bp_settings_disp_vals),
+                  data_cost_checkerboard_1);
               prev_u_message[current_disparity] = simd_processing::LoadPackedDataUnaligned<T, U>(
-                x_val_process, y_val + 1, current_disparity, current_bp_level,
-                bp_settings_disp_vals, message_u_checkerboard_0);
+                beliefprop::RetrieveIndexInDataAndMessage(
+                  x_val_process, y_val + 1, current_bp_level.padded_width_checkerboard_level_,
+                  current_bp_level.height_level_, current_disparity, bp_settings_disp_vals),
+                  message_u_checkerboard_0);
               prev_d_message[current_disparity] = simd_processing::LoadPackedDataUnaligned<T, U>(
-                x_val_process, y_val - 1, current_disparity, current_bp_level,
-                bp_settings_disp_vals, message_d_checkerboard_0);
+                beliefprop::RetrieveIndexInDataAndMessage(
+                  x_val_process, y_val - 1, current_bp_level.padded_width_checkerboard_level_,
+                  current_bp_level.height_level_, current_disparity, bp_settings_disp_vals),
+                  message_d_checkerboard_0);
             }
             prev_l_message[current_disparity] = simd_processing::LoadPackedDataUnaligned<T, U>(
-              x_val_process + checkerboard_adjustment, y_val, current_disparity, current_bp_level,
-              bp_settings_disp_vals, message_l_checkerboard_0);
+              beliefprop::RetrieveIndexInDataAndMessage(
+                  x_val_process + checkerboard_adjustment, y_val, current_bp_level.padded_width_checkerboard_level_,
+                  current_bp_level.height_level_, current_disparity, bp_settings_disp_vals),
+                  message_l_checkerboard_0);
             prev_r_message[current_disparity] = simd_processing::LoadPackedDataUnaligned<T, U>(
-              (x_val_process + checkerboard_adjustment) - 1, y_val, current_disparity, current_bp_level,
-              bp_settings_disp_vals, message_r_checkerboard_0);
+              beliefprop::RetrieveIndexInDataAndMessage(
+                  (x_val_process + checkerboard_adjustment) - 1, y_val, current_bp_level.padded_width_checkerboard_level_,
+                  current_bp_level.height_level_, current_disparity, bp_settings_disp_vals),
+                  message_r_checkerboard_0);
           }
         }
 
@@ -1628,38 +1692,72 @@ void beliefprop_cpu::RetrieveOutputDisparityUseSIMDVectors(
                 //need to add values in specified order to match results
                 //from single-thread CPU output
                 vals_at_disp = simd_processing::AddVals<U, U, W>(
-                  simd_processing::LoadPackedDataAligned<T, U>(x_val_process, y_val + 1,
-                    current_disparity, current_bp_level, DISP_VALS, message_u_checkerboard_1),
-                  simd_processing::LoadPackedDataAligned<T, U>(x_val_process, y_val - 1,
-                    current_disparity, current_bp_level, DISP_VALS, message_d_checkerboard_1));
-                //l and r message values are loaded at possible offsets so not using
+                  simd_processing::LoadPackedDataAligned<T, U>(
+                    beliefprop::RetrieveIndexInDataAndMessage(
+                      x_val_process, y_val + 1, current_bp_level.padded_width_checkerboard_level_,
+                      current_bp_level.height_level_, current_disparity, DISP_VALS),
+                    message_u_checkerboard_1),
+                  simd_processing::LoadPackedDataAligned<T, U>(
+                    beliefprop::RetrieveIndexInDataAndMessage(
+                      x_val_process, y_val - 1, current_bp_level.padded_width_checkerboard_level_,
+                      current_bp_level.height_level_, current_disparity, DISP_VALS),
+                    message_d_checkerboard_1));
+                //l and r message values are loaded at possible offsets to not using
                 //aligned load for them
                 vals_at_disp = simd_processing::AddVals<W, U, W>(vals_at_disp, 
-                  simd_processing::LoadPackedDataUnaligned<T, U>(x_val_process + checkerboard_adjustment, y_val,
-                    current_disparity, current_bp_level, DISP_VALS, message_l_checkerboard_1));
+                  simd_processing::LoadPackedDataUnaligned<T, U>(
+                    beliefprop::RetrieveIndexInDataAndMessage(
+                      x_val_process + checkerboard_adjustment, y_val,
+                      current_bp_level.padded_width_checkerboard_level_,
+                      current_bp_level.height_level_, current_disparity, DISP_VALS),
+                    message_l_checkerboard_1));
                 vals_at_disp = simd_processing::AddVals<W, U, W>(vals_at_disp, 
-                  simd_processing::LoadPackedDataUnaligned<T, U>((x_val_process + checkerboard_adjustment) - 1, y_val,
-                    current_disparity, current_bp_level, DISP_VALS, message_r_checkerboard_1));
+                  simd_processing::LoadPackedDataUnaligned<T, U>(
+                    beliefprop::RetrieveIndexInDataAndMessage(
+                      (x_val_process + checkerboard_adjustment) - 1, y_val,
+                      current_bp_level.padded_width_checkerboard_level_,
+                      current_bp_level.height_level_, current_disparity, DISP_VALS),
+                    message_r_checkerboard_1));
                 vals_at_disp = simd_processing::AddVals<W, U, W>(vals_at_disp, 
-                  simd_processing::LoadPackedDataAligned<T, U>(x_val_process, y_val,
-                    current_disparity, current_bp_level, DISP_VALS, data_cost_checkerboard_0));
+                  simd_processing::LoadPackedDataAligned<T, U>(
+                    beliefprop::RetrieveIndexInDataAndMessage(
+                      x_val_process, y_val, current_bp_level.padded_width_checkerboard_level_,
+                      current_bp_level.height_level_, current_disparity, DISP_VALS),
+                    data_cost_checkerboard_0));
               }
               else {
                 //retrieve and get sum of message and data values
                 vals_at_disp = simd_processing::AddVals<U, U, W>(
-                  simd_processing::LoadPackedDataUnaligned<T, U>(x_val_process, y_val + 1,
-                    current_disparity, current_bp_level, DISP_VALS, message_u_checkerboard_1),
-                  simd_processing::LoadPackedDataUnaligned<T, U>(x_val_process, y_val - 1,
-                    current_disparity, current_bp_level, DISP_VALS, message_d_checkerboard_1));
+                  simd_processing::LoadPackedDataUnaligned<T, U>(
+                    beliefprop::RetrieveIndexInDataAndMessage(
+                      x_val_process, y_val + 1, current_bp_level.padded_width_checkerboard_level_,
+                      current_bp_level.height_level_, current_disparity, DISP_VALS),
+                    message_u_checkerboard_1),
+                  simd_processing::LoadPackedDataUnaligned<T, U>(
+                    beliefprop::RetrieveIndexInDataAndMessage(
+                      x_val_process, y_val - 1, current_bp_level.padded_width_checkerboard_level_,
+                      current_bp_level.height_level_, current_disparity, DISP_VALS),
+                    message_d_checkerboard_1));
                 vals_at_disp = simd_processing::AddVals<W, U, W>(vals_at_disp, 
-                  simd_processing::LoadPackedDataUnaligned<T, U>(x_val_process + checkerboard_adjustment, y_val,
-                    current_disparity, current_bp_level, DISP_VALS, message_l_checkerboard_1));
+                  simd_processing::LoadPackedDataUnaligned<T, U>(
+                    beliefprop::RetrieveIndexInDataAndMessage(
+                      x_val_process + checkerboard_adjustment, y_val,
+                      current_bp_level.padded_width_checkerboard_level_,
+                      current_bp_level.height_level_, current_disparity, DISP_VALS),
+                    message_l_checkerboard_1));
                 vals_at_disp = simd_processing::AddVals<W, U, W>(vals_at_disp, 
-                  simd_processing::LoadPackedDataUnaligned<T, U>((x_val_process + checkerboard_adjustment) - 1, y_val,
-                    current_disparity, current_bp_level, DISP_VALS, message_r_checkerboard_1));
+                  simd_processing::LoadPackedDataUnaligned<T, U>(
+                    beliefprop::RetrieveIndexInDataAndMessage(
+                      (x_val_process + checkerboard_adjustment) - 1, y_val,
+                      current_bp_level.padded_width_checkerboard_level_,
+                      current_bp_level.height_level_, current_disparity, DISP_VALS),
+                    message_r_checkerboard_1));
                 vals_at_disp = simd_processing::AddVals<W, U, W>(vals_at_disp, 
-                  simd_processing::LoadPackedDataUnaligned<T, U>(x_val_process, y_val,
-                    current_disparity, current_bp_level, DISP_VALS, data_cost_checkerboard_0));
+                  simd_processing::LoadPackedDataUnaligned<T, U>(
+                    beliefprop::RetrieveIndexInDataAndMessage(
+                      x_val_process, y_val, current_bp_level.padded_width_checkerboard_level_,
+                      current_bp_level.height_level_, current_disparity, DISP_VALS),
+                    data_cost_checkerboard_0));
               }
             }
             else //checkerboard_get_disp_map == beliefprop::CheckerboardPart::kCheckerboardPart1
@@ -1668,38 +1766,72 @@ void beliefprop_cpu::RetrieveOutputDisparityUseSIMDVectors(
                 //use aligned load where possible
                 //retrieve and get sum of message and data values
                 vals_at_disp = simd_processing::AddVals<U, U, W>(
-                  simd_processing::LoadPackedDataAligned<T, U>(x_val_process, y_val + 1,
-                    current_disparity, current_bp_level, DISP_VALS, message_u_checkerboard_0),
-                  simd_processing::LoadPackedDataAligned<T, U>(x_val_process, y_val - 1,
-                    current_disparity, current_bp_level, DISP_VALS, message_d_checkerboard_0));
+                  simd_processing::LoadPackedDataAligned<T, U>(
+                    beliefprop::RetrieveIndexInDataAndMessage(
+                      x_val_process, y_val + 1, current_bp_level.padded_width_checkerboard_level_,
+                      current_bp_level.height_level_, current_disparity, DISP_VALS),
+                    message_u_checkerboard_0),
+                  simd_processing::LoadPackedDataAligned<T, U>(
+                    beliefprop::RetrieveIndexInDataAndMessage(
+                      x_val_process, y_val - 1, current_bp_level.padded_width_checkerboard_level_,
+                      current_bp_level.height_level_, current_disparity, DISP_VALS),
+                    message_d_checkerboard_0));
                 //l and r message values are loaded at possible offsets to not using
                 //aligned load for them
                 vals_at_disp = simd_processing::AddVals<W, U, W>(vals_at_disp, 
-                  simd_processing::LoadPackedDataUnaligned<T, U>(x_val_process + checkerboard_adjustment, y_val,
-                    current_disparity, current_bp_level, DISP_VALS, message_l_checkerboard_0));
+                  simd_processing::LoadPackedDataUnaligned<T, U>(
+                    beliefprop::RetrieveIndexInDataAndMessage(
+                      x_val_process + checkerboard_adjustment, y_val,
+                      current_bp_level.padded_width_checkerboard_level_,
+                      current_bp_level.height_level_, current_disparity, DISP_VALS),
+                    message_l_checkerboard_0));
                 vals_at_disp = simd_processing::AddVals<W, U, W>(vals_at_disp, 
-                  simd_processing::LoadPackedDataUnaligned<T, U>((x_val_process + checkerboard_adjustment) - 1, y_val,
-                    current_disparity, current_bp_level, DISP_VALS, message_r_checkerboard_0));
+                  simd_processing::LoadPackedDataUnaligned<T, U>(
+                    beliefprop::RetrieveIndexInDataAndMessage(
+                      (x_val_process + checkerboard_adjustment) - 1, y_val,
+                      current_bp_level.padded_width_checkerboard_level_,
+                      current_bp_level.height_level_, current_disparity, DISP_VALS),
+                    message_r_checkerboard_0));
                 vals_at_disp = simd_processing::AddVals<W, U, W>(vals_at_disp, 
-                  simd_processing::LoadPackedDataAligned<T, U>(x_val_process, y_val,
-                    current_disparity, current_bp_level, DISP_VALS, data_cost_checkerboard_1));
+                  simd_processing::LoadPackedDataAligned<T, U>(
+                    beliefprop::RetrieveIndexInDataAndMessage(
+                      x_val_process, y_val, current_bp_level.padded_width_checkerboard_level_,
+                      current_bp_level.height_level_, current_disparity, DISP_VALS),
+                    data_cost_checkerboard_1));
               }
               else {
                 //retrieve and get sum of message and data values
                 vals_at_disp = simd_processing::AddVals<U, U, W>(
-                  simd_processing::LoadPackedDataUnaligned<T, U>(x_val_process, y_val + 1,
-                    current_disparity, current_bp_level, DISP_VALS, message_u_checkerboard_0),
-                  simd_processing::LoadPackedDataUnaligned<T, U>(x_val_process, y_val - 1,
-                    current_disparity, current_bp_level, DISP_VALS, message_d_checkerboard_0));
+                  simd_processing::LoadPackedDataUnaligned<T, U>(
+                    beliefprop::RetrieveIndexInDataAndMessage(
+                      x_val_process, y_val + 1, current_bp_level.padded_width_checkerboard_level_,
+                      current_bp_level.height_level_, current_disparity, DISP_VALS),
+                    message_u_checkerboard_0),
+                  simd_processing::LoadPackedDataUnaligned<T, U>(
+                    beliefprop::RetrieveIndexInDataAndMessage(
+                      x_val_process, y_val - 1, current_bp_level.padded_width_checkerboard_level_,
+                      current_bp_level.height_level_, current_disparity, DISP_VALS),
+                    message_d_checkerboard_0));
                 vals_at_disp = simd_processing::AddVals<W, U, W>(vals_at_disp, 
-                  simd_processing::LoadPackedDataUnaligned<T, U>(x_val_process + checkerboard_adjustment, y_val,
-                    current_disparity, current_bp_level, DISP_VALS, message_l_checkerboard_0));
+                  simd_processing::LoadPackedDataUnaligned<T, U>(
+                    beliefprop::RetrieveIndexInDataAndMessage(
+                      x_val_process + checkerboard_adjustment, y_val,
+                      current_bp_level.padded_width_checkerboard_level_,
+                      current_bp_level.height_level_, current_disparity, DISP_VALS),
+                    message_l_checkerboard_0));
                 vals_at_disp = simd_processing::AddVals<W, U, W>(vals_at_disp, 
-                  simd_processing::LoadPackedDataUnaligned<T, U>((x_val_process + checkerboard_adjustment) - 1, y_val,
-                    current_disparity, current_bp_level, DISP_VALS, message_r_checkerboard_0));
+                  simd_processing::LoadPackedDataUnaligned<T, U>(
+                    beliefprop::RetrieveIndexInDataAndMessage(
+                      (x_val_process + checkerboard_adjustment) - 1, y_val,
+                      current_bp_level.padded_width_checkerboard_level_,
+                      current_bp_level.height_level_, current_disparity, DISP_VALS),
+                    message_r_checkerboard_0));
                 vals_at_disp = simd_processing::AddVals<W, U, W>(vals_at_disp, 
-                  simd_processing::LoadPackedDataUnaligned<T, U>(x_val_process, y_val,
-                    current_disparity, current_bp_level, DISP_VALS, data_cost_checkerboard_1));
+                  simd_processing::LoadPackedDataUnaligned<T, U>(
+                    beliefprop::RetrieveIndexInDataAndMessage(
+                      x_val_process, y_val, current_bp_level.padded_width_checkerboard_level_,
+                      current_bp_level.height_level_, current_disparity, DISP_VALS),
+                    data_cost_checkerboard_1));
               }   
             }
 
@@ -1743,76 +1875,152 @@ void beliefprop_cpu::RetrieveOutputDisparityUseSIMDVectors(
           for (size_t current_disparity = 0; current_disparity < bp_settings_disp_vals; current_disparity++) {
             if (checkerboard_get_disp_map == beliefprop::CheckerboardPart::kCheckerboardPart0) {
               if (data_aligned_x_val) {
+                //use aligned load where possible
                 //retrieve and get sum of message and data values
+                //need to add values in specified order to match results
+                //from single-thread CPU output
                 vals_at_disp = simd_processing::AddVals<U, U, W>(
-                  simd_processing::LoadPackedDataAligned<T, U>(x_val_process, y_val + 1,
-                    current_disparity, current_bp_level, bp_settings_disp_vals, message_u_checkerboard_1),
-                  simd_processing::LoadPackedDataAligned<T, U>(x_val_process, y_val - 1,
-                    current_disparity, current_bp_level, bp_settings_disp_vals, message_d_checkerboard_1));
+                  simd_processing::LoadPackedDataAligned<T, U>(
+                    beliefprop::RetrieveIndexInDataAndMessage(
+                      x_val_process, y_val + 1, current_bp_level.padded_width_checkerboard_level_,
+                      current_bp_level.height_level_, current_disparity, bp_settings_disp_vals),
+                    message_u_checkerboard_1),
+                  simd_processing::LoadPackedDataAligned<T, U>(
+                    beliefprop::RetrieveIndexInDataAndMessage(
+                      x_val_process, y_val - 1, current_bp_level.padded_width_checkerboard_level_,
+                      current_bp_level.height_level_, current_disparity, bp_settings_disp_vals),
+                    message_d_checkerboard_1));
+                //l and r message values are loaded at possible offsets to not using
+                //aligned load for them
                 vals_at_disp = simd_processing::AddVals<W, U, W>(vals_at_disp, 
-                  simd_processing::LoadPackedDataUnaligned<T, U>(x_val_process + checkerboard_adjustment, y_val,
-                    current_disparity, current_bp_level, bp_settings_disp_vals, message_l_checkerboard_1));
+                  simd_processing::LoadPackedDataUnaligned<T, U>(
+                    beliefprop::RetrieveIndexInDataAndMessage(
+                      x_val_process + checkerboard_adjustment, y_val,
+                      current_bp_level.padded_width_checkerboard_level_,
+                      current_bp_level.height_level_, current_disparity, bp_settings_disp_vals),
+                    message_l_checkerboard_1));
                 vals_at_disp = simd_processing::AddVals<W, U, W>(vals_at_disp, 
-                  simd_processing::LoadPackedDataUnaligned<T, U>((x_val_process + checkerboard_adjustment) - 1, y_val,
-                    current_disparity, current_bp_level, bp_settings_disp_vals, message_r_checkerboard_1));
-                vals_at_disp = simd_processing::AddVals<W, U, W>(vals_at_disp,
-                  simd_processing::LoadPackedDataAligned<T, U>(x_val_process, y_val,
-                    current_disparity, current_bp_level, bp_settings_disp_vals, data_cost_checkerboard_0));
+                  simd_processing::LoadPackedDataUnaligned<T, U>(
+                    beliefprop::RetrieveIndexInDataAndMessage(
+                      (x_val_process + checkerboard_adjustment) - 1, y_val,
+                      current_bp_level.padded_width_checkerboard_level_,
+                      current_bp_level.height_level_, current_disparity, bp_settings_disp_vals),
+                    message_r_checkerboard_1));
+                vals_at_disp = simd_processing::AddVals<W, U, W>(vals_at_disp, 
+                  simd_processing::LoadPackedDataAligned<T, U>(
+                    beliefprop::RetrieveIndexInDataAndMessage(
+                      x_val_process, y_val, current_bp_level.padded_width_checkerboard_level_,
+                      current_bp_level.height_level_, current_disparity, bp_settings_disp_vals),
+                    data_cost_checkerboard_0));
               }
               else {
                 //retrieve and get sum of message and data values
                 vals_at_disp = simd_processing::AddVals<U, U, W>(
-                  simd_processing::LoadPackedDataUnaligned<T, U>(x_val_process, y_val + 1,
-                    current_disparity, current_bp_level, bp_settings_disp_vals, message_u_checkerboard_1),
-                  simd_processing::LoadPackedDataUnaligned<T, U>(x_val_process, y_val - 1,
-                    current_disparity, current_bp_level, bp_settings_disp_vals, message_d_checkerboard_1));
+                  simd_processing::LoadPackedDataUnaligned<T, U>(
+                    beliefprop::RetrieveIndexInDataAndMessage(
+                      x_val_process, y_val + 1, current_bp_level.padded_width_checkerboard_level_,
+                      current_bp_level.height_level_, current_disparity, bp_settings_disp_vals),
+                    message_u_checkerboard_1),
+                  simd_processing::LoadPackedDataUnaligned<T, U>(
+                    beliefprop::RetrieveIndexInDataAndMessage(
+                      x_val_process, y_val - 1, current_bp_level.padded_width_checkerboard_level_,
+                      current_bp_level.height_level_, current_disparity, bp_settings_disp_vals),
+                    message_d_checkerboard_1));
                 vals_at_disp = simd_processing::AddVals<W, U, W>(vals_at_disp, 
-                  simd_processing::LoadPackedDataUnaligned<T, U>(x_val_process + checkerboard_adjustment, y_val,
-                    current_disparity, current_bp_level, bp_settings_disp_vals, message_l_checkerboard_1));
+                  simd_processing::LoadPackedDataUnaligned<T, U>(
+                    beliefprop::RetrieveIndexInDataAndMessage(
+                      x_val_process + checkerboard_adjustment, y_val,
+                      current_bp_level.padded_width_checkerboard_level_,
+                      current_bp_level.height_level_, current_disparity, bp_settings_disp_vals),
+                    message_l_checkerboard_1));
                 vals_at_disp = simd_processing::AddVals<W, U, W>(vals_at_disp, 
-                  simd_processing::LoadPackedDataUnaligned<T, U>((x_val_process + checkerboard_adjustment) - 1, y_val,
-                    current_disparity, current_bp_level, bp_settings_disp_vals, message_r_checkerboard_1));
+                  simd_processing::LoadPackedDataUnaligned<T, U>(
+                    beliefprop::RetrieveIndexInDataAndMessage(
+                      (x_val_process + checkerboard_adjustment) - 1, y_val,
+                      current_bp_level.padded_width_checkerboard_level_,
+                      current_bp_level.height_level_, current_disparity, bp_settings_disp_vals),
+                    message_r_checkerboard_1));
                 vals_at_disp = simd_processing::AddVals<W, U, W>(vals_at_disp, 
-                  simd_processing::LoadPackedDataUnaligned<T, U>(x_val_process, y_val,
-                    current_disparity, current_bp_level, bp_settings_disp_vals, data_cost_checkerboard_0));
+                  simd_processing::LoadPackedDataUnaligned<T, U>(
+                    beliefprop::RetrieveIndexInDataAndMessage(
+                      x_val_process, y_val, current_bp_level.padded_width_checkerboard_level_,
+                      current_bp_level.height_level_, current_disparity, bp_settings_disp_vals),
+                    data_cost_checkerboard_0));
               }
             }
             else //checkerboard_get_disp_map == beliefprop::CheckerboardPart::kCheckerboardPart1
             {
               if (data_aligned_x_val) {
+                //use aligned load where possible
                 //retrieve and get sum of message and data values
-                vals_at_disp = simd_processing::AddVals<U, U, W>( 
-                  simd_processing::LoadPackedDataAligned<T, U>(x_val_process, y_val + 1,
-                    current_disparity, current_bp_level, bp_settings_disp_vals, message_u_checkerboard_0),
-                  simd_processing::LoadPackedDataAligned<T, U>(x_val_process, y_val - 1,
-                    current_disparity, current_bp_level, bp_settings_disp_vals, message_d_checkerboard_0));
+                vals_at_disp = simd_processing::AddVals<U, U, W>(
+                  simd_processing::LoadPackedDataAligned<T, U>(
+                    beliefprop::RetrieveIndexInDataAndMessage(
+                      x_val_process, y_val + 1, current_bp_level.padded_width_checkerboard_level_,
+                      current_bp_level.height_level_, current_disparity, bp_settings_disp_vals),
+                    message_u_checkerboard_0),
+                  simd_processing::LoadPackedDataAligned<T, U>(
+                    beliefprop::RetrieveIndexInDataAndMessage(
+                      x_val_process, y_val - 1, current_bp_level.padded_width_checkerboard_level_,
+                      current_bp_level.height_level_, current_disparity, bp_settings_disp_vals),
+                    message_d_checkerboard_0));
+                //l and r message values are loaded at possible offsets to not using
+                //aligned load for them
                 vals_at_disp = simd_processing::AddVals<W, U, W>(vals_at_disp, 
-                  simd_processing::LoadPackedDataUnaligned<T, U>(x_val_process + checkerboard_adjustment, y_val,
-                    current_disparity, current_bp_level, bp_settings_disp_vals, message_l_checkerboard_0));
+                  simd_processing::LoadPackedDataUnaligned<T, U>(
+                    beliefprop::RetrieveIndexInDataAndMessage(
+                      x_val_process + checkerboard_adjustment, y_val,
+                      current_bp_level.padded_width_checkerboard_level_,
+                      current_bp_level.height_level_, current_disparity, bp_settings_disp_vals),
+                    message_l_checkerboard_0));
                 vals_at_disp = simd_processing::AddVals<W, U, W>(vals_at_disp, 
-                  simd_processing::LoadPackedDataUnaligned<T, U>((x_val_process + checkerboard_adjustment) - 1, y_val,
-                    current_disparity, current_bp_level, bp_settings_disp_vals, message_r_checkerboard_0));
+                  simd_processing::LoadPackedDataUnaligned<T, U>(
+                    beliefprop::RetrieveIndexInDataAndMessage(
+                      (x_val_process + checkerboard_adjustment) - 1, y_val,
+                      current_bp_level.padded_width_checkerboard_level_,
+                      current_bp_level.height_level_, current_disparity, bp_settings_disp_vals),
+                    message_r_checkerboard_0));
                 vals_at_disp = simd_processing::AddVals<W, U, W>(vals_at_disp, 
-                  simd_processing::LoadPackedDataAligned<T, U>(x_val_process, y_val,
-                    current_disparity, current_bp_level, bp_settings_disp_vals, data_cost_checkerboard_1));
+                  simd_processing::LoadPackedDataAligned<T, U>(
+                    beliefprop::RetrieveIndexInDataAndMessage(
+                      x_val_process, y_val, current_bp_level.padded_width_checkerboard_level_,
+                      current_bp_level.height_level_, current_disparity, bp_settings_disp_vals),
+                    data_cost_checkerboard_1));
               }
               else {
                 //retrieve and get sum of message and data values
-                vals_at_disp = simd_processing::AddVals<U, U, W>( 
-                  simd_processing::LoadPackedDataUnaligned<T, U>(x_val_process, y_val + 1,
-                    current_disparity, current_bp_level, bp_settings_disp_vals, message_u_checkerboard_0),
-                  simd_processing::LoadPackedDataUnaligned<T, U>(x_val_process, y_val - 1,
-                    current_disparity, current_bp_level, bp_settings_disp_vals, message_d_checkerboard_0));
+                vals_at_disp = simd_processing::AddVals<U, U, W>(
+                  simd_processing::LoadPackedDataUnaligned<T, U>(
+                    beliefprop::RetrieveIndexInDataAndMessage(
+                      x_val_process, y_val + 1, current_bp_level.padded_width_checkerboard_level_,
+                      current_bp_level.height_level_, current_disparity, bp_settings_disp_vals),
+                    message_u_checkerboard_0),
+                  simd_processing::LoadPackedDataUnaligned<T, U>(
+                    beliefprop::RetrieveIndexInDataAndMessage(
+                      x_val_process, y_val - 1, current_bp_level.padded_width_checkerboard_level_,
+                      current_bp_level.height_level_, current_disparity, bp_settings_disp_vals),
+                    message_d_checkerboard_0));
                 vals_at_disp = simd_processing::AddVals<W, U, W>(vals_at_disp, 
-                  simd_processing::LoadPackedDataUnaligned<T, U>(x_val_process + checkerboard_adjustment, y_val,
-                    current_disparity, current_bp_level, bp_settings_disp_vals, message_l_checkerboard_0));
+                  simd_processing::LoadPackedDataUnaligned<T, U>(
+                    beliefprop::RetrieveIndexInDataAndMessage(
+                      x_val_process + checkerboard_adjustment, y_val,
+                      current_bp_level.padded_width_checkerboard_level_,
+                      current_bp_level.height_level_, current_disparity, bp_settings_disp_vals),
+                    message_l_checkerboard_0));
                 vals_at_disp = simd_processing::AddVals<W, U, W>(vals_at_disp, 
-                  simd_processing::LoadPackedDataUnaligned<T, U>((x_val_process + checkerboard_adjustment) - 1, y_val,
-                    current_disparity, current_bp_level, bp_settings_disp_vals, message_r_checkerboard_0));
-                vals_at_disp = simd_processing::AddVals<W, U, W>(vals_at_disp,
-                  simd_processing::LoadPackedDataUnaligned<T, U>(x_val_process, y_val,
-                    current_disparity, current_bp_level, bp_settings_disp_vals, data_cost_checkerboard_1));
-              }
+                  simd_processing::LoadPackedDataUnaligned<T, U>(
+                    beliefprop::RetrieveIndexInDataAndMessage(
+                      (x_val_process + checkerboard_adjustment) - 1, y_val,
+                      current_bp_level.padded_width_checkerboard_level_,
+                      current_bp_level.height_level_, current_disparity, bp_settings_disp_vals),
+                    message_r_checkerboard_0));
+                vals_at_disp = simd_processing::AddVals<W, U, W>(vals_at_disp, 
+                  simd_processing::LoadPackedDataUnaligned<T, U>(
+                    beliefprop::RetrieveIndexInDataAndMessage(
+                      x_val_process, y_val, current_bp_level.padded_width_checkerboard_level_,
+                      current_bp_level.height_level_, current_disparity, bp_settings_disp_vals),
+                    data_cost_checkerboard_1));
+              }   
             }
             if (current_disparity == 0) {
               best_vals = vals_at_disp;
