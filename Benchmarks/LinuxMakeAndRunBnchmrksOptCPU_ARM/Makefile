@@ -26,10 +26,10 @@ OBJECTS = ${OBJ_DIR}/EvalAcrossRuns.o ${OBJ_DIR}/InputSignature.o ${OBJ_DIR}/Run
 ${OBJ_DIR}/EvalImpResultsBnchmrks.o ${OBJ_DIR}/EvalImpResults.o ${OBJ_DIR}/RunImpMultTypesAccels.o \
 ${OBJ_DIR}/RunData.o ${OBJ_DIR}/ParallelParamsBnchmrks.o ${OBJ_DIR}/ParallelParams.o \
 ${OBJ_DIR}/RunImpMultInputsBnchmrks.o ${OBJ_DIR}/RunImpMultInputs.o \
-${OBJ_DIR}/RunBpImpSingThreadCPU.o ${OBJ_DIR}/RunBenchmarksOnInput.o \
-${OBJ_DIR}/DetailedTimings.o ${OBJ_DIR}/RunBenchmarksOptCPU.o ${OBJ_DIR}/RunBenchmarks.o
-DRIVER_BENCHMARK_CPU_OBJECT = ${OBJ_DIR}/DriverBpStereoCPU.o
-DRIVER_BENCHMARK_CPU_OBJECT_CUSTOM = ${OBJ_DIR}/DriverBpStereoCPU_customRun.o
+${OBJ_DIR}/RunBnchmrksSingThreadCPU.o ${OBJ_DIR}/RunImpOnInputBnchmrks.o \
+${OBJ_DIR}/DetailedTimings.o ${OBJ_DIR}/RunBnchmrksOptCPU.o ${OBJ_DIR}/RunBnchmrks.o
+DRIVER_BENCHMARK_CPU_OBJECT = ${OBJ_DIR}/DriverBenchmarksCPU.o
+DRIVER_BENCHMARK_CPU_OBJECT_CUSTOM = ${OBJ_DIR}/DriverBenchmarksCPU_customRun.o
 
 # dependency files corresponding to each object
 DEPS := $(OBJECTS:.o=.d)
