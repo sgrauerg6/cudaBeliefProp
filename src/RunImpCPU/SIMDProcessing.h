@@ -50,13 +50,9 @@ namespace simd_processing
    * inData array must be aligned according to the rules of the specified SIMD type to
    * use this operation
    * 
-   * @tparam T 
+   * @tparam T
    * @tparam U 
-   * @param x 
-   * @param y 
-   * @param current_disparity 
-   * @param current_bp_level 
-   * @param numDispVals 
+   * @param indexDataLoad
    * @param inData 
    * @return SIMD structure with data loaded
    */
@@ -73,11 +69,7 @@ namespace simd_processing
    * 
    * @tparam T 
    * @tparam U 
-   * @param x 
-   * @param y 
-   * @param current_disparity 
-   * @param current_bp_level 
-   * @param numDispVals 
+   * @param indexDataLoad
    * @param inData 
    * @return SIMD structure with data loaded
    */
