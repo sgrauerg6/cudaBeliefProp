@@ -25,8 +25,8 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  * @copyright Copyright (c) 2024
  */
 
-#ifndef DETAILEDTIMINGS_H_
-#define DETAILEDTIMINGS_H_
+#ifndef DETAILED_TIMINGS_H_
+#define DETAILED_TIMINGS_H_
 
 #include <vector>
 #include <algorithm>
@@ -188,4 +188,4 @@ RunData DetailedTimings<T>::AsRunData() const {
   return timings_run_data;
 }
 
-#endif /* DETAILEDTIMINGS_H_ */
+#endif /* DETAILED_TIMINGS_H_ */

@@ -25,8 +25,8 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  * @copyright Copyright (c) 2024
  */
 
-#ifndef DISPARITYMAP_H_
-#define DISPARITYMAP_H_
+#ifndef DISPARITY_MAP_H_
+#define DISPARITY_MAP_H_
 
 #include <algorithm>
 #include <string>
@@ -98,4 +98,4 @@ private:
   }
 };
 
-#endif /* DISPARITYMAP_H_ */
+#endif /* DISPARITY_MAP_H_ */

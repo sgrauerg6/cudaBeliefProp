@@ -24,8 +24,8 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  * @copyright Copyright (c) 2024
  */
 
-#ifndef BPIMAGE_H_
-#define BPIMAGE_H_
+#ifndef BP_IMAGE_H_
+#define BP_IMAGE_H_
 
 #include <memory>
 #include <algorithm>
@@ -132,4 +132,4 @@ protected:
   }
 };
 
-#endif /* BPIMAGE_H_ */
+#endif /* BP_IMAGE_H_ */

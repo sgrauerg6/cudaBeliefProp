@@ -24,8 +24,8 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  * @copyright Copyright (c) 2024
  */
 
-#ifndef ARMTEMPLATESPFUNCTS_H_
-#define ARMTEMPLATESPFUNCTS_H_
+#ifndef ARM_TEMPLATE_SP_FUNCTS_H_
+#define ARM_TEMPLATE_SP_FUNCTS_H_
 
 #include "RunImp/UtilityFuncts.h"
 
@@ -56,4 +56,4 @@ float16_t util_functs::ConvertValToDifferentDataTypeIfNeeded<float, float16_t>(
 
 #endif //COMPILING_FOR_ARM
 
-#endif /* ARMTEMPLATESPFUNCTS_H_ */
+#endif /* ARM_TEMPLATE_SP_FUNCTS_H_ */

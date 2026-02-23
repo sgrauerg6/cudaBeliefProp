@@ -25,8 +25,8 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  * @copyright Copyright (c) 2024
  */
 
-#ifndef BPFILEHANDLINGCONSTS_H_
-#define BPFILEHANDLINGCONSTS_H_
+#ifndef BP_FILE_HANDLING_CONSTS_H_
+#define BP_FILE_HANDLING_CONSTS_H_
 
 #include <string_view>
 #include <string>
@@ -46,4 +46,4 @@ namespace beliefprop
   constexpr std::string_view kBaselineRunDesc{"AMD Rome (48 Cores)"};
 };
 
-#endif /* BPFILEHANDLINGCONSTS_H_ */
+#endif /* BP_FILE_HANDLING_CONSTS_H_ */

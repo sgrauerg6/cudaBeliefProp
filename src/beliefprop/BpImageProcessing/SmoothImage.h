@@ -24,8 +24,8 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  * @copyright Copyright (c) 2024
  */
 
-#ifndef SMOOTH_IMAGE_HOST_HEADER_H
-#define SMOOTH_IMAGE_HOST_HEADER_H
+#ifndef SMOOTH_IMAGE_H_
+#define SMOOTH_IMAGE_H_
 
 #include <cmath>
 #include <memory>
@@ -100,4 +100,4 @@ private:
   void NormalizeFilter(std::vector<float>& filter) const;
 };
 
-#endif //SMOOTH_IMAGE_HOST_HEADER_H
+#endif //SMOOTH_IMAGE_H_

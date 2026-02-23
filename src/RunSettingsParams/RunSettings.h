@@ -25,8 +25,8 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  * @copyright Copyright (c) 2024
  */
 
-#ifndef RUNSETTINGS_H_
-#define RUNSETTINGS_H_
+#ifndef RUN_SETTINGS_H_
+#define RUN_SETTINGS_H_
 
 #include <optional>
 #include <string_view>
@@ -123,4 +123,4 @@ struct RunImpSettings {
 
 };
 
-#endif /* RUNSETTINGS_H_ */
+#endif /* RUN_SETTINGS_H_ */

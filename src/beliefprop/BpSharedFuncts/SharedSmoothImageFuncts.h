@@ -25,8 +25,8 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  * @copyright Copyright (c) 2024
  */
 
-#ifndef SHAREDSMOOTHIMAGEFUNCTS_H_
-#define SHAREDSMOOTHIMAGEFUNCTS_H_
+#ifndef SHARED_SMOOTH_IMAGE_FUNCTS_H_
+#define SHARED_SMOOTH_IMAGE_FUNCTS_H_
 
 #include "RunImp/UtilityFuncts.h"
 #include "RunEval/RunTypeConstraints.h"
@@ -105,4 +105,4 @@ ARCHITECTURE_ADDITION inline void FilterImageVerticalProcessPixel(
 
 }
 
-#endif /* SHAREDSMOOTHIMAGEFUNCTS_H_ */
+#endif /* SHARED_SMOOTH_IMAGE_FUNCTS_H_ */

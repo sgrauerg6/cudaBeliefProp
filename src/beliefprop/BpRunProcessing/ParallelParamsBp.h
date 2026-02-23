@@ -25,8 +25,8 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  * @copyright Copyright (c) 2024
  */
 
-#ifndef BP_PARALLEL_PARAMS_H
-#define BP_PARALLEL_PARAMS_H
+#ifndef PARALLEL_PARAMS_BP_H_
+#define PARALLEL_PARAMS_BP_H_
 
 #include <array>
 #include <vector>
@@ -135,4 +135,4 @@ private:
   p_params_to_run_time_each_kernel_;
 };
 
-#endif //BP_PARALLEL_PARAMS_H
+#endif //PARALLEL_PARAMS_BP_H_

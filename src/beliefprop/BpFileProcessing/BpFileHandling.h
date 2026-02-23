@@ -24,8 +24,8 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  * @copyright Copyright (c) 2024
  */
 
-#ifndef BPFILEHANDLING_H_
-#define BPFILEHANDLING_H_
+#ifndef BP_FILE_HANDLING_H_
+#define BP_FILE_HANDLING_H_
 
 #include <filesystem>
 #include <algorithm>
@@ -95,4 +95,4 @@ private:
   unsigned int num_out_disp_map_;
 };
 
-#endif /* BPFILEHANDLING_H_ */
+#endif /* BP_FILE_HANDLING_H_ */
