@@ -31,8 +31,8 @@ OBJECTS = ${OBJ_DIR}/EvalAcrossRuns.o ${OBJ_DIR}/InputSignature.o ${OBJ_DIR}/Run
 ${OBJ_DIR}/EvalImpResultsBnchmrks.o ${OBJ_DIR}/EvalImpResults.o ${OBJ_DIR}/RunImpMultTypesAccels.o \
 ${OBJ_DIR}/RunData.o ${OBJ_DIR}/ParallelParamsBnchmrks.o ${OBJ_DIR}/ParallelParams.o \
 ${OBJ_DIR}/RunImpMultInputsBnchmrks.o ${OBJ_DIR}/RunImpMultInputs.o \
-${OBJ_DIR}/DisparityMapEvaluation.o ${OBJ_DIR}/RunBpImpSingThreadCPU.o ${OBJ_DIR}/RunBenchmarksOnInput.o \
-${OBJ_DIR}/DetailedTimings.o ${OBJ_DIR}/RunBenchmarksOptCPU.o ${OBJ_DIR}/RunBenchmarks.o
+${OBJ_DIR}/RunBnchmrksSingThreadCPU.o ${OBJ_DIR}/RunImpOnInputBnchmrks.o \
+${OBJ_DIR}/DetailedTimings.o ${OBJ_DIR}/RunBnchmrksOptCPU.o ${OBJ_DIR}/RunBnchmrks.o
 DRIVER_BENCHMARK_CPU_OBJECT = ${OBJ_DIR}/DriverBenchmarksCPU.o
 DRIVER_BENCHMARK_CPU_OBJECT_CUSTOM = ${OBJ_DIR}/DriverBenchmarksCPU_customRun.o
 
@@ -43,7 +43,8 @@ DEPS := $(OBJECTS:.o=.d)
 DRIVER_BENCHMARK_CPU = driverCPUBnchmrks
 DRIVER_BENCHMARK_CPU_CUSTOM = driverCPUBnchmrksCustom
 
-all: impDriverCPU impDriverCPUCustom
+all: impDriverCPU
+#impDriverCPUCustom
 
 ${OBJ_DIR}/%.o: ../../${SRC_DIR}/*/%.cpp
 	$(CC) $< -c $(INCLUDE_DIRS) $(COMPILE_FLAGS) -o $@

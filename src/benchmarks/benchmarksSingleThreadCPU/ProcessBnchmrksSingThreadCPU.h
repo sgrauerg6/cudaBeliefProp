@@ -28,11 +28,18 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #define PROCESS_BNCHMRKS_SING_THREAD_CPU_H_
 
 #include "benchmarksRunProcessing/ProcessBnchmrksDevice.h"
-#include "KernelBnchmrksOptCPU.h"
 
 template<RunData_t T, run_environment::AccSetting ACCELERATION>
-class ProcessBnchmrksSingThreadCPU : public ProcessBnchmrksDevice<T, ACCELERATION> {
+class ProcessBnchmrksSingThreadCPU final : public ProcessBnchmrksDevice<T, ACCELERATION> {
 public:
+/**
+ * @brief Constructor to initialize class to process benchmarks
+ * in single-thread CPU implementation
+ * 
+ * @param opt_cpu_params Parallel parameters to use in implementation
+ */
+explicit ProcessBnchmrksSingThreadCPU(const ParallelParams& opt_cpu_params) : 
+    ProcessBnchmrksDevice<T, ACCELERATION>(opt_cpu_params) {}
 
 private:
   /**
@@ -55,7 +62,7 @@ private:
       for (unsigned int x=0; x < mat_w_h; x++)
       {
         const unsigned int val_idx = y*mat_w_h + x;
-        matrix_sum[val_idx] = matrix_addend_0[val_idx] + matrix_addend_1[val_idx];
+        mat_sum[val_idx] = mat_addend_0[val_idx] + mat_addend_1[val_idx];
       }
     }
     return run_eval::Status::kNoError;

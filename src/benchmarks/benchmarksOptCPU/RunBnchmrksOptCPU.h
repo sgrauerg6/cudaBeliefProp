@@ -65,7 +65,7 @@ inline std::optional<benchmarks::BnchmrksRunOutput> RunBnchmrksOptCPU<T, ACCELER
 
   //generate struct with pointers to objects for running optimized CPU implementation and call
   //function to run optimized CPU implementation
-  const auto process_bnchmrks_output = this->ProcessBenchmarks(
+  auto process_bnchmrks_output = this->ProcessBenchmarks(
     size,
     std::make_unique<ProcessBnchmrksOptCPU<T, ACCELERATION>>(parallel_params),
     std::make_unique<MemoryManagement<T>>());
@@ -77,7 +77,5 @@ inline std::optional<benchmarks::BnchmrksRunOutput> RunBnchmrksOptCPU<T, ACCELER
 
   return process_bnchmrks_output;
 }
-
-};
 
 #endif //RUN_BNCHMRKS_OPT_CPU_H

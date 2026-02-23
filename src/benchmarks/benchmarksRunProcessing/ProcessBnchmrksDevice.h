@@ -89,13 +89,14 @@ public:
    * @param mat_output
    * @return std::optional<std::pair<float*, DetailedTimings<beliefprop::Runtime_Type>>> 
    */
-  std::optional<DetailedTimings<benchmarks::Runtime_Type>> operator()(
+  run_eval::Status operator()(
     const unsigned int benchmark_size,
     const T* mat_input_0,
     const T* mat_input_1,
     T* mat_output) const
   {
     AddMatrices(benchmark_size, mat_input_0, mat_input_1, mat_output);
+    return run_eval::Status::kNoError;
   }
 
 protected:

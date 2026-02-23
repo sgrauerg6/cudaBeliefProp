@@ -31,8 +31,16 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #include "KernelBnchmrksOptCPU.h"
 
 template<RunData_t T, run_environment::AccSetting ACCELERATION>
-class ProcessBnchmrksOptCPU : public ProcessBnchmrksDevice<T, ACCELERATION> {
+class ProcessBnchmrksOptCPU final : public ProcessBnchmrksDevice<T, ACCELERATION> {
 public:
+/**
+ * @brief Constructor to initialize class to process benchmarks
+ * in optimized CPU implementation
+ * 
+ * @param opt_cpu_params Parallel parameters to use in implementation
+ */
+explicit ProcessBnchmrksOptCPU(const ParallelParams& opt_cpu_params) : 
+    ProcessBnchmrksDevice<T, ACCELERATION>(opt_cpu_params) {}
 
 private:
   /**

@@ -45,7 +45,9 @@ template <RunData_t T, run_environment::AccSetting ACCELERATION>
 using RunBnchmrksOptimized = RunBnchmrksCUDA<T, ACCELERATION>;
 #endif //OPTIMIZED_CUDA_RUN
 
-#include "RunImpOnInput.h"
+#include "RunImp/RunImpOnInput.h"
+#include "benchmarksResultsEval/BnchmrksEvaluationInputs.h"
+#include "benchmarksSingleThreadCPU/RunBnchmrksSingThreadCPU.h"
 
 /**
  * @brief Child class of RunImpOnInput to run and evaluate benchmark(s)
@@ -99,13 +101,13 @@ protected:
 private:
   /** @brief Unique pointer to run benchmarks object for single thread
    *  implementation */
-  std::unique_ptr<RunBnchmrksOptimized<T, run_environment::AccSetting::kNone>>
-    run_benchmarks_single_thread_;
+  std::unique_ptr<RunBnchmrksSingThreadCPU<T, run_environment::AccSetting::kNone>>
+    run_bnchmrks_single_thread_;
   
   /** @brief Unique pointer to run benchmarks object for optimized 
    *  implementation */
   std::unique_ptr<RunBnchmrksOptimized<T, OPT_IMP_ACCEL>>
-    run_benchmarks_opt_;
+    run_bnchmrks_opt_;
 
   /** @brief width and height of matrix used in benchmarks */
   unsigned int matrix_wh_;
@@ -134,8 +136,7 @@ MultRunData RunImpOnInputBnchmrks<T, OPT_IMP_ACCEL, NUM_INPUT>::operator()(
   //set up and run benchmarks using optimized implementation (optimized CPU and
   //CUDA implementations supported) as well as unoptimized implementation for
   //comparison
-  run_opt_bnchmrks =
-    std::make_unique<RunBnchmrksOptimized<T, OPT_IMP_ACCEL>>();
+  run_bnchmrks_opt_ = std::make_unique<RunBnchmrksOptimized<T, OPT_IMP_ACCEL>>();
   constexpr bool run_w_loop_iters_templated{false};
   InputSignature input_sig(
     sizeof(T), NUM_INPUT, run_w_loop_iters_templated);
@@ -192,12 +193,12 @@ std::optional<RunData> RunImpOnInputBnchmrks<T, OPT_IMP_ACCEL, NUM_INPUT>::RunIm
   //get number of implementations to run output disparity map file path(s)
   //if run_opt_imp_only is false, run single-threaded implementation in
   //addition to optimized implementation
-  const unsigned int num_imps_run{run_opt_imp_only ? 1u : 2u};
+  //const unsigned int num_imps_run{run_opt_imp_only ? 1u : 2u};
 
   //get optimized implementation description and write info about run to
   //std::cout stream
   const std::string opt_imp_run_description{
-    run_benchmarks_opt_->RunDescription()};
+    run_bnchmrks_opt_->RunDescription()};
   std::cout << "Running benchmarks with height/width of " << matrix_wh_
             << " on " << opt_imp_run_description;
   if (!run_opt_imp_only) {
@@ -214,7 +215,7 @@ std::optional<RunData> RunImpOnInputBnchmrks<T, OPT_IMP_ACCEL, NUM_INPUT>::RunIm
   std::map<run_environment::AccSetting, std::optional<benchmarks::BnchmrksRunOutput>>
     run_output;
   run_output[OPT_IMP_ACCEL] =
-    run_benchmarks_opt_->operator()(matrix_wh_, *parallel_params);
+    run_bnchmrks_opt_->operator()(matrix_wh_, *parallel_params);
     
   //check if error in run
   RunData run_data;
@@ -237,7 +238,7 @@ std::optional<RunData> RunImpOnInputBnchmrks<T, OPT_IMP_ACCEL, NUM_INPUT>::RunIm
     //run single-threaded implementation and retrieve structure with runtime
     //and output disparity map
     run_output[run_environment::AccSetting::kNone] =
-      run_benchmarks_single_thread_->operator()(matrix_wh_, *parallel_params);
+      run_bnchmrks_single_thread_->operator()(matrix_wh_, *parallel_params);
     if (!(run_output[run_environment::AccSetting::kNone])) {
       return {};
     }

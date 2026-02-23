@@ -61,6 +61,12 @@ struct BnchmrksRunOutput
  */
 template<RunData_t T, run_environment::AccSetting ACCELERATION>
 class RunBnchmrks {
+public:
+  /**
+   * @brief Virtual destructor
+   */
+  virtual ~RunBnchmrks() {}
+
   /**
    * @brief Pure virtual function to return run description corresponding to
    * target acceleration
@@ -68,11 +74,6 @@ class RunBnchmrks {
    * @return Description of run using specified acceleration
    */
   virtual std::string RunDescription() const = 0;
-
-  /**
-   * @brief Virtual destructor
-   */
-  virtual ~RunBnchmrks() {}
 
   /**
    * @brief Pure virtual operator() that must be defined in child class
@@ -98,8 +99,8 @@ protected:
    */
   std::optional<benchmarks::BnchmrksRunOutput> ProcessBenchmarks(
     unsigned int size,
-    ProcessBnchmrksDevice<T, ACCELERATION>* proc_bnchmrks_device,
-    const MemoryManagement<T>* mem_management) const;
+    const std::unique_ptr<ProcessBnchmrksDevice<T, ACCELERATION>>& proc_bnchmrks_device,
+    const std::unique_ptr<MemoryManagement<T>>& mem_management) const;
 };
 
 //protected function to set up, run, and evaluate bp processing on target
@@ -108,8 +109,8 @@ protected:
 template<RunData_t T, run_environment::AccSetting ACCELERATION>
 std::optional<benchmarks::BnchmrksRunOutput> RunBnchmrks<T, ACCELERATION>::ProcessBenchmarks(
   unsigned int size,
-  ProcessBnchmrksDevice<T, ACCELERATION>* proc_bnchmrks_device,
-  const MemoryManagement<T>* mem_management) const
+  const std::unique_ptr<ProcessBnchmrksDevice<T, ACCELERATION>>& proc_bnchmrks_device,
+  const std::unique_ptr<MemoryManagement<T>>& mem_management) const
 {
   //initialize run data to include timing data and possibly
   //other info
@@ -144,7 +145,7 @@ std::optional<benchmarks::BnchmrksRunOutput> RunBnchmrks<T, ACCELERATION>::Proce
   std::mt19937 mersenne_engine(seed); //Mersenne Twister engine
 
   //Define the distribution to be values from -999 to 999
-  std::uniform_int_distribution<T> dist(-999, 999);
+  std::uniform_real_distribution dist(-999.0, 999.0);
 
   //Use std::generate to fill the vector
   //A lambda function is used to bind the distribution and engine
@@ -170,7 +171,7 @@ std::optional<benchmarks::BnchmrksRunOutput> RunBnchmrks<T, ACCELERATION>::Proce
   auto start_time_run_no_transfer = std::chrono::system_clock::now();
   const auto process_bnchmrks_output = (*proc_bnchmrks_device)(
     size, mat_0_device, mat_1_device, mat_2_device);
-  if (!process_bnchmrks_output) {
+  if (process_bnchmrks_output == run_eval::Status::kError) {
     return {};
   }
   auto end_time_run_no_transfer = std::chrono::system_clock::now();

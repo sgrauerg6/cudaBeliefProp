@@ -84,6 +84,9 @@ namespace benchmarks_cpu
         const unsigned int val_idx = y*mtrx_width + x;
         matrix_sum[val_idx] = matrix_addend_0[val_idx] + matrix_addend_1[val_idx];
       }
+#if defined(__APPLE__) && !defined(DONT_USE_GRAND_CENTRAL_DISPATCH)
+    );
+#endif //__APPLE__
     }
   }
 };
