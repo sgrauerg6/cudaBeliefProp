@@ -164,25 +164,24 @@ RunImpOnInputBnchmrks<T, OPT_IMP_ACCEL, NUM_INPUT>::SetUpParallelParams(
     run_imp_settings.p_params_default_alt_options.first);
 }
 
-//get input data and parameter info about current benchmark (belief propagation
-//in this case) and return as RunData type
+//get input data and parameter info about benchmarks run and return as RunData type
 template<RunData_t T, run_environment::AccSetting OPT_IMP_ACCEL, size_t NUM_INPUT>
 RunData RunImpOnInputBnchmrks<T, OPT_IMP_ACCEL, NUM_INPUT>::InputAndParamsForCurrBenchmark(
   bool loop_iters_templated) const
 {
   RunData curr_run_data;
-  /*curr_run_data.AddDataWHeader(
-    std::string(beliefprop::kStereoSetHeader),
-    std::string(beliefprop::kStereoSetsToProcess[NUM_INPUT].name));
+  curr_run_data.AddDataWHeader(
+    std::string(benchmarks::kMatWidthHeader),
+    benchmarks::kMtrxsToProcess[NUM_INPUT].mtrx_wh);
+  curr_run_data.AddDataWHeader(
+    std::string(benchmarks::kMatHeightHeader),
+    benchmarks::kMtrxsToProcess[NUM_INPUT].mtrx_wh);
   curr_run_data.AppendData(this->InputAndParamsRunData(loop_iters_templated));
-  curr_run_data.AppendData(alg_settings_.AsRunData());
-  curr_run_data.AppendData(beliefprop::RunSettings());*/
   return curr_run_data;
 }
 
-//run and compare output disparity maps using the given optimized and
-//single-threaded stereo implementations on the reference and test images
-//specified by numStereoSet
+//run and compare output results using the given optimized and
+//single-threaded benchmarks implementations on the specified input
 //run only optimized implementation if run_opt_imp_only is true
 template<RunData_t T, run_environment::AccSetting OPT_IMP_ACCEL, size_t NUM_INPUT>
 std::optional<RunData> RunImpOnInputBnchmrks<T, OPT_IMP_ACCEL, NUM_INPUT>::RunImpsAndCompare(

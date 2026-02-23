@@ -104,7 +104,7 @@ void RunResultsSpeedups::GenInputSignatureToDataMapping(
     //get input "signature" mapped to run data for each run in run results
     const unsigned int tot_num_runs = 
       run_results_header_to_data->at(
-        std::string(run_eval::kOptimizedRuntimeHeader)).size();
+        std::string(run_eval::kDatatypeHeader)).size();
     for (unsigned int num_run = 0; num_run < tot_num_runs; num_run++)
     {
       //get unique input signature for evaluation run (evaluation data number,
@@ -142,8 +142,20 @@ std::map<InputSignature, std::string> RunResultsSpeedups::InputsToKeyVal(
     for (const auto& [input_sig, run_data] : *input_sig_to_run_data_)
     {
       //add mapping of key value to corresponding input signature
-      input_sig_to_key_val.insert(
-        {input_sig, run_data.at(std::string(key))});
+      if (run_data.contains(std::string(key)))
+      {
+        input_sig_to_key_val.insert(
+          {input_sig, run_data.at(std::string(key))});
+      }
+      else if (key.starts_with(run_eval::kOptimizedRuntimeHeader)) {
+        //previous optimized runtime header string used so retrieve
+        //key val for that header
+        if (run_data.contains(std::string(run_eval::kOptimizedRuntimeHeader_Prev)))
+        {
+          input_sig_to_key_val.insert(
+            {input_sig, run_data.at(std::string(run_eval::kOptimizedRuntimeHeader_Prev))});
+        }
+      }
     }
   }
 

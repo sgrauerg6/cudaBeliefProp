@@ -142,9 +142,23 @@ std::string RunData::GetDataAsStr(const std::string_view header) const
 std::optional<double> RunData::GetDataAsDouble(
   const std::string_view header) const
 {
-  const auto& data_variant = headers_w_data_.at(std::string(header));
-  if (const double* data_double_ptr = std::get_if<double>(&data_variant)) {
-    return *data_double_ptr;
+  if (headers_w_data_.contains(std::string(header))) {
+    const auto& data_variant = headers_w_data_.at(std::string(header));
+    if (const double* data_double_ptr = std::get_if<double>(&data_variant)) {
+      return *data_double_ptr;
+    }
+  }
+  //check if header corresponds to median optimized runtime header and previous median
+  //optimized runtime header was used for this data
+  //TODO: may be able to delete this later if previous results adjusted to use new
+  //header or older results no longer need to be supported
+  if ((header.starts_with(run_eval::kOptimizedRuntimeHeader)) &&
+      (headers_w_data_.contains(std::string(run_eval::kOptimizedRuntimeHeader_Prev)))) {
+    const auto& med_rtime_data_variant =
+      headers_w_data_.at(std::string(run_eval::kOptimizedRuntimeHeader_Prev));
+    if (const double* data_double_ptr = std::get_if<double>(&med_rtime_data_variant)) {
+      return *data_double_ptr;
+    }
   }
   return {};
 }

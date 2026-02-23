@@ -102,7 +102,10 @@ enum class MiddleValData { kAverage, kMedian };
   constexpr std::string_view kSpeedupsDescFileName{"Speedups"};
   constexpr std::string_view kEvalAcrossRunsFileName{"EvaluationAcrossRuns"};
   constexpr std::string_view kCsvFileExtension{".csv"};
-  constexpr std::string_view kOptimizedRuntimeHeader{"Median Optimized Runtime (including transfer time)"};
+  constexpr std::string_view kOptimizedRuntimeHeader{"Median Optimized Runtime"};
+  //TODO: may be able to delete previous runtime header if previous results adjusted to use new
+  //header or older results no longer need to be supported
+  constexpr std::string_view kOptimizedRuntimeHeader_Prev{"Median Optimized Runtime (including transfer time)"};
   constexpr std::string_view kSingleThreadRuntimeHeader{"Single-Thread CPU run time"};
 
   //constant for speedup description for optimized parallel parameters
