@@ -96,7 +96,35 @@ MultRunData RunImpMultInputsBnchmrks::RunEvalImpMultDataSets(
   //run and evaluate bp implementation on all stereo sets used for benchmarking
   std::vector<MultRunData> run_results;
   run_results.push_back(RunImpOnInputBnchmrks<
-    T, OPT_IMP_ACCEL, static_cast<size_t>(0)>().operator()(run_imp_settings));
+    T, OPT_IMP_ACCEL, static_cast<size_t>(benchmarks::MtrxWH::kMtrxWH_32)>().operator()(
+    run_imp_settings));
+  run_results.push_back(RunImpOnInputBnchmrks<
+    T, OPT_IMP_ACCEL, static_cast<size_t>(benchmarks::MtrxWH::kMtrxWH_64)>().operator()(
+    run_imp_settings));
+  run_results.push_back(RunImpOnInputBnchmrks<
+    T, OPT_IMP_ACCEL, static_cast<size_t>(benchmarks::MtrxWH::kMtrxWH_128)>().operator()(
+    run_imp_settings));
+  run_results.push_back(RunImpOnInputBnchmrks<
+    T, OPT_IMP_ACCEL, static_cast<size_t>(benchmarks::MtrxWH::kMtrxWH_256)>().operator()(
+    run_imp_settings));
+  run_results.push_back(RunImpOnInputBnchmrks<
+    T, OPT_IMP_ACCEL, static_cast<size_t>(benchmarks::MtrxWH::kMtrxWH_512)>().operator()(
+    run_imp_settings));
+  run_results.push_back(RunImpOnInputBnchmrks<
+    T, OPT_IMP_ACCEL, static_cast<size_t>(benchmarks::MtrxWH::kMtrxWH_1024)>().operator()(
+    run_imp_settings));
+  run_results.push_back(RunImpOnInputBnchmrks<
+    T, OPT_IMP_ACCEL, static_cast<size_t>(benchmarks::MtrxWH::kMtrxWH_2048)>().operator()(
+    run_imp_settings));
+  run_results.push_back(RunImpOnInputBnchmrks<
+    T, OPT_IMP_ACCEL, static_cast<size_t>(benchmarks::MtrxWH::kMtrxWH_4096)>().operator()(
+    run_imp_settings));
+  run_results.push_back(RunImpOnInputBnchmrks<
+    T, OPT_IMP_ACCEL, static_cast<size_t>(benchmarks::MtrxWH::kMtrxWH_6144)>().operator()(
+    run_imp_settings));
+  run_results.push_back(RunImpOnInputBnchmrks<
+    T, OPT_IMP_ACCEL, static_cast<size_t>(benchmarks::MtrxWH::kMtrxWH_8192)>().operator()(
+    run_imp_settings));
 
   //merge results for each input to overall results
   MultRunData run_data_all_runs;

@@ -65,29 +65,30 @@ namespace benchmarks_cpu
     const T* matrix_addend_0, const T* matrix_addend_1,
     T* matrix_sum)
   {
-    for (unsigned int y=0; y < mtrx_height; y++)
-    {
 #if !defined(__APPLE__) || defined(DONT_USE_GRAND_CENTRAL_DISPATCH)
-      #pragma omp parallel for
-      for (unsigned int x=0; x < mtrx_width; x++)
+    #pragma omp parallel for
+    for (unsigned int y=0; y < mtrx_height; y++)
 #else
-      // Get a global concurrent queue (system-managed thread pool)
-      dispatch_queue_t concurrent_queue =
-        dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
+    //parallelize on apple processor using Grand Central Dispatch
+    //get a global concurrent queue (system-managed thread pool)
+    dispatch_queue_t concurrent_queue =
+      dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
 
-      // dispatch_apply submits each iteration as a task to the queue
-      dispatch_apply(mtrx_width,
-                     concurrent_queue,
-                     ^(size_t x)
+    //dispatch_apply submits each iteration as a task to the queue
+    dispatch_apply(mtrx_height,
+                   concurrent_queue,
+                   ^(size_t y)
 #endif //__APPLE__
+    {
+      for (unsigned int x=0; x < mtrx_width; x++)
       {
         const unsigned int val_idx = y*mtrx_width + x;
         matrix_sum[val_idx] = matrix_addend_0[val_idx] + matrix_addend_1[val_idx];
       }
+    }
 #if defined(__APPLE__) && !defined(DONT_USE_GRAND_CENTRAL_DISPATCH)
     );
 #endif //__APPLE__
-    }
   }
 };
 

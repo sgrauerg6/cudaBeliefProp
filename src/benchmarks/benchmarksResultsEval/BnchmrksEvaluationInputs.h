@@ -53,7 +53,11 @@ namespace benchmarks
     kMtrxWH_512,
     kMtrxWH_1024,
     kMtrxWH_2048,
-    kMtrxWH_4096
+    kMtrxWH_4096,
+    kMtrxWH_6144,
+    kMtrxWH_8192,
+    kMtrxWH_12288,
+    kMtrxWH_16384
   };
   
   /**
@@ -74,7 +78,7 @@ namespace benchmarks
    * at compile time...otherwise would be unordered_map with MtrxWH enum as the key
    * (in C++20 array can be constexpr but unordered_map can't be)
    */
-  constexpr std::array<MtrxNameWH, 8> kMtrxsToProcess{
+  constexpr std::array<MtrxNameWH, 12> kMtrxsToProcess{
     MtrxNameWH{"kMtrxWH_32", 32},
     MtrxNameWH{"kMtrxWH_64", 64},
     MtrxNameWH{"kMtrxWH_128", 128},
@@ -82,7 +86,11 @@ namespace benchmarks
     MtrxNameWH{"kMtrxWH_512", 512},
     MtrxNameWH{"kMtrxWH_1024", 1024},
     MtrxNameWH{"kMtrxWH_2048", 2048},
-    MtrxNameWH{"kMtrxWH_4096", 4096}
+    MtrxNameWH{"kMtrxWH_4096", 4096},
+    MtrxNameWH{"kMtrxWH_6144", 6144},
+    MtrxNameWH{"kMtrxWH_8192", 8192},
+    MtrxNameWH{"kMtrxWH_12288", 12288},
+    MtrxNameWH{"kMtrxWH_16384", 16384}
   };
 
   //constants for evaluation
