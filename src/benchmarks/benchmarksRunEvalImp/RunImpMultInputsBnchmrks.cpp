@@ -125,6 +125,12 @@ MultRunData RunImpMultInputsBnchmrks::RunEvalImpMultDataSets(
   run_results.push_back(RunImpOnInputBnchmrks<
     T, OPT_IMP_ACCEL, static_cast<size_t>(benchmarks::MtrxWH::kMtrxWH_8192)>().operator()(
     run_imp_settings));
+  run_results.push_back(RunImpOnInputBnchmrks<
+    T, OPT_IMP_ACCEL, static_cast<size_t>(benchmarks::MtrxWH::kMtrxWH_12288)>().operator()(
+    run_imp_settings));
+  run_results.push_back(RunImpOnInputBnchmrks<
+    T, OPT_IMP_ACCEL, static_cast<size_t>(benchmarks::MtrxWH::kMtrxWH_16384)>().operator()(
+    run_imp_settings));
 
   //merge results for each input to overall results
   MultRunData run_data_all_runs;

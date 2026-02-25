@@ -192,21 +192,27 @@ std::optional<benchmarks::BnchmrksRunOutput> RunBnchmrks<T, ACCELERATION>::Proce
   mem_management->FreeAlignedMemoryOnDevice(mat_1_device);
   mem_management->FreeAlignedMemoryOnDevice(mat_2_device);
 
-  //print output matrix
-  for (size_t i=0; i < num_data_mat; i++) {
-    std::cout << out_mat_host[i] << " ";
-  }
+  //print random value from output matrix
+  std::cout << out_mat_host[
+    std::uniform_int_distribution<int>(1, num_data_mat)(mersenne_engine)]
+             << std::endl;
 
   //add runtime data to data to return with corresponding headers
   run_data.AddDataWHeader(
-    std::string(benchmarks::kTimingNames.at(benchmarks::Runtime_Type::kAddMatNoTransfer)),
-    detailed_bnchmrks_timings.MedianTiming(benchmarks::Runtime_Type::kAddMatNoTransfer).count());
+    std::string(run_eval::kNumEvalRuns),
+    static_cast<unsigned int>(kNumEvalRuns));
+  run_data.AddDataWHeader(
+    std::string(benchmarks::kTimingNames.at(
+      benchmarks::Runtime_Type::kAddMatNoTransfer)),
+    detailed_bnchmrks_timings.MedianTiming(
+      benchmarks::Runtime_Type::kAddMatNoTransfer).count());
 
   benchmarks::BnchmrksRunOutput run_bnchmrks_output;
   //runtime without transfer time is stored as output runtime
   //with more detailed breakdowns in the run data
   run_bnchmrks_output.run_time =
-    detailed_bnchmrks_timings.MedianTiming(benchmarks::Runtime_Type::kAddMatNoTransfer);
+    detailed_bnchmrks_timings.MedianTiming(
+      benchmarks::Runtime_Type::kAddMatNoTransfer);
   run_bnchmrks_output.run_data = run_data;
 
   //free output matrix on host
