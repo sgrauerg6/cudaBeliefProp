@@ -173,7 +173,7 @@ RunData DetailedTimings<T>::AsRunData() const {
     [this, &timings_run_data](auto current_timing) {
       //generate header for timing data
       const std::string header = 
-        std::string(timing_seg_to_str_.at(current_timing.first)) + " " +
+        std::string(this->timing_seg_to_str_.at(current_timing.first)) + " " +
         std::string(run_eval::kMedianOfTestRunsDesc);
       //get median timing across runs
       std::ranges::nth_element(

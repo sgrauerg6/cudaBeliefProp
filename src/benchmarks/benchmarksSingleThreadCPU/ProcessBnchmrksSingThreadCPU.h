@@ -49,14 +49,15 @@ private:
    * @param mat_addend_0
    * @param mat_addend_1
    * @param mat_sum
-   * @return Status of "no error" if successful, "error" status otherwise
+   * @return std::optional<DetailedTimings<benchmarks::Runtime_Type>>
    */
-  run_eval::Status AddMatrices(
+  std::optional<DetailedTimings<benchmarks::Runtime_Type>> AddMatrices(
     const unsigned int mat_w_h,
     const T* mat_addend_0,
     const T* mat_addend_1,
     T* mat_sum) const override
   {
+    auto add_mat_start_time = std::chrono::system_clock::now();
     for (unsigned int y=0; y < mat_w_h; y++)
     {
       for (unsigned int x=0; x < mat_w_h; x++)
@@ -65,7 +66,11 @@ private:
         mat_sum[val_idx] = mat_addend_0[val_idx] + mat_addend_1[val_idx];
       }
     }
-    return run_eval::Status::kNoError;
+    auto end_mat_start_time = std::chrono::system_clock::now();
+    DetailedTimings add_mat_timing(benchmarks::kTimingNames);
+    add_mat_timing.AddTiming(benchmarks::Runtime_Type::kAddMatNoTransfer,
+      end_mat_start_time - add_mat_start_time);
+    return add_mat_timing;
   }
 };
 

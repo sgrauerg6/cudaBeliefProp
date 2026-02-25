@@ -35,15 +35,13 @@ namespace benchmarks {
 /** @brief Enum for each runtime segment in benchmark implementation shown in
  * timing outputs */
 enum class Runtime_Type {
-  kDataSetUp, kTotalTime, kTotalNoTransfer, kTotalWithTransfer};
+  kAddMatNoTransfer, kTotalBnchmrksNoTransfer};
 
 /** @brief Mapping of runtime segment enum to header describing timing of the
  * segment */
 const std::unordered_map<Runtime_Type, std::string_view> kTimingNames{
-  {Runtime_Type::kDataSetUp, "Time to initialize data"}, 
-  {Runtime_Type::kTotalTime, "Total Benchmarks Runtime"}, 
-  {Runtime_Type::kTotalNoTransfer, "Total Runtime (not including data transfer time)"},
-  {Runtime_Type::kTotalWithTransfer, "Total Runtime (including data transfer time)"}};
+  {Runtime_Type::kAddMatNoTransfer, "Total Add Matrices Runtime (not including data transfer time)"},
+  {Runtime_Type::kTotalBnchmrksNoTransfer, "Total Benchmarks Runtime (not including data transfer time)"}};
 };
 
 #endif /* DETAILED_TIMING_BNCHMRKS_CONSTS_H_ */

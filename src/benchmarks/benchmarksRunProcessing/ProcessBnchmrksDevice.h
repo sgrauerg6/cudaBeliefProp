@@ -87,16 +87,15 @@ public:
    * @param mat_input_0 
    * @param mat_input_1 
    * @param mat_output
-   * @return std::optional<std::pair<float*, DetailedTimings<beliefprop::Runtime_Type>>> 
+   * @return std::optional<DetailedTimings<benchmarks::Runtime_Type>>
    */
-  run_eval::Status operator()(
+  std::optional<DetailedTimings<benchmarks::Runtime_Type>> operator()(
     const unsigned int benchmark_size,
     const T* mat_input_0,
     const T* mat_input_1,
     T* mat_output) const
   {
-    AddMatrices(benchmark_size, mat_input_0, mat_input_1, mat_output);
-    return run_eval::Status::kNoError;
+    return AddMatrices(benchmark_size, mat_input_0, mat_input_1, mat_output);
   }
 
 protected:
@@ -113,7 +112,7 @@ private:
    * @param mat_sum
    * @return Status of "no error" if successful, "error" status otherwise
    */
-  virtual run_eval::Status AddMatrices(
+  virtual std::optional<DetailedTimings<benchmarks::Runtime_Type>> AddMatrices(
     const unsigned int mat_w_h,
     const T* mat_addend_0,
     const T* mat_addend_1,

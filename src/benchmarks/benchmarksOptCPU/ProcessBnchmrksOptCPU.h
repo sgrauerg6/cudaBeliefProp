@@ -27,6 +27,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #ifndef PROCESS_BNCHMRKS_OPT_CPU_H_
 #define PROCESS_BNCHMRKS_OPT_CPU_H_
 
+#include <chrono>
 #include "benchmarksRunProcessing/ProcessBnchmrksDevice.h"
 #include "KernelBnchmrksOptCPU.h"
 
@@ -52,15 +53,20 @@ private:
    * @param mat_sum
    * @return Status of "no error" if successful, "error" status otherwise
    */
-  run_eval::Status AddMatrices(
+  std::optional<DetailedTimings<benchmarks::Runtime_Type>> AddMatrices(
     const unsigned int mat_w_h,
     const T* mat_addend_0,
     const T* mat_addend_1,
     T* mat_sum) const override
   {
+    auto add_mat_start_time = std::chrono::system_clock::now();
     benchmarks_cpu::AddMatricesNoPackedInstructions<T>(
       mat_w_h, mat_w_h, mat_addend_0, mat_addend_1, mat_sum);
-    return run_eval::Status::kNoError;
+    auto end_mat_start_time = std::chrono::system_clock::now();
+    DetailedTimings add_mat_timing(benchmarks::kTimingNames);
+    add_mat_timing.AddTiming(benchmarks::Runtime_Type::kAddMatNoTransfer,
+      end_mat_start_time - add_mat_start_time);
+    return add_mat_timing;
   }
 };
 

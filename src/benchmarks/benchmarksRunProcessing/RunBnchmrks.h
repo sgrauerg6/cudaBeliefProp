@@ -36,6 +36,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #include "RunEval/RunData.h"
 #include "RunEval/RunTypeConstraints.h"
 #include "RunImp/MemoryManagement.h"
+#include "benchmarksResultsEval/DetailedTimingBnchmrksConsts.h"
 #include "ProcessBnchmrksDevice.h"
 
 namespace benchmarks {
@@ -156,7 +157,6 @@ std::optional<benchmarks::BnchmrksRunOutput> RunBnchmrks<T, ACCELERATION>::Proce
   std::chrono::duration<double> timeRandGenInMat = end_time - start_time;
 
   //transfer matrices from host to device
-  auto start_time_run_w_transfer = std::chrono::system_clock::now();
   mem_management->TransferDataFromHostToDevice(
     mat_0_device,
     mat_0_host.data(),
@@ -166,26 +166,26 @@ std::optional<benchmarks::BnchmrksRunOutput> RunBnchmrks<T, ACCELERATION>::Proce
     mat_1_host.data(),
     num_data_mat);
 
-  //run benchmark on device and retrieve output that includes
-  //runtimes and other info about run
-  auto start_time_run_no_transfer = std::chrono::system_clock::now();
-  const auto process_bnchmrks_output = (*proc_bnchmrks_device)(
-    size, mat_0_device, mat_1_device, mat_2_device);
-  if (process_bnchmrks_output == run_eval::Status::kError) {
-    return {};
+  //initialize structures for timing data
+  DetailedTimings detailed_bnchmrks_timings(benchmarks::kTimingNames);
+
+  constexpr size_t kNumEvalRuns{15};
+  for (size_t i=0; i < kNumEvalRuns; i++) {
+    //run benchmark on device and retrieve output runtimes
+    const auto process_bnchmrks_timings = (*proc_bnchmrks_device)(
+      size, mat_0_device, mat_1_device, mat_2_device);
+    if (!process_bnchmrks_timings) {
+      return {};
+    }
+    //add timings from current run to overall timings
+    detailed_bnchmrks_timings.AddToCurrentTimings(*process_bnchmrks_timings);
   }
-  auto end_time_run_no_transfer = std::chrono::system_clock::now();
-  std::chrono::duration<double> runtimeNoTransfer =
-    end_time_run_no_transfer - start_time_run_no_transfer;
 
   //transfer output data from device to host
   mem_management->TransferDataFromDeviceToHost(
     out_mat_host,
     mat_2_device,
     num_data_mat);
-  auto end_time_run_w_transfer = std::chrono::system_clock::now();
-  std::chrono::duration<double> runtimeWTransfer =
-    end_time_run_w_transfer - start_time_run_w_transfer;
 
   //free aligned memory on device
   mem_management->FreeAlignedMemoryOnDevice(mat_0_device);
@@ -198,15 +198,15 @@ std::optional<benchmarks::BnchmrksRunOutput> RunBnchmrks<T, ACCELERATION>::Proce
   }
 
   //add runtime data to data to return with corresponding headers
-  run_data.AddDataWHeader("Time to allocate data in device", timeAllocate.count());
-  run_data.AddDataWHeader("Time to generate random matrices", timeRandGenInMat.count());
-  run_data.AddDataWHeader("Total time (no transfer)", runtimeNoTransfer.count());
-  run_data.AddDataWHeader("Total time (including transfer)", runtimeWTransfer.count());
+  run_data.AddDataWHeader(
+    std::string(benchmarks::kTimingNames.at(benchmarks::Runtime_Type::kAddMatNoTransfer)),
+    detailed_bnchmrks_timings.MedianTiming(benchmarks::Runtime_Type::kAddMatNoTransfer).count());
 
   benchmarks::BnchmrksRunOutput run_bnchmrks_output;
   //runtime without transfer time is stored as output runtime
   //with more detailed breakdowns in the run data
-  run_bnchmrks_output.run_time = runtimeNoTransfer;
+  run_bnchmrks_output.run_time =
+    detailed_bnchmrks_timings.MedianTiming(benchmarks::Runtime_Type::kAddMatNoTransfer);
   run_bnchmrks_output.run_data = run_data;
 
   //free output matrix on host

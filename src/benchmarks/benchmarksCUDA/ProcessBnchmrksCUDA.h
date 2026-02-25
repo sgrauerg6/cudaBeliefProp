@@ -48,7 +48,7 @@ private:
    * @param mat_sum
    * @return Status of "no error" if successful, "error" status otherwise
    */
-  run_eval::Status AddMatrices(
+  std::optional<DetailedTimings<benchmarks::Runtime_Type>> AddMatrices(
     const unsigned int mat_w_h,
     const T* mat_addend_0,
     const T* mat_addend_1,
@@ -70,16 +70,22 @@ private:
       (unsigned int)ceil((float)mat_w_h / (float)threads.x),
       (unsigned int)ceil((float)mat_w_h / (float)threads.y)};
 
-    //initialize the data the the "bottom" of the image pyramid
+    auto add_mat_start_time = std::chrono::system_clock::now();
+    //process matrix addition on GPU using CUDA
     benchmarks_cuda::addMatrices<T> <<<grid, threads>>> (
       mat_w_h, mat_w_h, mat_addend_0, mat_addend_1, mat_sum);
     cudaDeviceSynchronize();
+    auto end_mat_start_time = std::chrono::system_clock::now();
 
     if (ErrorCheck(__FILE__, __LINE__) != run_eval::Status::kNoError) {
-      return run_eval::Status::kError;
+      return {};
     }
 
-    return run_eval::Status::kNoError;
+    DetailedTimings add_mat_timing(benchmarks::kTimingNames);
+    add_mat_timing.AddTiming(benchmarks::Runtime_Type::kAddMatNoTransfer,
+      end_mat_start_time - add_mat_start_time);
+
+    return add_mat_timing;
   }
 };
 
