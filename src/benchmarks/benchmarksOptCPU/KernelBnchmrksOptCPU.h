@@ -63,33 +63,164 @@ namespace benchmarks_cpu
   void AddMatricesNoPackedInstructions(
     unsigned int mtrx_width, unsigned int mtrx_height,
     const T* matrix_addend_0, const T* matrix_addend_1,
-    T* matrix_sum)
-  {
-#if !defined(__APPLE__) || defined(DONT_USE_GRAND_CENTRAL_DISPATCH)
-    #pragma omp parallel for
-    for (unsigned int y=0; y < mtrx_height; y++)
-#else
-    //parallelize on apple processor using Grand Central Dispatch
-    //get a global concurrent queue (system-managed thread pool)
-    dispatch_queue_t concurrent_queue =
-      dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
+    T* matrix_sum);
+  
+  void AddMatricesUseSIMDVectorsNEON(
+    unsigned int mtrx_width, unsigned int mtrx_height,
+    const float* matrix_addend_0, const float* matrix_addend_1,
+    float* matrix_sum);
 
-    //dispatch_apply submits each iteration as a task to the queue
-    dispatch_apply(mtrx_height,
-                   concurrent_queue,
-                   ^(size_t y)
-#endif //__APPLE__
-    {
-      for (unsigned int x=0; x < mtrx_width; x++)
-      {
-        const unsigned int val_idx = y*mtrx_width + x;
-        matrix_sum[val_idx] = matrix_addend_0[val_idx] + matrix_addend_1[val_idx];
-      }
-    }
-#if defined(__APPLE__) && !defined(DONT_USE_GRAND_CENTRAL_DISPATCH)
-    );
-#endif //__APPLE__
-  }
+  void AddMatricesUseSIMDVectorsNEON(
+    unsigned int mtrx_width, unsigned int mtrx_height,
+    const double* matrix_addend_0, const double* matrix_addend_1,
+    double* matrix_sum);
+
+#if defined(COMPILING_FOR_ARM)
+  void AddMatricesUseSIMDVectorsNEON(
+    unsigned int mtrx_width, unsigned int mtrx_height,
+    const float16_t* matrix_addend_0, const float16_t* matrix_addend_1,
+    float16_t* matrix_sum);
+#endif //COMPILING_FOR_ARM
+
+  void AddMatricesUseSIMDVectorsAVX512(
+    unsigned int mtrx_width, unsigned int mtrx_height,
+    const float* matrix_addend_0, const float* matrix_addend_1,
+    float* matrix_sum);
+
+  void AddMatricesUseSIMDVectorsAVX512(
+    unsigned int mtrx_width, unsigned int mtrx_height,
+    const double* matrix_addend_0, const double* matrix_addend_1,
+    double* matrix_sum);
+
+  void AddMatricesUseSIMDVectorsAVX512(
+    unsigned int mtrx_width, unsigned int mtrx_height,
+    const short* matrix_addend_0, const short* matrix_addend_1,
+    short* matrix_sum);
+
+#if defined(FLOAT16_VECTORIZATION)
+  void AddMatricesUseSIMDVectorsAVX512(
+    unsigned int mtrx_width, unsigned int mtrx_height,
+    const _Float16* matrix_addend_0, const _Float16* matrix_addend_1,
+    _Float16* matrix_sum);
+#endif //FLOAT16_VECTORIZATION
+
+  void AddMatricesUseSIMDVectorsAVX256(
+    unsigned int mtrx_width, unsigned int mtrx_height,
+    const float* matrix_addend_0, const float* matrix_addend_1,
+    float* matrix_sum);
+
+  void AddMatricesUseSIMDVectorsAVX256(
+    unsigned int mtrx_width, unsigned int mtrx_height,
+    const double* matrix_addend_0, const double* matrix_addend_1,
+    double* matrix_sum);
+
+  void AddMatricesUseSIMDVectorsAVX256(
+    unsigned int mtrx_width, unsigned int mtrx_height,
+    const short* matrix_addend_0, const short* matrix_addend_1,
+    short* matrix_sum);
+
+#if defined(FLOAT16_VECTORIZATION)
+  void AddMatricesUseSIMDVectorsAVX256(
+    unsigned int mtrx_width, unsigned int mtrx_height,
+    const _Float16* matrix_addend_0, const _Float16* matrix_addend_1,
+    _Float16* matrix_sum);
+#endif //FLOAT16_VECTORIZATION
+
+  template<RunData_t T, RunDataVect_t U, RunDataProcess_t V, RunDataVectProcess_t W>
+  void AddMatricesSIMD(
+  unsigned int mtrx_width, unsigned int mtrx_height,
+    const T* matrix_addend_0, const T* matrix_addend_1,
+    T* matrix_sum);
 };
+
+//headers to include differ depending on architecture and CPU vectorization setting
+#if defined(COMPILING_FOR_ARM)
+
+#if (CPU_VECTORIZATION_DEFINE == NEON_DEFINE)
+#include "KernelBnchmrksOptCPU_NEON.h"
+#endif //CPU_VECTORIZATION_DEFINE == NEON_DEFINE
+
+#else
+
+#if ((CPU_VECTORIZATION_DEFINE == AVX_256_DEFINE) || (CPU_VECTORIZATION_DEFINE == AVX_256_F16_DEFINE))
+#include "KernelBnchmrksOptCPU_AVX256.h"
+#elif ((CPU_VECTORIZATION_DEFINE == AVX_512_DEFINE) || (CPU_VECTORIZATION_DEFINE == AVX_512_F16_DEFINE))
+#include "KernelBnchmrksOptCPU_AVX256.h"
+#include "KernelBnchmrksOptCPU_AVX512.h"
+#endif //CPU_VECTORIZATION_DEFINE
+
+#endif //COMPILING_FOR_ARM
+
+template <RunData_t T>
+void benchmarks_cpu::AddMatricesNoPackedInstructions(
+  unsigned int mtrx_width, unsigned int mtrx_height,
+  const T* matrix_addend_0, const T* matrix_addend_1,
+  T* matrix_sum)
+{
+#if !defined(__APPLE__) || defined(DONT_USE_GRAND_CENTRAL_DISPATCH)
+  #pragma omp parallel for
+  for (unsigned int y=0; y < mtrx_height; y++)
+#else
+  //parallelize on apple processor using Grand Central Dispatch
+  //get a global concurrent queue (system-managed thread pool)
+  dispatch_queue_t concurrent_queue =
+    dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
+
+  //dispatch_apply submits each iteration as a task to the queue
+  dispatch_apply(mtrx_height,
+                 concurrent_queue,
+                 ^(size_t y)
+#endif //__APPLE__
+  {
+    for (unsigned int x=0; x < mtrx_width; x++)
+    {
+      const unsigned int val_idx = y*mtrx_width + x;
+      matrix_sum[val_idx] = matrix_addend_0[val_idx] + matrix_addend_1[val_idx];
+    }
+  }
+#if defined(__APPLE__) && !defined(DONT_USE_GRAND_CENTRAL_DISPATCH)
+  );
+#endif //__APPLE__
+}
+
+template<RunData_t T, RunDataVect_t U, RunDataProcess_t V, RunDataVectProcess_t W>
+void benchmarks_cpu::AddMatricesSIMD(
+  unsigned int mtrx_width, unsigned int mtrx_height,
+  const T* matrix_addend_0, const T* matrix_addend_1,
+  T* matrix_sum)
+{
+  constexpr size_t simd_data_size{sizeof(U) / sizeof(T)};
+
+  #if !defined(__APPLE__) || defined(DONT_USE_GRAND_CENTRAL_DISPATCH)
+  #pragma omp parallel for
+  for (unsigned int y = 0; y < mtrx_height; y++)
+#else
+  //parallelize on apple processor using Grand Central Dispatch
+  //get a global concurrent queue (system-managed thread pool)
+  dispatch_queue_t concurrent_queue =
+    dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
+
+  //dispatch _apply submits each iteration as a task to the queue
+  dispatch_apply(mtrx_height,
+                 concurrent_queue,
+                 ^(size_t y)
+#endif //__APPLE__
+  {
+    //for now assuming that matrix width is multiple of simd data size
+    for (unsigned int x_val = 0; x_val < mtrx_width; x_val += simd_data_size)
+    {
+      const unsigned int val_idx = y*mtrx_width + x_val;
+      simd_processing::StorePackedDataAligned<T, W>(
+        val_idx,
+        matrix_sum,
+        simd_processing::AddVals<U, U, W>(
+          simd_processing::LoadPackedDataAligned<T, U>(val_idx, matrix_addend_0),
+          simd_processing::LoadPackedDataAligned<T, U>(val_idx, matrix_addend_1))); 
+    }
+  }
+#if defined(__APPLE__) && !defined(DONT_USE_GRAND_CENTRAL_DISPATCH)
+  );
+#endif //__APPLE__
+}
 
 #endif //KERNEL_BNCHMRKS_OPT_CPU_H

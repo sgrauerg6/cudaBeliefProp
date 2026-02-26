@@ -60,8 +60,31 @@ private:
     T* mat_sum) const override
   {
     auto add_mat_start_time = std::chrono::system_clock::now();
-    benchmarks_cpu::AddMatricesNoPackedInstructions<T>(
-      mat_w_h, mat_w_h, mat_addend_0, mat_addend_1, mat_sum);
+    if constexpr (ACCELERATION == run_environment::AccSetting::kNone) {
+      benchmarks_cpu::AddMatricesNoPackedInstructions<T>(
+        mat_w_h, mat_w_h, mat_addend_0, mat_addend_1, mat_sum);
+    }
+    else if constexpr (ACCELERATION == run_environment::AccSetting::kNEON) {
+      std::cout << "Processing NEON implementation" << std::endl;
+      benchmarks_cpu::AddMatricesUseSIMDVectorsNEON(
+        mat_w_h, mat_w_h, mat_addend_0, mat_addend_1, mat_sum);
+    }
+    else if constexpr (
+      (ACCELERATION == run_environment::AccSetting::kAVX256) ||
+      (ACCELERATION == run_environment::AccSetting::kAVX256_F16))
+    {
+      std::cout << "Processing AVX256 implementation" << std::endl;
+      benchmarks_cpu::AddMatricesUseSIMDVectorsAVX256(
+        mat_w_h, mat_w_h, mat_addend_0, mat_addend_1, mat_sum);
+    }
+    else if constexpr (
+      (ACCELERATION == run_environment::AccSetting::kAVX512) ||
+      (ACCELERATION == run_environment::AccSetting::kAVX512_F16))
+    {
+      std::cout << "Processing AVX512 implementation" << std::endl;
+      benchmarks_cpu::AddMatricesUseSIMDVectorsAVX512(
+        mat_w_h, mat_w_h, mat_addend_0, mat_addend_1, mat_sum);
+    }
     auto end_mat_start_time = std::chrono::system_clock::now();
     DetailedTimings add_mat_timing(benchmarks::kTimingNames);
     add_mat_timing.AddTiming(benchmarks::Runtime_Type::kAddMatNoTransfer,
