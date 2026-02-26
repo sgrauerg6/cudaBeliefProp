@@ -48,6 +48,7 @@ using RunBnchmrksOptimized = RunBnchmrksCUDA<T, ACCELERATION>;
 #include "RunImp/RunImpOnInput.h"
 #include "benchmarksResultsEval/BnchmrksEvaluationInputs.h"
 #include "benchmarksSingleThreadCPU/RunBnchmrksSingThreadCPU.h"
+#include "benchmarksRunProcessing/BnchmrksMtrx.h"
 
 /**
  * @brief Child class of RunImpOnInput to run and evaluate benchmark(s)
@@ -111,6 +112,9 @@ private:
 
   /** @brief width and height of matrix used in benchmarks */
   unsigned int matrix_wh_;
+
+  /** @brief input matrices for benchmark(s) */
+  std::array<BnchmrksMtrx<T>, 2> in_mtrces_;
 };
 
 //run and evaluate optimized belief propagation implementation on evaluation
@@ -125,6 +129,10 @@ MultRunData RunImpOnInputBnchmrks<T, OPT_IMP_ACCEL, NUM_INPUT>::operator()(
   //set up matrix settings for current run
   matrix_wh_ =
     benchmarks::kMtrxsToProcess[NUM_INPUT].mtrx_wh;
+  
+  //initialize input matrices
+  in_mtrces_[0].InitMtxWRandData(matrix_wh_, matrix_wh_);
+  in_mtrces_[1].InitMtxWRandData(matrix_wh_, matrix_wh_);
 
   //initialize run results across multiple implementations
   MultRunData run_results;
@@ -214,7 +222,7 @@ std::optional<RunData> RunImpOnInputBnchmrks<T, OPT_IMP_ACCEL, NUM_INPUT>::RunIm
   std::map<run_environment::AccSetting, std::optional<benchmarks::BnchmrksRunOutput>>
     run_output;
   run_output[OPT_IMP_ACCEL] =
-    run_bnchmrks_opt_->operator()(matrix_wh_, *parallel_params);
+    run_bnchmrks_opt_->operator()(in_mtrces_, *parallel_params);
     
   //check if error in run
   RunData run_data;
@@ -237,7 +245,7 @@ std::optional<RunData> RunImpOnInputBnchmrks<T, OPT_IMP_ACCEL, NUM_INPUT>::RunIm
     //run single-threaded implementation and retrieve structure with runtime
     //and output disparity map
     run_output[run_environment::AccSetting::kNone] =
-      run_bnchmrks_single_thread_->operator()(matrix_wh_, *parallel_params);
+      run_bnchmrks_single_thread_->operator()(in_mtrces_, *parallel_params);
     if (!(run_output[run_environment::AccSetting::kNone])) {
       return {};
     }

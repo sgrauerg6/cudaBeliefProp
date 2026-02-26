@@ -57,7 +57,11 @@ namespace benchmarks
     kMtrxWH_6144,
     kMtrxWH_8192,
     kMtrxWH_12288,
-    kMtrxWH_16384
+    kMtrxWH_16384,
+    kMtrxWH_20480,
+    kMtrxWH_24576,
+    kMtrxWH_28672,
+    kMtrxWH_32768
   };
   
   /**
@@ -78,7 +82,7 @@ namespace benchmarks
    * at compile time...otherwise would be unordered_map with MtrxWH enum as the key
    * (in C++20 array can be constexpr but unordered_map can't be)
    */
-  constexpr std::array<MtrxNameWH, 12> kMtrxsToProcess{
+  constexpr std::array<MtrxNameWH, 16> kMtrxsToProcess{
     MtrxNameWH{"kMtrxWH_32", 32},
     MtrxNameWH{"kMtrxWH_64", 64},
     MtrxNameWH{"kMtrxWH_128", 128},
@@ -90,9 +94,13 @@ namespace benchmarks
     MtrxNameWH{"kMtrxWH_6144", 6144},
     MtrxNameWH{"kMtrxWH_8192", 8192},
     MtrxNameWH{"kMtrxWH_12288", 12288},
-    MtrxNameWH{"kMtrxWH_16384", 16384}
+    MtrxNameWH{"kMtrxWH_16384", 16384},
+    MtrxNameWH{"kMtrxWH_20480", 20480},
+    MtrxNameWH{"kMtrxWH_24576", 24576},
+    MtrxNameWH{"kMtrxWH_28672", 28672},
+    MtrxNameWH{"kMtrxWH_32768", 32768}
   };
-
+  
   //constants for evaluation
   constexpr std::string_view kBenchmarksDirectoryName{"Benchmarks"};
   /*constexpr std::string_view kBaselineRunDataPath{

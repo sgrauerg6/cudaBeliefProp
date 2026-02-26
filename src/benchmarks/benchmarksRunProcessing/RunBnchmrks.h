@@ -38,6 +38,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #include "RunImp/MemoryManagement.h"
 #include "benchmarksResultsEval/DetailedTimingBnchmrksConsts.h"
 #include "ProcessBnchmrksDevice.h"
+#include "BnchmrksMtrx.h"
 
 namespace benchmarks {
 
@@ -84,7 +85,7 @@ public:
    * @return Output from benchmarks run or null output if error
    */
   virtual std::optional<benchmarks::BnchmrksRunOutput> operator()(
-    unsigned int size,
+    const std::array<BnchmrksMtrx<T>, 2>& inMtrces,
     const ParallelParams& parallel_params) const = 0;
 
 protected:
@@ -99,7 +100,7 @@ protected:
    * error in run
    */
   std::optional<benchmarks::BnchmrksRunOutput> ProcessBenchmarks(
-    unsigned int size,
+    const std::array<BnchmrksMtrx<T>, 2>& inMtrces,
     const std::unique_ptr<ProcessBnchmrksDevice<T, ACCELERATION>>& proc_bnchmrks_device,
     const std::unique_ptr<MemoryManagement<T>>& mem_management) const;
 };
@@ -109,7 +110,8 @@ protected:
 //process BP, and memory management child class objects
 template<RunData_t T, run_environment::AccSetting ACCELERATION>
 std::optional<benchmarks::BnchmrksRunOutput> RunBnchmrks<T, ACCELERATION>::ProcessBenchmarks(
-  unsigned int size,
+  const std::array<BnchmrksMtrx<T>, 2>& inMtrces,
+  //unsigned int size,
   const std::unique_ptr<ProcessBnchmrksDevice<T, ACCELERATION>>& proc_bnchmrks_device,
   const std::unique_ptr<MemoryManagement<T>>& mem_management) const
 {
@@ -123,7 +125,7 @@ std::optional<benchmarks::BnchmrksRunOutput> RunBnchmrks<T, ACCELERATION>::Proce
   T* mat_2_device{nullptr};
 
   //allocate memory on device for benchmark processing
-  const std::size_t num_data_mat = size * size;
+  const std::size_t num_data_mat = inMtrces[0].Width() * inMtrces[0].Height();
   
   auto start_time = std::chrono::system_clock::now();
   mat_0_device = mem_management->AllocateAlignedMemoryOnDevice(num_data_mat, ACCELERATION);
@@ -132,48 +134,27 @@ std::optional<benchmarks::BnchmrksRunOutput> RunBnchmrks<T, ACCELERATION>::Proce
   auto end_time = std::chrono::system_clock::now();
   std::chrono::duration<double> timeAllocate = end_time - start_time;
 
-  //generate vector of random values of type T for mat_0_host and mat_1_host
-  std::vector<T> mat_0_host(num_data_mat);
-  std::vector<T> mat_1_host(num_data_mat);
-
   //allocate space on host for output matrix
   T* out_mat_host = new T[num_data_mat];
-  
-  start_time = std::chrono::system_clock::now();
-  //Initialize a random number engine with a seed
-  //Using steady_clock provides a non-deterministic seed
-  unsigned seed = std::chrono::steady_clock::now().time_since_epoch().count();
-  std::mt19937 mersenne_engine(seed); //Mersenne Twister engine
-
-  //Define the distribution to be values from -999 to 999
-  std::uniform_real_distribution dist(-999.0, 999.0);
-
-  //Use std::generate to fill the vector
-  //A lambda function is used to bind the distribution and engine
-  auto generator = [&]() { return dist(mersenne_engine); };
-  std::generate(mat_0_host.begin(), mat_0_host.end(), generator);
-  std::generate(mat_1_host.begin(), mat_1_host.end(), generator);
-  end_time = std::chrono::system_clock::now();
-  std::chrono::duration<double> timeRandGenInMat = end_time - start_time;
 
   //transfer matrices from host to device
   mem_management->TransferDataFromHostToDevice(
     mat_0_device,
-    mat_0_host.data(),
+    inMtrces[0].Data(),
     num_data_mat);
   mem_management->TransferDataFromHostToDevice(
     mat_1_device,
-    mat_1_host.data(),
+    inMtrces[1].Data(),
     num_data_mat);
 
   //initialize structures for timing data
   DetailedTimings detailed_bnchmrks_timings(benchmarks::kTimingNames);
 
-  constexpr size_t kNumEvalRuns{15};
+  constexpr size_t kNumEvalRuns{3};
   for (size_t i=0; i < kNumEvalRuns; i++) {
     //run benchmark on device and retrieve output runtimes
     const auto process_bnchmrks_timings = (*proc_bnchmrks_device)(
-      size, mat_0_device, mat_1_device, mat_2_device);
+      inMtrces[0].Width(), mat_0_device, mat_1_device, mat_2_device);
     if (!process_bnchmrks_timings) {
       return {};
     }
@@ -193,6 +174,8 @@ std::optional<benchmarks::BnchmrksRunOutput> RunBnchmrks<T, ACCELERATION>::Proce
   mem_management->FreeAlignedMemoryOnDevice(mat_2_device);
 
   //print random value from output matrix
+  unsigned seed = std::chrono::steady_clock::now().time_since_epoch().count();
+  std::mt19937 mersenne_engine(seed); //Mersenne Twister engine
   std::cout << out_mat_host[
     std::uniform_int_distribution<int>(1, num_data_mat)(mersenne_engine)]
              << std::endl;

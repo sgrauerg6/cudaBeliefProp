@@ -37,13 +37,13 @@ public:
 
   //run the benchmark(s) using the optimized CPU implementation
   std::optional<benchmarks::BnchmrksRunOutput> operator()(
-    unsigned int size,
+    const std::array<BnchmrksMtrx<T>, 2>& inMtrces,
     const ParallelParams& parallel_params) const override;
 };
 
 template<RunData_t T, run_environment::AccSetting ACCELERATION>
 inline std::optional<benchmarks::BnchmrksRunOutput> RunBnchmrksOptCPU<T, ACCELERATION>::operator()(
-  unsigned int size,
+  const std::array<BnchmrksMtrx<T>, 2>& inMtrces,
   const ParallelParams& parallel_params) const
 {
   //set number of threads to use when running code in parallel using OpenMP from input parallel parameters
@@ -66,7 +66,7 @@ inline std::optional<benchmarks::BnchmrksRunOutput> RunBnchmrksOptCPU<T, ACCELER
   //generate struct with pointers to objects for running optimized CPU implementation and call
   //function to run optimized CPU implementation
   auto process_bnchmrks_output = this->ProcessBenchmarks(
-    size,
+    inMtrces,
     std::make_unique<ProcessBnchmrksOptCPU<T, ACCELERATION>>(parallel_params),
     std::make_unique<MemoryManagement<T>>());
   if (!process_bnchmrks_output) {

@@ -41,20 +41,20 @@ template<RunData_t T, run_environment::AccSetting ACCELERATION>
 class RunBnchmrksSingThreadCPU : public RunBnchmrks<T, ACCELERATION> {
 public:
   std::optional<benchmarks::BnchmrksRunOutput> operator()(
-    unsigned int size,
+    const std::array<BnchmrksMtrx<T>, 2>& inMtrces,
     const ParallelParams& parallel_params) const override;
   std::string RunDescription() const override { return "Single-Thread CPU"; }
 };
 
 template<RunData_t T, run_environment::AccSetting ACCELERATION>
 inline std::optional<benchmarks::BnchmrksRunOutput> RunBnchmrksSingThreadCPU<T, ACCELERATION>::operator()(
-  unsigned int size,
+  const std::array<BnchmrksMtrx<T>, 2>& inMtrces,
   const ParallelParams& parallel_params) const
 {
   //generate struct with pointers to objects for running optimized CPU implementation and call
   //function to run optimized CPU implementation
   auto process_set_output = this->ProcessBenchmarks(
-    size,
+    inMtrces,
     std::make_unique<ProcessBnchmrksSingThreadCPU<T, ACCELERATION>>(parallel_params),
     std::make_unique<MemoryManagement<T>>());
   if (process_set_output) {
