@@ -193,16 +193,8 @@ protected:
           std::to_string(NUM_INPUT));
         curr_run_data.AppendData(
           InputAndParamsForCurrBenchmark(run_w_loop_iters_templated));
-        if ((alt_p_params.size() > 0) &&
-            (run_imp_settings.opt_parallel_params_setting ==
-             run_environment::OptParallelParamsSetting::
-             kAllowDiffKernelParallelParamsInRun))
-        {
-          //add parallel parameters for each kernel to current input data if
-          //allowing different parallel parameters for each kernel
-          //in the same run
-          curr_run_data.AppendData(parallel_params->AsRunData());
-        }
+        //add parallel parameters for each kernel to current input data
+        curr_run_data.AppendData(parallel_params->AsRunData());
       }
 
       //run benchmark implementation(s) and return null output if error in run

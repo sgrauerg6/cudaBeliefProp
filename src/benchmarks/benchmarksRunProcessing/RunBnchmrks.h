@@ -111,7 +111,6 @@ protected:
 template<RunData_t T, run_environment::AccSetting ACCELERATION>
 std::optional<benchmarks::BnchmrksRunOutput> RunBnchmrks<T, ACCELERATION>::ProcessBenchmarks(
   const std::array<BnchmrksMtrx<T>, 2>& inMtrces,
-  //unsigned int size,
   const std::unique_ptr<ProcessBnchmrksDevice<T, ACCELERATION>>& proc_bnchmrks_device,
   const std::unique_ptr<MemoryManagement<T>>& mem_management) const
 {

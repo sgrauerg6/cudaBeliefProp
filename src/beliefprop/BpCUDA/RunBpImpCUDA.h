@@ -57,7 +57,7 @@ public:
    * @return Description of BP implementation using CUDA
    */
   std::string RunDescription() const override { 
-    return std::string(run_cuda::kOptimizeCUDADesc); }
+    return std::string(run_cuda::kCUDADesc); }
 
   /**
    * @brief Run the disparity map estimation BP on a set of stereo images

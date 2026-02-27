@@ -64,11 +64,13 @@ private:
       benchmarks_cpu::AddMatricesNoPackedInstructions<T>(
         mat_w_h, mat_w_h, mat_addend_0, mat_addend_1, mat_sum);
     }
+#if defined(COMPILING_FOR_ARM)
     else if constexpr (ACCELERATION == run_environment::AccSetting::kNEON) {
       std::cout << "Processing NEON implementation" << std::endl;
       benchmarks_cpu::AddMatricesUseSIMDVectorsNEON(
         mat_w_h, mat_w_h, mat_addend_0, mat_addend_1, mat_sum);
     }
+#else
     else if constexpr (
       (ACCELERATION == run_environment::AccSetting::kAVX256) ||
       (ACCELERATION == run_environment::AccSetting::kAVX256_F16))
@@ -85,6 +87,7 @@ private:
       benchmarks_cpu::AddMatricesUseSIMDVectorsAVX512(
         mat_w_h, mat_w_h, mat_addend_0, mat_addend_1, mat_sum);
     }
+#endif //COMPILING_FOR_ARM
     auto end_mat_start_time = std::chrono::system_clock::now();
     DetailedTimings add_mat_timing(benchmarks::kTimingNames);
     add_mat_timing.AddTiming(benchmarks::Runtime_Type::kAddMatNoTransfer,

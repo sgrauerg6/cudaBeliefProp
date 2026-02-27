@@ -28,9 +28,44 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #define RUN_BNCHMRKS_CUDA_H
 
 #include "benchmarksRunProcessing/RunBnchmrks.h"
+#include "ProcessBnchmrksCUDA.h"
 
 class RunBnchmrksCUDA : public RunBnchmrks {
+public:
+  std::string RunDescription() const override { return std::string(run_cuda::kCUDADesc); }
 
+  //run the benchmark(s) using the optimized CPU implementation
+  std::optional<benchmarks::BnchmrksRunOutput> operator()(
+    const std::array<BnchmrksMtrx<T>, 2>& inMtrces,
+    const ParallelParams& parallel_params) const override;
 };
 
-#endif //RUN_BNCHMRKS_OPT_CUDA_H
+template<RunData_t T, run_environment::AccSetting ACCELERATION>
+inline std::optional<benchmarks::BnchmrksRunOutput> RunBnchmrksCUDA<T, ACCELERATION>::operator()(
+  const std::array<BnchmrksMtrx<T>, 2>& inMtrces,
+  const ParallelParams& parallel_params) const
+{
+  //return no value if acceleration setting is not CUDA
+  if constexpr (ACCELERATION != run_environment::AccSetting::kCUDA) {
+    return {};
+  }
+
+  //generate struct with pointers to objects for running CUDA implementation and call
+  //function to run CUDA implementation
+  RunData run_data;
+  run_data.AppendData(run_cuda::retrieveDeviceProperties(0));
+  auto process_bnchmrks_output = this->ProcessBenchmarks(
+    inMtrces,
+    std::make_unique<ProcessBnchmrksCUDA<T, ACCELERATION>>(parallel_params),
+    std::make_unique<MemoryManagement<T>>());
+  if (!process_bnchmrks_output) {
+    return {};
+  }
+
+  run_data.AppendData(std::move(process_bnchmrks_output->run_data));
+  process_bnchmrks_output->run_data = std::move(run_data);
+    
+  return process_bnchmrks_output;
+}
+
+#endif //RUN_BNCHMRKS_CUDA_H

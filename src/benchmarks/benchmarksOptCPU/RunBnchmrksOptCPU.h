@@ -33,7 +33,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 template<RunData_t T, run_environment::AccSetting ACCELERATION>
 class RunBnchmrksOptCPU : public RunBnchmrks<T, ACCELERATION> {
 public:
-  std::string RunDescription() const override { return std::string(run_cpu::kBpOptCPUDesc); }
+  std::string RunDescription() const override { return std::string(run_cpu::kOptCPUDesc); }
 
   //run the benchmark(s) using the optimized CPU implementation
   std::optional<benchmarks::BnchmrksRunOutput> operator()(

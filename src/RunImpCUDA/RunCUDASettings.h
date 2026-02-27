@@ -50,7 +50,7 @@ using halftype = half;
  */
 namespace run_cuda {
 
-constexpr std::string_view kOptimizeCUDADesc{"CUDA"};
+constexpr std::string_view kCUDADesc{"CUDA"};
 constexpr std::string_view kCUDAVersionHeader{"Cuda version"};
 constexpr std::string_view kCUDARuntimeHeader{"Cuda Runtime Version"};
 
