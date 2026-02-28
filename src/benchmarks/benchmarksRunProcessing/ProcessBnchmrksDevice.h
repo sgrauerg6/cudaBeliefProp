@@ -43,7 +43,6 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #include "RunEval/RunEvalConstsEnums.h"
 #include "RuntimeTiming/DetailedTimings.h"
 #include "benchmarksResultsEval/DetailedTimingBnchmrksConsts.h"
-#include "benchmarksRunProcessing/BnchmrksConstsEnumsAliases.h"
 #include "ParallelParamsBnchmrks.h"
 #include "BnchmrksConstsEnumsAliases.h"
 
@@ -97,7 +96,7 @@ public:
     const T* mat_input_1,
     T* mat_output) const
   {
-    return AddMatrices(benchmark_size, mat_input_0, mat_input_1, mat_output);
+    return TwoDMatricesBnchmrk(benchmark_size, mat_input_0, mat_input_1, mat_output);
   }
 
 protected:
@@ -114,7 +113,7 @@ private:
    * @param mat_sum
    * @return Status of "no error" if successful, "error" status otherwise
    */
-  virtual std::optional<DetailedTimings<benchmarks::Runtime_Type>> AddMatrices(
+  virtual std::optional<DetailedTimings<benchmarks::Runtime_Type>> TwoDMatricesBnchmrk(
     const unsigned int mat_w_h,
     const T* mat_addend_0,
     const T* mat_addend_1,

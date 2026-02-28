@@ -51,7 +51,7 @@ private:
    * @param mat_sum
    * @return std::optional<DetailedTimings<benchmarks::Runtime_Type>>
    */
-  std::optional<DetailedTimings<benchmarks::Runtime_Type>> AddMatrices(
+  std::optional<DetailedTimings<benchmarks::Runtime_Type>> TwoDMatricesBnchmrk(
     const unsigned int mat_w_h,
     const T* mat_addend_0,
     const T* mat_addend_1,
@@ -63,7 +63,9 @@ private:
       for (unsigned int x=0; x < mat_w_h; x++)
       {
         const unsigned int val_idx = y*mat_w_h + x;
-        mat_sum[val_idx] = mat_addend_0[val_idx] + mat_addend_1[val_idx];
+        if constexpr (BENCHMARK_RUN == benchmarks::BenchmarkRun::kAddTwoD) {
+          mat_sum[val_idx] = mat_addend_0[val_idx] + mat_addend_1[val_idx];
+        }
       }
     }
     auto end_mat_start_time = std::chrono::system_clock::now();

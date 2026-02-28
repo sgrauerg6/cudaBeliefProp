@@ -53,7 +53,7 @@ private:
    * @param mat_sum
    * @return Status of "no error" if successful, "error" status otherwise
    */
-  std::optional<DetailedTimings<benchmarks::Runtime_Type>> AddMatrices(
+  std::optional<DetailedTimings<benchmarks::Runtime_Type>> TwoDMatricesBnchmrk(
     const unsigned int mat_w_h,
     const T* mat_addend_0,
     const T* mat_addend_1,
@@ -61,13 +61,13 @@ private:
   {
     auto add_mat_start_time = std::chrono::system_clock::now();
     if constexpr (ACCELERATION == run_environment::AccSetting::kNone) {
-      benchmarks_cpu::AddMatricesNoPackedInstructions<T>(
+      benchmarks_cpu::TwoDMatricesBnchmrkNoPackedInstructions<T, BENCHMARK_RUN>(
         mat_w_h, mat_w_h, mat_addend_0, mat_addend_1, mat_sum);
     }
 #if defined(COMPILING_FOR_ARM)
     else if constexpr (ACCELERATION == run_environment::AccSetting::kNEON) {
       std::cout << "Processing NEON implementation" << std::endl;
-      benchmarks_cpu::AddMatricesUseSIMDVectorsNEON(
+      benchmarks_cpu::TwoDMatricesBnchmrkUseSIMDVectorsNEON<BENCHMARK_RUN>(
         mat_w_h, mat_w_h, mat_addend_0, mat_addend_1, mat_sum);
     }
 #else
@@ -76,7 +76,7 @@ private:
       (ACCELERATION == run_environment::AccSetting::kAVX256_F16))
     {
       std::cout << "Processing AVX256 implementation" << std::endl;
-      benchmarks_cpu::AddMatricesUseSIMDVectorsAVX256(
+      benchmarks_cpu::TwoDMatricesBnchmrkUseSIMDVectorsAVX256<BENCHMARK_RUN>(
         mat_w_h, mat_w_h, mat_addend_0, mat_addend_1, mat_sum);
     }
     else if constexpr (
@@ -84,7 +84,7 @@ private:
       (ACCELERATION == run_environment::AccSetting::kAVX512_F16))
     {
       std::cout << "Processing AVX512 implementation" << std::endl;
-      benchmarks_cpu::AddMatricesUseSIMDVectorsAVX512(
+      benchmarks_cpu::TwoDMatricesBnchmrkUseSIMDVectorsAVX512<BENCHMARK_RUN>(
         mat_w_h, mat_w_h, mat_addend_0, mat_addend_1, mat_sum);
     }
 #endif //COMPILING_FOR_ARM

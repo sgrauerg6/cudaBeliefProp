@@ -37,41 +37,45 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #include "RunImpCPU/AVX512TemplateSpFuncts.h"
 #include "RunImpCPU/RunCPUSettings.h"
 
-void benchmarks_cpu::AddMatricesUseSIMDVectorsAVX512(
+template <benchmarks::BenchmarkRun BENCHMARK_RUN>
+void benchmarks_cpu::TwoDMatricesBnchmrkUseSIMDVectorsAVX512(
   unsigned int mtrx_width, unsigned int mtrx_height,
   const float* matrix_addend_0, const float* matrix_addend_1,
   float* matrix_sum)
 {
-  AddMatricesSIMD<float, __m512, float, __m512>(mtrx_width, mtrx_height,
+  TwoDMatricesBnchmrkSIMD<float, __m512, float, __m512, BENCHMARK_RUN>(mtrx_width, mtrx_height,
     matrix_addend_0, matrix_addend_1, matrix_sum);
 }
 
-void benchmarks_cpu::AddMatricesUseSIMDVectorsAVX512(
+template <benchmarks::BenchmarkRun BENCHMARK_RUN>
+void benchmarks_cpu::TwoDMatricesBnchmrkUseSIMDVectorsAVX512(
   unsigned int mtrx_width, unsigned int mtrx_height,
   const double* matrix_addend_0, const double* matrix_addend_1,
   double* matrix_sum)
 {
-  AddMatricesSIMD<double, __m512d, double, __m512d>(mtrx_width, mtrx_height,
+  TwoDMatricesBnchmrkSIMD<double, __m512d, double, __m512d, BENCHMARK_RUN>(mtrx_width, mtrx_height,
     matrix_addend_0, matrix_addend_1, matrix_sum);
 }
 
-void benchmarks_cpu::AddMatricesUseSIMDVectorsAVX512(
+template <benchmarks::BenchmarkRun BENCHMARK_RUN>
+void benchmarks_cpu::TwoDMatricesBnchmrkUseSIMDVectorsAVX512(
   unsigned int mtrx_width, unsigned int mtrx_height,
   const short* matrix_addend_0, const short* matrix_addend_1,
   short* matrix_sum)
 {
-  AddMatricesSIMD<short, __m256i, float, __m512>(mtrx_width, mtrx_height,
+  TwoDMatricesBnchmrkSIMD<short, __m256i, float, __m512, BENCHMARK_RUN>(mtrx_width, mtrx_height,
     matrix_addend_0, matrix_addend_1, matrix_sum);
 }
 
 #if defined(FLOAT16_VECTORIZATION)
 
-void benchmarks_cpu::AddMatricesUseSIMDVectorsAVX512(
+template <benchmarks::BenchmarkRun BENCHMARK_RUN>
+void benchmarks_cpu::TwoDMatricesBnchmrkUseSIMDVectorsAVX512(
   unsigned int mtrx_width, unsigned int mtrx_height,
   const _Float16* matrix_addend_0, const _Float16* matrix_addend_1,
   _Float16* matrix_sum)
 {
-  AddMatricesSIMD<_Float16, __m512h, _Float16, __m512h>(mtrx_width, mtrx_height,
+  TwoDMatricesBnchmrkSIMD<_Float16, __m512h, _Float16, __m512h, BENCHMARK_RUN>(mtrx_width, mtrx_height,
     matrix_addend_0, matrix_addend_1, matrix_sum);
 }
 

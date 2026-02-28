@@ -33,30 +33,33 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #include "RunImpCPU/NEONTemplateSpFuncts.h"
 
 //using inline since otherwise get duplicate symbol error
-inline void benchmarks_cpu::AddMatricesUseSIMDVectorsNEON(
+template <benchmarks::BenchmarkRun BENCHMARK_RUN>
+inline void benchmarks_cpu::TwoDMatricesBnchmrkUseSIMDVectorsNEON(
   unsigned int mtrx_width, unsigned int mtrx_height,
   const float* matrix_addend_0, const float* matrix_addend_1,
   float* matrix_sum)
 {
-  AddMatricesSIMD<float, float32x4_t, float, float32x4_t>(mtrx_width, mtrx_height,
+  TwoDMatricesBnchmrkSIMD<float, float32x4_t, float, float32x4_t, BENCHMARK_RUN>(mtrx_width, mtrx_height,
     matrix_addend_0, matrix_addend_1, matrix_sum);
 }
 
-inline void benchmarks_cpu::AddMatricesUseSIMDVectorsNEON(
+template <benchmarks::BenchmarkRun BENCHMARK_RUN>
+inline void benchmarks_cpu::TwoDMatricesBnchmrkUseSIMDVectorsNEON(
   unsigned int mtrx_width, unsigned int mtrx_height,
   const double* matrix_addend_0, const double* matrix_addend_1,
   double* matrix_sum)
 {
-  AddMatricesSIMD<double, float64x2_t, double, float64x2_t>(mtrx_width, mtrx_height,
+  TwoDMatricesBnchmrkSIMD<double, float64x2_t, double, float64x2_t, BENCHMARK_RUN>(mtrx_width, mtrx_height,
     matrix_addend_0, matrix_addend_1, matrix_sum);
 }
 
-inline void benchmarks_cpu::AddMatricesUseSIMDVectorsNEON(
+template <benchmarks::BenchmarkRun BENCHMARK_RUN>
+inline void benchmarks_cpu::TwoDMatricesBnchmrkUseSIMDVectorsNEON(
   unsigned int mtrx_width, unsigned int mtrx_height,
   const float16_t* matrix_addend_0, const float16_t* matrix_addend_1,
   float16_t* matrix_sum)
 {
-  AddMatricesSIMD<float16_t, float16x4_t, float, float32x4_t>(mtrx_width, mtrx_height,
+  TwoDMatricesBnchmrkSIMD<float16_t, float16x4_t, float, float32x4_t, BENCHMARK_RUN>(mtrx_width, mtrx_height,
     matrix_addend_0, matrix_addend_1, matrix_sum);
 }
 

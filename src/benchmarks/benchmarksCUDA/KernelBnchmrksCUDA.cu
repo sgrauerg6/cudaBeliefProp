@@ -27,6 +27,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #include <cuda_runtime.h>
 #include <cuda.h>
 #include "RunImp/UtilityFuncts.h"
+#include "benchmarksRunProcessing/BnchmrksConstsEnumsAliases.h"
 
 /**
  * @brief Namespace to define global kernel functions for benchmark functions
@@ -43,8 +44,8 @@ namespace benchmarks_cuda {
    * @param mtrx_height
    * @param matrix_sum
    */
-  template <RunData_t T>
-  __global__ void addMatrices(
+  template <RunData_t T, benchmarks::BenchmarkRun BENCHMARK_RUN>
+  __global__ void TwoDMatricesBnchmrk(
     unsigned int mtrx_width, unsigned int mtrx_height,
     const T* matrix_0, const T* matrix_1,
     T* matrix_sum)
@@ -52,9 +53,10 @@ namespace benchmarks_cuda {
     //get x and y indices corresponding to current CUDA thread
     const unsigned int x_val = blockIdx.x * blockDim.x + threadIdx.x;
     const unsigned int y_val = blockIdx.y * blockDim.y + threadIdx.y;
-
-    matrix_sum[y_val * mtrx_width + x_val] =
-      matrix_0[y_val * mtrx_width + x_val] + 
-      matrix_1[y_val * mtrx_width + x_val];
+    if constexpr (BENCHMARK_RUN == benchmarks::BenchmarkRun::kAddTwoD) {
+      matrix_sum[y_val * mtrx_width + x_val] =
+        matrix_0[y_val * mtrx_width + x_val] + 
+        matrix_1[y_val * mtrx_width + x_val];
+    }
   }
 };

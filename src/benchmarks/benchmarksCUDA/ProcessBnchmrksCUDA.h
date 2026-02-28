@@ -48,7 +48,7 @@ private:
    * @param mat_sum
    * @return Status of "no error" if successful, "error" status otherwise
    */
-  std::optional<DetailedTimings<benchmarks::Runtime_Type>> AddMatrices(
+  std::optional<DetailedTimings<benchmarks::Runtime_Type>> TwoDMatricesBnchmrk(
     const unsigned int mat_w_h,
     const T* mat_addend_0,
     const T* mat_addend_1,
@@ -72,7 +72,7 @@ private:
 
     auto add_mat_start_time = std::chrono::system_clock::now();
     //process matrix addition on GPU using CUDA
-    benchmarks_cuda::addMatrices<T> <<<grid, threads>>> (
+    benchmarks_cuda::TwoDMatricesBnchmrk<T, BENCHMARK_RUN> <<<grid, threads>>> (
       mat_w_h, mat_w_h, mat_addend_0, mat_addend_1, mat_sum);
     cudaDeviceSynchronize();
     auto end_mat_start_time = std::chrono::system_clock::now();
