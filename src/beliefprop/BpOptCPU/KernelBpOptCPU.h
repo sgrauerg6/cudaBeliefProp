@@ -2247,7 +2247,7 @@ void beliefprop_cpu::MsgStereoSIMDProcessing(
 
   //val_to_normalize /= DISP_VALS;
   val_to_normalize =
-    simd_processing::divideVals<W, W, W>(
+    simd_processing::DivideVals<W, W, W>(
       val_to_normalize,
       simd_processing::ConvertValToDatatype<W, V>((double)DISP_VALS));
 
@@ -2402,7 +2402,7 @@ void beliefprop_cpu::MsgStereoSIMDProcessing(
 
   //val_to_normalize /= DISP_VALS;
   val_to_normalize =
-    simd_processing::divideVals<W, W, W>(
+    simd_processing::DivideVals<W, W, W>(
       val_to_normalize,
       simd_processing::ConvertValToDatatype<W, V>((float)bp_settings_disp_vals));
 

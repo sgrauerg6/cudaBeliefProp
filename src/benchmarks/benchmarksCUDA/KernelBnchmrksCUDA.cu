@@ -58,5 +58,11 @@ namespace benchmarks_cuda {
         matrix_0[y_val * mtrx_width + x_val] + 
         matrix_1[y_val * mtrx_width + x_val];
     }
+    else if constexpr (BENCHMARK_RUN == benchmarks::BenchmarkRun::kDivideTwoD) {
+    }
+    else if constexpr (BENCHMARK_RUN == benchmarks::BenchmarkRun::kCopyTwoD) {
+    }
+    else if constexpr (BENCHMARK_RUN == benchmarks::BenchmarkRun::kGemm) {
+    }
   }
 };

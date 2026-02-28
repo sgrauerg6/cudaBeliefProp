@@ -173,13 +173,13 @@ template<> inline __m512h simd_processing::SubtractVals<__m512h, __m512h, __m512
 
 #endif //FLOAT16_VECTORIZATION
 
-template<> inline __m512 simd_processing::divideVals<__m512, __m512, __m512>(
+template<> inline __m512 simd_processing::DivideVals<__m512, __m512, __m512>(
   const __m512& val1, const __m512& val2)
 {
   return _mm512_div_ps(val1, val2);
 }
 
-template<> inline __m512d simd_processing::divideVals<__m512d, __m512d, __m512d>(
+template<> inline __m512d simd_processing::DivideVals<__m512d, __m512d, __m512d>(
   const __m512d& val1, const __m512d& val2)
 {
   return _mm512_div_pd(val1, val2);
@@ -187,7 +187,7 @@ template<> inline __m512d simd_processing::divideVals<__m512d, __m512d, __m512d>
 
 #if defined(FLOAT16_VECTORIZATION)
 
-template<> inline __m512h simd_processing::divideVals<__m512h, __m512h, __m512h>(
+template<> inline __m512h simd_processing::DivideVals<__m512h, __m512h, __m512h>(
   const __m512h& val1, const __m512h& val2)
 {
   return _mm512_div_ph(val1, val2);

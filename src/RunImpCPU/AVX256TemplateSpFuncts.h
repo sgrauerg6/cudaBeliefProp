@@ -173,13 +173,13 @@ template<> inline __m256h simd_processing::SubtractVals<__m256h, __m256h, __m256
 
 #endif //FLOAT16_VECTORIZATION
 
-template<> inline __m256 simd_processing::divideVals<__m256, __m256, __m256>(
+template<> inline __m256 simd_processing::DivideVals<__m256, __m256, __m256>(
   const __m256& val1, const __m256& val2)
 {
   return _mm256_div_ps(val1, val2);
 }
 
-template<> inline __m256d simd_processing::divideVals<__m256d, __m256d, __m256d>(
+template<> inline __m256d simd_processing::DivideVals<__m256d, __m256d, __m256d>(
   const __m256d& val1, const __m256d& val2)
 {
   return _mm256_div_pd(val1, val2);
@@ -187,7 +187,7 @@ template<> inline __m256d simd_processing::divideVals<__m256d, __m256d, __m256d>
 
 #if defined(FLOAT16_VECTORIZATION)
 
-template<> inline __m256h simd_processing::divideVals<__m256h, __m256h, __m256h>(
+template<> inline __m256h simd_processing::DivideVals<__m256h, __m256h, __m256h>(
   const __m256h& val1, const __m256h& val2)
 {
   return _mm256_div_ph(val1, val2);

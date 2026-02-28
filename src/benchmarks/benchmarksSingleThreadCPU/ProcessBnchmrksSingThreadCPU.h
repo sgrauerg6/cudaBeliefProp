@@ -66,6 +66,14 @@ private:
         if constexpr (BENCHMARK_RUN == benchmarks::BenchmarkRun::kAddTwoD) {
           mat_sum[val_idx] = mat_addend_0[val_idx] + mat_addend_1[val_idx];
         }
+        else if constexpr (BENCHMARK_RUN == benchmarks::BenchmarkRun::kDivideTwoD) {
+          mat_sum[val_idx] = mat_addend_0[val_idx] / mat_addend_1[val_idx];
+        }
+        else if constexpr (BENCHMARK_RUN == benchmarks::BenchmarkRun::kCopyTwoD) {
+          mat_sum[val_idx] = mat_addend_0[val_idx];
+        }
+        else if constexpr (BENCHMARK_RUN == benchmarks::BenchmarkRun::kGemm) {
+        }
       }
     }
     auto end_mat_start_time = std::chrono::system_clock::now();

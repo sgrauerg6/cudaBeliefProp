@@ -190,6 +190,14 @@ void benchmarks_cpu::TwoDMatricesBnchmrkNoPackedInstructions(
       if constexpr (BENCHMARK_RUN == benchmarks::BenchmarkRun::kAddTwoD) {
         matrix_sum[val_idx] = matrix_addend_0[val_idx] + matrix_addend_1[val_idx];
       }
+      else if constexpr (BENCHMARK_RUN == benchmarks::BenchmarkRun::kDivideTwoD) {
+        matrix_sum[val_idx] = matrix_addend_0[val_idx] / matrix_addend_1[val_idx];
+      }
+      else if constexpr (BENCHMARK_RUN == benchmarks::BenchmarkRun::kCopyTwoD) {
+        matrix_sum[val_idx] = matrix_addend_0[val_idx];
+      }
+      else if constexpr (BENCHMARK_RUN == benchmarks::BenchmarkRun::kGemm) {
+      }
     }
   }
 #if defined(__APPLE__) && !defined(DONT_USE_GRAND_CENTRAL_DISPATCH)
@@ -231,6 +239,22 @@ void benchmarks_cpu::TwoDMatricesBnchmrkSIMD(
           simd_processing::AddVals<U, U, W>(
             simd_processing::LoadPackedDataAligned<T, U>(val_idx, matrix_addend_0),
             simd_processing::LoadPackedDataAligned<T, U>(val_idx, matrix_addend_1)));
+      }
+      else if constexpr (BENCHMARK_RUN == benchmarks::BenchmarkRun::kDivideTwoD) {
+        simd_processing::StorePackedDataAligned<T, W>(
+          val_idx,
+          matrix_sum,
+          simd_processing::DivideVals<U, U, W>(
+            simd_processing::LoadPackedDataAligned<T, U>(val_idx, matrix_addend_0),
+            simd_processing::LoadPackedDataAligned<T, U>(val_idx, matrix_addend_1)));
+      }
+      else if constexpr (BENCHMARK_RUN == benchmarks::BenchmarkRun::kCopyTwoD) {
+        simd_processing::StorePackedDataAligned<T, W>(
+          val_idx,
+          matrix_sum,
+          simd_processing::LoadPackedDataAligned<T, U>(val_idx, matrix_addend_0));
+      }
+      else if constexpr (BENCHMARK_RUN == benchmarks::BenchmarkRun::kGemm) {
       }
     }
   }

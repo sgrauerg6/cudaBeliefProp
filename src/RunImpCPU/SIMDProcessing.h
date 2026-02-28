@@ -133,7 +133,7 @@ namespace simd_processing
    * @return SIMD structure with quotient of values
    */
   template<RunDataSingOrVect_t T, RunDataSingOrVect_t U, RunDataSingOrVect_t V>
-  V divideVals(const T& val1, const U& val2) { return (val1 / val2); }
+  V DivideVals(const T& val1, const U& val2) { return (val1 / val2); }
 
   /**
    * @brief Convert value of specified type to value of another specified type<br>

@@ -121,13 +121,13 @@ template<> inline float64x2_t simd_processing::SubtractVals<float64x2_t, float64
   return vsubq_f64(val1, val2);
 }
 
-template<> inline float32x4_t simd_processing::divideVals<float32x4_t, float32x4_t, float32x4_t>(
+template<> inline float32x4_t simd_processing::DivideVals<float32x4_t, float32x4_t, float32x4_t>(
   const float32x4_t& val1, const float32x4_t& val2)
 {
   return vdivq_f32(val1, val2);
 }
 
-template<> inline float64x2_t simd_processing::divideVals<float64x2_t, float64x2_t, float64x2_t>(
+template<> inline float64x2_t simd_processing::DivideVals<float64x2_t, float64x2_t, float64x2_t>(
   const float64x2_t& val1, const float64x2_t& val2)
 {
   return vdivq_f64(val1, val2);
