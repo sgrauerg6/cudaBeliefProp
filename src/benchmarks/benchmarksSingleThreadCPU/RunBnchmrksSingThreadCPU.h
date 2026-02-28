@@ -40,14 +40,14 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 template<RunData_t T, run_environment::AccSetting ACCELERATION>
 class RunBnchmrksSingThreadCPU : public RunBnchmrks<T, ACCELERATION> {
 public:
-  std::optional<benchmarks::BnchmrksRunOutput> operator()(
+  std::optional<benchmarks::BnchmrksRunOutput<T>> operator()(
     const std::array<BnchmrksMtrx<T>, 2>& inMtrces,
     const ParallelParams& parallel_params) const override;
   std::string RunDescription() const override { return "Single-Thread CPU"; }
 };
 
 template<RunData_t T, run_environment::AccSetting ACCELERATION>
-inline std::optional<benchmarks::BnchmrksRunOutput> RunBnchmrksSingThreadCPU<T, ACCELERATION>::operator()(
+inline std::optional<benchmarks::BnchmrksRunOutput<T>> RunBnchmrksSingThreadCPU<T, ACCELERATION>::operator()(
   const std::array<BnchmrksMtrx<T>, 2>& inMtrces,
   const ParallelParams& parallel_params) const
 {
@@ -59,10 +59,11 @@ inline std::optional<benchmarks::BnchmrksRunOutput> RunBnchmrksSingThreadCPU<T, 
     std::make_unique<MemoryManagement<T>>());
   if (process_set_output) {
     //clear all returned run data and add only the runtime since that is all that
-    //is used from the single threaded implementation in the output
-    //TODO: eventually want to compare single thread output with optimized output
+    //run data that is used from the single threaded implementation in the output
     process_set_output->run_data.ClearData();
-    process_set_output->run_data.AddDataWHeader(std::string(run_eval::kSingleThreadRuntimeHeader), process_set_output->run_time.count());
+    process_set_output->run_data.AddDataWHeader(
+      std::string(run_eval::kSingleThreadRuntimeHeader),
+      process_set_output->run_time.count());
   }
 
   return process_set_output;

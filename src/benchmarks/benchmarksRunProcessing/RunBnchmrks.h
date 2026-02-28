@@ -44,12 +44,14 @@ namespace benchmarks {
 
 /**
  * @brief Structure with output runtime and other evaluation data from running
- * benchmarks implementation
+ * benchmarks implementation as well as the output matrix from the run
  */
+template<RunData_t T>
 struct BnchmrksRunOutput
 {
   std::chrono::duration<double> run_time;
   RunData run_data;
+  BnchmrksMtrx<T> result_mtrx;
 };
 
 };
@@ -84,7 +86,7 @@ public:
    * @param parallel_params 
    * @return Output from benchmarks run or null output if error
    */
-  virtual std::optional<benchmarks::BnchmrksRunOutput> operator()(
+  virtual std::optional<benchmarks::BnchmrksRunOutput<T>> operator()(
     const std::array<BnchmrksMtrx<T>, 2>& inMtrces,
     const ParallelParams& parallel_params) const = 0;
 
@@ -99,7 +101,7 @@ protected:
    * @return Output from running benchmarks or null if
    * error in run
    */
-  std::optional<benchmarks::BnchmrksRunOutput> ProcessBenchmarks(
+  std::optional<benchmarks::BnchmrksRunOutput<T>> ProcessBenchmarks(
     const std::array<BnchmrksMtrx<T>, 2>& inMtrces,
     const std::unique_ptr<ProcessBnchmrksDevice<T, ACCELERATION>>& proc_bnchmrks_device,
     const std::unique_ptr<MemoryManagement<T>>& mem_management) const;
@@ -109,7 +111,7 @@ protected:
 //device using pointers to acceleration-specific smooth image,
 //process BP, and memory management child class objects
 template<RunData_t T, run_environment::AccSetting ACCELERATION>
-std::optional<benchmarks::BnchmrksRunOutput> RunBnchmrks<T, ACCELERATION>::ProcessBenchmarks(
+std::optional<benchmarks::BnchmrksRunOutput<T>> RunBnchmrks<T, ACCELERATION>::ProcessBenchmarks(
   const std::array<BnchmrksMtrx<T>, 2>& inMtrces,
   const std::unique_ptr<ProcessBnchmrksDevice<T, ACCELERATION>>& proc_bnchmrks_device,
   const std::unique_ptr<MemoryManagement<T>>& mem_management) const
@@ -149,15 +151,17 @@ std::optional<benchmarks::BnchmrksRunOutput> RunBnchmrks<T, ACCELERATION>::Proce
   //initialize structures for timing data
   DetailedTimings detailed_bnchmrks_timings(benchmarks::kTimingNames);
 
+  //run benchmark(s) on device a specified number of times and use median
+  //runtime(s) across runs in results
   constexpr size_t kNumEvalRuns{3};
   for (size_t i=0; i < kNumEvalRuns; i++) {
-    //run benchmark on device and retrieve output runtimes
+    //run benchmark(s) on device and retrieve output runtime(s)
     const auto process_bnchmrks_timings = (*proc_bnchmrks_device)(
       inMtrces[0].Width(), mat_0_device, mat_1_device, mat_2_device);
     if (!process_bnchmrks_timings) {
       return {};
     }
-    //add timings from current run to overall timings
+    //add timing(s) from current run to overall timings
     detailed_bnchmrks_timings.AddToCurrentTimings(*process_bnchmrks_timings);
   }
 
@@ -189,13 +193,18 @@ std::optional<benchmarks::BnchmrksRunOutput> RunBnchmrks<T, ACCELERATION>::Proce
     detailed_bnchmrks_timings.MedianTiming(
       benchmarks::Runtime_Type::kAddMatNoTransfer).count());
 
-  benchmarks::BnchmrksRunOutput run_bnchmrks_output;
+  benchmarks::BnchmrksRunOutput<T> run_bnchmrks_output;
   //runtime without transfer time is stored as output runtime
   //with more detailed breakdowns in the run data
   run_bnchmrks_output.run_time =
     detailed_bnchmrks_timings.MedianTiming(
       benchmarks::Runtime_Type::kAddMatNoTransfer);
   run_bnchmrks_output.run_data = run_data;
+  //copy results matrix to output
+  run_bnchmrks_output.result_mtrx = BnchmrksMtrx<T>(
+    inMtrces[0].Width(),
+    inMtrces[0].Height(),
+    out_mat_host);
 
   //free output matrix on host
   delete [] out_mat_host;

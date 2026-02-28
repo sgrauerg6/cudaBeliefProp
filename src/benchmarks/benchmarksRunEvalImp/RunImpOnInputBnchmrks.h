@@ -219,7 +219,7 @@ std::optional<RunData> RunImpOnInputBnchmrks<T, OPT_IMP_ACCEL, NUM_INPUT>::RunIm
       
   //run optimized implementation and retrieve structure with runtime and output
   //disparity map
-  std::map<run_environment::AccSetting, std::optional<benchmarks::BnchmrksRunOutput>>
+  std::map<run_environment::AccSetting, std::optional<benchmarks::BnchmrksRunOutput<T>>>
     run_output;
   run_output[OPT_IMP_ACCEL] =
     run_bnchmrks_opt_->operator()(in_mtrces_, *parallel_params);
@@ -252,6 +252,13 @@ std::optional<RunData> RunImpOnInputBnchmrks<T, OPT_IMP_ACCEL, NUM_INPUT>::RunIm
     //append run data for single thread run to evaluation run data
     run_data.AppendData(
       run_output[run_environment::AccSetting::kNone]->run_data);
+    
+    //compare optimized and single-thread CPU outputs and add results to
+    //run data
+    run_data.AddDataWHeader(
+      std::string(benchmarks::kSumSqrDiffOptSingThreadOutputMtrx),
+      run_output[run_environment::AccSetting::kNone]->result_mtrx.GetSumSqrDiff(
+        run_output[OPT_IMP_ACCEL]->result_mtrx));
   }
 
   //return structure indicating that run succeeded along with data from run

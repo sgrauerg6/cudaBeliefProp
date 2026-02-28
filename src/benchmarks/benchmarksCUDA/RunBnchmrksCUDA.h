@@ -35,13 +35,13 @@ public:
   std::string RunDescription() const override { return std::string(run_cuda::kCUDADesc); }
 
   //run the benchmark(s) using the optimized CPU implementation
-  std::optional<benchmarks::BnchmrksRunOutput> operator()(
+  std::optional<benchmarks::BnchmrksRunOutput<T>> operator()(
     const std::array<BnchmrksMtrx<T>, 2>& inMtrces,
     const ParallelParams& parallel_params) const override;
 };
 
 template<RunData_t T, run_environment::AccSetting ACCELERATION>
-inline std::optional<benchmarks::BnchmrksRunOutput> RunBnchmrksCUDA<T, ACCELERATION>::operator()(
+inline std::optional<benchmarks::BnchmrksRunOutput<T>> RunBnchmrksCUDA<T, ACCELERATION>::operator()(
   const std::array<BnchmrksMtrx<T>, 2>& inMtrces,
   const ParallelParams& parallel_params) const
 {

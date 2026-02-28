@@ -31,10 +31,27 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #include <algorithm>
 #include <vector>
 #include <random>
+#include <iterator>
+
+namespace benchmarks {
+  const std::string_view kSumSqrDiffOptSingThreadOutputMtrx{
+    "Sum squared difference between optimized and single-thread CPU results"};
+};
 
 template <typename T>
 class BnchmrksMtrx {
 public:
+  explicit BnchmrksMtrx() {}
+
+  explicit BnchmrksMtrx(size_t width, size_t height, T* data) :
+    width_(width), height_(height)
+  {
+    mtrix_data_ =
+      std::vector<T>(
+        data,
+        data + (width_ * height_));
+  }
+
   void InitMtxWRandData(size_t width, size_t height) {
     width_ = width;
     height_ = height;
@@ -57,12 +74,18 @@ public:
   }
 
   float GetSumSqrDiff(const BnchmrksMtrx<T>& mtrx_comp) const {
+    //set max sum of squared difference to one-fifth of max float
+    //value to prevent overflow
+    constexpr float MAX_DIFF{
+      std::numeric_limits<float>::max() / 5};
     float sum_sqr_diff{0.0};
-    //assuming that matrix to compare has same width and height
     for (size_t i=0; i < width_*height_; i++) {
       sum_sqr_diff +=
-        ((float)mtrix_data_[i] - (float)mtrx_comp.mtrix_data_[i]) *
-        ((float)mtrix_data_[i] - (float)mtrx_comp.mtrix_data_[i]);
+        (((float)mtrix_data_[i] - (float)mtrx_comp.mtrix_data_[i]) *
+         ((float)mtrix_data_[i] - (float)mtrx_comp.mtrix_data_[i]));
+      if (sum_sqr_diff >= MAX_DIFF) {
+        return MAX_DIFF;
+      }
     }
     
     //return computed sum of square different across all elements in matrices
