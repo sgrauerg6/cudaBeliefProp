@@ -30,7 +30,8 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #include "benchmarksRunProcessing/RunBnchmrks.h"
 #include "ProcessBnchmrksCUDA.h"
 
-class RunBnchmrksCUDA : public RunBnchmrks {
+template<RunData_t T, run_environment::AccSetting ACCELERATION, benchmarks::BenchmarkRun BENCHMARK_RUN>
+class RunBnchmrksCUDA : public RunBnchmrks<T, ACCELERATION, BENCHMARK_RUN> {
 public:
   std::string RunDescription() const override { return std::string(run_cuda::kCUDADesc); }
 
@@ -40,8 +41,8 @@ public:
     const ParallelParams& parallel_params) const override;
 };
 
-template<RunData_t T, run_environment::AccSetting ACCELERATION>
-inline std::optional<benchmarks::BnchmrksRunOutput<T>> RunBnchmrksCUDA<T, ACCELERATION>::operator()(
+template<RunData_t T, run_environment::AccSetting ACCELERATION, benchmarks::BenchmarkRun BENCHMARK_RUN>
+inline std::optional<benchmarks::BnchmrksRunOutput<T>> RunBnchmrksCUDA<T, ACCELERATION, BENCHMARK_RUN>::operator()(
   const std::array<BnchmrksMtrx<T>, 2>& inMtrces,
   const ParallelParams& parallel_params) const
 {

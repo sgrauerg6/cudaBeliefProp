@@ -30,8 +30,8 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #include "benchmarksRunProcessing/RunBnchmrks.h"
 #include "ProcessBnchmrksOptCPU.h"
 
-template<RunData_t T, run_environment::AccSetting ACCELERATION>
-class RunBnchmrksOptCPU : public RunBnchmrks<T, ACCELERATION> {
+template<RunData_t T, run_environment::AccSetting ACCELERATION, benchmarks::BenchmarkRun BENCHMARK_RUN>
+class RunBnchmrksOptCPU : public RunBnchmrks<T, ACCELERATION, BENCHMARK_RUN> {
 public:
   std::string RunDescription() const override { return std::string(run_cpu::kOptCPUDesc); }
 
@@ -41,8 +41,8 @@ public:
     const ParallelParams& parallel_params) const override;
 };
 
-template<RunData_t T, run_environment::AccSetting ACCELERATION>
-inline std::optional<benchmarks::BnchmrksRunOutput<T>> RunBnchmrksOptCPU<T, ACCELERATION>::operator()(
+template<RunData_t T, run_environment::AccSetting ACCELERATION, benchmarks::BenchmarkRun BENCHMARK_RUN>
+inline std::optional<benchmarks::BnchmrksRunOutput<T>> RunBnchmrksOptCPU<T, ACCELERATION, BENCHMARK_RUN>::operator()(
   const std::array<BnchmrksMtrx<T>, 2>& inMtrces,
   const ParallelParams& parallel_params) const
 {
@@ -67,7 +67,7 @@ inline std::optional<benchmarks::BnchmrksRunOutput<T>> RunBnchmrksOptCPU<T, ACCE
   //function to run optimized CPU implementation
   auto process_bnchmrks_output = this->ProcessBenchmarks(
     inMtrces,
-    std::make_unique<ProcessBnchmrksOptCPU<T, ACCELERATION>>(parallel_params),
+    std::make_unique<ProcessBnchmrksOptCPU<T, ACCELERATION, BENCHMARK_RUN>>(parallel_params),
     std::make_unique<MemoryManagement<T>>());
   if (!process_bnchmrks_output) {
     return {};

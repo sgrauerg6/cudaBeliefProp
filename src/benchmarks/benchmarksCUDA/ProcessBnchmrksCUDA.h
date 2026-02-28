@@ -34,8 +34,8 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #include "RunEval/RunEvalConstsEnums.h"
 #include "KernelBnchmrksCUDA.cu"
 
-template<RunData_t T, run_environment::AccSetting ACCELERATION>
-class ProcessBnchmrksCUDA : public ProcessBnchmrksDevice<T, ACCELERATION> {
+template<RunData_t T, run_environment::AccSetting ACCELERATION, benchmarks::BenchmarkRun BENCHMARK_RUN>
+class ProcessBnchmrksCUDA : public ProcessBnchmrksDevice<T, ACCELERATION, BENCHMARK_RUN> {
 public:
 
 private:

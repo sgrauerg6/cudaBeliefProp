@@ -29,8 +29,8 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 
 #include "benchmarksRunProcessing/ProcessBnchmrksDevice.h"
 
-template<RunData_t T, run_environment::AccSetting ACCELERATION>
-class ProcessBnchmrksSingThreadCPU final : public ProcessBnchmrksDevice<T, ACCELERATION> {
+template<RunData_t T, run_environment::AccSetting ACCELERATION, benchmarks::BenchmarkRun BENCHMARK_RUN>
+class ProcessBnchmrksSingThreadCPU final : public ProcessBnchmrksDevice<T, ACCELERATION, BENCHMARK_RUN> {
 public:
 /**
  * @brief Constructor to initialize class to process benchmarks
@@ -39,7 +39,7 @@ public:
  * @param opt_cpu_params Parallel parameters to use in implementation
  */
 explicit ProcessBnchmrksSingThreadCPU(const ParallelParams& opt_cpu_params) : 
-    ProcessBnchmrksDevice<T, ACCELERATION>(opt_cpu_params) {}
+    ProcessBnchmrksDevice<T, ACCELERATION, BENCHMARK_RUN>(opt_cpu_params) {}
 
 private:
   /**

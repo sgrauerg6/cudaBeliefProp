@@ -96,46 +96,46 @@ MultRunData RunImpMultInputsBnchmrks::RunEvalImpMultDataSets(
   //run and evaluate bp implementation on all stereo sets used for benchmarking
   std::vector<MultRunData> run_results;
   run_results.push_back(RunImpOnInputBnchmrks<
-    T, OPT_IMP_ACCEL, static_cast<size_t>(benchmarks::MtrxWH::kMtrxWH_32)>().operator()(
+    T, OPT_IMP_ACCEL, static_cast<size_t>(benchmarks::MtrxWH::kMtrxWH_32), benchmarks::BenchmarkRun::kAddTwoD>().operator()(
     run_imp_settings));
   run_results.push_back(RunImpOnInputBnchmrks<
-    T, OPT_IMP_ACCEL, static_cast<size_t>(benchmarks::MtrxWH::kMtrxWH_64)>().operator()(
+    T, OPT_IMP_ACCEL, static_cast<size_t>(benchmarks::MtrxWH::kMtrxWH_64), benchmarks::BenchmarkRun::kAddTwoD>().operator()(
     run_imp_settings));
   run_results.push_back(RunImpOnInputBnchmrks<
-    T, OPT_IMP_ACCEL, static_cast<size_t>(benchmarks::MtrxWH::kMtrxWH_128)>().operator()(
+    T, OPT_IMP_ACCEL, static_cast<size_t>(benchmarks::MtrxWH::kMtrxWH_128), benchmarks::BenchmarkRun::kAddTwoD>().operator()(
     run_imp_settings));
   run_results.push_back(RunImpOnInputBnchmrks<
-    T, OPT_IMP_ACCEL, static_cast<size_t>(benchmarks::MtrxWH::kMtrxWH_256)>().operator()(
+    T, OPT_IMP_ACCEL, static_cast<size_t>(benchmarks::MtrxWH::kMtrxWH_256), benchmarks::BenchmarkRun::kAddTwoD>().operator()(
     run_imp_settings));
   run_results.push_back(RunImpOnInputBnchmrks<
-    T, OPT_IMP_ACCEL, static_cast<size_t>(benchmarks::MtrxWH::kMtrxWH_512)>().operator()(
+    T, OPT_IMP_ACCEL, static_cast<size_t>(benchmarks::MtrxWH::kMtrxWH_512), benchmarks::BenchmarkRun::kAddTwoD>().operator()(
     run_imp_settings));
   run_results.push_back(RunImpOnInputBnchmrks<
-    T, OPT_IMP_ACCEL, static_cast<size_t>(benchmarks::MtrxWH::kMtrxWH_1024)>().operator()(
+    T, OPT_IMP_ACCEL, static_cast<size_t>(benchmarks::MtrxWH::kMtrxWH_1024), benchmarks::BenchmarkRun::kAddTwoD>().operator()(
     run_imp_settings));
   run_results.push_back(RunImpOnInputBnchmrks<
-    T, OPT_IMP_ACCEL, static_cast<size_t>(benchmarks::MtrxWH::kMtrxWH_2048)>().operator()(
+    T, OPT_IMP_ACCEL, static_cast<size_t>(benchmarks::MtrxWH::kMtrxWH_2048), benchmarks::BenchmarkRun::kAddTwoD>().operator()(
     run_imp_settings));
   run_results.push_back(RunImpOnInputBnchmrks<
-    T, OPT_IMP_ACCEL, static_cast<size_t>(benchmarks::MtrxWH::kMtrxWH_4096)>().operator()(
+    T, OPT_IMP_ACCEL, static_cast<size_t>(benchmarks::MtrxWH::kMtrxWH_4096), benchmarks::BenchmarkRun::kAddTwoD>().operator()(
     run_imp_settings));
   run_results.push_back(RunImpOnInputBnchmrks<
-    T, OPT_IMP_ACCEL, static_cast<size_t>(benchmarks::MtrxWH::kMtrxWH_6144)>().operator()(
+    T, OPT_IMP_ACCEL, static_cast<size_t>(benchmarks::MtrxWH::kMtrxWH_6144), benchmarks::BenchmarkRun::kAddTwoD>().operator()(
     run_imp_settings));
   run_results.push_back(RunImpOnInputBnchmrks<
-    T, OPT_IMP_ACCEL, static_cast<size_t>(benchmarks::MtrxWH::kMtrxWH_8192)>().operator()(
+    T, OPT_IMP_ACCEL, static_cast<size_t>(benchmarks::MtrxWH::kMtrxWH_8192), benchmarks::BenchmarkRun::kAddTwoD>().operator()(
     run_imp_settings));
   run_results.push_back(RunImpOnInputBnchmrks<
-    T, OPT_IMP_ACCEL, static_cast<size_t>(benchmarks::MtrxWH::kMtrxWH_12288)>().operator()(
+    T, OPT_IMP_ACCEL, static_cast<size_t>(benchmarks::MtrxWH::kMtrxWH_12288), benchmarks::BenchmarkRun::kAddTwoD>().operator()(
     run_imp_settings));
   run_results.push_back(RunImpOnInputBnchmrks<
-    T, OPT_IMP_ACCEL, static_cast<size_t>(benchmarks::MtrxWH::kMtrxWH_16384)>().operator()(
+    T, OPT_IMP_ACCEL, static_cast<size_t>(benchmarks::MtrxWH::kMtrxWH_16384), benchmarks::BenchmarkRun::kAddTwoD>().operator()(
     run_imp_settings));
   /*run_results.push_back(RunImpOnInputBnchmrks<
-    T, OPT_IMP_ACCEL, static_cast<size_t>(benchmarks::MtrxWH::kMtrxWH_20480)>().operator()(
+    T, OPT_IMP_ACCEL, static_cast<size_t>(benchmarks::MtrxWH::kMtrxWH_20480), benchmarks::BenchmarkRun::kAddTwoD>().operator()(
     run_imp_settings));*/
   /*run_results.push_back(RunImpOnInputBnchmrks<
-    T, OPT_IMP_ACCEL, static_cast<size_t>(benchmarks::MtrxWH::kMtrxWH_24576)>().operator()(
+    T, OPT_IMP_ACCEL, static_cast<size_t>(benchmarks::MtrxWH::kMtrxWH_24576), benchmarks::BenchmarkRun::kAddTwoD>().operator()(
     run_imp_settings));*/
 
   //merge results for each input to overall results

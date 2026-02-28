@@ -43,7 +43,9 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #include "RunEval/RunEvalConstsEnums.h"
 #include "RuntimeTiming/DetailedTimings.h"
 #include "benchmarksResultsEval/DetailedTimingBnchmrksConsts.h"
+#include "benchmarksRunProcessing/BnchmrksConstsEnumsAliases.h"
 #include "ParallelParamsBnchmrks.h"
+#include "BnchmrksConstsEnumsAliases.h"
 
 /** @brief Alias for time point for start and end time for each timing
  *  segment */
@@ -57,7 +59,7 @@ using timingType = std::chrono::time_point<std::chrono::system_clock>;
  * @tparam T 
  * @tparam ACCELERATION 
  */
-template<RunData_t T, run_environment::AccSetting ACCELERATION>
+template<RunData_t T, run_environment::AccSetting ACCELERATION, benchmarks::BenchmarkRun BENCHMARK_RUN>
 class ProcessBnchmrksDevice {
 public:
   explicit ProcessBnchmrksDevice(

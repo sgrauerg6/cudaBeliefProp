@@ -32,8 +32,8 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 //needed to run the optimized CPU implementation
 #include "benchmarksOptCPU/RunBnchmrksOptCPU.h"
 //set RunBpOptimized alias to correspond to optimized CPU implementation
-template <RunData_t T, run_environment::AccSetting ACCELERATION>
-using RunBnchmrksOptimized = RunBnchmrksOptCPU<T, ACCELERATION>;
+template <RunData_t T, run_environment::AccSetting ACCELERATION, benchmarks::BenchmarkRun BENCHMARK_RUN>
+using RunBnchmrksOptimized = RunBnchmrksOptCPU<T, ACCELERATION, BENCHMARK_RUN>;
 #endif //OPTIMIZED_CPU_RUN
 
 //check if CUDA run defined and make any necessary additions to support it
@@ -41,8 +41,8 @@ using RunBnchmrksOptimized = RunBnchmrksOptCPU<T, ACCELERATION>;
 //needed to run the CUDA implementation
 #include "benchmarksCUDA/RunBnchmrksCUDA.h"
 //set RunBpOptimized alias to correspond to CUDA implementation
-template <RunData_t T, run_environment::AccSetting ACCELERATION>
-using RunBnchmrksOptimized = RunBnchmrksCUDA<T, ACCELERATION>;
+template <RunData_t T, run_environment::AccSetting ACCELERATION, benchmarks::BenchmarkRun BENCHMARK_RUN>
+using RunBnchmrksOptimized = RunBnchmrksCUDA<T, ACCELERATION, BENCHMARK_RUN>;
 #endif //OPTIMIZED_CUDA_RUN
 
 #include "RunImp/RunImpOnInput.h"
@@ -58,7 +58,7 @@ using RunBnchmrksOptimized = RunBnchmrksCUDA<T, ACCELERATION>;
  * @tparam OPT_IMP_ACCEL 
  * @tparam NUM_INPUT 
  */
-template<RunData_t T, run_environment::AccSetting OPT_IMP_ACCEL, size_t NUM_INPUT>
+template<RunData_t T, run_environment::AccSetting OPT_IMP_ACCEL, size_t NUM_INPUT, benchmarks::BenchmarkRun BENCHMARK_RUN>
 class RunImpOnInputBnchmrks final : public RunImpOnInput<T, OPT_IMP_ACCEL, NUM_INPUT> {
 public:
   MultRunData operator()(
@@ -102,12 +102,12 @@ protected:
 private:
   /** @brief Unique pointer to run benchmarks object for single thread
    *  implementation */
-  std::unique_ptr<RunBnchmrksSingThreadCPU<T, run_environment::AccSetting::kNone>>
+  std::unique_ptr<RunBnchmrksSingThreadCPU<T, run_environment::AccSetting::kNone, BENCHMARK_RUN>>
     run_bnchmrks_single_thread_;
   
   /** @brief Unique pointer to run benchmarks object for optimized 
    *  implementation */
-  std::unique_ptr<RunBnchmrksOptimized<T, OPT_IMP_ACCEL>>
+  std::unique_ptr<RunBnchmrksOptimized<T, OPT_IMP_ACCEL, BENCHMARK_RUN>>
     run_bnchmrks_opt_;
 
   /** @brief width and height of matrix used in benchmarks */
@@ -122,8 +122,8 @@ private:
 //data type used in implementation specified by T
 //bp implemenation optimization specified by OPT_IMP_ACCEL
 //evaluation stereo set to run implementation on specified by NUM_INPUT
-template<RunData_t T, run_environment::AccSetting OPT_IMP_ACCEL, size_t NUM_INPUT>
-MultRunData RunImpOnInputBnchmrks<T, OPT_IMP_ACCEL, NUM_INPUT>::operator()(
+template<RunData_t T, run_environment::AccSetting OPT_IMP_ACCEL, size_t NUM_INPUT, benchmarks::BenchmarkRun BENCHMARK_RUN>
+MultRunData RunImpOnInputBnchmrks<T, OPT_IMP_ACCEL, NUM_INPUT, BENCHMARK_RUN>::operator()(
   const run_environment::RunImpSettings& run_imp_settings)
 {
   //set up matrix settings for current run
@@ -139,12 +139,12 @@ MultRunData RunImpOnInputBnchmrks<T, OPT_IMP_ACCEL, NUM_INPUT>::operator()(
 
   //set up unoptimized single threaded benchmarks implementation
   run_bnchmrks_single_thread_ =
-    std::make_unique<RunBnchmrksSingThreadCPU<T, run_environment::AccSetting::kNone>>();
+    std::make_unique<RunBnchmrksSingThreadCPU<T, run_environment::AccSetting::kNone, BENCHMARK_RUN>>();
 
   //set up and run benchmarks using optimized implementation (optimized CPU and
   //CUDA implementations supported) as well as unoptimized implementation for
   //comparison
-  run_bnchmrks_opt_ = std::make_unique<RunBnchmrksOptimized<T, OPT_IMP_ACCEL>>();
+  run_bnchmrks_opt_ = std::make_unique<RunBnchmrksOptimized<T, OPT_IMP_ACCEL, BENCHMARK_RUN>>();
   constexpr bool run_w_loop_iters_templated{false};
   InputSignature input_sig(
     sizeof(T), NUM_INPUT, run_w_loop_iters_templated);
@@ -160,9 +160,9 @@ MultRunData RunImpOnInputBnchmrks<T, OPT_IMP_ACCEL, NUM_INPUT>::operator()(
 
 //set up parallel parameters for running belief propagation in parallel on
 //CPU or GPU
-template<RunData_t T, run_environment::AccSetting OPT_IMP_ACCEL, size_t NUM_INPUT>
+template<RunData_t T, run_environment::AccSetting OPT_IMP_ACCEL, size_t NUM_INPUT, benchmarks::BenchmarkRun BENCHMARK_RUN>
 std::shared_ptr<ParallelParams>
-RunImpOnInputBnchmrks<T, OPT_IMP_ACCEL, NUM_INPUT>::SetUpParallelParams(
+RunImpOnInputBnchmrks<T, OPT_IMP_ACCEL, NUM_INPUT, BENCHMARK_RUN>::SetUpParallelParams(
   const run_environment::RunImpSettings& run_imp_settings) const
 {
   //parallel parameters initialized with default thread count dimensions at
@@ -173,8 +173,8 @@ RunImpOnInputBnchmrks<T, OPT_IMP_ACCEL, NUM_INPUT>::SetUpParallelParams(
 }
 
 //get input data and parameter info about benchmarks run and return as RunData type
-template<RunData_t T, run_environment::AccSetting OPT_IMP_ACCEL, size_t NUM_INPUT>
-RunData RunImpOnInputBnchmrks<T, OPT_IMP_ACCEL, NUM_INPUT>::InputAndParamsForCurrBenchmark(
+template<RunData_t T, run_environment::AccSetting OPT_IMP_ACCEL, size_t NUM_INPUT, benchmarks::BenchmarkRun BENCHMARK_RUN>
+RunData RunImpOnInputBnchmrks<T, OPT_IMP_ACCEL, NUM_INPUT, BENCHMARK_RUN>::InputAndParamsForCurrBenchmark(
   bool loop_iters_templated) const
 {
   RunData curr_run_data;
@@ -191,8 +191,8 @@ RunData RunImpOnInputBnchmrks<T, OPT_IMP_ACCEL, NUM_INPUT>::InputAndParamsForCur
 //run and compare output results using the given optimized and
 //single-threaded benchmarks implementations on the specified input
 //run only optimized implementation if run_opt_imp_only is true
-template<RunData_t T, run_environment::AccSetting OPT_IMP_ACCEL, size_t NUM_INPUT>
-std::optional<RunData> RunImpOnInputBnchmrks<T, OPT_IMP_ACCEL, NUM_INPUT>::RunImpsAndCompare(
+template<RunData_t T, run_environment::AccSetting OPT_IMP_ACCEL, size_t NUM_INPUT, benchmarks::BenchmarkRun BENCHMARK_RUN>
+std::optional<RunData> RunImpOnInputBnchmrks<T, OPT_IMP_ACCEL, NUM_INPUT, BENCHMARK_RUN>::RunImpsAndCompare(
   std::shared_ptr<ParallelParams> parallel_params,
   bool run_opt_imp_only,
   bool run_imp_templated_loop_iters) const

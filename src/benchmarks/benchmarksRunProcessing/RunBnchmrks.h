@@ -39,6 +39,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #include "benchmarksResultsEval/DetailedTimingBnchmrksConsts.h"
 #include "ProcessBnchmrksDevice.h"
 #include "BnchmrksMtrx.h"
+#include "BnchmrksConstsEnumsAliases.h"
 
 namespace benchmarks {
 
@@ -63,7 +64,7 @@ struct BnchmrksRunOutput
  * @tparam T 
  * @tparam ACCELERATION 
  */
-template<RunData_t T, run_environment::AccSetting ACCELERATION>
+template<RunData_t T, run_environment::AccSetting ACCELERATION, benchmarks::BenchmarkRun BENCHMARK_RUN>
 class RunBnchmrks {
 public:
   /**
@@ -103,17 +104,17 @@ protected:
    */
   std::optional<benchmarks::BnchmrksRunOutput<T>> ProcessBenchmarks(
     const std::array<BnchmrksMtrx<T>, 2>& inMtrces,
-    const std::unique_ptr<ProcessBnchmrksDevice<T, ACCELERATION>>& proc_bnchmrks_device,
+    const std::unique_ptr<ProcessBnchmrksDevice<T, ACCELERATION, BENCHMARK_RUN>>& proc_bnchmrks_device,
     const std::unique_ptr<MemoryManagement<T>>& mem_management) const;
 };
 
 //protected function to set up, run, and evaluate bp processing on target
 //device using pointers to acceleration-specific smooth image,
 //process BP, and memory management child class objects
-template<RunData_t T, run_environment::AccSetting ACCELERATION>
-std::optional<benchmarks::BnchmrksRunOutput<T>> RunBnchmrks<T, ACCELERATION>::ProcessBenchmarks(
+template<RunData_t T, run_environment::AccSetting ACCELERATION, benchmarks::BenchmarkRun BENCHMARK_RUN>
+std::optional<benchmarks::BnchmrksRunOutput<T>> RunBnchmrks<T, ACCELERATION, BENCHMARK_RUN>::ProcessBenchmarks(
   const std::array<BnchmrksMtrx<T>, 2>& inMtrces,
-  const std::unique_ptr<ProcessBnchmrksDevice<T, ACCELERATION>>& proc_bnchmrks_device,
+  const std::unique_ptr<ProcessBnchmrksDevice<T, ACCELERATION, BENCHMARK_RUN>>& proc_bnchmrks_device,
   const std::unique_ptr<MemoryManagement<T>>& mem_management) const
 {
   //initialize run data to include timing data and possibly

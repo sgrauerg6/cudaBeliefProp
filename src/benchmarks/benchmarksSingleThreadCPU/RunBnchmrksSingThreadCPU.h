@@ -37,8 +37,8 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  * @tparam T
  * @tparam ACCELERATION
  */
-template<RunData_t T, run_environment::AccSetting ACCELERATION>
-class RunBnchmrksSingThreadCPU : public RunBnchmrks<T, ACCELERATION> {
+template<RunData_t T, run_environment::AccSetting ACCELERATION, benchmarks::BenchmarkRun BENCHMARK_RUN>
+class RunBnchmrksSingThreadCPU : public RunBnchmrks<T, ACCELERATION, BENCHMARK_RUN> {
 public:
   std::optional<benchmarks::BnchmrksRunOutput<T>> operator()(
     const std::array<BnchmrksMtrx<T>, 2>& inMtrces,
@@ -46,8 +46,8 @@ public:
   std::string RunDescription() const override { return "Single-Thread CPU"; }
 };
 
-template<RunData_t T, run_environment::AccSetting ACCELERATION>
-inline std::optional<benchmarks::BnchmrksRunOutput<T>> RunBnchmrksSingThreadCPU<T, ACCELERATION>::operator()(
+template<RunData_t T, run_environment::AccSetting ACCELERATION, benchmarks::BenchmarkRun BENCHMARK_RUN>
+inline std::optional<benchmarks::BnchmrksRunOutput<T>> RunBnchmrksSingThreadCPU<T, ACCELERATION, BENCHMARK_RUN>::operator()(
   const std::array<BnchmrksMtrx<T>, 2>& inMtrces,
   const ParallelParams& parallel_params) const
 {
@@ -55,7 +55,7 @@ inline std::optional<benchmarks::BnchmrksRunOutput<T>> RunBnchmrksSingThreadCPU<
   //function to run optimized CPU implementation
   auto process_set_output = this->ProcessBenchmarks(
     inMtrces,
-    std::make_unique<ProcessBnchmrksSingThreadCPU<T, ACCELERATION>>(parallel_params),
+    std::make_unique<ProcessBnchmrksSingThreadCPU<T, ACCELERATION, BENCHMARK_RUN>>(parallel_params),
     std::make_unique<MemoryManagement<T>>());
   if (process_set_output) {
     //clear all returned run data and add only the runtime since that is all that
