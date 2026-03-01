@@ -43,16 +43,16 @@ private:
    * @brief Function to run add matrices benchmark on device<br>
    * 
    * @param mat_w_h
-   * @param mat_addend_0
-   * @param mat_addend_1
-   * @param mat_sum
+   * @param mat_input_0
+   * @param mat_input_1
+   * @param mat_result
    * @return Status of "no error" if successful, "error" status otherwise
    */
   std::optional<DetailedTimings<benchmarks::Runtime_Type>> TwoDMatricesBnchmrk(
     const unsigned int mat_w_h,
-    const T* mat_addend_0,
-    const T* mat_addend_1,
-    T* mat_sum) const override
+    const T* mat_input_0,
+    const T* mat_input_1,
+    T* mat_result) const override
   {
     if (ErrorCheck(__FILE__, __LINE__) != run_eval::Status::kNoError) {
       return run_eval::Status::kError;
@@ -73,7 +73,7 @@ private:
     auto add_mat_start_time = std::chrono::system_clock::now();
     //process matrix addition on GPU using CUDA
     benchmarks_cuda::TwoDMatricesBnchmrk<T, BENCHMARK_RUN> <<<grid, threads>>> (
-      mat_w_h, mat_w_h, mat_addend_0, mat_addend_1, mat_sum);
+      mat_w_h, mat_w_h, mat_input_0, mat_input_1, mat_result);
     cudaDeviceSynchronize();
     auto end_mat_start_time = std::chrono::system_clock::now();
 

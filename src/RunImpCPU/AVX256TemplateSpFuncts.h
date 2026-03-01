@@ -173,6 +173,46 @@ template<> inline __m256h simd_processing::SubtractVals<__m256h, __m256h, __m256
 
 #endif //FLOAT16_VECTORIZATION
 
+template<> inline __m256 simd_processing::MultVals<__m256, __m256, __m256>(
+  const __m256& val1, const __m256& val2)
+{
+  return _mm256_mul_ps(val1, val2);
+}
+
+template<> inline __m256d simd_processing::MultVals<__m256d, __m256d, __m256d>(
+  const __m256d& val1, const __m256d& val2)
+{
+  return _mm256_mul_pd(val1, val2);
+}
+
+#if defined(FLOAT16_VECTORIZATION)
+
+template<> inline __m256h simd_processing::MultVals<__m256h, __m256h, __m256h>(
+  const __m256h& val1, const __m256h& val2)
+{
+  return _mm256_mul_ph(val1, val2);
+}
+
+#endif //FLOAT16_VECTORIZATION
+
+template<> inline __m256 simd_processing::MultVals<__m256, __m128i, __m256>(
+  const __m256& val1, const __m128i& val2)
+{
+  return _mm256_mul_ps(val1, _mm256_cvtph_ps(val2));
+}
+
+template<> inline __m256 simd_processing::MultVals<__m128i, __m256, __m256>(
+  const __m128i& val1, const __m256& val2)
+{
+  return _mm256_mul_ps(_mm256_cvtph_ps(val1), val2);
+}
+
+template<> inline __m256 simd_processing::MultVals<__m128i, __m128i, __m256>(
+  const __m128i& val1, const __m128i& val2)
+{
+  return _mm256_mul_ps(_mm256_cvtph_ps(val1), _mm256_cvtph_ps(val2));
+}
+
 template<> inline __m256 simd_processing::DivideVals<__m256, __m256, __m256>(
   const __m256& val1, const __m256& val2)
 {

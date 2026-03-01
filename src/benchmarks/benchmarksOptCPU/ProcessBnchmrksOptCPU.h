@@ -48,27 +48,27 @@ private:
    * @brief Function to run add matrices benchmark on device
    * 
    * @param mat_w_h
-   * @param mat_addend_0
-   * @param mat_addend_1
-   * @param mat_sum
+   * @param mat_input_0
+   * @param mat_input_1
+   * @param mat_result
    * @return Status of "no error" if successful, "error" status otherwise
    */
   std::optional<DetailedTimings<benchmarks::Runtime_Type>> TwoDMatricesBnchmrk(
     const unsigned int mat_w_h,
-    const T* mat_addend_0,
-    const T* mat_addend_1,
-    T* mat_sum) const override
+    const T* mat_input_0,
+    const T* mat_input_1,
+    T* mat_result) const override
   {
     auto add_mat_start_time = std::chrono::system_clock::now();
     if constexpr (ACCELERATION == run_environment::AccSetting::kNone) {
       benchmarks_cpu::TwoDMatricesBnchmrkNoPackedInstructions<T, BENCHMARK_RUN>(
-        mat_w_h, mat_w_h, mat_addend_0, mat_addend_1, mat_sum);
+        mat_w_h, mat_w_h, mat_input_0, mat_input_1, mat_result);
     }
 #if defined(COMPILING_FOR_ARM)
     else if constexpr (ACCELERATION == run_environment::AccSetting::kNEON) {
       std::cout << "Processing NEON implementation" << std::endl;
       benchmarks_cpu::TwoDMatricesBnchmrkUseSIMDVectorsNEON<BENCHMARK_RUN>(
-        mat_w_h, mat_w_h, mat_addend_0, mat_addend_1, mat_sum);
+        mat_w_h, mat_w_h, mat_input_0, mat_input_1, mat_result);
     }
 #else
     else if constexpr (
@@ -77,7 +77,7 @@ private:
     {
       std::cout << "Processing AVX256 implementation" << std::endl;
       benchmarks_cpu::TwoDMatricesBnchmrkUseSIMDVectorsAVX256<BENCHMARK_RUN>(
-        mat_w_h, mat_w_h, mat_addend_0, mat_addend_1, mat_sum);
+        mat_w_h, mat_w_h, mat_input_0, mat_input_1, mat_result);
     }
     else if constexpr (
       (ACCELERATION == run_environment::AccSetting::kAVX512) ||
@@ -85,7 +85,7 @@ private:
     {
       std::cout << "Processing AVX512 implementation" << std::endl;
       benchmarks_cpu::TwoDMatricesBnchmrkUseSIMDVectorsAVX512<BENCHMARK_RUN>(
-        mat_w_h, mat_w_h, mat_addend_0, mat_addend_1, mat_sum);
+        mat_w_h, mat_w_h, mat_input_0, mat_input_1, mat_result);
     }
 #endif //COMPILING_FOR_ARM
     auto end_mat_start_time = std::chrono::system_clock::now();

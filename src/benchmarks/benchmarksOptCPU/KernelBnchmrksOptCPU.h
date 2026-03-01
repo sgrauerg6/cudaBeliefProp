@@ -56,93 +56,93 @@ namespace benchmarks_cpu
    * 
    * @param mtrx_width
    * @param mtrx_height
-   * @param matrix_addend_0
-   * @param matrix_addend_1
-   * @param matrix_sum
+   * @param matrix_input_0
+   * @param matrix_input_1
+   * @param matrix_result
    */
   template <RunData_t T, benchmarks::BenchmarkRun BENCHMARK_RUN>
   void TwoDMatricesBnchmrkNoPackedInstructions(
     unsigned int mtrx_width, unsigned int mtrx_height,
-    const T* matrix_addend_0, const T* matrix_addend_1,
-    T* matrix_sum);
+    const T* matrix_input_0, const T* matrix_input_1,
+    T* matrix_result);
   
   template <benchmarks::BenchmarkRun BENCHMARK_RUN>
   void TwoDMatricesBnchmrkUseSIMDVectorsNEON(
     unsigned int mtrx_width, unsigned int mtrx_height,
-    const float* matrix_addend_0, const float* matrix_addend_1,
-    float* matrix_sum);
+    const float* matrix_input_0, const float* matrix_input_1,
+    float* matrix_result);
 
   template <benchmarks::BenchmarkRun BENCHMARK_RUN>
   void TwoDMatricesBnchmrkUseSIMDVectorsNEON(
     unsigned int mtrx_width, unsigned int mtrx_height,
-    const double* matrix_addend_0, const double* matrix_addend_1,
-    double* matrix_sum);
+    const double* matrix_input_0, const double* matrix_input_1,
+    double* matrix_result);
 
 #if defined(COMPILING_FOR_ARM)
   template <benchmarks::BenchmarkRun BENCHMARK_RUN>
   void TwoDMatricesBnchmrkUseSIMDVectorsNEON(
     unsigned int mtrx_width, unsigned int mtrx_height,
-    const float16_t* matrix_addend_0, const float16_t* matrix_addend_1,
-    float16_t* matrix_sum);
+    const float16_t* matrix_input_0, const float16_t* matrix_input_1,
+    float16_t* matrix_result);
 #endif //COMPILING_FOR_ARM
 
   template <benchmarks::BenchmarkRun BENCHMARK_RUN>
   void TwoDMatricesBnchmrkUseSIMDVectorsAVX512(
     unsigned int mtrx_width, unsigned int mtrx_height,
-    const float* matrix_addend_0, const float* matrix_addend_1,
-    float* matrix_sum);
+    const float* matrix_input_0, const float* matrix_input_1,
+    float* matrix_result);
 
   template <benchmarks::BenchmarkRun BENCHMARK_RUN>
   void TwoDMatricesBnchmrkUseSIMDVectorsAVX512(
     unsigned int mtrx_width, unsigned int mtrx_height,
-    const double* matrix_addend_0, const double* matrix_addend_1,
-    double* matrix_sum);
+    const double* matrix_input_0, const double* matrix_input_1,
+    double* matrix_result);
 
   template <benchmarks::BenchmarkRun BENCHMARK_RUN>
   void TwoDMatricesBnchmrkUseSIMDVectorsAVX512(
     unsigned int mtrx_width, unsigned int mtrx_height,
-    const short* matrix_addend_0, const short* matrix_addend_1,
-    short* matrix_sum);
+    const short* matrix_input_0, const short* matrix_input_1,
+    short* matrix_result);
 
 #if defined(FLOAT16_VECTORIZATION)
   template <benchmarks::BenchmarkRun BENCHMARK_RUN>
   void TwoDMatricesBnchmrkUseSIMDVectorsAVX512(
     unsigned int mtrx_width, unsigned int mtrx_height,
-    const _Float16* matrix_addend_0, const _Float16* matrix_addend_1,
-    _Float16* matrix_sum);
+    const _Float16* matrix_input_0, const _Float16* matrix_input_1,
+    _Float16* matrix_result);
 #endif //FLOAT16_VECTORIZATION
 
   template <benchmarks::BenchmarkRun BENCHMARK_RUN>
   void TwoDMatricesBnchmrkUseSIMDVectorsAVX256(
     unsigned int mtrx_width, unsigned int mtrx_height,
-    const float* matrix_addend_0, const float* matrix_addend_1,
-    float* matrix_sum);
+    const float* matrix_input_0, const float* matrix_input_1,
+    float* matrix_result);
 
   template <benchmarks::BenchmarkRun BENCHMARK_RUN>
   void TwoDMatricesBnchmrkUseSIMDVectorsAVX256(
     unsigned int mtrx_width, unsigned int mtrx_height,
-    const double* matrix_addend_0, const double* matrix_addend_1,
-    double* matrix_sum);
+    const double* matrix_input_0, const double* matrix_input_1,
+    double* matrix_result);
 
   template <benchmarks::BenchmarkRun BENCHMARK_RUN>
   void TwoDMatricesBnchmrkUseSIMDVectorsAVX256(
     unsigned int mtrx_width, unsigned int mtrx_height,
-    const short* matrix_addend_0, const short* matrix_addend_1,
-    short* matrix_sum);
+    const short* matrix_input_0, const short* matrix_input_1,
+    short* matrix_result);
 
 #if defined(FLOAT16_VECTORIZATION)
   template <benchmarks::BenchmarkRun BENCHMARK_RUN>
   void TwoDMatricesBnchmrkUseSIMDVectorsAVX256(
     unsigned int mtrx_width, unsigned int mtrx_height,
-    const _Float16* matrix_addend_0, const _Float16* matrix_addend_1,
-    _Float16* matrix_sum);
+    const _Float16* matrix_input_0, const _Float16* matrix_input_1,
+    _Float16* matrix_result);
 #endif //FLOAT16_VECTORIZATION
 
   template<RunData_t T, RunDataVect_t U, RunDataProcess_t V, RunDataVectProcess_t W, benchmarks::BenchmarkRun BENCHMARK_RUN>
   void TwoDMatricesBnchmrkSIMD(
   unsigned int mtrx_width, unsigned int mtrx_height,
-    const T* matrix_addend_0, const T* matrix_addend_1,
-    T* matrix_sum);
+    const T* matrix_input_0, const T* matrix_input_1,
+    T* matrix_result);
 };
 
 //headers to include differ depending on architecture and CPU vectorization setting
@@ -166,8 +166,8 @@ namespace benchmarks_cpu
 template <RunData_t T, benchmarks::BenchmarkRun BENCHMARK_RUN>
 void benchmarks_cpu::TwoDMatricesBnchmrkNoPackedInstructions(
   unsigned int mtrx_width, unsigned int mtrx_height,
-  const T* matrix_addend_0, const T* matrix_addend_1,
-  T* matrix_sum)
+  const T* matrix_input_0, const T* matrix_input_1,
+  T* matrix_result)
 {
 #if !defined(__APPLE__) || defined(DONT_USE_GRAND_CENTRAL_DISPATCH)
   #pragma omp parallel for
@@ -188,15 +188,25 @@ void benchmarks_cpu::TwoDMatricesBnchmrkNoPackedInstructions(
     {
       const unsigned int val_idx = y*mtrx_width + x;
       if constexpr (BENCHMARK_RUN == benchmarks::BenchmarkRun::kAddTwoD) {
-        matrix_sum[val_idx] = matrix_addend_0[val_idx] + matrix_addend_1[val_idx];
+        matrix_result[val_idx] = matrix_input_0[val_idx] + matrix_input_1[val_idx];
       }
       else if constexpr (BENCHMARK_RUN == benchmarks::BenchmarkRun::kDivideTwoD) {
-        matrix_sum[val_idx] = matrix_addend_0[val_idx] / matrix_addend_1[val_idx];
+        matrix_result[val_idx] = matrix_input_0[val_idx] / matrix_input_1[val_idx];
       }
       else if constexpr (BENCHMARK_RUN == benchmarks::BenchmarkRun::kCopyTwoD) {
-        matrix_sum[val_idx] = matrix_addend_0[val_idx];
+        matrix_result[val_idx] = matrix_input_0[val_idx];
       }
       else if constexpr (BENCHMARK_RUN == benchmarks::BenchmarkRun::kGemm) {
+        T sum{0.0};
+        size_t curr_addend0_idx{y * mtrx_width};
+        size_t curr_addend1_idx{x};
+        for (int k = 0; k < mtrx_width; k++) {
+          sum += 
+            matrix_input_0[curr_addend0_idx] * matrix_input_1[curr_addend1_idx];
+          curr_addend0_idx += 1;
+          curr_addend1_idx += mtrx_width;
+        }
+        matrix_result[val_idx] = sum;
       }
     }
   }
@@ -208,8 +218,8 @@ void benchmarks_cpu::TwoDMatricesBnchmrkNoPackedInstructions(
 template<RunData_t T, RunDataVect_t U, RunDataProcess_t V, RunDataVectProcess_t W, benchmarks::BenchmarkRun BENCHMARK_RUN>
 void benchmarks_cpu::TwoDMatricesBnchmrkSIMD(
   unsigned int mtrx_width, unsigned int mtrx_height,
-  const T* matrix_addend_0, const T* matrix_addend_1,
-  T* matrix_sum)
+  const T* matrix_input_0, const T* matrix_input_1,
+  T* matrix_result)
 {
   constexpr size_t simd_data_size{sizeof(U) / sizeof(T)};
 
@@ -235,26 +245,45 @@ void benchmarks_cpu::TwoDMatricesBnchmrkSIMD(
       if constexpr (BENCHMARK_RUN == benchmarks::BenchmarkRun::kAddTwoD) {
         simd_processing::StorePackedDataAligned<T, W>(
           val_idx,
-          matrix_sum,
+          matrix_result,
           simd_processing::AddVals<U, U, W>(
-            simd_processing::LoadPackedDataAligned<T, U>(val_idx, matrix_addend_0),
-            simd_processing::LoadPackedDataAligned<T, U>(val_idx, matrix_addend_1)));
+            simd_processing::LoadPackedDataAligned<T, U>(val_idx, matrix_input_0),
+            simd_processing::LoadPackedDataAligned<T, U>(val_idx, matrix_input_1)));
       }
       else if constexpr (BENCHMARK_RUN == benchmarks::BenchmarkRun::kDivideTwoD) {
         simd_processing::StorePackedDataAligned<T, W>(
           val_idx,
-          matrix_sum,
+          matrix_result,
           simd_processing::DivideVals<U, U, W>(
-            simd_processing::LoadPackedDataAligned<T, U>(val_idx, matrix_addend_0),
-            simd_processing::LoadPackedDataAligned<T, U>(val_idx, matrix_addend_1)));
+            simd_processing::LoadPackedDataAligned<T, U>(val_idx, matrix_input_0),
+            simd_processing::LoadPackedDataAligned<T, U>(val_idx, matrix_input_1)));
       }
       else if constexpr (BENCHMARK_RUN == benchmarks::BenchmarkRun::kCopyTwoD) {
         simd_processing::StorePackedDataAligned<T, W>(
           val_idx,
-          matrix_sum,
-          simd_processing::LoadPackedDataAligned<T, U>(val_idx, matrix_addend_0));
+          matrix_result,
+          simd_processing::LoadPackedDataAligned<T, U>(val_idx, matrix_input_0));
       }
       else if constexpr (BENCHMARK_RUN == benchmarks::BenchmarkRun::kGemm) {
+        W sum = simd_processing::createSIMDVectorSameData<W>(0.0f);
+        size_t curr_addend0_idx{y * mtrx_width};
+        size_t curr_addend1_idx{x_val};
+        for (int k = 0; k < mtrx_width; k++) {
+          W addend_0 = simd_processing::createSIMDVectorSameData<W>(
+            util_functs::ConvertValToDifferentDataTypeIfNeeded<T, float>(
+              matrix_input_0[curr_addend0_idx]));
+          U addend_1 = simd_processing::LoadPackedDataAligned<T, U>(
+            curr_addend1_idx, matrix_input_1);
+          sum = simd_processing::AddVals<W, W, W>(
+            sum,
+            simd_processing::MultVals<W, U, W>(addend_0, addend_1));
+          curr_addend0_idx += 1;
+          curr_addend1_idx += mtrx_width;
+        }
+        simd_processing::StorePackedDataAligned<T, W>(
+          val_idx,
+          matrix_result,
+          sum);
       }
     }
   }

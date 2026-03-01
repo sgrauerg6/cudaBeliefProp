@@ -42,19 +42,19 @@ namespace benchmarks_cuda {
    * @param matrix_1
    * @param mtrx_width
    * @param mtrx_height
-   * @param matrix_sum
+   * @param matrix_result
    */
   template <RunData_t T, benchmarks::BenchmarkRun BENCHMARK_RUN>
   __global__ void TwoDMatricesBnchmrk(
     unsigned int mtrx_width, unsigned int mtrx_height,
     const T* matrix_0, const T* matrix_1,
-    T* matrix_sum)
+    T* matrix_result)
   {
     //get x and y indices corresponding to current CUDA thread
     const unsigned int x_val = blockIdx.x * blockDim.x + threadIdx.x;
     const unsigned int y_val = blockIdx.y * blockDim.y + threadIdx.y;
     if constexpr (BENCHMARK_RUN == benchmarks::BenchmarkRun::kAddTwoD) {
-      matrix_sum[y_val * mtrx_width + x_val] =
+      matrix_result[y_val * mtrx_width + x_val] =
         matrix_0[y_val * mtrx_width + x_val] + 
         matrix_1[y_val * mtrx_width + x_val];
     }

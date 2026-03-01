@@ -121,6 +121,36 @@ template<> inline float64x2_t simd_processing::SubtractVals<float64x2_t, float64
   return vsubq_f64(val1, val2);
 }
 
+template<> inline float32x4_t simd_processing::MultVals<float32x4_t, float32x4_t, float32x4_t>(
+  const float32x4_t& val1, const float32x4_t& val2)
+{
+  return vmulq_f32(val1, val2);
+}
+
+template<> inline float64x2_t simd_processing::MultVals<float64x2_t, float64x2_t, float64x2_t>(
+  const float64x2_t& val1, const float64x2_t& val2)
+{
+  return vmulq_f64(val1, val2);
+}
+
+template<> inline float32x4_t simd_processing::MultVals<float32x4_t, float16x4_t, float32x4_t>(
+  const float32x4_t& val1, const float16x4_t& val2)
+{
+  return vmulq_f32(val1, vcvt_f32_f16(val2));
+}
+
+template<> inline float32x4_t simd_processing::MultVals<float16x4_t, float32x4_t, float32x4_t>(
+  const float16x4_t& val1, const float32x4_t& val2)
+{
+  return vmulq_f32(vcvt_f32_f16(val1), val2);
+}
+
+template<> inline float32x4_t simd_processing::MultVals<float16x4_t, float16x4_t, float32x4_t>(
+  const float16x4_t& val1, const float16x4_t& val2)
+{
+  return vmulq_f32(vcvt_f32_f16(val1), vcvt_f32_f16(val2));
+}
+
 template<> inline float32x4_t simd_processing::DivideVals<float32x4_t, float32x4_t, float32x4_t>(
   const float32x4_t& val1, const float32x4_t& val2)
 {

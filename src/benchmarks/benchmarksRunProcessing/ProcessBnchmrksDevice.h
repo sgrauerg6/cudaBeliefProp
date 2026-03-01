@@ -108,16 +108,16 @@ private:
    * Must be defined in child class corresponding to device
    * 
    * @param mat_w_h
-   * @param mat_addend_0
-   * @param mat_addend_1
-   * @param mat_sum
+   * @param mat_input_0
+   * @param mat_input_1
+   * @param mat_result
    * @return Status of "no error" if successful, "error" status otherwise
    */
   virtual std::optional<DetailedTimings<benchmarks::Runtime_Type>> TwoDMatricesBnchmrk(
     const unsigned int mat_w_h,
-    const T* mat_addend_0,
-    const T* mat_addend_1,
-    T* mat_sum) const = 0;
+    const T* mat_input_0,
+    const T* mat_input_1,
+    T* mat_result) const = 0;
 };
 
 #endif //PROCESS_BNCHMRKS_DEVICE_H_

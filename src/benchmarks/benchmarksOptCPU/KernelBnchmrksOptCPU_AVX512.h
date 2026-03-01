@@ -40,31 +40,31 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 template <benchmarks::BenchmarkRun BENCHMARK_RUN>
 void benchmarks_cpu::TwoDMatricesBnchmrkUseSIMDVectorsAVX512(
   unsigned int mtrx_width, unsigned int mtrx_height,
-  const float* matrix_addend_0, const float* matrix_addend_1,
-  float* matrix_sum)
+  const float* matrix_input_0, const float* matrix_input_1,
+  float* matrix_result)
 {
   TwoDMatricesBnchmrkSIMD<float, __m512, float, __m512, BENCHMARK_RUN>(mtrx_width, mtrx_height,
-    matrix_addend_0, matrix_addend_1, matrix_sum);
+    matrix_input_0, matrix_input_1, matrix_result);
 }
 
 template <benchmarks::BenchmarkRun BENCHMARK_RUN>
 void benchmarks_cpu::TwoDMatricesBnchmrkUseSIMDVectorsAVX512(
   unsigned int mtrx_width, unsigned int mtrx_height,
-  const double* matrix_addend_0, const double* matrix_addend_1,
-  double* matrix_sum)
+  const double* matrix_input_0, const double* matrix_input_1,
+  double* matrix_result)
 {
   TwoDMatricesBnchmrkSIMD<double, __m512d, double, __m512d, BENCHMARK_RUN>(mtrx_width, mtrx_height,
-    matrix_addend_0, matrix_addend_1, matrix_sum);
+    matrix_input_0, matrix_input_1, matrix_result);
 }
 
 template <benchmarks::BenchmarkRun BENCHMARK_RUN>
 void benchmarks_cpu::TwoDMatricesBnchmrkUseSIMDVectorsAVX512(
   unsigned int mtrx_width, unsigned int mtrx_height,
-  const short* matrix_addend_0, const short* matrix_addend_1,
-  short* matrix_sum)
+  const short* matrix_input_0, const short* matrix_input_1,
+  short* matrix_result)
 {
   TwoDMatricesBnchmrkSIMD<short, __m256i, float, __m512, BENCHMARK_RUN>(mtrx_width, mtrx_height,
-    matrix_addend_0, matrix_addend_1, matrix_sum);
+    matrix_input_0, matrix_input_1, matrix_result);
 }
 
 #if defined(FLOAT16_VECTORIZATION)
@@ -72,11 +72,11 @@ void benchmarks_cpu::TwoDMatricesBnchmrkUseSIMDVectorsAVX512(
 template <benchmarks::BenchmarkRun BENCHMARK_RUN>
 void benchmarks_cpu::TwoDMatricesBnchmrkUseSIMDVectorsAVX512(
   unsigned int mtrx_width, unsigned int mtrx_height,
-  const _Float16* matrix_addend_0, const _Float16* matrix_addend_1,
-  _Float16* matrix_sum)
+  const _Float16* matrix_input_0, const _Float16* matrix_input_1,
+  _Float16* matrix_result)
 {
   TwoDMatricesBnchmrkSIMD<_Float16, __m512h, _Float16, __m512h, BENCHMARK_RUN>(mtrx_width, mtrx_height,
-    matrix_addend_0, matrix_addend_1, matrix_sum);
+    matrix_input_0, matrix_input_1, matrix_result);
 }
 
 #endif //FLOAT16_VECTORIZATION

@@ -121,6 +121,20 @@ namespace simd_processing
   template<RunDataSingOrVect_t T, RunDataSingOrVect_t U, RunDataSingOrVect_t V>
   V SubtractVals(const T& val1, const U& val2) { return (val1 - val2); }
 
+    /**
+   * @brief Multiply values of specified types and return sum as specified type<br>
+   * Define template specialization to support addition of specific SIMD vector types
+   * 
+   * @tparam T 
+   * @tparam U 
+   * @tparam V 
+   * @param val1 
+   * @param val2 
+   * @return SIMD structure with product of values
+   */
+  template<RunDataSingOrVect_t T, RunDataSingOrVect_t U, RunDataSingOrVect_t V>
+  V MultVals(const T& val1, const U& val2) { return (val1 * val2); }
+
   /**
    * @brief Divide values of specified types and return quotient as specified type<br>
    * Define template specialization to support division of specific SIMD vector types

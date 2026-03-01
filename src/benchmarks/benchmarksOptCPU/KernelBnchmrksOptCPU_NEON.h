@@ -36,31 +36,31 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 template <benchmarks::BenchmarkRun BENCHMARK_RUN>
 inline void benchmarks_cpu::TwoDMatricesBnchmrkUseSIMDVectorsNEON(
   unsigned int mtrx_width, unsigned int mtrx_height,
-  const float* matrix_addend_0, const float* matrix_addend_1,
-  float* matrix_sum)
+  const float* matrix_input_0, const float* matrix_input_1,
+  float* matrix_result)
 {
   TwoDMatricesBnchmrkSIMD<float, float32x4_t, float, float32x4_t, BENCHMARK_RUN>(mtrx_width, mtrx_height,
-    matrix_addend_0, matrix_addend_1, matrix_sum);
+    matrix_input_0, matrix_input_1, matrix_result);
 }
 
 template <benchmarks::BenchmarkRun BENCHMARK_RUN>
 inline void benchmarks_cpu::TwoDMatricesBnchmrkUseSIMDVectorsNEON(
   unsigned int mtrx_width, unsigned int mtrx_height,
-  const double* matrix_addend_0, const double* matrix_addend_1,
-  double* matrix_sum)
+  const double* matrix_input_0, const double* matrix_input_1,
+  double* matrix_result)
 {
   TwoDMatricesBnchmrkSIMD<double, float64x2_t, double, float64x2_t, BENCHMARK_RUN>(mtrx_width, mtrx_height,
-    matrix_addend_0, matrix_addend_1, matrix_sum);
+    matrix_input_0, matrix_input_1, matrix_result);
 }
 
 template <benchmarks::BenchmarkRun BENCHMARK_RUN>
 inline void benchmarks_cpu::TwoDMatricesBnchmrkUseSIMDVectorsNEON(
   unsigned int mtrx_width, unsigned int mtrx_height,
-  const float16_t* matrix_addend_0, const float16_t* matrix_addend_1,
-  float16_t* matrix_sum)
+  const float16_t* matrix_input_0, const float16_t* matrix_input_1,
+  float16_t* matrix_result)
 {
   TwoDMatricesBnchmrkSIMD<float16_t, float16x4_t, float, float32x4_t, BENCHMARK_RUN>(mtrx_width, mtrx_height,
-    matrix_addend_0, matrix_addend_1, matrix_sum);
+    matrix_input_0, matrix_input_1, matrix_result);
 }
 
 #endif /* KERNEL_BNCHMRKS_OPT_CPU_NEON_H_ */

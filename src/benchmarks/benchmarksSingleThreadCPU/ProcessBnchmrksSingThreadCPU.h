@@ -46,16 +46,16 @@ private:
    * @brief Function to run add matrices benchmark on device
    * 
    * @param mat_w_h
-   * @param mat_addend_0
-   * @param mat_addend_1
-   * @param mat_sum
+   * @param mat_input_0
+   * @param mat_input_1
+   * @param mat_result
    * @return std::optional<DetailedTimings<benchmarks::Runtime_Type>>
    */
   std::optional<DetailedTimings<benchmarks::Runtime_Type>> TwoDMatricesBnchmrk(
     const unsigned int mat_w_h,
-    const T* mat_addend_0,
-    const T* mat_addend_1,
-    T* mat_sum) const override
+    const T* mat_input_0,
+    const T* mat_input_1,
+    T* mat_result) const override
   {
     auto add_mat_start_time = std::chrono::system_clock::now();
     for (unsigned int y=0; y < mat_w_h; y++)
@@ -64,15 +64,25 @@ private:
       {
         const unsigned int val_idx = y*mat_w_h + x;
         if constexpr (BENCHMARK_RUN == benchmarks::BenchmarkRun::kAddTwoD) {
-          mat_sum[val_idx] = mat_addend_0[val_idx] + mat_addend_1[val_idx];
+          mat_result[val_idx] = mat_input_0[val_idx] + mat_input_1[val_idx];
         }
         else if constexpr (BENCHMARK_RUN == benchmarks::BenchmarkRun::kDivideTwoD) {
-          mat_sum[val_idx] = mat_addend_0[val_idx] / mat_addend_1[val_idx];
+          mat_result[val_idx] = mat_input_0[val_idx] / mat_input_1[val_idx];
         }
         else if constexpr (BENCHMARK_RUN == benchmarks::BenchmarkRun::kCopyTwoD) {
-          mat_sum[val_idx] = mat_addend_0[val_idx];
+          mat_result[val_idx] = mat_input_0[val_idx];
         }
         else if constexpr (BENCHMARK_RUN == benchmarks::BenchmarkRun::kGemm) {
+          T sum{0.0};
+          size_t curr_addend0_idx{y * mat_w_h};
+          size_t curr_addend1_idx{x};
+          for (int k = 0; k < mat_w_h; k++) {
+            sum += 
+              mat_input_0[curr_addend0_idx] * mat_input_1[curr_addend1_idx];
+            curr_addend0_idx += 1;
+            curr_addend1_idx += mat_w_h;
+          }
+          mat_result[val_idx] = sum;
         }
       }
     }
