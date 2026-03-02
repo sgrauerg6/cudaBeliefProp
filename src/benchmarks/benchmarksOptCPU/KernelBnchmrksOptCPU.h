@@ -202,7 +202,8 @@ void benchmarks_cpu::TwoDMatricesBnchmrkNoPackedInstructions(
         size_t curr_matrix_input1_idx{x};
         for (int k = 0; k < mtrx_width; k++) {
           sum += 
-            matrix_input_0[curr_matrix_input0_idx] * matrix_input_1[curr_matrix_input1_idx];
+            matrix_input_0[curr_matrix_input0_idx] *
+            matrix_input_1[curr_matrix_input1_idx];
           curr_matrix_input0_idx += 1;
           curr_matrix_input1_idx += mtrx_width;
         }

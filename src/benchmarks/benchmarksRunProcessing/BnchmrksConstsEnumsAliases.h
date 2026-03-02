@@ -29,6 +29,8 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #define BNCHMRKS_CONSTS_ENUMS_ALIASES_H_
 
 #include <array>
+#include <unordered_map>
+#include <string_view>
 #include "RunEval/RunTypeConstraints.h"
 
 /**
@@ -41,6 +43,15 @@ namespace benchmarks {
 enum class BenchmarkRun : size_t {
   kAddOneD, kAddTwoD, kDivideOneD, kDivideTwoD, kCopyOneD, kCopyTwoD, kGemm };
 
+/** @brief Mapping between benchmark enums and names */
+const std::unordered_map<BenchmarkRun, std::string_view> kBnchmrksNames{
+  {BenchmarkRun::kAddOneD, "Addition (1D Matrices)"},
+  {BenchmarkRun::kAddTwoD, "Addition (2D Matrices)"},
+  {BenchmarkRun::kDivideOneD, "Divide (1D Matrices)"},
+  {BenchmarkRun::kDivideTwoD, "Divide (2D Matrices)"},
+  {BenchmarkRun::kCopyOneD, "Copy (1D Matrices)"},
+  {BenchmarkRun::kCopyTwoD, "Copy (2D Matrices)"},
+  {BenchmarkRun::kGemm, "Gemm"}};
 };
 
 #endif /* BNCHMRKS_CONSTS_ENUMS_ALIASES_H_ */

@@ -45,6 +45,7 @@ template <RunData_t T, run_environment::AccSetting ACCELERATION, benchmarks::Ben
 using RunBnchmrksOptimized = RunBnchmrksCUDA<T, ACCELERATION, BENCHMARK_RUN>;
 #endif //OPTIMIZED_CUDA_RUN
 
+#include <fstream>
 #include "RunImp/RunImpOnInput.h"
 #include "benchmarksResultsEval/BnchmrksEvaluationInputs.h"
 #include "benchmarksSingleThreadCPU/RunBnchmrksSingThreadCPU.h"
@@ -255,9 +256,17 @@ std::optional<RunData> RunImpOnInputBnchmrks<T, OPT_IMP_ACCEL, NUM_INPUT, BENCHM
     
     //compare optimized and single-thread CPU outputs and add results to
     //run data
+    /*std::ofstream sing_thread_out_mtrx_stream("singThreadMtrx.txt");
+    std::ofstream opt_imp_out_mtrx_stream("optImpMtrx.txt");
+    sing_thread_out_mtrx_stream << run_output[run_environment::AccSetting::kNone]->result_mtrx;
+    opt_imp_out_mtrx_stream << run_output[OPT_IMP_ACCEL]->result_mtrx;*/
     run_data.AddDataWHeader(
       std::string(benchmarks::kSumSqrDiffOptSingThreadOutputMtrx),
       run_output[run_environment::AccSetting::kNone]->result_mtrx.GetSumSqrDiff(
+        run_output[OPT_IMP_ACCEL]->result_mtrx));
+    run_data.AddDataWHeader(
+      std::string("Max Difference"),
+      run_output[run_environment::AccSetting::kNone]->result_mtrx.GetMaxElementDiff(
         run_output[OPT_IMP_ACCEL]->result_mtrx));
   }
 

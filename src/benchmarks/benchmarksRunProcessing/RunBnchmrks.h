@@ -152,6 +152,10 @@ std::optional<benchmarks::BnchmrksRunOutput<T>> RunBnchmrks<T, ACCELERATION, BEN
   //initialize structures for timing data
   DetailedTimings detailed_bnchmrks_timings(benchmarks::kTimingNames);
 
+  run_data.AddDataWHeader(
+    std::string("Benchmark"),
+    std::string(benchmarks::kBnchmrksNames.at(BENCHMARK_RUN)));
+
   //run benchmark(s) on device a specified number of times and use median
   //runtime(s) across runs in results
   constexpr size_t kNumEvalRuns{3};
@@ -190,16 +194,16 @@ std::optional<benchmarks::BnchmrksRunOutput<T>> RunBnchmrks<T, ACCELERATION, BEN
     static_cast<unsigned int>(kNumEvalRuns));
   run_data.AddDataWHeader(
     std::string(benchmarks::kTimingNames.at(
-      benchmarks::Runtime_Type::kAddMatNoTransfer)),
+      benchmarks::Runtime_Type::kTotalBnchmrkNoTransfer)),
     detailed_bnchmrks_timings.MedianTiming(
-      benchmarks::Runtime_Type::kAddMatNoTransfer).count());
+      benchmarks::Runtime_Type::kTotalBnchmrkNoTransfer).count());
 
   benchmarks::BnchmrksRunOutput<T> run_bnchmrks_output;
   //runtime without transfer time is stored as output runtime
   //with more detailed breakdowns in the run data
   run_bnchmrks_output.run_time =
     detailed_bnchmrks_timings.MedianTiming(
-      benchmarks::Runtime_Type::kAddMatNoTransfer);
+      benchmarks::Runtime_Type::kTotalBnchmrkNoTransfer);
   run_bnchmrks_output.run_data = run_data;
   //copy results matrix to output
   run_bnchmrks_output.result_mtrx = BnchmrksMtrx<T>(

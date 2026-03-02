@@ -82,7 +82,7 @@ private:
     }
 
     DetailedTimings add_mat_timing(benchmarks::kTimingNames);
-    add_mat_timing.AddTiming(benchmarks::Runtime_Type::kAddMatNoTransfer,
+    add_mat_timing.AddTiming(benchmarks::Runtime_Type::kTotalBnchmrkNoTransfer,
       end_mat_start_time - add_mat_start_time);
 
     return add_mat_timing;

@@ -32,6 +32,8 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #include <vector>
 #include <random>
 #include <iterator>
+#include <iostream>
+#include <fstream>
 
 namespace benchmarks {
   const std::string_view kSumSqrDiffOptSingThreadOutputMtrx{
@@ -65,12 +67,17 @@ public:
     std::mt19937 mersenne_engine(seed); //Mersenne Twister engine
 
     //Define the distribution to be values from -999 to 999
-    std::uniform_real_distribution dist(-999.0, 999.0);
+    std::uniform_real_distribution dist(0.0, 10.0);
+    //std::uniform_int_distribution dist(1, 10);
 
     //Use std::generate to fill the vector
     //A lambda function is used to bind the distribution and engine
     auto generator = [&]() { return dist(mersenne_engine); };
     std::generate(mtrix_data_.begin(), mtrix_data_.end(), generator);
+    //std::fill(mtrix_data_.begin(), mtrix_data_.end(), 2.79032480329);
+    /*for (int i=0; i < mtrix_data_.size(); i++) {
+      mtrix_data_[i] = i;
+    }*/
   }
 
   float GetSumSqrDiff(const BnchmrksMtrx<T>& mtrx_comp) const {
@@ -93,6 +100,17 @@ public:
     return sum_sqr_diff;
   }
 
+  float GetMaxElementDiff(const BnchmrksMtrx<T>& mtrx_comp) const {
+    float max_element_diff{0};
+    for (size_t i=0; i < width_*height_; i++) {
+      max_element_diff = std::max(max_element_diff,
+        std::abs((float)mtrix_data_[i] - (float)mtrx_comp.mtrix_data_[i]));
+    }
+    
+    //return maximum different between corresponding matrix elements
+    return max_element_diff;
+  }
+
   size_t Width() const {
     return width_;
   }
@@ -105,10 +123,26 @@ public:
     return mtrix_data_.data();
   }
 
+  //overloaded stream insertion operator declaration as friend function
+  template <typename U>
+  friend std::ostream& operator<<(std::ostream& os, const BnchmrksMtrx<U>& bnchmrks_mtrx);
+
 private:
   size_t width_{0};
   size_t height_{0};
   std::vector<T> mtrix_data_;
 };
+
+//overloaded stream insertion operator definition
+template <typename T>
+std::ostream& operator<<(std::ostream& os, const BnchmrksMtrx<T>& bnchmrks_mtrx) {
+  for (int y = 0; y < bnchmrks_mtrx.height_; y++) {
+    for (int x = 0; x < bnchmrks_mtrx.width_; x++) {
+      os << bnchmrks_mtrx.mtrix_data_[y*bnchmrks_mtrx.width_ + x] << " ";
+    }
+    os << std::endl;
+  }
+  return os;
+}
 
 #endif //BNCHMRKS_MATRX_H_
