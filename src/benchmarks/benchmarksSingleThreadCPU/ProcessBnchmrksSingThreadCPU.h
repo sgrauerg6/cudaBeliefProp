@@ -74,13 +74,13 @@ private:
         }
         else if constexpr (BENCHMARK_RUN == benchmarks::BenchmarkRun::kGemm) {
           T sum{0.0};
-          size_t curr_addend0_idx{y * mat_w_h};
-          size_t curr_addend1_idx{x};
+          size_t curr_matrix_input0_idx{y * mat_w_h};
+          size_t curr_matrix_input1_idx{x};
           for (int k = 0; k < mat_w_h; k++) {
             sum += 
-              mat_input_0[curr_addend0_idx] * mat_input_1[curr_addend1_idx];
-            curr_addend0_idx += 1;
-            curr_addend1_idx += mat_w_h;
+              mat_input_0[curr_matrix_input0_idx] * mat_input_1[curr_matrix_input1_idx];
+            curr_matrix_input0_idx += 1;
+            curr_matrix_input1_idx += mat_w_h;
           }
           mat_result[val_idx] = sum;
         }

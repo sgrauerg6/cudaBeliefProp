@@ -53,16 +53,33 @@ namespace benchmarks_cuda {
     //get x and y indices corresponding to current CUDA thread
     const unsigned int x_val = blockIdx.x * blockDim.x + threadIdx.x;
     const unsigned int y_val = blockIdx.y * blockDim.y + threadIdx.y;
+    const unsigned int val_idx = y_val*mtrx_width + x_val;
     if constexpr (BENCHMARK_RUN == benchmarks::BenchmarkRun::kAddTwoD) {
-      matrix_result[y_val * mtrx_width + x_val] =
-        matrix_0[y_val * mtrx_width + x_val] + 
-        matrix_1[y_val * mtrx_width + x_val];
+      matrix_result[val_idx] =
+        matrix_0[val_idx] + 
+        matrix_1[val_idx];
     }
     else if constexpr (BENCHMARK_RUN == benchmarks::BenchmarkRun::kDivideTwoD) {
+      matrix_result[val_idx] =
+        matrix_0[val_idx] /
+        matrix_1[val_idx];
     }
     else if constexpr (BENCHMARK_RUN == benchmarks::BenchmarkRun::kCopyTwoD) {
+      matrix_result[val_idx] = matrix_0[val_idx];
     }
     else if constexpr (BENCHMARK_RUN == benchmarks::BenchmarkRun::kGemm) {
+      float sum = 0.0f;
+      size_t curr_matrix_input0_idx{y * mtrx_width};
+      size_t curr_matrix_input1_idx{x_val};
+      //compute dot product of the corresponding matrix_0 row and matrix_1 column
+      for (size_t i = 0; i < mtrx_width; ++i) {
+        sum +=
+          matrix_0[curr_matrix_input0_idx] *
+          matrix_1[curr_matrix_input1_idx];
+        curr_matrix_input0_idx += 1;
+        curr_matrix_input1_idx += mtrx_width;
+      }
+      matrix_result[val_idx] = sum;
     }
   }
 };

@@ -198,13 +198,13 @@ void benchmarks_cpu::TwoDMatricesBnchmrkNoPackedInstructions(
       }
       else if constexpr (BENCHMARK_RUN == benchmarks::BenchmarkRun::kGemm) {
         T sum{0.0};
-        size_t curr_addend0_idx{y * mtrx_width};
-        size_t curr_addend1_idx{x};
+        size_t curr_matrix_input0_idx{y * mtrx_width};
+        size_t curr_matrix_input1_idx{x};
         for (int k = 0; k < mtrx_width; k++) {
           sum += 
-            matrix_input_0[curr_addend0_idx] * matrix_input_1[curr_addend1_idx];
-          curr_addend0_idx += 1;
-          curr_addend1_idx += mtrx_width;
+            matrix_input_0[curr_matrix_input0_idx] * matrix_input_1[curr_matrix_input1_idx];
+          curr_matrix_input0_idx += 1;
+          curr_matrix_input1_idx += mtrx_width;
         }
         matrix_result[val_idx] = sum;
       }
@@ -266,19 +266,19 @@ void benchmarks_cpu::TwoDMatricesBnchmrkSIMD(
       }
       else if constexpr (BENCHMARK_RUN == benchmarks::BenchmarkRun::kGemm) {
         W sum = simd_processing::createSIMDVectorSameData<W>(0.0f);
-        size_t curr_addend0_idx{y * mtrx_width};
-        size_t curr_addend1_idx{x_val};
+        size_t curr_matrix_input0_idx{y * mtrx_width};
+        size_t curr_matrix_input1_idx{x_val};
         for (int k = 0; k < mtrx_width; k++) {
           W addend_0 = simd_processing::createSIMDVectorSameData<W>(
             util_functs::ConvertValToDifferentDataTypeIfNeeded<T, float>(
-              matrix_input_0[curr_addend0_idx]));
+              matrix_input_0[curr_matrix_input0_idx]));
           U addend_1 = simd_processing::LoadPackedDataAligned<T, U>(
-            curr_addend1_idx, matrix_input_1);
+            curr_matrix_input1_idx, matrix_input_1);
           sum = simd_processing::AddVals<W, W, W>(
             sum,
             simd_processing::MultVals<W, U, W>(addend_0, addend_1));
-          curr_addend0_idx += 1;
-          curr_addend1_idx += mtrx_width;
+          curr_matrix_input0_idx += 1;
+          curr_matrix_input1_idx += mtrx_width;
         }
         simd_processing::StorePackedDataAligned<T, W>(
           val_idx,
