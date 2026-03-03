@@ -113,10 +113,13 @@ MultRunData RunImpMultInputsBnchmrks::RunEvalImpMultDataSets(
   run_results.push_back(RunImpOnInputBnchmrks<
     T, OPT_IMP_ACCEL, static_cast<size_t>(benchmarks::MtrxWH::kMtrxWH_1024), benchmarks::BenchmarkRun::kGemm>().operator()(
     run_imp_settings));
-  run_results.push_back(RunImpOnInputBnchmrks<
-    T, OPT_IMP_ACCEL, static_cast<size_t>(benchmarks::MtrxWH::kMtrxWH_2048), benchmarks::BenchmarkRun::kGemm>().operator()(
-    run_imp_settings));
   /*run_results.push_back(RunImpOnInputBnchmrks<
+    T, OPT_IMP_ACCEL, static_cast<size_t>(benchmarks::MtrxWH::kMtrxWH_2048), benchmarks::BenchmarkRun::kGemm>().operator()(
+    run_imp_settings));*/
+  /*run_results.push_back(RunImpOnInputBnchmrks<
+    T, OPT_IMP_ACCEL, static_cast<size_t>(benchmarks::MtrxWH::kMtrxWH_3072), benchmarks::BenchmarkRun::kGemm>().operator()(
+    run_imp_settings));
+  run_results.push_back(RunImpOnInputBnchmrks<
     T, OPT_IMP_ACCEL, static_cast<size_t>(benchmarks::MtrxWH::kMtrxWH_4096), benchmarks::BenchmarkRun::kGemm>().operator()(
     run_imp_settings));*/
   /*run_results.push_back(RunImpOnInputBnchmrks<

@@ -65,10 +65,12 @@ inline std::optional<benchmarks::BnchmrksRunOutput<T>> RunBnchmrksOptCPU<T, ACCE
 
   //generate struct with pointers to objects for running optimized CPU implementation and call
   //function to run optimized CPU implementation
+  constexpr size_t kNumEvalRuns{7};
   auto process_bnchmrks_output = this->ProcessBenchmarks(
     inMtrces,
     std::make_unique<ProcessBnchmrksOptCPU<T, ACCELERATION, BENCHMARK_RUN>>(parallel_params),
-    std::make_unique<MemoryManagement<T>>());
+    std::make_unique<MemoryManagement<T>>(),
+    kNumEvalRuns);
   if (!process_bnchmrks_output) {
     return {};
   }

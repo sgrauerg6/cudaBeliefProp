@@ -55,10 +55,12 @@ inline std::optional<benchmarks::BnchmrksRunOutput<T>> RunBnchmrksCUDA<T, ACCELE
   //function to run CUDA implementation
   RunData run_data;
   run_data.AppendData(run_cuda::retrieveDeviceProperties(0));
+  constexpr size_t kNumEvalRuns{7};
   auto process_bnchmrks_output = this->ProcessBenchmarks(
     inMtrces,
     std::make_unique<ProcessBnchmrksCUDA<T, ACCELERATION>>(parallel_params),
-    std::make_unique<MemoryManagement<T>>());
+    std::make_unique<MemoryManagement<T>>(),
+    kNumEvalRuns);
   if (!process_bnchmrks_output) {
     return {};
   }

@@ -105,7 +105,8 @@ protected:
   std::optional<benchmarks::BnchmrksRunOutput<T>> ProcessBenchmarks(
     const std::array<BnchmrksMtrx<T>, 2>& inMtrces,
     const std::unique_ptr<ProcessBnchmrksDevice<T, ACCELERATION, BENCHMARK_RUN>>& proc_bnchmrks_device,
-    const std::unique_ptr<MemoryManagement<T>>& mem_management) const;
+    const std::unique_ptr<MemoryManagement<T>>& mem_management,
+    size_t num_eval_runs) const;
 };
 
 //protected function to set up, run, and evaluate bp processing on target
@@ -115,7 +116,8 @@ template<RunData_t T, run_environment::AccSetting ACCELERATION, benchmarks::Benc
 std::optional<benchmarks::BnchmrksRunOutput<T>> RunBnchmrks<T, ACCELERATION, BENCHMARK_RUN>::ProcessBenchmarks(
   const std::array<BnchmrksMtrx<T>, 2>& inMtrces,
   const std::unique_ptr<ProcessBnchmrksDevice<T, ACCELERATION, BENCHMARK_RUN>>& proc_bnchmrks_device,
-  const std::unique_ptr<MemoryManagement<T>>& mem_management) const
+  const std::unique_ptr<MemoryManagement<T>>& mem_management,
+  size_t num_eval_runs) const
 {
   //initialize run data to include timing data and possibly
   //other info
@@ -158,8 +160,8 @@ std::optional<benchmarks::BnchmrksRunOutput<T>> RunBnchmrks<T, ACCELERATION, BEN
 
   //run benchmark(s) on device a specified number of times and use median
   //runtime(s) across runs in results
-  constexpr size_t kNumEvalRuns{3};
-  for (size_t i=0; i < kNumEvalRuns; i++) {
+  //constexpr size_t kNumEvalRuns{3};
+  for (size_t i=0; i < num_eval_runs; i++) {
     //run benchmark(s) on device and retrieve output runtime(s)
     const auto process_bnchmrks_timings = (*proc_bnchmrks_device)(
       inMtrces[0].Width(), mat_0_device, mat_1_device, mat_2_device);
@@ -191,7 +193,7 @@ std::optional<benchmarks::BnchmrksRunOutput<T>> RunBnchmrks<T, ACCELERATION, BEN
   //add runtime data to data to return with corresponding headers
   run_data.AddDataWHeader(
     std::string(run_eval::kNumEvalRuns),
-    static_cast<unsigned int>(kNumEvalRuns));
+    static_cast<unsigned int>(num_eval_runs));
   run_data.AddDataWHeader(
     std::string(benchmarks::kTimingNames.at(
       benchmarks::Runtime_Type::kTotalBnchmrkNoTransfer)),

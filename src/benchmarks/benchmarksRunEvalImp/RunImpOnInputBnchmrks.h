@@ -52,6 +52,29 @@ using RunBnchmrksOptimized = RunBnchmrksCUDA<T, ACCELERATION, BENCHMARK_RUN>;
 #include "benchmarksRunProcessing/BnchmrksMtrx.h"
 
 /**
+ * @brief Namespace with setting of whether or not to run single thread implementation
+ * a single time for each input benchmark when running evaluation and storage of 
+ * single thread implementation output so it can be re-used so that single thread
+ * implementation only needs to be run once for each benchmark.
+ */
+namespace bnchmrks_single_thread {
+
+/** @brief Setting of whether or not to run single thread implementation once for
+ *  each benchmark in evaluation */
+constexpr bool kRunSingleThreadOnceForSet{true};
+
+/** @brief Map to store output and run results for single thread implementation for
+ *  each stereo set<br>
+ *  Key of map is tuple of data type size, benchmark run, and benchmark run matrix width/height<br>
+ *  Value of map is runtime, run data, and resulting matrix from run */
+template<RunData_t T>
+inline std::map<std::tuple<size_t, benchmarks::BenchmarkRun, unsigned int>,
+                std::tuple<std::chrono::duration<double>, RunData, BnchmrksMtrx<T>>>
+  single_thread_run_output;
+
+};
+
+/**
  * @brief Child class of RunImpOnInput to run and evaluate benchmark(s)
  * implementation on a specified input
  * 
