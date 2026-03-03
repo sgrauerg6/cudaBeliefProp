@@ -27,6 +27,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #ifndef PROCESS_BNCHMRKS_SING_THREAD_CPU_H_
 #define PROCESS_BNCHMRKS_SING_THREAD_CPU_H_
 
+#include <cmath>
 #include "benchmarksRunProcessing/ProcessBnchmrksDevice.h"
 
 template<RunData_t T, run_environment::AccSetting ACCELERATION, benchmarks::BenchmarkRun BENCHMARK_RUN>
@@ -77,8 +78,15 @@ private:
           size_t curr_matrix_input0_idx{y * mat_w_h};
           size_t curr_matrix_input1_idx{x};
           for (int k = 0; k < mat_w_h; k++) {
+#if defined(USE_FUSED_MULTIPLY_ADD)
+            sum = std::fma(
+              mat_input_0[curr_matrix_input0_idx],
+              mat_input_1[curr_matrix_input1_idx],
+              sum);
+#else
             sum += 
               mat_input_0[curr_matrix_input0_idx] * mat_input_1[curr_matrix_input1_idx];
+#endif //USE_FUSED_MULTIPLY_ADD
             curr_matrix_input0_idx += 1;
             curr_matrix_input1_idx += mat_w_h;
           }

@@ -38,6 +38,8 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 namespace benchmarks {
   const std::string_view kSumSqrDiffOptSingThreadOutputMtrx{
     "Sum squared difference between optimized and single-thread CPU results"};
+  const std::string_view kMaxElementDiffOptSingThreadOutputMtrx{
+    "Max difference of corresponding elements"};
 };
 
 template <typename T>

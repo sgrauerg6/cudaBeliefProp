@@ -217,6 +217,19 @@ std::optional<RunData> RunImpOnInputBnchmrks<T, OPT_IMP_ACCEL, NUM_INPUT, BENCHM
   std::cout << "Acceleration: "
             << run_environment::AccelerationString<OPT_IMP_ACCEL>() << std::endl;
   std::cout << std::endl;
+
+  //initialize and add current run settings to output run data
+  RunData run_data;
+  run_data.AddDataWHeader(
+    std::string(run_environment::kAccelerationDescHeader),
+    opt_imp_run_description);
+  run_data.AddDataWHeader(
+      std::string("Fused multiply-add instructions used"),
+#if defined(USE_FUSED_MULTIPLY_ADD)
+      true);
+#else
+      false);
+#endif //USE_FUSED_MULTIPLY_ADD
       
   //run optimized implementation and retrieve structure with runtime and output
   //disparity map
@@ -226,10 +239,6 @@ std::optional<RunData> RunImpOnInputBnchmrks<T, OPT_IMP_ACCEL, NUM_INPUT, BENCHM
     run_bnchmrks_opt_->operator()(in_mtrces_, *parallel_params);
     
   //check if error in run
-  RunData run_data;
-  run_data.AddDataWHeader(
-    std::string(run_environment::kAccelerationDescHeader),
-    opt_imp_run_description);
   if (!(run_output[OPT_IMP_ACCEL])) {
     return {};
   }
@@ -265,7 +274,7 @@ std::optional<RunData> RunImpOnInputBnchmrks<T, OPT_IMP_ACCEL, NUM_INPUT, BENCHM
       run_output[run_environment::AccSetting::kNone]->result_mtrx.GetSumSqrDiff(
         run_output[OPT_IMP_ACCEL]->result_mtrx));
     run_data.AddDataWHeader(
-      std::string("Max Difference"),
+      std::string(benchmarks::kMaxElementDiffOptSingThreadOutputMtrx),
       run_output[run_environment::AccSetting::kNone]->result_mtrx.GetMaxElementDiff(
         run_output[OPT_IMP_ACCEL]->result_mtrx));
   }

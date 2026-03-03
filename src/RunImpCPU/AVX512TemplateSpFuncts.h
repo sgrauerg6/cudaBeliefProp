@@ -213,6 +213,34 @@ template<> inline __m512h simd_processing::MultVals<__m512h, __m512h, __m512h>(
 
 #endif //FLOAT16_VECTORIZATION
 
+template<> inline __m512 simd_processing::FusedMultAddVals<__m512, __m512, __m512, __m512>(
+  const __m512& val1, const __m512& val2, const __m512& val3)
+{
+  return _mm512_fmadd_ps(val1, val2, val3);
+}
+
+template<> inline __m512d simd_processing::FusedMultAddVals<__m512d, __m512d, __m512d, __m512d>(
+  const __m512d& val1, const __m512d& val2, const __m512d& val3)
+{
+  return _mm512_fmadd_pd(val1, val2, val3);
+}
+
+template<> inline __m512 simd_processing::FusedMultAddVals<__m512, __m256i, __m512, __m512>(
+  const __m512& val1, const __m256i& val2, const __m512& val3)
+{
+  return _mm512_fmadd_ps(val1, _mm512_cvtph_ps(val2), val3);
+}
+
+#if defined(FLOAT16_VECTORIZATION)
+
+template<> inline __m512h simd_processing::FusedMultAddVals<__m512h, __m512h, __m512h, __m512h>(
+  const __m512h& val1, const __m512h& val2, const __m512h& val3)
+{
+  return _mm512_fmadd_ph(val1, val2, val3);
+}
+
+#endif //FLOAT16_VECTORIZATION
+
 template<> inline __m512 simd_processing::DivideVals<__m512, __m512, __m512>(
   const __m512& val1, const __m512& val2)
 {

@@ -235,6 +235,34 @@ template<> inline __m256h simd_processing::DivideVals<__m256h, __m256h, __m256h>
 
 #endif //FLOAT16_VECTORIZATION
 
+template<> inline __m256 simd_processing::FusedMultAddVals<__m256, __m256, __m256, __m256>(
+  const __m256& val1, const __m256& val2, const __m256& val3)
+{
+  return _mm256_fmadd_ps(val1, val2, val3);
+}
+
+template<> inline __m256d simd_processing::FusedMultAddVals<__m256d, __m256d, __m256d, __m256d>(
+  const __m256d& val1, const __m256d& val2, const __m256d& val3)
+{
+  return _mm256_fmadd_pd(val1, val2, val3);
+}
+
+template<> inline __m256 simd_processing::FusedMultAddVals<__m256, __m128i, __m256, __m256>(
+  const __m256& val1, const __m128i& val2, const __m256& val3)
+{
+  return _mm256_fmadd_ps(val1, _mm256_cvtph_ps(val2), val3);
+}
+
+#if defined(FLOAT16_VECTORIZATION)
+
+template<> inline __m256h simd_processing::FusedMultAddVals<__m256h, __m256h, __m256h, __m256h>(
+  const __m256h& val1, const __m256h& val2, const __m256h& val3)
+{
+  return _mm512_fmadd_ph(val1, val2, val3);
+}
+
+#endif //FLOAT16_VECTORIZATION
+
 template<> inline __m256 simd_processing::ConvertValToDatatype<__m256, float>(float val) {
   return _mm256_set1_ps(val);
 }

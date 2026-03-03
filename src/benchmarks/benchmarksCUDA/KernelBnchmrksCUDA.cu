@@ -73,9 +73,17 @@ namespace benchmarks_cuda {
       size_t curr_matrix_input1_idx{x_val};
       //compute dot product of the corresponding matrix_0 row and matrix_1 column
       for (size_t i = 0; i < mtrx_width; ++i) {
+#if defined(USE_FUSED_MULTIPLY_ADD)
+        sum =
+          __fmaf_rn(
+            matrix_0[curr_matrix_input0_idx],
+            matrix_1[curr_matrix_input1_idx],
+            sum);
+#else
         sum +=
           matrix_0[curr_matrix_input0_idx] *
           matrix_1[curr_matrix_input1_idx];
+#endif //USE_FUSED_MULTIPLY_ADD
         curr_matrix_input0_idx += 1;
         curr_matrix_input1_idx += mtrx_width;
       }

@@ -151,6 +151,27 @@ template<> inline float32x4_t simd_processing::MultVals<float16x4_t, float16x4_t
   return vmulq_f32(vcvt_f32_f16(val1), vcvt_f32_f16(val2));
 }
 
+template<> inline float32x4_t simd_processing::FusedMultAddVals<float32x4_t, float32x4_t, float32x4_t, float32x4_t>(
+  const float32x4_t& val1, const float32x4_t& val2, const float32x4_t& val3)
+{
+  //need to place value to be added in first argument in call to NEON fused multiply-add intrinsic
+  return vfmaq_f32(val3, val1, val2);
+}
+
+template<> inline float64x2_t simd_processing::FusedMultAddVals<float64x2_t, float64x2_t, float64x2_t, float64x2_t>(
+  const float64x2_t& val1, const float64x2_t& val2, const float64x2_t& val3)
+{
+  //need to place value to be added in first argument in call to NEON fused multiply-add intrinsic
+  return vfmaq_f64(val3, val1, val2);
+}
+
+template<> inline float32x4_t simd_processing::FusedMultAddVals<float32x4_t, float16x4_t, float32x4_t, float32x4_t>(
+  const float32x4_t& val1, const float16x4_t& val2, const float32x4_t& val3)
+{
+  //need to place value to be added in first argument in call to NEON fused multiply-add intrinsic
+  return vfmaq_f32(val3, val1, vcvt_f32_f16(val2));
+}
+
 template<> inline float32x4_t simd_processing::DivideVals<float32x4_t, float32x4_t, float32x4_t>(
   const float32x4_t& val1, const float32x4_t& val2)
 {

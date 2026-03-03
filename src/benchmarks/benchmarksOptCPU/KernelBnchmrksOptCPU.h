@@ -34,6 +34,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #include <dispatch/dispatch.h>
 #endif //__APPLE__
 
+#include <cmath>
 #include <math.h>
 #include <iostream>
 #include "RunEval/RunTypeConstraints.h"
@@ -201,9 +202,16 @@ void benchmarks_cpu::TwoDMatricesBnchmrkNoPackedInstructions(
         size_t curr_matrix_input0_idx{y * mtrx_width};
         size_t curr_matrix_input1_idx{x};
         for (int k = 0; k < mtrx_width; k++) {
+#if defined(USE_FUSED_MULTIPLY_ADD)
+          sum = std::fma(
+            matrix_input_0[curr_matrix_input0_idx],
+            matrix_input_1[curr_matrix_input1_idx],
+            sum);
+#else
           sum += 
             matrix_input_0[curr_matrix_input0_idx] *
             matrix_input_1[curr_matrix_input1_idx];
+#endif //USE_FUSED_MULTIPLY_ADD
           curr_matrix_input0_idx += 1;
           curr_matrix_input1_idx += mtrx_width;
         }
@@ -275,9 +283,15 @@ void benchmarks_cpu::TwoDMatricesBnchmrkSIMD(
               matrix_input_0[curr_matrix_input0_idx]));
           U addend_1 = simd_processing::LoadPackedDataAligned<T, U>(
             curr_matrix_input1_idx, matrix_input_1);
+#if defined(USE_FUSED_MULTIPLY_ADD)
+          sum = simd_processing::FusedMultAddVals<W, U, W, W>(
+                  addend_0, addend_1, sum);
+#else
+          //const auto product = simd_processing::MultVals<W, U, W>(addend_0, addend_1);
           sum = simd_processing::AddVals<W, W, W>(
             sum,
             simd_processing::MultVals<W, U, W>(addend_0, addend_1));
+#endif //USE_FUSED_MULTIPLY_ADD
           curr_matrix_input0_idx += 1;
           curr_matrix_input1_idx += mtrx_width;
         }

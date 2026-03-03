@@ -95,7 +95,7 @@ namespace simd_processing
   //
   /**
    * @brief Add values of specified types and return sum as specified type<br>
-   * Define template specialization to support addition of specific SIMD vector types
+   * Define template specialization to support operation on specific SIMD vector types
    * 
    * @tparam T 
    * @tparam U 
@@ -109,7 +109,7 @@ namespace simd_processing
 
   /**
    * @brief Subtract values of specified types and return difference as specified type
-   * Define template specialization to support subtraction of specific SIMD vector types
+   * Define template specialization to support operation on specific SIMD vector types
    * 
    * @tparam T 
    * @tparam U 
@@ -123,7 +123,7 @@ namespace simd_processing
 
     /**
    * @brief Multiply values of specified types and return sum as specified type<br>
-   * Define template specialization to support addition of specific SIMD vector types
+   * Define template specialization to support operation on specific SIMD vector types
    * 
    * @tparam T 
    * @tparam U 
@@ -148,6 +148,22 @@ namespace simd_processing
    */
   template<RunDataSingOrVect_t T, RunDataSingOrVect_t U, RunDataSingOrVect_t V>
   V DivideVals(const T& val1, const U& val2) { return (val1 / val2); }
+
+  /**
+   * @brief Perform fused multiply-add on values of specified types and return result as specified type<br>
+   * Define template specialization to support operation on specific SIMD vector types
+   * 
+   * @tparam T 
+   * @tparam U 
+   * @tparam V 
+   * @tparam W
+   * @param val1
+   * @param val2
+   * @param val3
+   * @return SIMD structure with product of values
+   */
+  template<RunDataSingOrVect_t T, RunDataSingOrVect_t U, RunDataSingOrVect_t V, RunDataSingOrVect_t W>
+  W FusedMultAddVals(const T& val1, const U& val2, const V& val3) { return (val1 * val2 + val3); }
 
   /**
    * @brief Convert value of specified type to value of another specified type<br>
