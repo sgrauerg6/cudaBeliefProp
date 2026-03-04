@@ -27,6 +27,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #ifndef UTILITY_FUNCTS_H_
 #define UTILITY_FUNCTS_H_
 
+#include <vector>
 #include "RunEval/RunTypeConstraints.h"
 
 #if defined(OPTIMIZED_CUDA_RUN)
@@ -70,6 +71,16 @@ template<typename T>
 requires std::is_arithmetic_v<T>
 ARCHITECTURE_ADDITION inline T GetMax(T val1, T val2) {
   return ((val1 > val2) ? val1 : val2);
+}
+
+//convert vector of float values to values of template datatype
+template<RunData_t T>
+std::vector<T> ConvFloatVectToTemplateType(const std::vector<float>& float_data) {
+  std::vector<T> template_type_vect;
+  for (const auto& float32_val : float_data) {
+    template_type_vect.push_back((T)float32_val);
+  }
+  return template_type_vect;
 }
 
 };

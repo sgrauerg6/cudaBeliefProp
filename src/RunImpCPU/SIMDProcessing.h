@@ -224,6 +224,15 @@ namespace simd_processing
   void StorePackedDataUnaligned(size_t indexDataStore, T* locationDataStore, const U& dataToStore) {
     locationDataStore[indexDataStore] = dataToStore;
   }
+
+  template<RunData_t T>
+  std::vector<T> ConvFloatVectTo16Bit(const std::vector<float>& float_data) {
+    std::vector<T> float16Data;
+    for (const auto& float32_val : float_data) {
+      float16Data.push_back((T)float32_val);
+    }
+    return float16Data;
+  }
 };
 
 //headers to include differ depending on architecture and CPU vectorization setting

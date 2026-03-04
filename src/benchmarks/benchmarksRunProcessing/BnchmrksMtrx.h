@@ -34,7 +34,11 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #include <iterator>
 #include <iostream>
 #include <fstream>
+#if defined(OPTIMIZED_CPU_RUN)
 #include "RunImpCPU/SIMDProcessing.h"
+#else
+#include "RunImp/UtilityFuncts.h"
+#endif //OPTIMIZED_CPU_RUN
 
 namespace benchmarks {
   const std::string_view kSumSqrDiffOptSingThreadOutputMtrx{
@@ -84,7 +88,11 @@ public:
     if (sizeof(T) == 2) {
       std::vector<float> float_data(width_*height_);
       std::generate(float_data.begin(), float_data.end(), generator);
-      ConvFloatDataTo16BitMtrx<OPT_IMP_ACCEL>(float_data);
+#if defined(OPTIMIZED_CPU_RUN)
+      mtrx_data_ = simd_processing::ConvFloatVectTo16Bit<T>(float_data);
+#else
+      mtrx_data_ = util_functs::ConvFloatVectToTemplateType<T>(float_data);
+#endif //OPTIMIZED_CPU_RUN
     }
     else {
       std::generate(mtrx_data_.begin(), mtrx_data_.end(), generator);
@@ -142,16 +150,6 @@ private:
   size_t width_{0};
   size_t height_{0};
   std::vector<T> mtrx_data_;
-
-  template <run_environment::AccSetting OPT_IMP_ACCEL>
-  void ConvFloatDataTo16BitMtrx(const std::vector<float>& float_data) {
-    //by default cast float data to halftype data type that is being used
-    //specializations defined to allow other options such as using SIMD
-    //call that do conversion between 32-bit and 16-bit floats
-    for (int i=0; i < width_*height_; i ++) {
-      mtrx_data_[i] = (T)float_data[i];
-    }
-  }
 };
 
 //overloaded stream insertion operator definition
@@ -164,38 +162,6 @@ std::ostream& operator<<(std::ostream& os, const BnchmrksMtrx<T>& bnchmrks_mtrx)
     os << std::endl;
   }
   return os;
-}
-
-template<>
-template<>
-inline void BnchmrksMtrx<float16_t>::ConvFloatDataTo16BitMtrx<run_environment::AccSetting::kNEON>(
-  const std::vector<float>& float_data) 
-{
-  constexpr size_t SIMD_LENGTH{4};
-  float16_t* data_as_float16 = new float16_t[width_ * height_];
-  for (int i=0; i < width_*height_; i += SIMD_LENGTH) {
-    float32x4_t fl_data_vect = 
-      simd_processing::LoadPackedDataAligned<float, float32x4_t>(i, float_data.data());
-    simd_processing::StorePackedDataAligned<float16_t, float32x4_t>(i, data_as_float16, fl_data_vect);
-  }
-  mtrx_data_ = std::vector<float16_t>(data_as_float16, data_as_float16 + (width_ * height_));
-  delete [] data_as_float16;
-}
-
-template<>
-template<>
-inline void BnchmrksMtrx<float16_t>::ConvFloatDataTo16BitMtrx<run_environment::AccSetting::kNone>(
-  const std::vector<float>& float_data) 
-{
-  constexpr size_t SIMD_LENGTH{4};
-  float16_t* data_as_float16 = new float16_t[width_ * height_];
-  for (int i=0; i < width_*height_; i += SIMD_LENGTH) {
-    float32x4_t fl_data_vect = 
-      simd_processing::LoadPackedDataAligned<float, float32x4_t>(i, float_data.data());
-    simd_processing::StorePackedDataAligned<float16_t, float32x4_t>(i, data_as_float16, fl_data_vect);
-  }
-  mtrx_data_ = std::vector<float16_t>(data_as_float16, data_as_float16 + (width_ * height_));
-  delete [] data_as_float16;
 }
 
 #endif //BNCHMRKS_MATRX_H_

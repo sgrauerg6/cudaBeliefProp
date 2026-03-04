@@ -357,4 +357,19 @@ template<> inline void simd_processing::StorePackedDataUnaligned<_Float16, __m25
 
 #endif //FLOAT16_VECTORIZATION
 
+template<> inline std::vector<short> simd_processing::ConvFloatVectTo16Bit<short>(
+  const std::vector<float>& float_data)
+{
+  constexpr size_t SIMD_LENGTH{4};
+  short* data_as_float16 = new short[float_data.size()];
+  for (int i=0; i < float_data.size(); i += SIMD_LENGTH) {
+    float32x4_t fl_data_vect = 
+      simd_processing::LoadPackedDataAligned<float, __m256>(i, float_data.data());
+    simd_processing::StorePackedDataAligned<short, __m256>(i, data_as_float16, fl_data_vect);
+  }
+  std::vector<short> float16_vect(data_as_float16, data_as_float16 + float_data.size());
+  delete [] data_as_float16;
+  return float16_vect;
+}
+
 #endif /* AVX256_TEMPLATE_SP_FUNCTS_H_ */
