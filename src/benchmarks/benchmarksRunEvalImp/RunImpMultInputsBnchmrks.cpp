@@ -96,7 +96,7 @@ MultRunData RunImpMultInputsBnchmrks::RunEvalImpMultDataSets(
   //run and evaluate bp implementation on all stereo sets used for benchmarking
   std::vector<MultRunData> run_results;
   run_results.push_back(RunImpOnInputBnchmrks<
-    T, OPT_IMP_ACCEL, static_cast<size_t>(benchmarks::MtrxWH::kMtrxWH_32), benchmarks::BenchmarkRun::kGemm>().operator()(
+    T, OPT_IMP_ACCEL, static_cast<size_t>(benchmarks::MtrxWH::kMtrxWH_32), benchmarks::BenchmarkRun::/*kAddTwoD*/kGemm>().operator()(
     run_imp_settings));
   run_results.push_back(RunImpOnInputBnchmrks<
     T, OPT_IMP_ACCEL, static_cast<size_t>(benchmarks::MtrxWH::kMtrxWH_64), benchmarks::BenchmarkRun::kGemm>().operator()(

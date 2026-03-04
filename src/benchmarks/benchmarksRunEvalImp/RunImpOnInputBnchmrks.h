@@ -155,8 +155,8 @@ MultRunData RunImpOnInputBnchmrks<T, OPT_IMP_ACCEL, NUM_INPUT, BENCHMARK_RUN>::o
     benchmarks::kMtrxsToProcess[NUM_INPUT].mtrx_wh;
   
   //initialize input matrices
-  in_mtrces_[0].InitMtxWRandData(matrix_wh_, matrix_wh_);
-  in_mtrces_[1].InitMtxWRandData(matrix_wh_, matrix_wh_);
+  in_mtrces_[0].template InitMtxWRandData<OPT_IMP_ACCEL>(matrix_wh_, matrix_wh_);
+  in_mtrces_[1].template InitMtxWRandData<OPT_IMP_ACCEL>(matrix_wh_, matrix_wh_);
 
   //initialize run results across multiple implementations
   MultRunData run_results;
@@ -288,10 +288,10 @@ std::optional<RunData> RunImpOnInputBnchmrks<T, OPT_IMP_ACCEL, NUM_INPUT, BENCHM
     
     //compare optimized and single-thread CPU outputs and add results to
     //run data
-    /*std::ofstream sing_thread_out_mtrx_stream("singThreadMtrx.txt");
-    std::ofstream opt_imp_out_mtrx_stream("optImpMtrx.txt");
-    sing_thread_out_mtrx_stream << run_output[run_environment::AccSetting::kNone]->result_mtrx;
-    opt_imp_out_mtrx_stream << run_output[OPT_IMP_ACCEL]->result_mtrx;*/
+    //std::ofstream sing_thread_out_mtrx_stream("singThreadMtrx.txt");
+    //std::ofstream opt_imp_out_mtrx_stream("optImpMtrx.txt");
+    //sing_thread_out_mtrx_stream << run_output[run_environment::AccSetting::kNone]->result_mtrx;
+    //opt_imp_out_mtrx_stream << run_output[OPT_IMP_ACCEL]->result_mtrx;
     run_data.AddDataWHeader(
       std::string(benchmarks::kSumSqrDiffOptSingThreadOutputMtrx),
       run_output[run_environment::AccSetting::kNone]->result_mtrx.GetSumSqrDiff(

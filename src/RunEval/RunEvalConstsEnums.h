@@ -54,6 +54,8 @@ enum class MiddleValData { kAverage, kMedian };
   constexpr std::array<size_t, 1> kDataTypesEvalSizes{sizeof(double)};
 #elif defined(EVAL_HALF_DATATYPE_ONLY)
   constexpr std::array<size_t, 1> kDataTypesEvalSizes{sizeof(halftype)};
+#elif defined(EVAL_FLOAT_DOUBLE_DATATYPES_ONLY)
+  constexpr std::array<size_t, 2> kDataTypesEvalSizes{sizeof(float), sizeof(double)};
 #else
   constexpr std::array<size_t, 3> kDataTypesEvalSizes{
     sizeof(float), sizeof(double), sizeof(halftype)};

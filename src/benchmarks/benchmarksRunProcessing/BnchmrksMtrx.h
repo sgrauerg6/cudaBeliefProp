@@ -34,6 +34,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #include <iterator>
 #include <iostream>
 #include <fstream>
+#include "RunImpCPU/SIMDProcessing.h"
 
 namespace benchmarks {
   const std::string_view kSumSqrDiffOptSingThreadOutputMtrx{
@@ -50,36 +51,44 @@ public:
   explicit BnchmrksMtrx(size_t width, size_t height, T* data) :
     width_(width), height_(height)
   {
-    mtrix_data_ =
+    mtrx_data_ =
       std::vector<T>(
         data,
         data + (width_ * height_));
   }
 
+  template <run_environment::AccSetting OPT_IMP_ACCEL>
   void InitMtxWRandData(size_t width, size_t height) {
     width_ = width;
     height_ = height;
-    mtrix_data_ = std::vector<T>(width_*height_);
-    SetRandData();
+    mtrx_data_ = std::vector<T>(width_*height_);
+    SetRandData<OPT_IMP_ACCEL>();
   }
 
+  template <run_environment::AccSetting OPT_IMP_ACCEL>
   void SetRandData() {
     //steady_clock provides a non-deterministic seed
     unsigned seed = std::chrono::steady_clock::now().time_since_epoch().count();
     std::mt19937 mersenne_engine(seed); //Mersenne Twister engine
 
     //Define the distribution to be values from -999 to 999
-    std::uniform_real_distribution dist(0.0, 10.0);
-    //std::uniform_int_distribution dist(1, 10);
+    //std::uniform_real_distribution dist(0.0, 2.0);
+    std::uniform_int_distribution dist(1, 5);
 
     //Use std::generate to fill the vector
     //A lambda function is used to bind the distribution and engine
     auto generator = [&]() { return dist(mersenne_engine); };
-    std::generate(mtrix_data_.begin(), mtrix_data_.end(), generator);
-    //std::fill(mtrix_data_.begin(), mtrix_data_.end(), 2.79032480329);
-    /*for (int i=0; i < mtrix_data_.size(); i++) {
-      mtrix_data_[i] = i;
-    }*/
+
+    //if generating data for 16-bit type, generate data as float and
+    //then convert to 16-bit type used for processing
+    if (sizeof(T) == 2) {
+      std::vector<float> float_data(width_*height_);
+      std::generate(float_data.begin(), float_data.end(), generator);
+      ConvFloatDataTo16BitMtrx<OPT_IMP_ACCEL>(float_data);
+    }
+    else {
+      std::generate(mtrx_data_.begin(), mtrx_data_.end(), generator);
+    }
   }
 
   float GetSumSqrDiff(const BnchmrksMtrx<T>& mtrx_comp) const {
@@ -90,8 +99,8 @@ public:
     float sum_sqr_diff{0.0};
     for (size_t i=0; i < width_*height_; i++) {
       sum_sqr_diff +=
-        (((float)mtrix_data_[i] - (float)mtrx_comp.mtrix_data_[i]) *
-         ((float)mtrix_data_[i] - (float)mtrx_comp.mtrix_data_[i]));
+        (((float)mtrx_data_[i] - (float)mtrx_comp.mtrx_data_[i]) *
+         ((float)mtrx_data_[i] - (float)mtrx_comp.mtrx_data_[i]));
       if (sum_sqr_diff >= MAX_DIFF) {
         return MAX_DIFF;
       }
@@ -106,7 +115,7 @@ public:
     float max_element_diff{0};
     for (size_t i=0; i < width_*height_; i++) {
       max_element_diff = std::max(max_element_diff,
-        std::abs((float)mtrix_data_[i] - (float)mtrx_comp.mtrix_data_[i]));
+        std::abs((float)mtrx_data_[i] - (float)mtrx_comp.mtrx_data_[i]));
     }
     
     //return maximum different between corresponding matrix elements
@@ -122,7 +131,7 @@ public:
   }
 
   const T* Data() const {
-    return mtrix_data_.data();
+    return mtrx_data_.data();
   }
 
   //overloaded stream insertion operator declaration as friend function
@@ -132,7 +141,17 @@ public:
 private:
   size_t width_{0};
   size_t height_{0};
-  std::vector<T> mtrix_data_;
+  std::vector<T> mtrx_data_;
+
+  template <run_environment::AccSetting OPT_IMP_ACCEL>
+  void ConvFloatDataTo16BitMtrx(const std::vector<float>& float_data) {
+    //by default cast float data to halftype data type that is being used
+    //specializations defined to allow other options such as using SIMD
+    //call that do conversion between 32-bit and 16-bit floats
+    for (int i=0; i < width_*height_; i ++) {
+      mtrx_data_[i] = (T)float_data[i];
+    }
+  }
 };
 
 //overloaded stream insertion operator definition
@@ -140,11 +159,43 @@ template <typename T>
 std::ostream& operator<<(std::ostream& os, const BnchmrksMtrx<T>& bnchmrks_mtrx) {
   for (int y = 0; y < bnchmrks_mtrx.height_; y++) {
     for (int x = 0; x < bnchmrks_mtrx.width_; x++) {
-      os << bnchmrks_mtrx.mtrix_data_[y*bnchmrks_mtrx.width_ + x] << " ";
+      os << bnchmrks_mtrx.mtrx_data_[y*bnchmrks_mtrx.width_ + x] << " ";
     }
     os << std::endl;
   }
   return os;
+}
+
+template<>
+template<>
+inline void BnchmrksMtrx<float16_t>::ConvFloatDataTo16BitMtrx<run_environment::AccSetting::kNEON>(
+  const std::vector<float>& float_data) 
+{
+  constexpr size_t SIMD_LENGTH{4};
+  float16_t* data_as_float16 = new float16_t[width_ * height_];
+  for (int i=0; i < width_*height_; i += SIMD_LENGTH) {
+    float32x4_t fl_data_vect = 
+      simd_processing::LoadPackedDataAligned<float, float32x4_t>(i, float_data.data());
+    simd_processing::StorePackedDataAligned<float16_t, float32x4_t>(i, data_as_float16, fl_data_vect);
+  }
+  mtrx_data_ = std::vector<float16_t>(data_as_float16, data_as_float16 + (width_ * height_));
+  delete [] data_as_float16;
+}
+
+template<>
+template<>
+inline void BnchmrksMtrx<float16_t>::ConvFloatDataTo16BitMtrx<run_environment::AccSetting::kNone>(
+  const std::vector<float>& float_data) 
+{
+  constexpr size_t SIMD_LENGTH{4};
+  float16_t* data_as_float16 = new float16_t[width_ * height_];
+  for (int i=0; i < width_*height_; i += SIMD_LENGTH) {
+    float32x4_t fl_data_vect = 
+      simd_processing::LoadPackedDataAligned<float, float32x4_t>(i, float_data.data());
+    simd_processing::StorePackedDataAligned<float16_t, float32x4_t>(i, data_as_float16, fl_data_vect);
+  }
+  mtrx_data_ = std::vector<float16_t>(data_as_float16, data_as_float16 + (width_ * height_));
+  delete [] data_as_float16;
 }
 
 #endif //BNCHMRKS_MATRX_H_
