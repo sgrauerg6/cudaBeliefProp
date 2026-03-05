@@ -57,7 +57,7 @@ constexpr std::string_view kAccelerationDescHeader{"Acceleration"};
 
 /** @brief Enum for acceleration setting */
 enum class AccSetting {
-  kAVX512_F16, kAVX512, kAVX256_F16, kAVX256, kNEON, kCUDA, kNone
+  kAVX512_F16, kAVX512, kAVX256_F16, kAVX256, kNEON, kCUDA, kHIP, kMETAL, kNone
 };
 
 /**
@@ -74,6 +74,8 @@ constexpr std::string_view AccelerationString() {
   else if constexpr (ACCELERATION_SETTING == AccSetting::kAVX512) { return "AVX512"; }
   else if constexpr (ACCELERATION_SETTING == AccSetting::kAVX512_F16) { return "AVX512_float16Vect"; }
   else if constexpr (ACCELERATION_SETTING == AccSetting::kCUDA) { return "CUDA"; }
+  else if constexpr (ACCELERATION_SETTING == AccSetting::kHIP) { return "HIP"; }
+  else if constexpr (ACCELERATION_SETTING == AccSetting::kMETAL) { return "METAL"; }
   else { return "DEFAULT"; }
 }
 
@@ -90,6 +92,8 @@ inline std::string_view AccelerationString(AccSetting acceleration_setting) {
   else if (acceleration_setting == AccSetting::kAVX512) { return AccelerationString<AccSetting::kAVX512>(); }
   else if (acceleration_setting == AccSetting::kAVX512_F16) { return AccelerationString<AccSetting::kAVX512_F16>(); }
   else if (acceleration_setting == AccSetting::kCUDA) { return AccelerationString<AccSetting::kCUDA>(); }
+  else if (acceleration_setting == AccSetting::kHIP) { return AccelerationString<AccSetting::kHIP>(); }
+  else if (acceleration_setting == AccSetting::kMETAL) { return AccelerationString<AccSetting::kMETAL>(); }
   else { return "DEFAULT"; }
 }
 
