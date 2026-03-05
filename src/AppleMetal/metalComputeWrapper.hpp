@@ -10,10 +10,10 @@
 
 #include <Metal/Metal.hpp>
 
-const unsigned int ARRAY_LENGTH = 100000000;
-const unsigned int BUFFER_SIZE = ARRAY_LENGTH * sizeof(float);
+constexpr unsigned int ARRAY_LENGTH = 100000000;
+constexpr unsigned int BUFFER_SIZE = ARRAY_LENGTH * sizeof(float);
 
-const float DELTA = 1e-6;
+constexpr float DELTA = 1e-6;
 
 
 class metalComputeWrapper {

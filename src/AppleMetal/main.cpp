@@ -44,13 +44,13 @@ int main(int argc, const char * argv[]) {
 }
 */
 
-#define NS_PRIVATE_IMPLEMENTATION
+/*#define NS_PRIVATE_IMPLEMENTATION
 #define CA_PRIVATE_IMPLEMENTATION
-#define MTL_PRIVATE_IMPLEMENTATION
+#define MTL_PRIVATE_IMPLEMENTATION*/
 #include <iostream>
-#include <QuartzCore/QuartzCore.hpp>
-#include <Foundation/Foundation.hpp>
-#include <Metal/Metal.hpp>
+//#include <QuartzCore/QuartzCore.hpp>
+//#include <Foundation/Foundation.hpp>
+//#include <Metal/Metal.hpp>
 #include "metalComputeWrapper.hpp"
 
 int main(int argc, const char * argv[]) {

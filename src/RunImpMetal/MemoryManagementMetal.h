@@ -17,64 +17,65 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 */
 
 /**
- * @file MemoryManagementHIP.h
+ * @file MemoryManagementMetal.h
  * @author Scott Grauer-Gray
  * @brief Declares and defines child class of MemoryManagement with overriden
- * member functions to manage memory on HIP device including transferring data
- * between host and HIP device.
+ * member functions to manage memory on metal device including transferring data
+ * between host and metal device.
  * 
  * @copyright Copyright (c) 2024
  */
 
-#ifndef MEMORY_MANAGEMENT_HIP_H_
-#define MEMORY_MANAGEMENT_HIP_H_
+#ifndef MEMORY_MANAGEMENT_METAL_H_
+#define MEMORY_MANAGEMENT_METAL_H_
 
 #include "RunEval/RunTypeConstraints.h"
 #include "RunImp/MemoryManagement.h"
 
 /**
  * @brief Child class of MemoryManagement with overriden member functions to
- * manage memory on HIP device including transferring data between host and
- * HIP device.
+ * manage memory on Metal device including transferring data between host and
+ * Metal device.
  * 
  * @tparam T 
  */
-template <RunData_t T>
-class MemoryManagementHIP final : public MemoryManagement<T>
+template <RunData_t T, typename U>
+class MemoryManagementMetal final : public MemoryManagement<T>
 {
 public:
   /**
-   * @brief Allocate specified amount of data of type T on HIP device
+   * @brief Allocate specified amount of data of type T on Metal device
    * 
    * @param numData 
-   * @return Pointer to allocated memory on HIP device
+   * @return Pointer to allocated memory on Metal device
    */
-  T* AllocateMemoryOnDevice(std::size_t numData) const override
+  U* AllocateMemoryOnDevice(std::size_t numData) const override
   {
-    T* array_to_allocate;
-    hipMalloc((void **) &array_to_allocate, numData * sizeof(T));
+    U* array_to_allocate;
+    array_to_allocate =
+      mDevice->newBuffer(numData * sizeof(T), MTL::ResourceStorageModeShared);
     return array_to_allocate;
   }
 
   /**
-   * @brief Free memory on HIP device
+   * @brief Free memory on Metal device
    * 
    * @param array_to_free 
    */
-  void FreeMemoryOnDevice(T* array_to_free) const override
+  void FreeMemoryOnDevice(U* array_to_free) const override
   {
-    hipFree(array_to_free);
+    array_to_free.release();
   }
 
   /**
-   * @brief Allocate aligned memory on HIP device (same as default allocating
-   * of memory for HIP)
+   * @brief Allocate aligned memory on Metal device (same as default allocating
+   * of memory for Metal)
    * 
    * @param numData 
    * @param acc_setting 
-   * @return Pointer to allocated memory on HIP device
+   * @return Pointer to allocated memory on Metal device
    */
-  T* AllocateAlignedMemoryOnDevice(
+  U* AllocateAlignedMemoryOnDevice(
     std::size_t numData,
     run_environment::AccSetting acc_setting) const override
   {
@@ -82,33 +83,33 @@ public:
   }
 
   /**
-   * @brief Free aligned memory on HIP device (same as default free memory for
-   * HIP)
+   * @brief Free aligned memory on Metal device (same as default free memory for
+   * Metal)
    * 
    * @param memory_to_free 
    */
-  void FreeAlignedMemoryOnDevice(T* memory_to_free) const override
+  void FreeAlignedMemoryOnDevice(U* memory_to_free) const override
   {
     FreeMemoryOnDevice(memory_to_free);
   }
 
   void TransferDataFromDeviceToHost(
     T* dest_array,
-    const T* in_array,
+    const U* in_array,
     std::size_t num_data_transfer) const override
   {
-    hipMemcpy(
-      dest_array, in_array, num_data_transfer * sizeof(T), hipMemcpyDeviceToHost);
+    void* buffer_data = in_array->contents();
+    memcpy(dest_array, buffer_data, num_data_transfer * sizeof(T));
   }
 
   void TransferDataFromHostToDevice(
-    T* dest_array,
+    U* dest_array,
     const T* in_array,
     std::size_t num_data_transfer) const override
   {
-    hipMemcpy(
-      dest_array, in_array, num_data_transfer * sizeof(T), hipMemcpyHostToDevice);
+    void* buffer_data = in_array->contents();
+    memcpy(buffer_data, in_array, num_data_transfer * sizeof(T));
   }
 };
 
-#endif //MEMORY_MANAGEMENT_HIP_H_
+#endif //MEMORY_MANAGEMENT_METAL_H_
