@@ -69,7 +69,7 @@ inline std::optional<benchmarks::BnchmrksRunOutput<T>> RunBnchmrksOptCPU<T, ACCE
   auto process_bnchmrks_output = this->ProcessBenchmarks(
     inMtrces,
     std::make_unique<ProcessBnchmrksOptCPU<T, ACCELERATION, BENCHMARK_RUN>>(parallel_params),
-    std::make_unique<MemoryManagement<T>>(),
+    std::make_unique<MemoryManagement<T, T>>(),
     kNumEvalRuns);
   if (!process_bnchmrks_output) {
     return {};

@@ -38,10 +38,11 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  * manage memory on HIP device including transferring data between host and
  * HIP device.
  * 
- * @tparam T 
+ * @tparam T
+ * @tparam U
  */
-template <RunData_t T>
-class MemoryManagementHIP final : public MemoryManagement<T>
+template <RunData_t T, typename U>
+class MemoryManagementHIP final : public MemoryManagement<T, U>
 {
 public:
   /**
@@ -50,9 +51,9 @@ public:
    * @param numData 
    * @return Pointer to allocated memory on HIP device
    */
-  T* AllocateMemoryOnDevice(std::size_t numData) const override
+  U* AllocateMemoryOnDevice(std::size_t numData) const override
   {
-    T* array_to_allocate;
+    U* array_to_allocate;
     hipMalloc((void **) &array_to_allocate, numData * sizeof(T));
     return array_to_allocate;
   }
@@ -62,7 +63,7 @@ public:
    * 
    * @param array_to_free 
    */
-  void FreeMemoryOnDevice(T* array_to_free) const override
+  void FreeMemoryOnDevice(U* array_to_free) const override
   {
     hipFree(array_to_free);
   }
@@ -75,7 +76,7 @@ public:
    * @param acc_setting 
    * @return Pointer to allocated memory on HIP device
    */
-  T* AllocateAlignedMemoryOnDevice(
+  U* AllocateAlignedMemoryOnDevice(
     std::size_t numData,
     run_environment::AccSetting acc_setting) const override
   {
@@ -88,14 +89,14 @@ public:
    * 
    * @param memory_to_free 
    */
-  void FreeAlignedMemoryOnDevice(T* memory_to_free) const override
+  void FreeAlignedMemoryOnDevice(U* memory_to_free) const override
   {
     FreeMemoryOnDevice(memory_to_free);
   }
 
   void TransferDataFromDeviceToHost(
     T* dest_array,
-    const T* in_array,
+    const U* in_array,
     std::size_t num_data_transfer) const override
   {
     hipMemcpy(
@@ -103,7 +104,7 @@ public:
   }
 
   void TransferDataFromHostToDevice(
-    T* dest_array,
+    U* dest_array,
     const T* in_array,
     std::size_t num_data_transfer) const override
   {

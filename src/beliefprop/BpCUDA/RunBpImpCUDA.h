@@ -90,8 +90,8 @@ public:
         beliefprop::BpOnDevice<T, DISP_VALS, ACCELERATION>{
           std::make_unique<SmoothImageCUDA>(parallel_params),
           std::make_unique<ProcessBpCUDA<T, DISP_VALS, ACCELERATION>>(parallel_params),
-          std::make_unique<MemoryManagementCUDA<T>>(),
-          std::make_unique<MemoryManagementCUDA<float>>()});
+          std::make_unique<MemoryManagementCUDA<T, T>>(),
+          std::make_unique<MemoryManagementCUDA<float, float>>()});
     if (process_set_output) {
       run_data.AppendData(std::move(process_set_output->run_data));
       process_set_output->run_data = std::move(run_data);

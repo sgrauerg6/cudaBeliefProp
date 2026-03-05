@@ -40,9 +40,10 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  * Class functions can be overridden to support other computation devices such
  * as GPU.
  * 
- * @tparam T 
+ * @tparam T
+ * @tparam U
  */
-template <RunData_t T>
+template <RunData_t T, typename U>
 class MemoryManagement
 {
 public:
@@ -51,30 +52,30 @@ public:
    */
   virtual ~MemoryManagement() {}
 
-  virtual T* AllocateMemoryOnDevice(std::size_t numData) const {
+  virtual U* AllocateMemoryOnDevice(std::size_t numData) const {
     return (new T[numData]);
   }
 
-  virtual void FreeMemoryOnDevice(T* array_to_free) const {
+  virtual void FreeMemoryOnDevice(U* array_to_free) const {
     delete [] array_to_free;
   }
 
-  virtual T* AllocateAlignedMemoryOnDevice(
+  virtual U* AllocateAlignedMemoryOnDevice(
     std::size_t numData,
     run_environment::AccSetting acc_setting) const
   {
 #ifdef _WIN32
-    T* memoryData = static_cast<T*>(_aligned_malloc(
+    U* memoryData = static_cast<U*>(_aligned_malloc(
       numData * sizeof(T), run_environment::GetBytesAlignMemory(acc_setting)));
     return memoryData;
 #else
-    T* memoryData = static_cast<T*>(std::aligned_alloc(
+    U* memoryData = static_cast<U*>(std::aligned_alloc(
       run_environment::GetBytesAlignMemory(acc_setting), numData * sizeof(T)));
     return memoryData;
 #endif
   }
 
-  virtual void FreeAlignedMemoryOnDevice(T* memory_to_free) const
+  virtual void FreeAlignedMemoryOnDevice(U* memory_to_free) const
   {
 #ifdef _WIN32
     _aligned_free(memory_to_free);
@@ -85,14 +86,14 @@ public:
 
   virtual void TransferDataFromDeviceToHost(
     T* dest_array,
-    const T* in_array,
+    const U* in_array,
     std::size_t num_data_transfer) const
   {
     std::ranges::copy(in_array, in_array + num_data_transfer, dest_array);
   }
 
   virtual void TransferDataFromHostToDevice(
-    T* dest_array,
+    U* dest_array,
     const T* in_array,
     std::size_t num_data_transfer) const
   {

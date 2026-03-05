@@ -37,10 +37,11 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  * manage memory on Metal device including transferring data between host and
  * Metal device.
  * 
- * @tparam T 
+ * @tparam T
+ * @tparam U
  */
 template <RunData_t T, typename U>
-class MemoryManagementMetal final : public MemoryManagement<T>
+class MemoryManagementMetal final : public MemoryManagement<T, U>
 {
 public:
   /**

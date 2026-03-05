@@ -75,7 +75,7 @@ template <RunData_t T, unsigned int DISP_VALS, run_environment::AccSetting ACCEL
 struct BpOnDevice {
   const std::unique_ptr<SmoothImage>& smooth_image;
   const std::unique_ptr<ProcessBpDevice<T, DISP_VALS, ACCELERATION>>& run_bp_stereo;
-  const std::unique_ptr<MemoryManagement<T>>& mem_management_bp_run;
+  const std::unique_ptr<MemoryManagement<T, T>>& mem_management_bp_run;
   const std::unique_ptr<MemoryManagement<float>>& mem_management_images;
 };
 

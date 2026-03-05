@@ -102,7 +102,7 @@ public:
     const beliefprop::BpSettings& alg_settings,
     const std::array<unsigned int, 2>& width_height_images,
     T* allocated_mem_bp_processing, T* allocated_memory,
-    const std::unique_ptr<MemoryManagement<T>>& mem_management_bp_run) const;
+    const std::unique_ptr<MemoryManagement<T, T>>& mem_management_bp_run) const;
 
 protected:
   const ParallelParams& parallel_params_;
@@ -211,7 +211,7 @@ private:
    */
   virtual void FreeCheckerboardMessagesMemory(
     const beliefprop::CheckerboardMessages<T*>& checkerboard_messages_to_free,
-    const std::unique_ptr<MemoryManagement<T>>& mem_management_bp_run) const
+    const std::unique_ptr<MemoryManagement<T, T>>& mem_management_bp_run) const
   {
     std::ranges::for_each(checkerboard_messages_to_free,
       [&mem_management_bp_run](auto& checkerboard_messages_set) {
@@ -232,7 +232,7 @@ private:
    */
   virtual beliefprop::CheckerboardMessages<T*> AllocateMemoryForCheckerboardMessages(
     std::size_t num_data_allocate_per_message,
-    const std::unique_ptr<MemoryManagement<T>>& mem_management_bp_run) const
+    const std::unique_ptr<MemoryManagement<T, T>>& mem_management_bp_run) const
   {
     beliefprop::CheckerboardMessages<T*> output_checkerboard_messages;
     std::ranges::for_each(
@@ -293,7 +293,7 @@ private:
    */
   virtual void FreeDataCostsMemory(
     const beliefprop::DataCostsCheckerboards<T*>& data_costs_to_free,
-    const std::unique_ptr<MemoryManagement<T>>& mem_management_bp_run) const
+    const std::unique_ptr<MemoryManagement<T, T>>& mem_management_bp_run) const
   {
     mem_management_bp_run->FreeAlignedMemoryOnDevice(data_costs_to_free[0]);
     mem_management_bp_run->FreeAlignedMemoryOnDevice(data_costs_to_free[1]);
@@ -309,7 +309,7 @@ private:
    */
   virtual beliefprop::DataCostsCheckerboards<T*> AllocateMemoryForDataCosts(
     std::size_t num_data_costs_checkerboards,
-    const std::unique_ptr<MemoryManagement<T>>& mem_management_bp_run) const
+    const std::unique_ptr<MemoryManagement<T, T>>& mem_management_bp_run) const
   {
     return {mem_management_bp_run->AllocateAlignedMemoryOnDevice(
               num_data_costs_checkerboards,
@@ -331,7 +331,7 @@ private:
   virtual std::pair<beliefprop::DataCostsCheckerboards<T*>, beliefprop::CheckerboardMessages<T*>>
   AllocateAndOrganizeDataCostsAndMessageDataAllLevels(
     std::size_t num_data_allocate_per_data_costs_message_data_array,
-    const std::unique_ptr<MemoryManagement<T>>& mem_management_bp_run) const
+    const std::unique_ptr<MemoryManagement<T, T>>& mem_management_bp_run) const
   {
     T* data_all_levels = mem_management_bp_run->AllocateAlignedMemoryOnDevice(
       10*num_data_allocate_per_data_costs_message_data_array, ACCELERATION);
@@ -384,7 +384,7 @@ private:
    */
   virtual void FreeDataCostsAllDataInSingleArray(
     const beliefprop::DataCostsCheckerboards<T*>& data_costs_to_free,
-    const std::unique_ptr<MemoryManagement<T>>& mem_management_bp_run) const
+    const std::unique_ptr<MemoryManagement<T, T>>& mem_management_bp_run) const
   {
     mem_management_bp_run->FreeAlignedMemoryOnDevice(data_costs_to_free[0]);
   }
@@ -418,7 +418,7 @@ ProcessBpDevice<T, DISP_VALS, ACCELERATION>::operator()(
   const std::array<unsigned int, 2>& width_height_images,
   T* allocated_mem_bp_processing,
   T* allocated_memory,
-  const std::unique_ptr<MemoryManagement<T>>& mem_management_bp_run) const
+  const std::unique_ptr<MemoryManagement<T, T>>& mem_management_bp_run) const
 {
   if (ErrorCheck() != run_eval::Status::kNoError) { return {}; }
 

@@ -57,7 +57,7 @@ inline std::optional<benchmarks::BnchmrksRunOutput<T>> RunBnchmrksSingThreadCPU<
   auto process_set_output = this->ProcessBenchmarks(
     inMtrces,
     std::make_unique<ProcessBnchmrksSingThreadCPU<T, ACCELERATION, BENCHMARK_RUN>>(parallel_params),
-    std::make_unique<MemoryManagement<T>>(),
+    std::make_unique<MemoryManagement<T, T>>(),
     kNumEvalRuns);
   if (process_set_output) {
     //clear all returned run data and add only the runtime since that is all that
