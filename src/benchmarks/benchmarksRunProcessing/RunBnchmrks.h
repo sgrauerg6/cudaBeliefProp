@@ -35,7 +35,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #include "RunSettingsParams/RunSettingsConstsEnums.h"
 #include "RunEval/RunData.h"
 #include "RunEval/RunTypeConstraints.h"
-#include "RunImpCPU/MemoryManagementCPU.h"
+#include "RunImp/MemoryManagement.h"
 #include "benchmarksResultsEval/DetailedTimingBnchmrksConsts.h"
 #include "ProcessBnchmrksDevice.h"
 #include "BnchmrksMtrx.h"
@@ -106,7 +106,7 @@ protected:
   std::optional<benchmarks::BnchmrksRunOutput<T>> ProcessBenchmarks(
     const std::array<BnchmrksMtrx<T>, 2>& inMtrces,
     const std::unique_ptr<ProcessBnchmrksDevice<T, ACCELERATION, BENCHMARK_RUN, U>>& proc_bnchmrks_device,
-    const std::unique_ptr<MemoryManagementCPU<T, U>>& mem_management,
+    const std::unique_ptr<MemoryManagement<T, U>>& mem_management,
     size_t num_eval_runs) const
   {
   //initialize run data to include timing data and possibly
