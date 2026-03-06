@@ -100,7 +100,7 @@ private:
   {
     //start timing
     auto add_mat_start_time = std::chrono::system_clock::now();
-
+    
     // Create a command buffer to hold commands.
     MTL::CommandBuffer* commandBuffer = mCommandQueue->commandBuffer();
     assert(commandBuffer != nullptr);
