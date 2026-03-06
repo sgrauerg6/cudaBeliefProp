@@ -1,3 +1,7 @@
+# used for setting up Metal
+# sudo xcode-select --switch /Applications/Xcode.app/Contents/Developer
+# xcodebuild -downloadComponent MetalToolchain
+
 include ../../common.mk
 
 SRC_DIR_BNCHMRKS = ../../${SRC_DIR}/benchmarks
@@ -5,36 +9,25 @@ SRC_DIR_BNCHMRKS = ../../${SRC_DIR}/benchmarks
 INCLUDE_DIRS = -I../../${SRC_DIR} -I${SRC_DIR_BNCHMRKS}
 
 # contains the library files needed for linking
-# need -lstdc++fs for c++17 filesystem library to work
 LIB_CPU := -lpthread 
-#-F/System/Library/Frameworks
-#-ldispatch
-#-lstdc++fs 
-
-# set OPENMP_LIB if using OpenMP
-OPENMP_LIB :=
-#-fopenmp
-
-# setting for CPU vectorization
-# no CPU vectorization define needed for ARM since NEON is
-# only option so that is used
-CPU_VECTORIZATION_DEFINE =
 
 USE_FUSED_MULT_ADD_DEFINE = -DUSE_FUSED_MULTIPLY_ADD
-#-DUSE_FUSED_MULTIPLY_ADD
+
+METAL_CPP = /Users/scottgg/Downloads/PerformingCalculationsOnAGPU/metal-cpp/
 
 # set compile flags and debug setting
 DBG_SETTING    =
-COMPILE_FLAGS = -DUNIX -DOPTIMIZED_METAL_RUN -DCOMPILING_FOR_ARM ${CPU_VECTORIZATION_DEFINE} ${USE_FUSED_MULT_ADD_DEFINE} ${COMMON_IMP_DEFINES} \
-				${DBG_SETTING} $(OPENMP_LIB) -O3 -std=c++20 -Wall -march=native -MMD -MP -I/Users/scottgg/Downloads/PerformingCalculationsOnAGPU/metal-cpp/ -F/Users/scottgg/Downloads/PerformingCalculationsOnAGPU/metal-cpp/
+COMPILE_FLAGS = -DUNIX -DOPTIMIZED_METAL_RUN -DCOMPILING_FOR_ARM ${USE_FUSED_MULT_ADD_DEFINE} ${COMMON_IMP_DEFINES} \
+				${DBG_SETTING} -O3 -std=c++20 -Wall -march=native -MMD -MP -I${METAL_CPP} -F${METAL_CPP}
 
 # Location of file with Metal kernel(s)
 METAL_SRC := ${SRC_DIR_BNCHMRKS}/benchmarksMetal/KernelBnchmrksMetal.metal
 
 # Frameworks required for Metal, CoreGraphics, and Foundation
 FRAMEWORKS := -framework Metal -framework Cocoa -framework QuartzCore
+
 # Compiler flags: C++17, warnings, include path for metal-cpp headers
-CXXFLAGS := -std=c++17 -Wall -Wextra -I/Users/scottgg/Downloads/PerformingCalculationsOnAGPU/metal-cpp/ -F/Users/scottgg/Downloads/PerformingCalculationsOnAGPU/metal-cpp/
+CXXFLAGS := -std=c++17 -Wall -Wextra -I${METAL_CPP} -F${METAL_CPP}
 
 # define directory for compiled objects and object files to generate during compilation
 OBJ_DIR = obj
@@ -68,7 +61,7 @@ ${OBJ_DIR}/%.o: ${SRC_DIR_BNCHMRKS}/*/%.cpp
 	$(CC) $< -c $(INCLUDE_DIRS) $(COMPILE_FLAGS) -o $@
 
 impDriverCPU: ${DRIVER_BENCHMARK_CPU_OBJECT} ${OBJECTS} $(OBJ_DIR)/default.metallib
-	$(CC) ${DRIVER_BENCHMARK_CPU_OBJECT} ${OBJECTS} $(COMPILE_FLAGS) $(LIB_CPU) $(OPENMP_LIB) -o ${DRIVER_BENCHMARK_CPU} $(FRAMEWORKS)
+	$(CC) ${DRIVER_BENCHMARK_CPU_OBJECT} ${OBJECTS} $(COMPILE_FLAGS) $(LIB_CPU) -o ${DRIVER_BENCHMARK_CPU} $(FRAMEWORKS)
 
 make clean:
 	rm *.o ${OBJ_DIR}/*.o ${OBJ_DIR}/*.d driverCPUBp driverCPUBpCustom
