@@ -149,9 +149,9 @@ namespace benchmarks_cpu
 //headers to include differ depending on architecture and CPU vectorization setting
 #if defined(COMPILING_FOR_ARM)
 
-#if (CPU_VECTORIZATION_DEFINE == NEON_DEFINE)
+//#if (CPU_VECTORIZATION_DEFINE == NEON_DEFINE)
 #include "KernelBnchmrksOptCPU_NEON.h"
-#endif //CPU_VECTORIZATION_DEFINE == NEON_DEFINE
+//#endif //CPU_VECTORIZATION_DEFINE == NEON_DEFINE
 
 #else
 

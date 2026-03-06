@@ -44,6 +44,12 @@ template <RunData_t T, typename U>
 class MemoryManagementMetal final : public MemoryManagement<T, U>
 {
 public:
+  explicit MemoryManagementMetal(MTL::Device* device) :
+    MemoryManagement<T, U>()
+  {
+    m_device = device;
+  }
+
   /**
    * @brief Allocate specified amount of data of type T on Metal device
    * 
@@ -54,7 +60,7 @@ public:
   {
     U* array_to_allocate;
     array_to_allocate =
-      mDevice->newBuffer(numData * sizeof(T), MTL::ResourceStorageModeShared);
+      m_device->newBuffer(numData * sizeof(T), MTL::ResourceStorageModeShared);
     return array_to_allocate;
   }
 
@@ -65,7 +71,7 @@ public:
    */
   void FreeMemoryOnDevice(U* array_to_free) const override
   {
-    array_to_free.release();
+    array_to_free->release();
   }
 
   /**
@@ -111,6 +117,9 @@ public:
     void* buffer_data = in_array->contents();
     memcpy(buffer_data, in_array, num_data_transfer * sizeof(T));
   }
+
+private:
+  MTL::Device* m_device;
 };
 
 #endif //MEMORY_MANAGEMENT_METAL_H_

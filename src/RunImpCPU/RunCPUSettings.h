@@ -45,8 +45,11 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #define AVX_512_F16_DEFINE 3
 #define NEON_DEFINE 4
 #define NO_VECTORIZATION 5
+#define METAL_DEFINE 6
 #if defined(COMPILING_FOR_ARM) //NEON supported on ARM but AVX is not
-#define CPU_VECTORIZATION_DEFINE NEON_DEFINE
+#define CPU_VECTORIZATION_DEFINE METAL_DEFINE
+//NEON_DEFINE
+//METAL_DEFINE
 #else
 //by default CPU vectorization during compilation via Makefile
 //use AVX 512 if not set during compilation

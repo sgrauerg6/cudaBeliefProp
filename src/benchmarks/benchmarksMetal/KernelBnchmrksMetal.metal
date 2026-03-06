@@ -24,10 +24,8 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  * @copyright Copyright (c) 2026
  */
 
-#include <cuda_runtime.h>
-#include <cuda.h>
-#include "RunImp/UtilityFuncts.h"
-#include "benchmarksRunProcessing/BnchmrksConstsEnumsAliases.h"
+#include <metal_stdlib>
+using namespace metal;
 
 /**
  * @brief Namespace to define kernel functions for benchmark functions
@@ -46,8 +44,8 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
    */
   //template <RunData_t T, benchmarks::BenchmarkRun BENCHMARK_RUN>
   kernel void TwoDMatricesBnchmrkFloat(
-    const unsigned int& mtrx_width [[buffer(0)]],
-    const unsigned int& mtrx_height [[buffer(1)]],
+    constant unsigned int& mtrx_width [[buffer(0)]],
+    constant unsigned int& mtrx_height [[buffer(1)]],
     device const float* matrix_0 [[buffer(2)]],
     device const float* matrix_1 [[buffer(3)]],
     device float* matrix_result [[buffer(4)]],
@@ -57,6 +55,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
     const unsigned int x_val = grid_pos.x;
     const unsigned int y_val = grid_pos.y;
     if ((x_val < mtrx_width) && (y_val < mtrx_height)) {
+        const unsigned int val_idx = y_val*mtrx_width + x_val;
         float sum = 0.0f;
         size_t curr_matrix_input0_idx{y_val * mtrx_width};
         size_t curr_matrix_input1_idx{x_val};

@@ -80,6 +80,8 @@ run_environment::AccSetting RunImpMultTypesAccels::FastestAvailableAcc(
   //return fastest acceleration across input run implementations
   for (const auto& acceleration : 
     {run_environment::AccSetting::kCUDA,
+     run_environment::AccSetting::kHIP,
+     run_environment::AccSetting::kMETAL,
      run_environment::AccSetting::kAVX512_F16,
      run_environment::AccSetting::kAVX512,
      run_environment::AccSetting::kAVX256_F16,

@@ -174,6 +174,16 @@ void runImp(int argc, char** argv, RunImpSetting impSetting)
      {std::make_shared<RunImpMultInputsBnchmrks>(run_environment::AccSetting::kNone)}},
     run_imp_settings,
     std::make_unique<EvalImpResultsBnchmrks>(std::string(benchmarks::kBenchmarksDirectoryName)));
+#elif (CPU_VECTORIZATION_DEFINE == METAL_DEFINE)
+  std::cout << "RUN METAL IMP" << std::endl;
+  //run belief propagation with NEON and no vectorization implementations,
+  //with the NEON implementation given first as the expected fastest implementation
+  RunImpMultTypesAccels().operator()(
+    {{std::make_shared<RunImpMultInputsBnchmrks>(run_environment::AccSetting::kMETAL)},
+     {std::make_shared<RunImpMultInputsBnchmrks>(run_environment::AccSetting::kNone)}},
+    run_imp_settings,
+    std::make_unique<EvalImpResultsBnchmrks>(std::string(benchmarks::kBenchmarksDirectoryName)));
+  std::cout << "DONE METAL IMP" << std::endl;
 #endif //CPU_VECTORIZATION_DEFINE
 }
 

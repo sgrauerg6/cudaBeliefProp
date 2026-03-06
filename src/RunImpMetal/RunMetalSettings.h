@@ -40,14 +40,14 @@ using halftype = bfloat;
 #else
 using halftype = half;
 //#endif //USE_BFLOAT16_FOR_HALF_PRECISION*/
-using halftype = half;
+//using halftype = half;
 
 /**
  * @brief Namespace with constants and functions to get CUDA device properties
  * as well as default and test parallel parameters to use in CUDA
  * implementation run optimization
  */
-namespace run_cuda {
+namespace run_metal {
 
 constexpr std::string_view kMetalDesc{"Metal"};
 

@@ -30,18 +30,17 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #include "benchmarksRunProcessing/ProcessBnchmrksDevice.h"
 #include "RunEval/RunTypeConstraints.h"
 #include "RunEval/RunEvalConstsEnums.h"
-#include "KernelBnchmrksMetal.cu"
 
 template<RunData_t T, run_environment::AccSetting ACCELERATION, benchmarks::BenchmarkRun BENCHMARK_RUN>
 class ProcessBnchmrksMetal : public ProcessBnchmrksDevice<T, ACCELERATION, BENCHMARK_RUN> {
 public:
-  explicit ProcessBnchmrksMetal(const ParallelParams& parallel_params) :
-    ProcessBnchmrksDevice{parallel_params}
+  explicit ProcessBnchmrksMetal(const ParallelParams& parallel_params, MTL::Device* device) :
+    ProcessBnchmrksDevice<T, ACCELERATION, BENCHMARK_RUN>{parallel_params}
   {
-    mDevice = MTL::CreateSystemDefaultDevice();
+    m_device = device;
     NS::Error* error;
     
-    auto defaultLibrary = mDevice->newDefaultLibrary();
+    auto defaultLibrary = m_device->newDefaultLibrary();
     
     if (!defaultLibrary) {
         std::cerr << "Failed to find the default library.\n";
@@ -55,14 +54,14 @@ public:
         std::cerr << "Failed to find the compute function.\n";
     }
     
-    mComputeFunctionPSO = mDevice->newComputePipelineState(computeFunction, &error);
+    mComputeFunctionPSO = m_device->newComputePipelineState(computeFunction, &error);
     
     if (!mComputeFunctionPSO) {
         std::cerr << "Failed to create the pipeline state object.\n";
         exit(-1);
     }
     
-    mCommandQueue = mDevice->newCommandQueue();
+    mCommandQueue = m_device->newCommandQueue();
     
     if (!mCommandQueue) {
         std::cerr << "Failed to find command queue.\n";
@@ -70,7 +69,9 @@ public:
     }
   }
 
-private:    
+private:
+  MTL::Device* m_device;
+
   // The compute pipeline generated from the compute kernel in the .metal shader file.
   MTL::ComputePipelineState* mComputeFunctionPSO;
     
@@ -92,10 +93,6 @@ private:
     const T* mat_input_1,
     T* mat_result) const override
   {
-    if (ErrorCheck(__FILE__, __LINE__) != run_eval::Status::kNoError) {
-      return run_eval::Status::kError;
-    }
-
     // Create a command buffer to hold commands.
     MTL::CommandBuffer* commandBuffer = mCommandQueue->commandBuffer();
     assert(commandBuffer != nullptr);
@@ -114,8 +111,8 @@ private:
     //process matrix addition on GPU using CUDA
     //encode the pipeline state object and its parameters.
     computeEncoder->setComputePipelineState(mComputeFunctionPSO);
-    computeEncoder->setBuffer(&mtrx_width, sizeof(unsigned int), 0);
-    computeEncoder->setBuffer(&mtrx_height, sizeof(unsigned int), 1);
+    computeEncoder->setBytes(&mtrx_width, sizeof(unsigned int), 0);
+    computeEncoder->setBytes(&mtrx_height, sizeof(unsigned int), 1);
     computeEncoder->setBuffer(mat_input_0, 0, 2);
     computeEncoder->setBuffer(mat_input_1, 0, 3);
     computeEncoder->setBuffer(mat_result, 0, 4);
@@ -140,10 +137,6 @@ private:
 
     //end timing now that kernel completed
     auto end_mat_start_time = std::chrono::system_clock::now();
-
-    if (ErrorCheck(__FILE__, __LINE__) != run_eval::Status::kNoError) {
-      return {};
-    }
 
     DetailedTimings add_mat_timing(benchmarks::kTimingNames);
     add_mat_timing.AddTiming(benchmarks::Runtime_Type::kTotalBnchmrkNoTransfer,

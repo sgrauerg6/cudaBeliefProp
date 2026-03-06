@@ -75,14 +75,13 @@ void metalComputeWrapper::sendComputeCommand() {
     
     encodeComputeCommand(computeEncoder);
     
-    // End the compute pass.
+    //end the compute pass.
     computeEncoder->endEncoding();
     
-    // Execute the command.
+    //execute the command.
     commandBuffer->commit();
     
-    // Normally, you want to do other work in your app while the GPU is running,
-    // but in this example, the code simply blocks until the calculation is complete.
+    //blocks until the calculation is complete.
     commandBuffer->waitUntilCompleted();
     
     verifyResults();

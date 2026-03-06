@@ -42,7 +42,7 @@ public:
 };
 
 template<RunData_t T, run_environment::AccSetting ACCELERATION, benchmarks::BenchmarkRun BENCHMARK_RUN>
-inline std::optional<benchmarks::BnchmrksRunOutput<T>> RunBnchmrksCUDA<T, ACCELERATION, BENCHMARK_RUN>::operator()(
+inline std::optional<benchmarks::BnchmrksRunOutput<T>> RunBnchmrksHIP<T, ACCELERATION, BENCHMARK_RUN>::operator()(
   const std::array<BnchmrksMtrx<T>, 2>& inMtrces,
   const ParallelParams& parallel_params) const
 {
@@ -58,7 +58,7 @@ inline std::optional<benchmarks::BnchmrksRunOutput<T>> RunBnchmrksCUDA<T, ACCELE
   constexpr size_t kNumEvalRuns{7};
   auto process_bnchmrks_output = this->ProcessBenchmarks(
     inMtrces,
-    std::make_unique<ProcessBnchmrksHIP<T, ACCELERATION>>(parallel_params),
+    std::make_unique<ProcessBnchmrksHIP<T, ACCELERATION, BENCHMARK_RUN>>(parallel_params),
     std::make_unique<MemoryManagementHIP<T, T>>(),
     kNumEvalRuns);
   if (!process_bnchmrks_output) {

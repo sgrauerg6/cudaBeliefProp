@@ -29,11 +29,13 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 
 #include "benchmarksRunProcessing/RunBnchmrks.h"
 #include "ProcessBnchmrksMetal.h"
+#include "RunImpMetal/RunMetalSettings.h"
+#include "RunImpMetal/MemoryManagementMetal.h"
 
 template<RunData_t T, run_environment::AccSetting ACCELERATION, benchmarks::BenchmarkRun BENCHMARK_RUN>
 class RunBnchmrksMetal : public RunBnchmrks<T, ACCELERATION, BENCHMARK_RUN> {
 public:
-  std::string RunDescription() const override { return std::string(run_cuda::kCUDADesc); }
+  std::string RunDescription() const override { return std::string(run_metal::kMetalDesc); }
 
   //run the benchmark(s) using the optimized CPU implementation
   std::optional<benchmarks::BnchmrksRunOutput<T>> operator()(
@@ -42,7 +44,7 @@ public:
 };
 
 template<RunData_t T, run_environment::AccSetting ACCELERATION, benchmarks::BenchmarkRun BENCHMARK_RUN>
-inline std::optional<benchmarks::BnchmrksRunOutput<T>> RunBnchmrksCUDA<T, ACCELERATION, BENCHMARK_RUN>::operator()(
+inline std::optional<benchmarks::BnchmrksRunOutput<T>> RunBnchmrksMetal<T, ACCELERATION, BENCHMARK_RUN>::operator()(
   const std::array<BnchmrksMtrx<T>, 2>& inMtrces,
   const ParallelParams& parallel_params) const
 {
@@ -57,8 +59,8 @@ inline std::optional<benchmarks::BnchmrksRunOutput<T>> RunBnchmrksCUDA<T, ACCELE
   constexpr size_t kNumEvalRuns{7};
   auto process_bnchmrks_output = this->ProcessBenchmarks(
     inMtrces,
-    std::make_unique<ProcessBnchmrksMetal<T, ACCELERATION>>(parallel_params),
-    std::make_unique<MemoryManagementMetal<T, T>>(),
+    std::make_unique<ProcessBnchmrksMetal<T, ACCELERATION, BENCHMARK_RUN>>(parallel_params),
+    std::make_unique<MemoryManagementMetal<T, T>>(MTL::CreateSystemDefaultDevice()),
     kNumEvalRuns);
   if (!process_bnchmrks_output) {
     return {};

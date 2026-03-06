@@ -58,7 +58,7 @@ inline std::optional<benchmarks::BnchmrksRunOutput<T>> RunBnchmrksCUDA<T, ACCELE
   constexpr size_t kNumEvalRuns{7};
   auto process_bnchmrks_output = this->ProcessBenchmarks(
     inMtrces,
-    std::make_unique<ProcessBnchmrksCUDA<T, ACCELERATION>>(parallel_params),
+    std::make_unique<ProcessBnchmrksCUDA<T, ACCELERATION, BENCHMARK_RUN>>(parallel_params),
     std::make_unique<MemoryManagementCUDA<T, T>>(),
     kNumEvalRuns);
   if (!process_bnchmrks_output) {
