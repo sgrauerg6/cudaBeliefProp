@@ -28,6 +28,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #define RUN_BNCHMRKS_OPT_CPU_H
 
 #include "benchmarksRunProcessing/RunBnchmrks.h"
+#include "RunImpCPU/MemoryManagementCPU.h"
 #include "ProcessBnchmrksOptCPU.h"
 
 template<RunData_t T, run_environment::AccSetting ACCELERATION, benchmarks::BenchmarkRun BENCHMARK_RUN>
@@ -69,7 +70,7 @@ inline std::optional<benchmarks::BnchmrksRunOutput<T>> RunBnchmrksOptCPU<T, ACCE
   auto process_bnchmrks_output = this->template ProcessBenchmarks<T>(
     inMtrces,
     std::make_unique<ProcessBnchmrksOptCPU<T, ACCELERATION, BENCHMARK_RUN>>(parallel_params),
-    std::make_unique<MemoryManagement<T, T>>(),
+    std::make_unique<MemoryManagementCPU<T, T>>(),
     kNumEvalRuns);
   if (!process_bnchmrks_output) {
     return {};

@@ -52,69 +52,25 @@ public:
    */
   virtual ~MemoryManagement() {}
 
-  virtual U* AllocateMemoryOnDevice(std::size_t numData) const {
-#if !defined(OPTIMIZED_METAL_RUN)
-    return (new T[numData]);
-#else
-    return nullptr;
-#endif //OPTIMIZED_METAL_RUN
-  }
+  virtual U* AllocateMemoryOnDevice(std::size_t numData) const = 0;
 
-  virtual void FreeMemoryOnDevice(U* array_to_free) const {
-#if !defined(OPTIMIZED_METAL_RUN)
-    delete [] array_to_free;
-#endif //OPTIMIZED_METAL_RUN
-  }
+  virtual void FreeMemoryOnDevice(U* array_to_free) const = 0;
 
   virtual U* AllocateAlignedMemoryOnDevice(
     std::size_t numData,
-    run_environment::AccSetting acc_setting) const
-  {
-#if !defined(OPTIMIZED_METAL_RUN)
-#ifdef _WIN32
-    U* memoryData = static_cast<U*>(_aligned_malloc(
-      numData * sizeof(T), run_environment::GetBytesAlignMemory(acc_setting)));
-    return memoryData;
-#else
-    U* memoryData = static_cast<U*>(std::aligned_alloc(
-      run_environment::GetBytesAlignMemory(acc_setting), numData * sizeof(T)));
-    return memoryData;
-#endif
-#else
-    return nullptr;
-#endif //OPTIMIZED_METAL_RUN
-  }
+    run_environment::AccSetting acc_setting) const = 0;
 
-  virtual void FreeAlignedMemoryOnDevice(U* memory_to_free) const
-  {
-#if !defined(OPTIMIZED_METAL_RUN)
-#ifdef _WIN32
-    _aligned_free(memory_to_free);
-#else
-    free(memory_to_free);
-#endif
-#endif //OPTIMIZED_METAL_RUN
-  }
+  virtual void FreeAlignedMemoryOnDevice(U* memory_to_free) const = 0;
 
   virtual void TransferDataFromDeviceToHost(
     T* dest_array,
     U* in_array,
-    std::size_t num_data_transfer) const
-  {
-#if !defined(OPTIMIZED_METAL_RUN)
-    std::ranges::copy(in_array, in_array + num_data_transfer, dest_array);
-#endif //OPTIMIZED_METAL_RUN
-  }
+    std::size_t num_data_transfer) const = 0;
 
   virtual void TransferDataFromHostToDevice(
     U* dest_array,
     T* in_array,
-    std::size_t num_data_transfer) const
-  {
-#if !defined(OPTIMIZED_METAL_RUN)
-    std::ranges::copy(in_array, in_array + num_data_transfer, dest_array);
-#endif //OPTIMIZED_METAL_RUN
-  }
+    std::size_t num_data_transfer) const = 0;
 };
 
 #endif //MEMORY_MANAGEMENT_H_

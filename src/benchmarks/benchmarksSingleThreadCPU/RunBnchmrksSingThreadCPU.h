@@ -27,6 +27,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #ifndef RUN_BNCHMRKS_SING_THREAD_CPU_H_
 #define RUN_BNCHMRKS_SING_THREAD_CPU_H_
 
+#include "RunImpCPU/MemoryManagementCPU.h"
 #include "../benchmarksRunProcessing/RunBnchmrks.h"
 #include "ProcessBnchmrksSingThreadCPU.h"
 
@@ -57,7 +58,7 @@ inline std::optional<benchmarks::BnchmrksRunOutput<T>> RunBnchmrksSingThreadCPU<
   auto process_set_output = this->template ProcessBenchmarks<T>(
     inMtrces,
     std::make_unique<ProcessBnchmrksSingThreadCPU<T, ACCELERATION, BENCHMARK_RUN>>(parallel_params),
-    std::make_unique<MemoryManagement<T, T>>(),
+    std::make_unique<MemoryManagementCPU<T, T>>(),
     kNumEvalRuns);
   if (process_set_output) {
     //clear all returned run data and add only the runtime since that is all that

@@ -38,6 +38,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #include "RunEval/RunTypeConstraints.h"
 #include "SmoothImageOptCPU.h"
 #include "ProcessBpOptCPU.h"
+#include "RunImpCPU/MemoryManagementCPU.h"
 
 /**
  * @brief Child class of RunBpImp to run optimized CPU implementation of belief propagation on a
@@ -90,8 +91,8 @@ inline std::optional<beliefprop::BpRunOutput> RunBpImpOptCPU<T, DISP_VALS, ACCEL
     beliefprop::BpOnDevice<T, DISP_VALS, ACCELERATION>{
       std::make_unique<SmoothImageOptCPU>(parallel_params),
       std::make_unique<ProcessBpOptCPU<T, DISP_VALS, ACCELERATION>>(parallel_params),
-      std::make_unique<MemoryManagement<T, T>>(),
-      std::make_unique<MemoryManagement<float, float>>()});
+      std::make_unique<MemoryManagementCPU<T, T>>(),
+      std::make_unique<MemoryManagementCPU<float, float>>()});
   if (process_set_output) {
     run_data.AppendData(std::move(process_set_output->run_data));
     process_set_output->run_data = std::move(run_data);
