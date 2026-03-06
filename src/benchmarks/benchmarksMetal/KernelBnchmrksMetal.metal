@@ -30,13 +30,13 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #include "benchmarksRunProcessing/BnchmrksConstsEnumsAliases.h"
 
 /**
- * @brief Namespace to define global kernel functions for benchmark functions
- * using CUDA
+ * @brief Namespace to define kernel functions for benchmark functions
+ * using Metal
  */
-namespace benchmarks_cuda {
+//namespace benchmarks_metal {
 
   /**
-   * @brief CUDA kernel to sum two matrices element-by-element
+   * @brief Metal kernel to run GEMM benchmark
    * 
    * @param matrix_0
    * @param matrix_1
@@ -44,52 +44,37 @@ namespace benchmarks_cuda {
    * @param mtrx_height
    * @param matrix_result
    */
-  template <RunData_t T, benchmarks::BenchmarkRun BENCHMARK_RUN>
-  __global__ void TwoDMatricesBnchmrk(
+  //template <RunData_t T, benchmarks::BenchmarkRun BENCHMARK_RUN>
+  kernel void TwoDMatricesBnchmrkFloat(
     unsigned int mtrx_width, unsigned int mtrx_height,
-    const T* matrix_0, const T* matrix_1,
-    T* matrix_result)
+    device const float* matrix_0, device const float* matrix_1,
+    device float* matrix_result,
+    uint2 grid_pos [[thread_position_in_grid]])
   {
-    //get x and y indices corresponding to current CUDA thread
-    const unsigned int x_val = blockIdx.x * blockDim.x + threadIdx.x;
-    const unsigned int y_val = blockIdx.y * blockDim.y + threadIdx.y;
+    //get x and y indices
+    const unsigned int x_val = grid_pos.x;
+    const unsigned int y_val = grid_pos.y;
     if ((x_val < mtrx_width) && (y_val < mtrx_height)) {
-      const unsigned int val_idx = y_val*mtrx_width + x_val;
-      if constexpr (BENCHMARK_RUN == benchmarks::BenchmarkRun::kAddTwoD) {
-        matrix_result[val_idx] =
-          matrix_0[val_idx] + 
-          matrix_1[val_idx];
-      }
-      else if constexpr (BENCHMARK_RUN == benchmarks::BenchmarkRun::kDivideTwoD) {
-        matrix_result[val_idx] =
-          matrix_0[val_idx] /
-          matrix_1[val_idx];
-      }
-      else if constexpr (BENCHMARK_RUN == benchmarks::BenchmarkRun::kCopyTwoD) {
-        matrix_result[val_idx] = matrix_0[val_idx];
-      }
-      else if constexpr (BENCHMARK_RUN == benchmarks::BenchmarkRun::kGemm) {
         float sum = 0.0f;
         size_t curr_matrix_input0_idx{y_val * mtrx_width};
         size_t curr_matrix_input1_idx{x_val};
         //compute dot product of the corresponding matrix_0 row and matrix_1 column
         for (size_t i = 0; i < mtrx_width; ++i) {
-#if defined(USE_FUSED_MULTIPLY_ADD)
+/*#if defined(USE_FUSED_MULTIPLY_ADD)
           sum =
-            __fmaf_rn(
+            fma(
               matrix_0[curr_matrix_input0_idx],
               matrix_1[curr_matrix_input1_idx],
               sum);
-#else
+#else*/
           sum +=
             matrix_0[curr_matrix_input0_idx] *
             matrix_1[curr_matrix_input1_idx];
-#endif //USE_FUSED_MULTIPLY_ADD
+//#endif //USE_FUSED_MULTIPLY_ADD
           curr_matrix_input0_idx += 1;
           curr_matrix_input1_idx += mtrx_width;
         }
         matrix_result[val_idx] = sum;
-      }
     }
   }
-};
+//};
