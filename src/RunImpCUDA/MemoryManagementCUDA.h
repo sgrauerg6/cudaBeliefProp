@@ -96,7 +96,7 @@ public:
 
   void TransferDataFromDeviceToHost(
     T* dest_array,
-    const U* in_array,
+    U* in_array,
     std::size_t num_data_transfer) const override
   {
     cudaMemcpy(
@@ -105,7 +105,7 @@ public:
 
   void TransferDataFromHostToDevice(
     U* dest_array,
-    const T* in_array,
+    T* in_array,
     std::size_t num_data_transfer) const override
   {
     cudaMemcpy(

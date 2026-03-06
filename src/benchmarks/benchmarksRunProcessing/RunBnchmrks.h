@@ -102,31 +102,21 @@ protected:
    * @return Output from running benchmarks or null if
    * error in run
    */
+  template<typename U = T>
   std::optional<benchmarks::BnchmrksRunOutput<T>> ProcessBenchmarks(
     const std::array<BnchmrksMtrx<T>, 2>& inMtrces,
-    const std::unique_ptr<ProcessBnchmrksDevice<T, ACCELERATION, BENCHMARK_RUN>>& proc_bnchmrks_device,
-    const std::unique_ptr<MemoryManagement<T, T>>& mem_management,
-    size_t num_eval_runs) const;
-};
-
-//protected function to set up, run, and evaluate bp processing on target
-//device using pointers to acceleration-specific smooth image,
-//process BP, and memory management child class objects
-template<RunData_t T, run_environment::AccSetting ACCELERATION, benchmarks::BenchmarkRun BENCHMARK_RUN>
-std::optional<benchmarks::BnchmrksRunOutput<T>> RunBnchmrks<T, ACCELERATION, BENCHMARK_RUN>::ProcessBenchmarks(
-  const std::array<BnchmrksMtrx<T>, 2>& inMtrces,
-  const std::unique_ptr<ProcessBnchmrksDevice<T, ACCELERATION, BENCHMARK_RUN>>& proc_bnchmrks_device,
-  const std::unique_ptr<MemoryManagement<T, T>>& mem_management,
-  size_t num_eval_runs) const
-{
+    const std::unique_ptr<ProcessBnchmrksDevice<T, ACCELERATION, BENCHMARK_RUN, U>>& proc_bnchmrks_device,
+    const std::unique_ptr<MemoryManagement<T, U>>& mem_management,
+    size_t num_eval_runs) const
+  {
   //initialize run data to include timing data and possibly
   //other info
   RunData run_data;
 
   //allocate data for benchmark processing on target device
-  T* mat_0_device{nullptr};
-  T* mat_1_device{nullptr};
-  T* mat_2_device{nullptr};
+  U* mat_0_device{nullptr};
+  U* mat_1_device{nullptr};
+  U* mat_2_device{nullptr};
 
   //allocate memory on device for benchmark processing
   const std::size_t num_data_mat = inMtrces[0].Width() * inMtrces[0].Height();
@@ -144,11 +134,11 @@ std::optional<benchmarks::BnchmrksRunOutput<T>> RunBnchmrks<T, ACCELERATION, BEN
   //transfer matrices from host to device
   mem_management->TransferDataFromHostToDevice(
     mat_0_device,
-    inMtrces[0].Data(),
+    const_cast<T*>(inMtrces[0].Data()),
     num_data_mat);
   mem_management->TransferDataFromHostToDevice(
     mat_1_device,
-    inMtrces[1].Data(),
+    const_cast<T*>(inMtrces[1].Data()),
     num_data_mat);
 
   //initialize structures for timing data
@@ -218,6 +208,19 @@ std::optional<benchmarks::BnchmrksRunOutput<T>> RunBnchmrks<T, ACCELERATION, BEN
 
   //return output runtime and other info
   return run_bnchmrks_output;
-}
+  }
+};
+
+//protected function to set up, run, and evaluate bp processing on target
+//device using pointers to acceleration-specific smooth image,
+//process BP, and memory management child class objects
+/*template<RunData_t T, run_environment::AccSetting ACCELERATION, benchmarks::BenchmarkRun BENCHMARK_RUN>
+template<typename U>
+inline std::optional<benchmarks::BnchmrksRunOutput<T>> RunBnchmrks<T, ACCELERATION, BENCHMARK_RUN>::ProcessBenchmarks(
+  const std::array<BnchmrksMtrx<T>, 2>& inMtrces,
+  const std::unique_ptr<ProcessBnchmrksDevice<T, ACCELERATION, BENCHMARK_RUN, U>>& proc_bnchmrks_device,
+  const std::unique_ptr<MemoryManagement<T, T>>& mem_management,
+  size_t num_eval_runs) const*/
+
 
 #endif //RUN_BNCHMRKS_H

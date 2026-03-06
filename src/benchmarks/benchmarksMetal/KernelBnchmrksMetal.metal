@@ -35,12 +35,14 @@ using namespace metal;
 
   /**
    * @brief Metal kernel to run GEMM benchmark
+   * using floats
    * 
-   * @param matrix_0
-   * @param matrix_1
    * @param mtrx_width
    * @param mtrx_height
+   * @param matrix_0
+   * @param matrix_1
    * @param matrix_result
+   * @param grid_pos
    */
   //template <RunData_t T, benchmarks::BenchmarkRun BENCHMARK_RUN>
   kernel void TwoDMatricesBnchmrkFloat(
@@ -49,6 +51,94 @@ using namespace metal;
     device const float* matrix_0 [[buffer(2)]],
     device const float* matrix_1 [[buffer(3)]],
     device float* matrix_result [[buffer(4)]],
+    uint2 grid_pos [[thread_position_in_grid]])
+  {
+    //get x and y indices
+    const unsigned int x_val = grid_pos.x;
+    const unsigned int y_val = grid_pos.y;
+    if ((x_val < mtrx_width) && (y_val < mtrx_height)) {
+        const unsigned int val_idx = y_val*mtrx_width + x_val;
+        float sum = 0.0f;
+        size_t curr_matrix_input0_idx{y_val * mtrx_width};
+        size_t curr_matrix_input1_idx{x_val};
+        //compute dot product of the corresponding matrix_0 row and matrix_1 column
+        for (size_t i = 0; i < mtrx_width; ++i) {
+/*#if defined(USE_FUSED_MULTIPLY_ADD)
+          sum =
+            fma(
+              matrix_0[curr_matrix_input0_idx],
+              matrix_1[curr_matrix_input1_idx],
+              sum);
+#else*/
+          sum +=
+            matrix_0[curr_matrix_input0_idx] *
+            matrix_1[curr_matrix_input1_idx];
+//#endif //USE_FUSED_MULTIPLY_ADD
+          curr_matrix_input0_idx += 1;
+          curr_matrix_input1_idx += mtrx_width;
+        }
+        matrix_result[val_idx] = sum;
+    }
+  }
+
+ /**
+   * @brief Metal kernel to run GEMM benchmark
+   * using doubles
+   * 
+   * @param mtrx_width
+   * @param mtrx_height
+   * @param matrix_0
+   * @param matrix_1
+   * @param matrix_result
+   * @param grid_pos
+   */
+  //template <RunData_t T, benchmarks::BenchmarkRun BENCHMARK_RUN>
+  /*kernel void TwoDMatricesBnchmrkDouble(
+    constant unsigned int& mtrx_width [[buffer(0)]],
+    constant unsigned int& mtrx_height [[buffer(1)]],
+    device const double* matrix_0 [[buffer(2)]],
+    device const double* matrix_1 [[buffer(3)]],
+    device double* matrix_result [[buffer(4)]],
+    uint2 grid_pos [[thread_position_in_grid]])
+  {
+    //get x and y indices
+    const unsigned int x_val = grid_pos.x;
+    const unsigned int y_val = grid_pos.y;
+    if ((x_val < mtrx_width) && (y_val < mtrx_height)) {
+        const unsigned int val_idx = y_val*mtrx_width + x_val;
+        float sum = 0.0f;
+        size_t curr_matrix_input0_idx{y_val * mtrx_width};
+        size_t curr_matrix_input1_idx{x_val};
+        //compute dot product of the corresponding matrix_0 row and matrix_1 column
+        for (size_t i = 0; i < mtrx_width; ++i) {
+          sum +=
+            matrix_0[curr_matrix_input0_idx] *
+            matrix_1[curr_matrix_input1_idx];
+          curr_matrix_input0_idx += 1;
+          curr_matrix_input1_idx += mtrx_width;
+        }
+        matrix_result[val_idx] = sum;
+    }
+  }*/
+
+/**
+   * @brief Metal kernel to run GEMM benchmark
+   * using floats
+   * 
+   * @param mtrx_width
+   * @param mtrx_height
+   * @param matrix_0
+   * @param matrix_1
+   * @param matrix_result
+   * @param grid_pos
+   */
+  //template <RunData_t T, benchmarks::BenchmarkRun BENCHMARK_RUN>
+  kernel void TwoDMatricesBnchmrkHalf(
+    constant unsigned int& mtrx_width [[buffer(0)]],
+    constant unsigned int& mtrx_height [[buffer(1)]],
+    device const half* matrix_0 [[buffer(2)]],
+    device const half* matrix_1 [[buffer(3)]],
+    device half* matrix_result [[buffer(4)]],
     uint2 grid_pos [[thread_position_in_grid]])
   {
     //get x and y indices

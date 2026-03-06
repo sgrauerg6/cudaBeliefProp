@@ -56,7 +56,7 @@ inline std::optional<benchmarks::BnchmrksRunOutput<T>> RunBnchmrksHIP<T, ACCELER
   RunData run_data;
   run_data.AppendData(run_hip::retrieveDeviceProperties(0));
   constexpr size_t kNumEvalRuns{7};
-  auto process_bnchmrks_output = this->ProcessBenchmarks(
+  auto process_bnchmrks_output = this->template ProcessBenchmarks<T>(
     inMtrces,
     std::make_unique<ProcessBnchmrksHIP<T, ACCELERATION, BENCHMARK_RUN>>(parallel_params),
     std::make_unique<MemoryManagementHIP<T, T>>(),

@@ -31,6 +31,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #include "ProcessBnchmrksMetal.h"
 #include "RunImpMetal/RunMetalSettings.h"
 #include "RunImpMetal/MemoryManagementMetal.h"
+#include <Metal/Metal.hpp>
 
 template<RunData_t T, run_environment::AccSetting ACCELERATION, benchmarks::BenchmarkRun BENCHMARK_RUN>
 class RunBnchmrksMetal : public RunBnchmrks<T, ACCELERATION, BENCHMARK_RUN> {
@@ -48,19 +49,22 @@ inline std::optional<benchmarks::BnchmrksRunOutput<T>> RunBnchmrksMetal<T, ACCEL
   const std::array<BnchmrksMtrx<T>, 2>& inMtrces,
   const ParallelParams& parallel_params) const
 {
+  std::cout << "RUN METAL 1" << std::endl;
   //return no value if acceleration setting is not CUDA
-  if constexpr (ACCELERATION != run_environment::AccSetting::kCUDA) {
+  if constexpr (ACCELERATION != run_environment::AccSetting::kMETAL) {
     return {};
   }
+  std::cout << "RUN METAL 2" << std::endl;
 
   //generate struct with pointers to objects for running CUDA implementation and call
   //function to run CUDA implementation
   RunData run_data;
   constexpr size_t kNumEvalRuns{7};
-  auto process_bnchmrks_output = this->ProcessBenchmarks(
+  auto m_device = MTL::CreateSystemDefaultDevice();
+  auto process_bnchmrks_output = this->template ProcessBenchmarks<MTL::Buffer>(
     inMtrces,
-    std::make_unique<ProcessBnchmrksMetal<T, ACCELERATION, BENCHMARK_RUN>>(parallel_params),
-    std::make_unique<MemoryManagementMetal<T, T>>(MTL::CreateSystemDefaultDevice()),
+    std::make_unique<ProcessBnchmrksMetal<T, ACCELERATION, BENCHMARK_RUN, MTL::Buffer>>(parallel_params, m_device),
+    std::make_unique<MemoryManagementMetal<T, MTL::Buffer>>(m_device),
     kNumEvalRuns);
   if (!process_bnchmrks_output) {
     return {};

@@ -54,7 +54,7 @@ inline std::optional<benchmarks::BnchmrksRunOutput<T>> RunBnchmrksSingThreadCPU<
   //generate struct with pointers to objects for running optimized CPU implementation and call
   //function to run optimized CPU implementation
   constexpr size_t kNumEvalRuns{1};
-  auto process_set_output = this->ProcessBenchmarks(
+  auto process_set_output = this->template ProcessBenchmarks<T>(
     inMtrces,
     std::make_unique<ProcessBnchmrksSingThreadCPU<T, ACCELERATION, BENCHMARK_RUN>>(parallel_params),
     std::make_unique<MemoryManagement<T, T>>(),

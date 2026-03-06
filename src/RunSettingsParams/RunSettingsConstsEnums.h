@@ -46,6 +46,11 @@ using halftype = short;
 #endif //COMPILING_FOR_ARM
 #endif //OPTIMIZED_CPU_RUN
 
+#if defined(OPTIMIZED_METAL_RUN)
+#include <arm_neon.h> //needed for float16_t type
+using halftype = float16_t;
+#endif //OPTIMIZED_METAL_RUN
+
 /**
  * @brief Constants and enums related to run environment
  * and settings for run

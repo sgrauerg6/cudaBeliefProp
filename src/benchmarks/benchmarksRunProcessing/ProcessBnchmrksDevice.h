@@ -58,7 +58,7 @@ using timingType = std::chrono::time_point<std::chrono::system_clock>;
  * @tparam T 
  * @tparam ACCELERATION 
  */
-template<RunData_t T, run_environment::AccSetting ACCELERATION, benchmarks::BenchmarkRun BENCHMARK_RUN>
+template<RunData_t T, run_environment::AccSetting ACCELERATION, benchmarks::BenchmarkRun BENCHMARK_RUN, typename U = T>
 class ProcessBnchmrksDevice {
 public:
   explicit ProcessBnchmrksDevice(
@@ -92,9 +92,9 @@ public:
    */
   std::optional<DetailedTimings<benchmarks::Runtime_Type>> operator()(
     const unsigned int benchmark_size,
-    const T* mat_input_0,
-    const T* mat_input_1,
-    T* mat_output) const
+    const U* mat_input_0,
+    const U* mat_input_1,
+    U* mat_output) const
   {
     return TwoDMatricesBnchmrk(benchmark_size, mat_input_0, mat_input_1, mat_output);
   }
@@ -115,9 +115,9 @@ private:
    */
   virtual std::optional<DetailedTimings<benchmarks::Runtime_Type>> TwoDMatricesBnchmrk(
     const unsigned int mat_w_h,
-    const T* mat_input_0,
-    const T* mat_input_1,
-    T* mat_result) const = 0;
+    const U* mat_input_0,
+    const U* mat_input_1,
+    U* mat_result) const = 0;
 };
 
 #endif //PROCESS_BNCHMRKS_DEVICE_H_

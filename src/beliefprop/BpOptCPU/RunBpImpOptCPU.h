@@ -91,7 +91,7 @@ inline std::optional<beliefprop::BpRunOutput> RunBpImpOptCPU<T, DISP_VALS, ACCEL
       std::make_unique<SmoothImageOptCPU>(parallel_params),
       std::make_unique<ProcessBpOptCPU<T, DISP_VALS, ACCELERATION>>(parallel_params),
       std::make_unique<MemoryManagement<T, T>>(),
-      std::make_unique<MemoryManagement<float>>()});
+      std::make_unique<MemoryManagement<float, float>>()});
   if (process_set_output) {
     run_data.AppendData(std::move(process_set_output->run_data));
     process_set_output->run_data = std::move(run_data);

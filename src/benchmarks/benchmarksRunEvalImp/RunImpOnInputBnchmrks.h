@@ -45,6 +45,15 @@ template <RunData_t T, run_environment::AccSetting ACCELERATION, benchmarks::Ben
 using RunBnchmrksOptimized = RunBnchmrksCUDA<T, ACCELERATION, BENCHMARK_RUN>;
 #endif //OPTIMIZED_CUDA_RUN
 
+//check if Apple Metal run defined and make any necessary additions to support it
+#if defined(OPTIMIZED_METAL_RUN)
+//needed to run the Metal implementation
+#include "benchmarksMetal/RunBnchmrksMetal.h"
+//set RunBpOptimized alias to correspond to Metal implementation
+template <RunData_t T, run_environment::AccSetting ACCELERATION, benchmarks::BenchmarkRun BENCHMARK_RUN>
+using RunBnchmrksOptimized = RunBnchmrksMetal<T, ACCELERATION, BENCHMARK_RUN>;
+#endif //OPTIMIZED_METAL_RUN
+
 #include <fstream>
 #include "RunImp/RunImpOnInput.h"
 #include "benchmarksResultsEval/BnchmrksEvaluationInputs.h"

@@ -1,0 +1,78 @@
+include ../../common.mk
+
+# define the path to CUDA on target compile device
+CUDA_DIR = /usr/local/cuda
+
+# define path, flags, and includes for HIP compilation
+HIPCC = hipcc
+HIPFLAGS = -O3 --offload-arch=gfx906
+HIP_INCLUDE = -I$(ROCM_PATH)/hip/include
+
+# define path to benchmarks source code
+SRC_DIR_BNCHMRKS = ../../${SRC_DIR}/benchmarks
+
+# define the directories to include when compiling CUDA implementation
+CUDA_IMP_INCLUDES := -I../../${SRC_DIR} -I${SRC_DIR_BNCHMRKS} -I${CUDA_DIR}/include
+
+# contains the library files needed for linking
+# need -lstdc++fs for c++17 filesystem library to work
+CUDA_IMP_LIBS := -L$(CUDA_DIR)/lib64 -lcudart -lstdc++fs
+
+# use bfloat16 data type rather than default half data type for CUDA 16-bit float processing
+# remove if compute capability of CUDA device is under 8.0 since bfloat16 not supported until
+# compute capability 8.0
+BFLOAT_DATA_TYPE_SETTING = -DUSE_BFLOAT16_FOR_HALF_PRECISION
+
+# defines to add for CUDA processing
+CUDA_IMP_RUN_DEFINES = -DOPTIMIZED_CUDA_RUN ${BFLOAT_DATA_TYPE_SETTING} ${COMMON_IMP_DEFINES}
+
+# set compile flags for CUDA implementation for gcc and nvcc
+CUDA_IMP_COMPILE_FLAGS_GCC = -DUNIX -O3 -std=c++20 -march=native -Wall ${COMPILE_FLAGS} ${CUDA_IMP_RUN_DEFINES} -MMD -MP
+CUDA_IMP_COMPILE_FLAGS_NVCC = -DUNIX -O3 -std=c++20 -arch=native ${COMPILE_FLAGS} ${CUDA_IMP_RUN_DEFINES} -MMD -MP
+CUDA_LINK_FLAGS = -O3 -march=native -std=c++20
+
+# define directory for compiled objects and object files to generate during compilation
+OBJ_DIR = obj
+OBJECTS = ${OBJ_DIR}/EvalAcrossRuns.o ${OBJ_DIR}/InputSignature.o ${OBJ_DIR}/RunResultsSpeedups.o \
+${OBJ_DIR}/EvalImpResultsBnchmrks.o ${OBJ_DIR}/EvalImpResults.o ${OBJ_DIR}/RunImpMultTypesAccels.o \
+${OBJ_DIR}/RunData.o ${OBJ_DIR}/ParallelParamsBnchmrks.o ${OBJ_DIR}/ParallelParams.o \
+${OBJ_DIR}/RunImpMultInputsBnchmrks.o ${OBJ_DIR}/RunImpMultInputs.o \
+${OBJ_DIR}/RunBnchmrksSingThreadCPU.o ${OBJ_DIR}/RunBnchmrks.o \
+${OBJ_DIR}/DetailedTimings.o ${OBJ_DIR}/ProcessBnchmrksDevice.o \
+${OBJ_DIR}/ProcessBnchmrksCUDA.o
+DRIVER_BENCHMARK_CUDA_OBJECT = ${OBJ_DIR}/DriverCudaBnchmrks.o
+DRIVER_BENCHMARK_CUDA_OBJECT_CUSTOM = ${OBJ_DIR}/DriverBnchmrksCUDA_customRun.o
+
+# dependency files corresponding to each object
+DEPS := $(OBJECTS:.o=.d)
+
+# executables for belief propagation CUDA implementations
+DRIVER_BENCHMARK_CUDA = driverCUDABnchmrks
+DRIVER_BENCHMARK_CUDA_CUSTOM = driverCUDABnchmrksCustom
+
+all: impDriverCUDA impDriverCUDACustom
+
+${OBJ_DIR}/%.o: ../../${SRC_DIR}/*/%.cpp
+	$(CC) $< -c $(CUDA_IMP_INCLUDES) $(CUDA_IMP_COMPILE_FLAGS_GCC) -o $@
+
+${OBJ_DIR}/%.o: ${SRC_DIR_BP}/*/%.cpp
+	$(CC) $< -c $(CUDA_IMP_INCLUDES) $(CUDA_IMP_COMPILE_FLAGS_GCC) -o $@
+
+# specify compile commands using NVCC compiler for objects with CUDA for processing on GPU
+${OBJ_DIR}/ProcessBpCUDA.o:
+	$(NVCC) -x cu -c ${SRC_DIR_BP}/BpCUDA/ProcessBpCUDA.cpp -Xptxas -v -o $@ $(CUDA_IMP_INCLUDES) $(CUDA_IMP_COMPILE_FLAGS_NVCC)
+
+${OBJ_DIR}/SmoothImageCUDA.o:
+	$(NVCC) -x cu -c ${SRC_DIR_BP}/BpCUDA/SmoothImageCUDA.cpp -o $@ $(CUDA_IMP_INCLUDES) $(CUDA_IMP_COMPILE_FLAGS_NVCC)
+
+impDriverCUDA: ${OBJECTS} ${DRIVER_BENCHMARK_CUDA_OBJECT}
+	$(CC) ${DRIVER_BENCHMARK_CUDA_OBJECT} ${OBJECTS} $(CUDA_IMP_LIBS) -fopenmp $(CUDA_LINK_FLAGS) -o ${DRIVER_BENCHMARK_CUDA} -O
+
+impDriverCUDACustom: ${OBJECTS} ${DRIVER_BENCHMARK_CUDA_OBJECT_CUSTOM}
+	$(CC) ${DRIVER_BENCHMARK_CUDA_OBJECT_CUSTOM} ${OBJECTS} $(CUDA_IMP_LIBS) -fopenmp $(CUDA_LINK_FLAGS) -o ${DRIVER_BENCHMARK_CUDA_CUSTOM} -O
+
+make clean:
+	rm *.o ${OBJ_DIR}/*.o driverCUDABnchmrks driverCUDABnchmrksCustom
+
+# include for dependency files
+-include $(DEPS)

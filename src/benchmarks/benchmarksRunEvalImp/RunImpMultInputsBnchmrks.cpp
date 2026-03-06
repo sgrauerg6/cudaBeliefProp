@@ -31,6 +31,13 @@ MultRunData RunImpMultInputsBnchmrks::RunEvalImpMultDataSets(
   const run_environment::RunImpSettings& run_imp_settings,
   size_t data_type_size) const 
 {
+#if defined(OPTIMIZED_METAL_RUN)
+  if (this->opt_imp_accel_ == run_environment::AccSetting::kMETAL) {
+    return RunEvalImpMultDataSets<run_environment::AccSetting::kMETAL>(run_imp_settings, data_type_size);
+  }
+  //else (this->opt_imp_accel_ == run_environment::AccSetting::kNone)
+  return RunEvalImpMultDataSets<run_environment::AccSetting::kNone>(run_imp_settings, data_type_size);
+#else
   if (this->opt_imp_accel_ == run_environment::AccSetting::kCUDA) {
     return RunEvalImpMultDataSets<run_environment::AccSetting::kCUDA>(run_imp_settings, data_type_size);
   }
@@ -49,8 +56,15 @@ MultRunData RunImpMultInputsBnchmrks::RunEvalImpMultDataSets(
   else if (this->opt_imp_accel_ == run_environment::AccSetting::kNEON) {
     return RunEvalImpMultDataSets<run_environment::AccSetting::kNEON>(run_imp_settings, data_type_size);
   }
+  else if (this->opt_imp_accel_ == run_environment::AccSetting::kHIP) {
+    return RunEvalImpMultDataSets<run_environment::AccSetting::kHIP>(run_imp_settings, data_type_size);
+  }
+  else if (this->opt_imp_accel_ == run_environment::AccSetting::kMETAL) {
+    return RunEvalImpMultDataSets<run_environment::AccSetting::kMETAL>(run_imp_settings, data_type_size);
+  }
   //else (this->opt_imp_accel_ == run_environment::AccSetting::kNone)
   return RunEvalImpMultDataSets<run_environment::AccSetting::kNone>(run_imp_settings, data_type_size);
+#endif //OPTIMIZED_METAL_RUN
 }
 
 template <run_environment::AccSetting OPT_IMP_ACCEL>

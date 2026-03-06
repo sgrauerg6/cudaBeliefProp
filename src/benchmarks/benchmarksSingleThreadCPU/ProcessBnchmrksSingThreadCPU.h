@@ -30,8 +30,8 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #include <cmath>
 #include "benchmarksRunProcessing/ProcessBnchmrksDevice.h"
 
-template<RunData_t T, run_environment::AccSetting ACCELERATION, benchmarks::BenchmarkRun BENCHMARK_RUN>
-class ProcessBnchmrksSingThreadCPU final : public ProcessBnchmrksDevice<T, ACCELERATION, BENCHMARK_RUN> {
+template<RunData_t T, run_environment::AccSetting ACCELERATION, benchmarks::BenchmarkRun BENCHMARK_RUN, typename U = T>
+class ProcessBnchmrksSingThreadCPU final : public ProcessBnchmrksDevice<T, ACCELERATION, BENCHMARK_RUN, U> {
 public:
 /**
  * @brief Constructor to initialize class to process benchmarks
@@ -54,9 +54,9 @@ private:
    */
   std::optional<DetailedTimings<benchmarks::Runtime_Type>> TwoDMatricesBnchmrk(
     const unsigned int mat_w_h,
-    const T* mat_input_0,
-    const T* mat_input_1,
-    T* mat_result) const override
+    const U* mat_input_0,
+    const U* mat_input_1,
+    U* mat_result) const override
   {
     auto add_mat_start_time = std::chrono::system_clock::now();
     for (unsigned int y=0; y < mat_w_h; y++)

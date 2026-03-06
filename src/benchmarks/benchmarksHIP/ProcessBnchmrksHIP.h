@@ -34,8 +34,8 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #include "RunEval/RunEvalConstsEnums.h"
 #include "KernelBnchmrksHIP.cu"
 
-template<RunData_t T, run_environment::AccSetting ACCELERATION, benchmarks::BenchmarkRun BENCHMARK_RUN>
-class ProcessBnchmrksHIP : public ProcessBnchmrksDevice<T, ACCELERATION, BENCHMARK_RUN> {
+template<RunData_t T, run_environment::AccSetting ACCELERATION, benchmarks::BenchmarkRun BENCHMARK_RUN, typename U = T>
+class ProcessBnchmrksHIP : public ProcessBnchmrksDevice<T, ACCELERATION, BENCHMARK_RUN, U> {
 public:
 
 private:
@@ -50,9 +50,9 @@ private:
    */
   std::optional<DetailedTimings<benchmarks::Runtime_Type>> TwoDMatricesBnchmrk(
     const unsigned int mat_w_h,
-    const T* mat_input_0,
-    const T* mat_input_1,
-    T* mat_result) const override
+    const U* mat_input_0,
+    const U* mat_input_1,
+    U* mat_result) const override
   {
     if (ErrorCheck(__FILE__, __LINE__) != run_eval::Status::kNoError) {
       return run_eval::Status::kError;

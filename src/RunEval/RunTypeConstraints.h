@@ -46,7 +46,7 @@ concept RunData_t =
   std::is_same_v<T, double> ||
   std::is_same_v<T, halftype>;
 
-#elif defined(OPTIMIZED_CPU_RUN)
+#elif defined(OPTIMIZED_CPU_RUN) || defined(OPTIMIZED_METAL_RUN)
 
 #include "RunImpCPU/RunCPUSettings.h"
 #include "RunSettingsParams/RunSettingsConstsEnums.h"

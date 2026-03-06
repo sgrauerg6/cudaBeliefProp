@@ -30,13 +30,15 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #include "benchmarksRunProcessing/ProcessBnchmrksDevice.h"
 #include "RunEval/RunTypeConstraints.h"
 #include "RunEval/RunEvalConstsEnums.h"
+#include <Metal/Metal.hpp>
 
-template<RunData_t T, run_environment::AccSetting ACCELERATION, benchmarks::BenchmarkRun BENCHMARK_RUN>
-class ProcessBnchmrksMetal : public ProcessBnchmrksDevice<T, ACCELERATION, BENCHMARK_RUN> {
+template<RunData_t T, run_environment::AccSetting ACCELERATION, benchmarks::BenchmarkRun BENCHMARK_RUN, typename U = T>
+class ProcessBnchmrksMetal : public ProcessBnchmrksDevice<T, ACCELERATION, BENCHMARK_RUN, U> {
 public:
   explicit ProcessBnchmrksMetal(const ParallelParams& parallel_params, MTL::Device* device) :
-    ProcessBnchmrksDevice<T, ACCELERATION, BENCHMARK_RUN>{parallel_params}
+    ProcessBnchmrksDevice<T, ACCELERATION, BENCHMARK_RUN, U>{parallel_params}
   {
+    std::cout << "START ProcessBnchmrksMetal" << std::endl;
     m_device = device;
     NS::Error* error;
     
@@ -47,8 +49,11 @@ public:
         exit(-1);
     }
     
-    auto functionName = NS::String::string("TwoDMatricesBnchmrkFloat", NS::ASCIIStringEncoding);
-    auto computeFunction = defaultLibrary->newFunction(functionName);
+    //TODO: doesn't seem like double is supported (at least on M1 Macbook Air)
+    auto gemmFunctionFloat = NS::String::string("TwoDMatricesBnchmrkFloat", NS::ASCIIStringEncoding);
+    auto gemmFunctionDouble = NS::String::string("TwoDMatricesBnchmrkDouble", NS::ASCIIStringEncoding);
+    auto gemmFunctionHalf = NS::String::string("TwoDMatricesBnchmrkHalf", NS::ASCIIStringEncoding);
+    auto computeFunction = (sizeof(T) == 2) ? defaultLibrary->newFunction(gemmFunctionHalf) : defaultLibrary->newFunction(gemmFunctionFloat);
     
     if(!computeFunction){
         std::cerr << "Failed to find the compute function.\n";
@@ -89,9 +94,9 @@ private:
    */
   std::optional<DetailedTimings<benchmarks::Runtime_Type>> TwoDMatricesBnchmrk(
     const unsigned int mat_w_h,
-    const T* mat_input_0,
-    const T* mat_input_1,
-    T* mat_result) const override
+    const U* mat_input_0,
+    const U* mat_input_1,
+    U* mat_result) const override
   {
     // Create a command buffer to hold commands.
     MTL::CommandBuffer* commandBuffer = mCommandQueue->commandBuffer();
