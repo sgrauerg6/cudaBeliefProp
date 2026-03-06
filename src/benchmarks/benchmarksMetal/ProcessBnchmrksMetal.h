@@ -35,8 +35,48 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 template<RunData_t T, run_environment::AccSetting ACCELERATION, benchmarks::BenchmarkRun BENCHMARK_RUN>
 class ProcessBnchmrksMetal : public ProcessBnchmrksDevice<T, ACCELERATION, BENCHMARK_RUN> {
 public:
+  explicit ProcessBnchmrksMetal(const ParallelParams& parallel_params) :
+    ProcessBnchmrksDevice{parallel_params}
+  {
+    mDevice = MTL::CreateSystemDefaultDevice();
+    NS::Error* error;
+    
+    auto defaultLibrary = mDevice->newDefaultLibrary();
+    
+    if (!defaultLibrary) {
+        std::cerr << "Failed to find the default library.\n";
+        exit(-1);
+    }
+    
+    auto functionName = NS::String::string("TwoDMatricesBnchmrkFloat", NS::ASCIIStringEncoding);
+    auto computeFunction = defaultLibrary->newFunction(functionName);
+    
+    if(!computeFunction){
+        std::cerr << "Failed to find the compute function.\n";
+    }
+    
+    mComputeFunctionPSO = mDevice->newComputePipelineState(computeFunction, &error);
+    
+    if (!mComputeFunctionPSO) {
+        std::cerr << "Failed to create the pipeline state object.\n";
+        exit(-1);
+    }
+    
+    mCommandQueue = mDevice->newCommandQueue();
+    
+    if (!mCommandQueue) {
+        std::cerr << "Failed to find command queue.\n";
+        exit(-1);
+    }
+  }
 
-private:
+private:    
+  // The compute pipeline generated from the compute kernel in the .metal shader file.
+  MTL::ComputePipelineState* mComputeFunctionPSO;
+    
+  // The command queue used to pass commands to the device.
+  MTL::CommandQueue* mCommandQueue;
+
   /**
    * @brief Function to run add matrices benchmark on device<br>
    * 
@@ -56,23 +96,49 @@ private:
       return run_eval::Status::kError;
     }
 
-    //set to prefer L1 cache for now since no shared memory is used
-    cudaDeviceSetCacheConfig(cudaFuncCachePreferL1);
-
+    // Create a command buffer to hold commands.
+    MTL::CommandBuffer* commandBuffer = mCommandQueue->commandBuffer();
+    assert(commandBuffer != nullptr);
+    
+    // Start a compute pass.
+    MTL::ComputeCommandEncoder* computeEncoder = commandBuffer->computeCommandEncoder();
+    assert(computeEncoder != nullptr);
+    
     //setup execution parameters
     const auto kernel_thread_block_dims =
       this->parallel_params_.OptParamsForKernel({0, 0});
-    const dim3 threads{kernel_thread_block_dims[0], kernel_thread_block_dims[1]};
-    //kernel run on full-sized image to retrieve data costs at the "bottom" level of the pyramid
-    const dim3 grid{
-      (unsigned int)ceil((float)mat_w_h / (float)threads.x),
-      (unsigned int)ceil((float)mat_w_h / (float)threads.y)};
 
-    auto add_mat_start_time = std::chrono::system_clock::now();
+    const unsigned int mtrx_width = mat_w_h;
+    const unsigned int mtrx_height = mat_w_h;
+
     //process matrix addition on GPU using CUDA
-    benchmarks_cuda::TwoDMatricesBnchmrk<T, BENCHMARK_RUN> <<<grid, threads>>> (
-      mat_w_h, mat_w_h, mat_input_0, mat_input_1, mat_result);
-    cudaDeviceSynchronize();
+    //encode the pipeline state object and its parameters.
+    computeEncoder->setComputePipelineState(mComputeFunctionPSO);
+    computeEncoder->setBuffer(&mtrx_width, sizeof(unsigned int), 0);
+    computeEncoder->setBuffer(&mtrx_height, sizeof(unsigned int), 1);
+    computeEncoder->setBuffer(mat_input_0, 0, 2);
+    computeEncoder->setBuffer(mat_input_1, 0, 3);
+    computeEncoder->setBuffer(mat_result, 0, 4);
+    
+    //set grid and threadgroup sizes
+    MTL::Size gridSize = MTL::Size(mtrx_width, mtrx_height, 1);
+    MTL::Size threadgroupSize =
+      MTL::Size(kernel_thread_block_dims[0], kernel_thread_block_dims[1], 1);
+
+    //encode the compute command.
+    computeEncoder->dispatchThreads(gridSize, threadgroupSize);
+    
+    //end the compute pass.
+    computeEncoder->endEncoding();
+    
+    //start timing and run the benchmark
+    auto add_mat_start_time = std::chrono::system_clock::now();
+    commandBuffer->commit();
+    
+    //blocks until the calculation is complete.
+    commandBuffer->waitUntilCompleted();
+
+    //end timing now that kernel completed
     auto end_mat_start_time = std::chrono::system_clock::now();
 
     if (ErrorCheck(__FILE__, __LINE__) != run_eval::Status::kNoError) {

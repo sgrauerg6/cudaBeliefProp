@@ -46,9 +46,11 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
    */
   //template <RunData_t T, benchmarks::BenchmarkRun BENCHMARK_RUN>
   kernel void TwoDMatricesBnchmrkFloat(
-    unsigned int mtrx_width, unsigned int mtrx_height,
-    device const float* matrix_0, device const float* matrix_1,
-    device float* matrix_result,
+    const unsigned int& mtrx_width [[buffer(0)]],
+    const unsigned int& mtrx_height [[buffer(1)]],
+    device const float* matrix_0 [[buffer(2)]],
+    device const float* matrix_1 [[buffer(3)]],
+    device float* matrix_result [[buffer(4)]],
     uint2 grid_pos [[thread_position_in_grid]])
   {
     //get x and y indices
