@@ -98,6 +98,9 @@ private:
     const U* mat_input_1,
     U* mat_result) const override
   {
+    //start timing
+    auto add_mat_start_time = std::chrono::system_clock::now();
+
     // Create a command buffer to hold commands.
     MTL::CommandBuffer* commandBuffer = mCommandQueue->commandBuffer();
     assert(commandBuffer != nullptr);
@@ -133,8 +136,7 @@ private:
     //end the compute pass.
     computeEncoder->endEncoding();
     
-    //start timing and run the benchmark
-    auto add_mat_start_time = std::chrono::system_clock::now();
+    //run the benchmark
     commandBuffer->commit();
     
     //blocks until the calculation is complete.
@@ -143,6 +145,7 @@ private:
     //end timing now that kernel completed
     auto end_mat_start_time = std::chrono::system_clock::now();
 
+    //process run timing
     DetailedTimings add_mat_timing(benchmarks::kTimingNames);
     add_mat_timing.AddTiming(benchmarks::Runtime_Type::kTotalBnchmrkNoTransfer,
       end_mat_start_time - add_mat_start_time);
