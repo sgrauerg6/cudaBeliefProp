@@ -41,30 +41,30 @@ template <benchmarks::BenchmarkRun BENCHMARK_RUN>
 void benchmarks_cpu::TwoDMatricesBnchmrkUseSIMDVectorsAVX512(
   unsigned int mtrx_width, unsigned int mtrx_height,
   const float* matrix_input_0, const float* matrix_input_1,
-  float* matrix_result)
+  float* matrix_result, unsigned int num_threads)
 {
   TwoDMatricesBnchmrkSIMD<float, __m512, float, __m512, BENCHMARK_RUN>(mtrx_width, mtrx_height,
-    matrix_input_0, matrix_input_1, matrix_result);
+    matrix_input_0, matrix_input_1, matrix_result, num_threads);
 }
 
 template <benchmarks::BenchmarkRun BENCHMARK_RUN>
 void benchmarks_cpu::TwoDMatricesBnchmrkUseSIMDVectorsAVX512(
   unsigned int mtrx_width, unsigned int mtrx_height,
   const double* matrix_input_0, const double* matrix_input_1,
-  double* matrix_result)
+  double* matrix_result, unsigned int num_threads)
 {
   TwoDMatricesBnchmrkSIMD<double, __m512d, double, __m512d, BENCHMARK_RUN>(mtrx_width, mtrx_height,
-    matrix_input_0, matrix_input_1, matrix_result);
+    matrix_input_0, matrix_input_1, matrix_result, num_threads);
 }
 
 template <benchmarks::BenchmarkRun BENCHMARK_RUN>
 void benchmarks_cpu::TwoDMatricesBnchmrkUseSIMDVectorsAVX512(
   unsigned int mtrx_width, unsigned int mtrx_height,
   const short* matrix_input_0, const short* matrix_input_1,
-  short* matrix_result)
+  short* matrix_result, unsigned int num_threads)
 {
   TwoDMatricesBnchmrkSIMD<short, __m256i, float, __m512, BENCHMARK_RUN>(mtrx_width, mtrx_height,
-    matrix_input_0, matrix_input_1, matrix_result);
+    matrix_input_0, matrix_input_1, matrix_result, num_threads);
 }
 
 #if defined(FLOAT16_VECTORIZATION)
@@ -73,10 +73,10 @@ template <benchmarks::BenchmarkRun BENCHMARK_RUN>
 void benchmarks_cpu::TwoDMatricesBnchmrkUseSIMDVectorsAVX512(
   unsigned int mtrx_width, unsigned int mtrx_height,
   const _Float16* matrix_input_0, const _Float16* matrix_input_1,
-  _Float16* matrix_result)
+  _Float16* matrix_result, unsigned int num_threads)
 {
   TwoDMatricesBnchmrkSIMD<_Float16, __m512h, _Float16, __m512h, BENCHMARK_RUN>(mtrx_width, mtrx_height,
-    matrix_input_0, matrix_input_1, matrix_result);
+    matrix_input_0, matrix_input_1, matrix_result, num_threads);
 }
 
 #endif //FLOAT16_VECTORIZATION

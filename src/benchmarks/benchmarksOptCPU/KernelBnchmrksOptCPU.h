@@ -44,6 +44,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #include "benchmarksRunProcessing/BnchmrksConstsEnumsAliases.h"
 
 //#define DONT_USE_GRAND_CENTRAL_DISPATCH
+#define GRAND_CENTRAL_DISPATCH_SPECIFY_THREAD_COUNT
 
 /**
  * @brief Namespace to define global kernel functions for optimized benchmark
@@ -65,85 +66,85 @@ namespace benchmarks_cpu
   void TwoDMatricesBnchmrkNoPackedInstructions(
     unsigned int mtrx_width, unsigned int mtrx_height,
     const T* matrix_input_0, const T* matrix_input_1,
-    T* matrix_result);
+    T* matrix_result, unsigned int num_threads);
   
   template <benchmarks::BenchmarkRun BENCHMARK_RUN>
   void TwoDMatricesBnchmrkUseSIMDVectorsNEON(
     unsigned int mtrx_width, unsigned int mtrx_height,
     const float* matrix_input_0, const float* matrix_input_1,
-    float* matrix_result);
+    float* matrix_result, unsigned int num_threads);
 
   template <benchmarks::BenchmarkRun BENCHMARK_RUN>
   void TwoDMatricesBnchmrkUseSIMDVectorsNEON(
     unsigned int mtrx_width, unsigned int mtrx_height,
     const double* matrix_input_0, const double* matrix_input_1,
-    double* matrix_result);
+    double* matrix_result, unsigned int num_threads);
 
 #if defined(COMPILING_FOR_ARM)
   template <benchmarks::BenchmarkRun BENCHMARK_RUN>
   void TwoDMatricesBnchmrkUseSIMDVectorsNEON(
     unsigned int mtrx_width, unsigned int mtrx_height,
     const float16_t* matrix_input_0, const float16_t* matrix_input_1,
-    float16_t* matrix_result);
+    float16_t* matrix_result, unsigned int num_threads);
 #endif //COMPILING_FOR_ARM
 
   template <benchmarks::BenchmarkRun BENCHMARK_RUN>
   void TwoDMatricesBnchmrkUseSIMDVectorsAVX512(
     unsigned int mtrx_width, unsigned int mtrx_height,
     const float* matrix_input_0, const float* matrix_input_1,
-    float* matrix_result);
+    float* matrix_result, unsigned int num_threads);
 
   template <benchmarks::BenchmarkRun BENCHMARK_RUN>
   void TwoDMatricesBnchmrkUseSIMDVectorsAVX512(
     unsigned int mtrx_width, unsigned int mtrx_height,
     const double* matrix_input_0, const double* matrix_input_1,
-    double* matrix_result);
+    double* matrix_result, unsigned int num_threads);
 
   template <benchmarks::BenchmarkRun BENCHMARK_RUN>
   void TwoDMatricesBnchmrkUseSIMDVectorsAVX512(
     unsigned int mtrx_width, unsigned int mtrx_height,
     const short* matrix_input_0, const short* matrix_input_1,
-    short* matrix_result);
+    short* matrix_result, unsigned int num_threads);
 
 #if defined(FLOAT16_VECTORIZATION)
   template <benchmarks::BenchmarkRun BENCHMARK_RUN>
   void TwoDMatricesBnchmrkUseSIMDVectorsAVX512(
     unsigned int mtrx_width, unsigned int mtrx_height,
     const _Float16* matrix_input_0, const _Float16* matrix_input_1,
-    _Float16* matrix_result);
+    _Float16* matrix_result, unsigned int num_threads);
 #endif //FLOAT16_VECTORIZATION
 
   template <benchmarks::BenchmarkRun BENCHMARK_RUN>
   void TwoDMatricesBnchmrkUseSIMDVectorsAVX256(
     unsigned int mtrx_width, unsigned int mtrx_height,
     const float* matrix_input_0, const float* matrix_input_1,
-    float* matrix_result);
+    float* matrix_result, unsigned int num_threads);
 
   template <benchmarks::BenchmarkRun BENCHMARK_RUN>
   void TwoDMatricesBnchmrkUseSIMDVectorsAVX256(
     unsigned int mtrx_width, unsigned int mtrx_height,
     const double* matrix_input_0, const double* matrix_input_1,
-    double* matrix_result);
+    double* matrix_result, unsigned int num_threads);
 
   template <benchmarks::BenchmarkRun BENCHMARK_RUN>
   void TwoDMatricesBnchmrkUseSIMDVectorsAVX256(
     unsigned int mtrx_width, unsigned int mtrx_height,
     const short* matrix_input_0, const short* matrix_input_1,
-    short* matrix_result);
+    short* matrix_result, unsigned int num_threads);
 
 #if defined(FLOAT16_VECTORIZATION)
   template <benchmarks::BenchmarkRun BENCHMARK_RUN>
   void TwoDMatricesBnchmrkUseSIMDVectorsAVX256(
     unsigned int mtrx_width, unsigned int mtrx_height,
     const _Float16* matrix_input_0, const _Float16* matrix_input_1,
-    _Float16* matrix_result);
+    _Float16* matrix_result, unsigned int num_threads);
 #endif //FLOAT16_VECTORIZATION
 
   template<RunData_t T, RunDataVect_t U, RunDataProcess_t V, RunDataVectProcess_t W, benchmarks::BenchmarkRun BENCHMARK_RUN>
   void TwoDMatricesBnchmrkSIMD(
   unsigned int mtrx_width, unsigned int mtrx_height,
     const T* matrix_input_0, const T* matrix_input_1,
-    T* matrix_result);
+    T* matrix_result, unsigned int num_threads);
 };
 
 //headers to include differ depending on architecture and CPU vectorization setting
@@ -168,7 +169,7 @@ template <RunData_t T, benchmarks::BenchmarkRun BENCHMARK_RUN>
 void benchmarks_cpu::TwoDMatricesBnchmrkNoPackedInstructions(
   unsigned int mtrx_width, unsigned int mtrx_height,
   const T* matrix_input_0, const T* matrix_input_1,
-  T* matrix_result)
+  T* matrix_result, unsigned int num_threads)
 {
 #if !defined(__APPLE__) || defined(DONT_USE_GRAND_CENTRAL_DISPATCH)
   #pragma omp parallel for
@@ -228,25 +229,39 @@ template<RunData_t T, RunDataVect_t U, RunDataProcess_t V, RunDataVectProcess_t 
 void benchmarks_cpu::TwoDMatricesBnchmrkSIMD(
   unsigned int mtrx_width, unsigned int mtrx_height,
   const T* matrix_input_0, const T* matrix_input_1,
-  T* matrix_result)
+  T* matrix_result, unsigned int num_threads)
 {
   constexpr size_t simd_data_size{sizeof(U) / sizeof(T)};
 
   #if !defined(__APPLE__) || defined(DONT_USE_GRAND_CENTRAL_DISPATCH)
   #pragma omp parallel for
   for (unsigned int y = 0; y < mtrx_height; y++)
+  {
 #else
   //parallelize on apple processor using Grand Central Dispatch
   //get a global concurrent queue (system-managed thread pool)
   dispatch_queue_t concurrent_queue =
     dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
 
+#if defined(GRAND_CENTRAL_DISPATCH_SPECIFY_THREAD_COUNT)
+  //std::cout << "NUM THREADS: " << num_threads << std::endl;
+  //dispatch _apply submits each iteration as a task to the queue
+  const unsigned int num_rows_per_thread{mtrx_height / num_threads};
+  dispatch_apply(num_threads,
+                 concurrent_queue,
+                 ^(size_t thread_num)
+  {
+  for (unsigned int y_thread = 0; y_thread < num_rows_per_thread; y_thread++)
+  {
+    unsigned int y = (num_rows_per_thread * thread_num) + y_thread;
+#else
   //dispatch _apply submits each iteration as a task to the queue
   dispatch_apply(mtrx_height,
                  concurrent_queue,
                  ^(size_t y)
-#endif //__APPLE__
   {
+#endif //GRAND_CENTRAL_DISPATCH_SPECIFY_THREAD_COUNT
+#endif //__APPLE__
     //for now assuming that matrix width is multiple of simd data size
     for (unsigned int x_val = 0; x_val < mtrx_width; x_val += simd_data_size)
     {
@@ -303,6 +318,9 @@ void benchmarks_cpu::TwoDMatricesBnchmrkSIMD(
     }
   }
 #if defined(__APPLE__) && !defined(DONT_USE_GRAND_CENTRAL_DISPATCH)
+#if defined(GRAND_CENTRAL_DISPATCH_SPECIFY_THREAD_COUNT)
+  }
+#endif //GRAND_CENTRAL_DISPATCH_SPECIFY_THREAD_COUNT
   );
 #endif //__APPLE__
 }

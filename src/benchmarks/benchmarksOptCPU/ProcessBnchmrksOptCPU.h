@@ -59,16 +59,18 @@ private:
     const U* mat_input_1,
     U* mat_result) const override
   {
+    const unsigned int num_threads =
+      this->parallel_params_.OptParamsForKernel({0, 0})[0];
     auto add_mat_start_time = std::chrono::system_clock::now();
     if constexpr (ACCELERATION == run_environment::AccSetting::kNone) {
       benchmarks_cpu::TwoDMatricesBnchmrkNoPackedInstructions<T, BENCHMARK_RUN>(
-        mat_w_h, mat_w_h, mat_input_0, mat_input_1, mat_result);
+        mat_w_h, mat_w_h, mat_input_0, mat_input_1, mat_result, num_threads);
     }
 #if defined(COMPILING_FOR_ARM)
     else if constexpr (ACCELERATION == run_environment::AccSetting::kNEON) {
       std::cout << "Processing NEON implementation" << std::endl;
       benchmarks_cpu::TwoDMatricesBnchmrkUseSIMDVectorsNEON<BENCHMARK_RUN>(
-        mat_w_h, mat_w_h, mat_input_0, mat_input_1, mat_result);
+        mat_w_h, mat_w_h, mat_input_0, mat_input_1, mat_result, num_threads);
     }
 #else
     else if constexpr (
@@ -77,7 +79,7 @@ private:
     {
       std::cout << "Processing AVX256 implementation" << std::endl;
       benchmarks_cpu::TwoDMatricesBnchmrkUseSIMDVectorsAVX256<BENCHMARK_RUN>(
-        mat_w_h, mat_w_h, mat_input_0, mat_input_1, mat_result);
+        mat_w_h, mat_w_h, mat_input_0, mat_input_1, mat_result, num_threads);
     }
     else if constexpr (
       (ACCELERATION == run_environment::AccSetting::kAVX512) ||
@@ -85,7 +87,7 @@ private:
     {
       std::cout << "Processing AVX512 implementation" << std::endl;
       benchmarks_cpu::TwoDMatricesBnchmrkUseSIMDVectorsAVX512<BENCHMARK_RUN>(
-        mat_w_h, mat_w_h, mat_input_0, mat_input_1, mat_result);
+        mat_w_h, mat_w_h, mat_input_0, mat_input_1, mat_result, num_threads);
     }
 #endif //COMPILING_FOR_ARM
     auto end_mat_start_time = std::chrono::system_clock::now();

@@ -37,30 +37,30 @@ template <benchmarks::BenchmarkRun BENCHMARK_RUN>
 inline void benchmarks_cpu::TwoDMatricesBnchmrkUseSIMDVectorsNEON(
   unsigned int mtrx_width, unsigned int mtrx_height,
   const float* matrix_input_0, const float* matrix_input_1,
-  float* matrix_result)
+  float* matrix_result, unsigned int num_threads)
 {
   TwoDMatricesBnchmrkSIMD<float, float32x4_t, float, float32x4_t, BENCHMARK_RUN>(mtrx_width, mtrx_height,
-    matrix_input_0, matrix_input_1, matrix_result);
+    matrix_input_0, matrix_input_1, matrix_result, num_threads);
 }
 
 template <benchmarks::BenchmarkRun BENCHMARK_RUN>
 inline void benchmarks_cpu::TwoDMatricesBnchmrkUseSIMDVectorsNEON(
   unsigned int mtrx_width, unsigned int mtrx_height,
   const double* matrix_input_0, const double* matrix_input_1,
-  double* matrix_result)
+  double* matrix_result, unsigned int num_threads)
 {
   TwoDMatricesBnchmrkSIMD<double, float64x2_t, double, float64x2_t, BENCHMARK_RUN>(mtrx_width, mtrx_height,
-    matrix_input_0, matrix_input_1, matrix_result);
+    matrix_input_0, matrix_input_1, matrix_result, num_threads);
 }
 
 template <benchmarks::BenchmarkRun BENCHMARK_RUN>
 inline void benchmarks_cpu::TwoDMatricesBnchmrkUseSIMDVectorsNEON(
   unsigned int mtrx_width, unsigned int mtrx_height,
   const float16_t* matrix_input_0, const float16_t* matrix_input_1,
-  float16_t* matrix_result)
+  float16_t* matrix_result, unsigned int num_threads)
 {
   TwoDMatricesBnchmrkSIMD<float16_t, float16x4_t, float, float32x4_t, BENCHMARK_RUN>(mtrx_width, mtrx_height,
-    matrix_input_0, matrix_input_1, matrix_result);
+    matrix_input_0, matrix_input_1, matrix_result, num_threads);
 }
 
 #endif /* KERNEL_BNCHMRKS_OPT_CPU_NEON_H_ */
