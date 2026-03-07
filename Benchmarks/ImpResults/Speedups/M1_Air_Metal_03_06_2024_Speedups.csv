@@ -1,0 +1,3 @@
+,Speedup Over Default OMP Thread Count / CUDA Thread Block Dimensions - FLOAT,Speedup Over Default OMP Thread Count / CUDA Thread Block Dimensions - All Runs,
+Average Speedup,0.985794,0.985794,
+Median Speedup,0.993515,0.993515,
