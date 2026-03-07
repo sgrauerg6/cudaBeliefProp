@@ -2,21 +2,21 @@ Benchmark Processing using optimized CUDA and optimized CPU belief propagation i
 Code available at https://github.com/sgrauerg6/cudaBeliefProp
 Results shown in this comparison for each run are for total runtime including any time for data transfer between device and host
 
-Data Type,Matrix Width,Matrix Height,M1_Air_OptCPU_NEON_03_06_2024_SpecifyThreads,M1_Air_OptCPU_NEON_03_06_2024,M1_Air_Metal_03_06_2024_startTimingStartBnchmrkFunct,M1_Air_Metal_03_06_2024,
-FLOAT,32,32,0.000022,0.000013,0.000247,0.000176,
-FLOAT,64,64,0.000031,0.000103,0.000341,0.000251,
-FLOAT,128,128,0.000185,0.000220,0.000613,0.000550,
-FLOAT,256,256,0.001119,0.000850,0.001442,0.001629,
-FLOAT,512,512,0.007301,0.006591,0.005278,0.005070,
-FLOAT,1024,1024,0.085599,0.079348,0.038352,0.038341,
-FLOAT,2048,2048,3.573078,4.142657,0.310053,0.312672,
-FLOAT,3072,3072,9.151986,10.355416,1.985224,1.986618,
-FLOAT,4096,4096,35.384304,37.395438,8.323835,8.199543,
+Data Type,Matrix Width,Matrix Height,MacStudioM1Max_OptCPU,M1_Air_OptCPU_NEON_03_06_2024_SpecifyThreads,M1_Air_OptCPU_NEON_03_06_2024,M1_Air_Metal_03_06_2024_startTimingStartBnchmrkFunct,M1_Air_Metal_03_06_2024,MacStudioM1Max_AppleMetal,
+FLOAT,32,32,0.000014,0.000022,0.000013,0.000247,0.000176,0.000241,
+FLOAT,64,64,0.000058,0.000031,0.000103,0.000341,0.000251,0.000305,
+FLOAT,128,128,0.000164,0.000185,0.000220,0.000613,0.000550,0.000342,
+FLOAT,256,256,0.000692,0.001119,0.000850,0.001442,0.001629,0.000601,
+FLOAT,512,512,0.005610,0.007301,0.006591,0.005278,0.005070,0.003052,
+FLOAT,1024,1024,0.056125,0.085599,0.079348,0.038352,0.038341,0.011387,
+FLOAT,2048,2048,1.683257,3.573078,4.142657,0.310053,0.312672,0.088264,
+FLOAT,3072,3072,4.900323,9.151986,10.355416,1.985224,1.986618,0.297733,
+FLOAT,4096,4096,17.523671,35.384304,37.395438,8.323835,8.199543,0.715561,
 
 Average Speedups
-Speedup Over Default OMP Thread Count / CUDA Thread Block Dimensions - FLOAT,,,1.05423,1.01741,1.01107,0.985794,
-Speedup Over Default OMP Thread Count / CUDA Thread Block Dimensions - All Runs,,,1.05423,1.01741,1.01107,0.985794,
+Speedup Over Default OMP Thread Count / CUDA Thread Block Dimensions - FLOAT,,,1.18056,1.05423,1.01741,1.01107,0.985794,0.945699,
+Speedup Over Default OMP Thread Count / CUDA Thread Block Dimensions - All Runs,,,1.18056,1.05423,1.01741,1.01107,0.985794,0.945699,
 
 Runs ordered by speedup (highest to lowest)
-Speedup Over Default OMP Thread Count / CUDA Thread Block Dimensions - FLOAT,M1_Air_OptCPU_NEON_03_06_2024_SpecifyThreads - 1.054,M1_Air_OptCPU_NEON_03_06_2024 - 1.017,M1_Air_Metal_03_06_2024_startTimingStartBnchmrkFunct - 1.011,M1_Air_Metal_03_06_2024 - 0.986,
-Speedup Over Default OMP Thread Count / CUDA Thread Block Dimensions - All Runs,M1_Air_OptCPU_NEON_03_06_2024_SpecifyThreads - 1.054,M1_Air_OptCPU_NEON_03_06_2024 - 1.017,M1_Air_Metal_03_06_2024_startTimingStartBnchmrkFunct - 1.011,M1_Air_Metal_03_06_2024 - 0.986,
+Speedup Over Default OMP Thread Count / CUDA Thread Block Dimensions - FLOAT,MacStudioM1Max_OptCPU - 1.181,M1_Air_OptCPU_NEON_03_06_2024_SpecifyThreads - 1.054,M1_Air_OptCPU_NEON_03_06_2024 - 1.017,M1_Air_Metal_03_06_2024_startTimingStartBnchmrkFunct - 1.011,M1_Air_Metal_03_06_2024 - 0.986,MacStudioM1Max_AppleMetal - 0.946,
+Speedup Over Default OMP Thread Count / CUDA Thread Block Dimensions - All Runs,MacStudioM1Max_OptCPU - 1.181,M1_Air_OptCPU_NEON_03_06_2024_SpecifyThreads - 1.054,M1_Air_OptCPU_NEON_03_06_2024 - 1.017,M1_Air_Metal_03_06_2024_startTimingStartBnchmrkFunct - 1.011,M1_Air_Metal_03_06_2024 - 0.986,MacStudioM1Max_AppleMetal - 0.946,

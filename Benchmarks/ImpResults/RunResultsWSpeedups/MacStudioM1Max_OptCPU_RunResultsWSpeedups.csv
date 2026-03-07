@@ -1,0 +1,14 @@
+Input Index,Matrix Width,Matrix Height,Data Type,Total number of CPU threads,BYTES_ALIGN_MEMORY,CPU Threads Pinned To Socket,OMP_PLACES,OMP_PROC_BIND,Loop Iters Templated,Parallel Params Per Kernel Setting,Parallel Parameters,Acceleration,Fused multiply-add instructions used,Number of parallel CPU threads in run,Vectorization,Benchmark,Number of evaluation runs,Total Benchmark Runtime (not including data transfer time),Median Optimized Runtime,Single-Thread CPU run time,Sum squared difference between optimized and single-thread CPU results,Max difference of corresponding elements,Speedup Over Default OMP Thread Count / CUDA Thread Block Dimensions - FLOAT,Speedup Over Default OMP Thread Count / CUDA Thread Block Dimensions - All Runs,
+0,32,32,FLOAT,10,32,NO,,,NO,Same Across Kernels,5 x 1,Optimized CPU,YES,5,NEON,Gemm,7,0.000014,0.000014,0.000039,4073370.000000,318.000000,1.214286,1.214286,
+1,64,64,FLOAT,10,32,NO,,,NO,Same Across Kernels,5 x 1,Optimized CPU,YES,5,NEON,Gemm,7,0.000058,0.000058,0.000375,20856440.000000,649.000000,1.810345,1.810345,
+2,128,128,FLOAT,10,32,NO,,,NO,Same Across Kernels,7 x 1,Optimized CPU,YES,7,NEON,Gemm,7,0.000164,0.000164,0.002811,328524832.000000,1350.000000,1.195122,1.195122,
+3,256,256,FLOAT,10,32,NO,,,NO,Same Across Kernels,10 x 1,Optimized CPU,YES,10,NEON,Gemm,7,0.000692,0.000692,0.016171,1397964416.000000,2542.000000,1.125723,1.125723,
+4,512,512,FLOAT,10,32,NO,,,NO,Same Across Kernels,7 x 1,Optimized CPU,YES,7,NEON,Gemm,7,0.005610,0.005610,0.143440,11456254976.000000,5033.000000,1.345633,1.345633,
+5,1024,1024,FLOAT,10,32,NO,,,NO,Same Across Kernels,10 x 1,Optimized CPU,YES,10,NEON,Gemm,7,0.056125,0.056125,1.259879,0.000000,0.000000,0.936410,0.936410,
+6,2048,2048,FLOAT,10,32,NO,,,NO,Same Across Kernels,10 x 1,Optimized CPU,YES,10,NEON,Gemm,7,1.683257,1.683257,22.788998,0.000000,0.000000,0.995592,0.995592,
+7,3072,3072,FLOAT,10,32,NO,,,NO,Same Across Kernels,10 x 1,Optimized CPU,YES,10,NEON,Gemm,7,4.900323,4.900323,54.788337,0.000000,0.000000,1.002741,1.002741,
+8,4096,4096,FLOAT,10,32,NO,,,NO,Same Across Kernels,10 x 1,Optimized CPU,YES,10,NEON,Gemm,7,17.523671,17.523671,262.654333,0.000000,0.000000,0.999188,0.999188,
+
+Speedup Results,Average Speedup,Median Speedup
+Speedup Over Default OMP Thread Count / CUDA Thread Block Dimensions - FLOAT,1.18056,1.12572
+Speedup Over Default OMP Thread Count / CUDA Thread Block Dimensions - All Runs,1.18056,1.12572

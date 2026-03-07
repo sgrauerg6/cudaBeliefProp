@@ -1,0 +1,14 @@
+Input Index,Matrix Width,Matrix Height,Data Type,Total number of CPU threads,BYTES_ALIGN_MEMORY,CPU Threads Pinned To Socket,OMP_PLACES,OMP_PROC_BIND,Loop Iters Templated,Parallel Params Per Kernel Setting,Parallel Parameters,Acceleration,Fused multiply-add instructions used,Benchmark,Number of evaluation runs,Total Benchmark Runtime (not including data transfer time),Median Optimized Runtime,Single-Thread CPU run time,Sum squared difference between optimized and single-thread CPU results,Max difference of corresponding elements,Speedup Over Default OMP Thread Count / CUDA Thread Block Dimensions - FLOAT,Speedup Over Default OMP Thread Count / CUDA Thread Block Dimensions - All Runs,
+0,32,32,FLOAT,10,32,NO,,,NO,Same Across Kernels,10 x 1,Metal,YES,Gemm,7,0.000241,0.000241,0.000019,0.000000,0.000000,0.896266,0.896266,
+1,64,64,FLOAT,10,32,NO,,,NO,Same Across Kernels,5 x 1,Metal,YES,Gemm,7,0.000305,0.000305,0.000207,0.000000,0.000000,0.868852,0.868852,
+2,128,128,FLOAT,10,32,NO,,,NO,Same Across Kernels,5 x 1,Metal,YES,Gemm,7,0.000342,0.000342,0.002208,0.000000,0.000000,0.991228,0.991228,
+3,256,256,FLOAT,10,32,NO,,,NO,Same Across Kernels,10 x 1,Metal,YES,Gemm,7,0.000601,0.000601,0.017317,0.000000,0.000000,1.033278,1.033278,
+4,512,512,FLOAT,10,32,NO,,,NO,Same Across Kernels,10 x 1,Metal,YES,Gemm,7,0.003052,0.003052,0.142954,0.000000,0.000000,0.722805,0.722805,
+5,1024,1024,FLOAT,10,32,NO,,,NO,Same Across Kernels,10 x 1,Metal,YES,Gemm,7,0.011387,0.011387,1.249249,0.000000,0.000000,0.998331,0.998331,
+6,2048,2048,FLOAT,10,32,NO,,,NO,Same Across Kernels,10 x 1,Metal,YES,Gemm,7,0.088264,0.088264,22.681664,0.000000,0.000000,0.999434,0.999434,
+7,3072,3072,FLOAT,10,32,NO,,,NO,Same Across Kernels,5 x 1,Metal,YES,Gemm,7,0.297733,0.297733,54.276304,0.000000,0.000000,1.001427,1.001427,
+8,4096,4096,FLOAT,10,32,NO,,,NO,Same Across Kernels,10 x 1,Metal,YES,Gemm,7,0.715561,0.715561,265.930683,0.000000,0.000000,0.999674,0.999674,
+
+Speedup Results,Average Speedup,Median Speedup
+Speedup Over Default OMP Thread Count / CUDA Thread Block Dimensions - FLOAT,0.945699,0.998331
+Speedup Over Default OMP Thread Count / CUDA Thread Block Dimensions - All Runs,0.945699,0.998331
