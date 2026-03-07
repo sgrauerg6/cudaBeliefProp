@@ -54,6 +54,15 @@ template <RunData_t T, run_environment::AccSetting ACCELERATION, benchmarks::Ben
 using RunBnchmrksOptimized = RunBnchmrksMetal<T, ACCELERATION, BENCHMARK_RUN>;
 #endif //OPTIMIZED_METAL_RUN
 
+//check if Rocm HIP run defined and make any necessary additions to support it
+#if defined(OPTIMIZED_HIP_RUN)
+//needed to run the HIP implementation
+#include "benchmarksHIP/RunBnchmrksHIP.h"
+//set RunBpOptimized alias to correspond to HIP implementation
+template <RunData_t T, run_environment::AccSetting ACCELERATION, benchmarks::BenchmarkRun BENCHMARK_RUN>
+using RunBnchmrksOptimized = RunBnchmrksHIP<T, ACCELERATION, BENCHMARK_RUN>;
+#endif //OPTIMIZED_HIP_RUN
+
 #include <fstream>
 #include "RunImp/RunImpOnInput.h"
 #include "benchmarksResultsEval/BnchmrksEvaluationInputs.h"
