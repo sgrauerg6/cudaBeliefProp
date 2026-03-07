@@ -174,18 +174,32 @@ void benchmarks_cpu::TwoDMatricesBnchmrkNoPackedInstructions(
 #if !defined(__APPLE__) || defined(DONT_USE_GRAND_CENTRAL_DISPATCH)
   #pragma omp parallel for
   for (unsigned int y=0; y < mtrx_height; y++)
+  {
 #else
   //parallelize on apple processor using Grand Central Dispatch
   //get a global concurrent queue (system-managed thread pool)
   dispatch_queue_t concurrent_queue =
     dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
 
+#if defined(GRAND_CENTRAL_DISPATCH_SPECIFY_THREAD_COUNT)
+  //std::cout << "NUM THREADS: " << num_threads << std::endl;
+  //dispatch _apply submits each iteration as a task to the queue
+  const unsigned int num_rows_per_thread{mtrx_height / num_threads};
+  dispatch_apply(num_threads,
+                 concurrent_queue,
+                 ^(size_t thread_num)
+  {
+  for (unsigned int y_thread = 0; y_thread < num_rows_per_thread; y_thread++)
+  {
+    unsigned int y = (num_rows_per_thread * thread_num) + y_thread;
+#else
   //dispatch_apply submits each iteration as a task to the queue
   dispatch_apply(mtrx_height,
                  concurrent_queue,
                  ^(size_t y)
-#endif //__APPLE__
   {
+#endif //GRAND_CENTRAL_DISPATCH_SPECIFY_THREAD_COUNT
+#endif //__APPLE__
     for (unsigned int x=0; x < mtrx_width; x++)
     {
       const unsigned int val_idx = y*mtrx_width + x;
@@ -221,6 +235,9 @@ void benchmarks_cpu::TwoDMatricesBnchmrkNoPackedInstructions(
     }
   }
 #if defined(__APPLE__) && !defined(DONT_USE_GRAND_CENTRAL_DISPATCH)
+#if defined(GRAND_CENTRAL_DISPATCH_SPECIFY_THREAD_COUNT)
+  }
+#endif //GRAND_CENTRAL_DISPATCH_SPECIFY_THREAD_COUNT
   );
 #endif //__APPLE__
 }
