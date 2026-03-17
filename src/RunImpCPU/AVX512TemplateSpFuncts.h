@@ -64,7 +64,7 @@ template<> inline __m512h simd_processing::LoadPackedDataAligned<_Float16, __m51
 #endif //FLOAT16_VECTORIZATION
 
 template<> inline __m512 simd_processing::LoadPackedDataUnaligned<float, __m512>(
-  size_t indexDataLoad, const float* inData))
+  size_t indexDataLoad, const float* inData)
 {
   return _mm512_loadu_ps(&inData[indexDataLoad]);
 }

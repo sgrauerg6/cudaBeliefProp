@@ -33,6 +33,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #include <array>
 #include <set>
 #include "RunEval/RunData.h"
+#include "RunEval/RunEvalEnumsStructs.h"
 
 //set data type used for half-precision with CUDA
 #if defined(USE_BFLOAT16_FOR_HALF_PRECISION)
@@ -75,6 +76,25 @@ inline RunData retrieveDeviceProperties(int num_device)
     std::string(kCUDARuntimeHeader),
     std::to_string(cuda_version_driver_runtime[1]));
   return run_data;
+}
+
+//return whether or not there was an error in CUDA processing
+inline run_eval::Status ErrorCheck(
+  const char *file, int line, bool abort)
+{
+  const auto code = cudaPeekAtLastError();
+  if (code != cudaSuccess) {
+    std::cout << "CUDA ERROR: " << cudaGetErrorString(code) << " " << file << " " << line << std::endl;
+    cudaGetLastError();
+    cudaDeviceReset();
+    cudaDeviceSynchronize();
+    cudaSetDevice(0);
+    if (abort) { 
+      exit(code);
+    }
+    return run_eval::Status::kError;
+   }
+   return run_eval::Status::kNoError;
 }
 
 /** @brief Default thread block dimensions (which is what parallel parameters

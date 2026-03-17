@@ -24,7 +24,8 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  * @copyright Copyright (c) 2024
  */
 
-#include "RunEvalConstsEnums.h"
+#include "RunEvalEnumsStructs.h"
+#include "RunEvalConsts.h"
 #include "RunData.h"
 
 //get header to add...use input header if not yet used

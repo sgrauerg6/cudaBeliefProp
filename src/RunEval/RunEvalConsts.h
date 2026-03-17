@@ -17,33 +17,28 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 */
 
 /**
- * @file RunEvalConstsEnums.h
+ * @file RunEvalConsts.h
  * @author Scott Grauer-Gray
- * @brief Contains namespace with enums and constants for implementation run
+ * @brief Contains namespace with constants for implementation run
  * evaluation
  * 
  * @copyright Copyright (c) 2024
  */
 
-#ifndef RUN_EVAL_CONSTS_ENUMS_H_
-#define RUN_EVAL_CONSTS_ENUMS_H_
+#ifndef RUN_EVAL_CONSTS_H_
+#define RUN_EVAL_CONSTS_H_
 
 #include <array>
 #include <string_view>
 #include <map>
 #include <filesystem>
 #include "RunSettingsParams/RunSettingsConstsEnums.h"
+#include "RunEvalEnumsStructs.h"
 
 /** 
  * @brief Namespace with enums and constants for implementation run evaluation
  */
 namespace run_eval {
-
-/** @brief Enum for status to indicate if error or no error */
-enum class Status { kNoError, kError };
-
-/** @brief Enum to specify average or median for "middle" value in data */
-enum class MiddleValData { kAverage, kMedian };
 
 //set data types to use in evaluation
 //by default evaluate using float, double, and half data types
@@ -158,18 +153,6 @@ enum class MiddleValData { kAverage, kMedian };
   constexpr std::size_t kRunInputDatatypeIdx{1};
   constexpr std::size_t kRunInputLoopItersTemplatedIdx{2};
 
-  //declare output results type and array containing all output results types
-   enum class OutResults{
-    kDefaultPParams, kOptPParams, kSpeedups, kOptWSpeedups
-  };
-    
-  //structure containing directory path and description in file name for
-  //each output result file
-  struct OutFileInfo{
-    std::filesystem::path dir_path;
-    std::string_view desc_file_name;
-  };
-
   //mapping from output result type to full directory path where results for
   //type stored and description part of file name 
   const std::map<OutResults, const OutFileInfo> kOutResultsFileInfo{
@@ -201,4 +184,4 @@ enum class MiddleValData { kAverage, kMedian };
   };
 };
 
-#endif //RUN_EVAL_CONSTS_ENUMS_H_
+#endif //RUN_EVAL_CONSTS_H_

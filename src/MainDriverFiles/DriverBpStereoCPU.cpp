@@ -147,7 +147,7 @@ void runImp(int argc, char** argv, RunImpSetting impSetting)
      {std::make_shared<RunImpMultInputsBp>(run_environment::AccSetting::kAVX256)},
      {std::make_shared<RunImpMultInputsBp>(run_environment::AccSetting::kNone)}},
     run_imp_settings,
-    std::make_unique<EvalImpResultsBp>(std::string(beliefprop::kBeliefPropDirectoryName));
+    std::make_unique<EvalImpResultsBp>(std::string(beliefprop::kBeliefPropDirectoryName)));
 #elif (CPU_VECTORIZATION_DEFINE == AVX_512_F16_DEFINE)
   //run belief propagation with AVX512 w/ f16 vectorization, AVX512 without f16
   //vectorization, AVX256 w/ f16 vectorization, AVX256 without f16

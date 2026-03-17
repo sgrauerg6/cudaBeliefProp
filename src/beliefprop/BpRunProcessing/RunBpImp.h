@@ -35,10 +35,11 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #include <optional>
 #include <ranges>
 #include "RunSettingsParams/RunSettings.h"
-#include "RunImpCPU/MemoryManagementCPU.h"
+#include "RunImp/MemoryManagement.h"
 #include "RunEval/RunData.h"
 #include "RunEval/RunTypeConstraints.h"
-#include "RunEval/RunEvalConstsEnums.h"
+#include "RunEval/RunEvalConsts.h"
+#include "RunEval/RunEvalEnumsStructs.h"
 #include "RuntimeTiming/DetailedTimings.h"
 #include "BpImageProcessing/BpImage.h"
 #include "BpImageProcessing/DisparityMap.h"
@@ -75,8 +76,8 @@ template <RunData_t T, unsigned int DISP_VALS, run_environment::AccSetting ACCEL
 struct BpOnDevice {
   const std::unique_ptr<SmoothImage>& smooth_image;
   const std::unique_ptr<ProcessBpDevice<T, DISP_VALS, ACCELERATION>>& run_bp_stereo;
-  const std::unique_ptr<MemoryManagementCPU<T, T>>& mem_management_bp_run;
-  const std::unique_ptr<MemoryManagementCPU<float, float>>& mem_management_images;
+  const std::unique_ptr<MemoryManagement<T, T>>& mem_management_bp_run;
+  const std::unique_ptr<MemoryManagement<float, float>>& mem_management_images;
 };
 
 };

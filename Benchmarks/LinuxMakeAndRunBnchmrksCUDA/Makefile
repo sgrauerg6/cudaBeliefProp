@@ -39,29 +39,24 @@ ${OBJ_DIR}/RunBnchmrksSingThreadCPU.o ${OBJ_DIR}/RunBnchmrks.o \
 ${OBJ_DIR}/DetailedTimings.o ${OBJ_DIR}/ProcessBnchmrksDevice.o \
 ${OBJ_DIR}/ProcessBnchmrksCUDA.o
 DRIVER_BENCHMARK_CUDA_OBJECT = ${OBJ_DIR}/DriverCudaBnchmrks.o
-DRIVER_BENCHMARK_CUDA_OBJECT_CUSTOM = ${OBJ_DIR}/DriverBnchmrksCUDA_customRun.o
 
 # dependency files corresponding to each object
 DEPS := $(OBJECTS:.o=.d)
 
 # executables for belief propagation CUDA implementations
 DRIVER_BENCHMARK_CUDA = driverCUDABnchmrks
-DRIVER_BENCHMARK_CUDA_CUSTOM = driverCUDABnchmrksCustom
 
-all: impDriverCUDA impDriverCUDACustom
+all: impDriverCUDA
 
 ${OBJ_DIR}/%.o: ../../${SRC_DIR}/*/%.cpp
 	$(CC) $< -c $(CUDA_IMP_INCLUDES) $(CUDA_IMP_COMPILE_FLAGS_GCC) -o $@
 
-${OBJ_DIR}/%.o: ${SRC_DIR_BP}/*/%.cpp
+${OBJ_DIR}/%.o: ${SRC_DIR_BNCHMRKS}/*/%.cpp
 	$(CC) $< -c $(CUDA_IMP_INCLUDES) $(CUDA_IMP_COMPILE_FLAGS_GCC) -o $@
 
 # specify compile commands using NVCC compiler for objects with CUDA for processing on GPU
-${OBJ_DIR}/ProcessBpCUDA.o:
-	$(NVCC) -x cu -c ${SRC_DIR_BP}/BpCUDA/ProcessBpCUDA.cpp -Xptxas -v -o $@ $(CUDA_IMP_INCLUDES) $(CUDA_IMP_COMPILE_FLAGS_NVCC)
-
-${OBJ_DIR}/SmoothImageCUDA.o:
-	$(NVCC) -x cu -c ${SRC_DIR_BP}/BpCUDA/SmoothImageCUDA.cpp -o $@ $(CUDA_IMP_INCLUDES) $(CUDA_IMP_COMPILE_FLAGS_NVCC)
+${OBJ_DIR}/ProcessBnchmrksCUDA.o:
+	$(NVCC) -x cu -c ${SRC_DIR_BNCHMRKS}/benchmarksCUDA/ProcessBnchmrksCUDA.cpp -Xptxas -v -o $@ $(CUDA_IMP_INCLUDES) $(CUDA_IMP_COMPILE_FLAGS_NVCC)
 
 impDriverCUDA: ${OBJECTS} ${DRIVER_BENCHMARK_CUDA_OBJECT}
 	$(CC) ${DRIVER_BENCHMARK_CUDA_OBJECT} ${OBJECTS} $(CUDA_IMP_LIBS) -fopenmp $(CUDA_LINK_FLAGS) -o ${DRIVER_BENCHMARK_CUDA} -O
@@ -70,7 +65,7 @@ impDriverCUDACustom: ${OBJECTS} ${DRIVER_BENCHMARK_CUDA_OBJECT_CUSTOM}
 	$(CC) ${DRIVER_BENCHMARK_CUDA_OBJECT_CUSTOM} ${OBJECTS} $(CUDA_IMP_LIBS) -fopenmp $(CUDA_LINK_FLAGS) -o ${DRIVER_BENCHMARK_CUDA_CUSTOM} -O
 
 make clean:
-	rm *.o ${OBJ_DIR}/*.o driverCUDABnchmrks driverCUDABnchmrksCustom
+	rm *.o ${OBJ_DIR}/*.o driverCUDABnchmrks
 
 # include for dependency files
 -include $(DEPS)

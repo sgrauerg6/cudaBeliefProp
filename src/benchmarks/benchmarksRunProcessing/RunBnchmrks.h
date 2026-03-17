@@ -219,7 +219,7 @@ template<typename U>
 inline std::optional<benchmarks::BnchmrksRunOutput<T>> RunBnchmrks<T, ACCELERATION, BENCHMARK_RUN>::ProcessBenchmarks(
   const std::array<BnchmrksMtrx<T>, 2>& inMtrces,
   const std::unique_ptr<ProcessBnchmrksDevice<T, ACCELERATION, BENCHMARK_RUN, U>>& proc_bnchmrks_device,
-  const std::unique_ptr<MemoryManagementCPU<T, T>>& mem_management,
+  const std::unique_ptr<MemoryManagement<T, T>>& mem_management,
   size_t num_eval_runs) const*/
 
 

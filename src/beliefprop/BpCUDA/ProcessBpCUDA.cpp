@@ -25,7 +25,8 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  */
 
 #include <iostream>
-#include "RunEval/RunEvalConstsEnums.h"
+#include "RunEval/RunEvalEnumsStructs.h"
+#include "RunEval/RunEvalConsts.h"
 #include "RunImp/UtilityFuncts.h"
 #include "BpRunProcessing/BpConstsEnumsAliases.h"
 #include "ProcessBpCUDA.h"
@@ -36,19 +37,7 @@ template<RunData_t T, unsigned int DISP_VALS, run_environment::AccSetting ACCELE
 inline run_eval::Status ProcessBpCUDA<T, DISP_VALS, ACCELERATION>::ErrorCheck(
   const char *file, int line, bool abort) const
 {
-  const auto code = cudaPeekAtLastError();
-  if (code != cudaSuccess) {
-    std::cout << "CUDA ERROR: " << cudaGetErrorString(code) << " " << file << " " << line << std::endl;
-    cudaGetLastError();
-    cudaDeviceReset();
-    cudaDeviceSynchronize();
-    cudaSetDevice(0);
-    if (abort) { 
-      exit(code);
-    }
-    return run_eval::Status::kError;
-   }
-   return run_eval::Status::kNoError;
+  return run_cuda::ErrorCheck(file, line, abort);
 }
 
 //functions for processing BP to retrieve the disparity between the images

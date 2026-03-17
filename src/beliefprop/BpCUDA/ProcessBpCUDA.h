@@ -33,7 +33,8 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #include "BpRunProcessing/ProcessBpDevice.h"
 #include "BpRunProcessing/ParallelParamsBp.h"
 #include "RunEval/RunTypeConstraints.h"
-#include "RunEval/RunEvalConstsEnums.h"
+#include "RunEval/RunEvalConsts.h"
+#include "RunEval/RunEvalEnumsStructs.h"
 
 /**
  * @brief Child class of ProcessBpDevice that define functions used in processing bp in the

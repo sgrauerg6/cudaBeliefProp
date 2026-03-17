@@ -37,7 +37,8 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #include <optional>
 #include "RunData.h"
 #include "RunSettingsParams/InputSignature.h"
-#include "RunEval/RunEvalConstsEnums.h"
+#include "RunEval/RunEvalConsts.h"
+#include "RunEval/RunEvalEnumsStructs.h"
 
 /** @brief Alias mapping input signature to run data for each parallel
  *  parameters setting<br>

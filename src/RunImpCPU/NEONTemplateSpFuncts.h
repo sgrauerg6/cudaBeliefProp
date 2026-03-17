@@ -245,7 +245,7 @@ template<> inline std::vector<float16_t> simd_processing::ConvFloatVectTo16Bit<f
 {
   constexpr size_t SIMD_LENGTH{4};
   float16_t* data_as_float16 = new float16_t[float_data.size()];
-  for (int i=0; i < float_data.size(); i += SIMD_LENGTH) {
+  for (size_t i=0; i < float_data.size(); i += SIMD_LENGTH) {
     float32x4_t fl_data_vect = 
       simd_processing::LoadPackedDataAligned<float, float32x4_t>(i, float_data.data());
     simd_processing::StorePackedDataAligned<float16_t, float32x4_t>(i, data_as_float16, fl_data_vect);

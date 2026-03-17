@@ -33,7 +33,8 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #include <iostream>
 #include "RunSettingsParams/RunSettings.h"
 #include "RunSettingsParams/InputSignature.h"
-#include "RunEval/RunEvalConstsEnums.h"
+#include "RunEval/RunEvalConsts.h"
+#include "RunEval/RunEvalEnumsStructs.h"
 #include "RunEval/RunTypeConstraints.h"
 #include "RunImp/RunImpOnInput.h"
 #include "BpFileProcessing/BpFileHandling.h"

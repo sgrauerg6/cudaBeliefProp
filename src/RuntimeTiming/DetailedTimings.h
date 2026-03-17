@@ -37,7 +37,8 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #include <chrono>
 #include <ranges>
 #include "RunEval/RunData.h"
-#include "RunEval/RunEvalConstsEnums.h"
+#include "RunEval/RunEvalConsts.h"
+#include "RunEval/RunEvalEnumsStructs.h"
 
 /**
  * @brief Class to store timings of one or more segments taken during the

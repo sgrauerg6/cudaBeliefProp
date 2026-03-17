@@ -29,7 +29,8 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 
 #include "benchmarksRunProcessing/ProcessBnchmrksDevice.h"
 #include "RunEval/RunTypeConstraints.h"
-#include "RunEval/RunEvalConstsEnums.h"
+#include "RunEval/RunEvalConsts.h"
+#include "RunEval/RunEvalEnumsStructs.h"
 #include <Metal/Metal.hpp>
 
 template<RunData_t T, run_environment::AccSetting ACCELERATION, benchmarks::BenchmarkRun BENCHMARK_RUN, typename U = T>

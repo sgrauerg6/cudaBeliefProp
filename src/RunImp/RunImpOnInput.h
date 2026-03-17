@@ -37,7 +37,8 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #include <set>
 #include "RunSettingsParams/RunSettings.h"
 #include "RunSettingsParams/ParallelParams.h"
-#include "RunEval/RunEvalConstsEnums.h"
+#include "RunEval/RunEvalConsts.h"
+#include "RunEval/RunEvalEnumsStructs.h"
 #include "RunEval/RunTypeConstraints.h"
 #include "RunEval/EvalImpAliases.h"
 

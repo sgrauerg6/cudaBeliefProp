@@ -31,7 +31,9 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #include <cuda_fp16.h>
 #include "benchmarksRunProcessing/ProcessBnchmrksDevice.h"
 #include "RunEval/RunTypeConstraints.h"
-#include "RunEval/RunEvalConstsEnums.h"
+#include "RunEval/RunEvalConsts.h"
+#include "RunEval/RunEvalEnumsStructs.h"
+#include "RunImpCUDA/RunCUDASettings.h"
 #include "KernelBnchmrksCUDA.cu"
 
 template<RunData_t T, run_environment::AccSetting ACCELERATION, benchmarks::BenchmarkRun BENCHMARK_RUN, typename U = T>
@@ -54,8 +56,8 @@ private:
     const U* mat_input_1,
     U* mat_result) const override
   {
-    if (ErrorCheck(__FILE__, __LINE__) != run_eval::Status::kNoError) {
-      return run_eval::Status::kError;
+    if (run_cuda::ErrorCheck(__FILE__, __LINE__) != run_eval::Status::kNoError) {
+      return {};
     }
 
     //set to prefer L1 cache for now since no shared memory is used
@@ -77,7 +79,7 @@ private:
     cudaDeviceSynchronize();
     auto end_mat_start_time = std::chrono::system_clock::now();
 
-    if (ErrorCheck(__FILE__, __LINE__) != run_eval::Status::kNoError) {
+    if (run_cuda::ErrorCheck(__FILE__, __LINE__) != run_eval::Status::kNoError) {
       return {};
     }
 

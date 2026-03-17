@@ -30,7 +30,8 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #define EVAL_BP_IMP_RESULTS_H_
 
 #include "RunEval/EvalImpResults.h"
-#include "RunEval/RunEvalConstsEnums.h"
+#include "RunEval/RunEvalConsts.h"
+#include "RunEval/RunEvalEnumsStructs.h"
 #include "BpResultsEvaluation/BpEvaluationStereoSets.h"
 #include <filesystem>
 #include <vector>

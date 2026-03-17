@@ -34,7 +34,8 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #include <ostream>
 #include <limits>
 #include <optional>
-#include "RunEval/RunEvalConstsEnums.h"
+#include "RunEval/RunEvalConsts.h"
+#include "RunEval/RunEvalEnumsStructs.h"
 
 /**
  * @brief Class defines input signature for evaluation run that contains

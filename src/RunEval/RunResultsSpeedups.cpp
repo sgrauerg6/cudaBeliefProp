@@ -27,7 +27,8 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #include <iostream>
 #include <fstream>
 #include <sstream>
-#include "RunEvalConstsEnums.h"
+#include "RunEvalEnumsStructs.h"
+#include "RunEvalConsts.h"
 #include "RunResultsSpeedups.h"
 
 //constructor that takes in implementation file path and run name and retrieves
