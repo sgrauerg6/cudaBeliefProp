@@ -28,6 +28,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #define RUN_BNCHMRKS_CUDA_H
 
 #include "benchmarksRunProcessing/RunBnchmrks.h"
+#include "RunImpCUDA/MemoryManagementCUDA.h"
 #include "ProcessBnchmrksCUDA.h"
 
 template<RunData_t T, run_environment::AccSetting ACCELERATION, benchmarks::BenchmarkRun BENCHMARK_RUN>

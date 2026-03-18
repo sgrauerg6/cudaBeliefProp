@@ -33,7 +33,6 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #include <x86intrin.h>
 #endif
 #include <immintrin.h>
-#include "BpSharedFuncts/SharedBpProcessingFuncts.h"
 #include "RunImpCPU/AVX512TemplateSpFuncts.h"
 #include "RunImpCPU/RunCPUSettings.h"
 

@@ -1,0 +1,14 @@
+Input Index,Matrix Width,Matrix Height,Data Type,Total number of CPU threads,BYTES_ALIGN_MEMORY,CPU Threads Pinned To Socket,OMP_PLACES,OMP_PROC_BIND,Loop Iters Templated,Parallel Params Per Kernel Setting,Parallel Parameters,Acceleration,Fused multiply-add instructions used,Device 0,Cuda version,Cuda Runtime Version,Benchmark,Number of evaluation runs,Total Benchmark Runtime (not including data transfer time),Median Optimized Runtime,Single-Thread CPU run time,Sum squared difference between optimized and single-thread CPU results,Max difference of corresponding elements,Speedup Over Default OMP Thread Count / CUDA Thread Block Dimensions - FLOAT,Speedup Over Default OMP Thread Count / CUDA Thread Block Dimensions - All Runs,
+0,32,32,FLOAT,16,32,NO,,,NO,Set Per Kernel,64 x 4,CUDA,YES,NVIDIA GeForce RTX 3050 Laptop GPU with 16 multiprocessors,12060,12060,Gemm,7,0.000006,0.000006,0.000013,0.000000,0.000000,1.012963,1.012963,
+1,64,64,FLOAT,16,32,NO,,,NO,Set Per Kernel,64 x 4,CUDA,YES,NVIDIA GeForce RTX 3050 Laptop GPU with 16 multiprocessors,12060,12060,Gemm,7,0.000008,0.000008,0.000144,0.000000,0.000000,0.965797,0.965797,
+2,128,128,FLOAT,16,32,NO,,,NO,Set Per Kernel,64 x 4,CUDA,YES,NVIDIA GeForce RTX 3050 Laptop GPU with 16 multiprocessors,12060,12060,Gemm,7,0.000018,0.000018,0.001281,0.000000,0.000000,1.036651,1.036651,
+3,256,256,FLOAT,16,32,NO,,,NO,Set Per Kernel,64 x 4,CUDA,YES,NVIDIA GeForce RTX 3050 Laptop GPU with 16 multiprocessors,12060,12060,Gemm,7,0.000095,0.000095,0.012323,0.000000,0.000000,1.006733,1.006733,
+4,512,512,FLOAT,16,32,NO,,,NO,Set Per Kernel,64 x 4,CUDA,YES,NVIDIA GeForce RTX 3050 Laptop GPU with 16 multiprocessors,12060,12060,Gemm,7,0.000751,0.000751,0.110668,0.000000,0.000000,1.001868,1.001868,
+5,1024,1024,FLOAT,16,32,NO,,,NO,Set Per Kernel,64 x 4,CUDA,YES,NVIDIA GeForce RTX 3050 Laptop GPU with 16 multiprocessors,12060,12060,Gemm,7,0.005858,0.005858,1.937151,0.000000,0.000000,0.999266,0.999266,
+6,2048,2048,FLOAT,16,32,NO,,,NO,Set Per Kernel,32 x 4,CUDA,YES,NVIDIA GeForce RTX 3050 Laptop GPU with 16 multiprocessors,12060,12060,Gemm,7,0.046456,0.046456,15.739034,0.000000,0.000000,0.999981,0.999981,
+7,3072,3072,FLOAT,16,32,NO,,,NO,Set Per Kernel,64 x 4,CUDA,YES,NVIDIA GeForce RTX 3050 Laptop GPU with 16 multiprocessors,12060,12060,Gemm,7,0.159146,0.159146,109.592203,0.000000,0.000000,1.010587,1.010587,
+8,4096,4096,FLOAT,16,32,NO,,,NO,Set Per Kernel,64 x 4,CUDA,YES,NVIDIA GeForce RTX 3050 Laptop GPU with 16 multiprocessors,12060,12060,Gemm,7,0.372171,0.372171,389.091615,0.000000,0.000000,1.001429,1.001429,
+
+Speedup Results,Average Speedup,Median Speedup
+Speedup Over Default OMP Thread Count / CUDA Thread Block Dimensions - FLOAT,1.00392,1.00187
+Speedup Over Default OMP Thread Count / CUDA Thread Block Dimensions - All Runs,1.00392,1.00187

@@ -74,15 +74,15 @@ private:
           mat_result[val_idx] = mat_input_0[val_idx];
         }
         else if constexpr (BENCHMARK_RUN == benchmarks::BenchmarkRun::kGemm) {
-          T sum{0.0};
+          T sum{0};
           size_t curr_matrix_input0_idx{y * mat_w_h};
           size_t curr_matrix_input1_idx{x};
-          for (int k = 0; k < mat_w_h; k++) {
+          for (unsigned int k = 0; k < mat_w_h; k++) {
 #if defined(USE_FUSED_MULTIPLY_ADD)
-            sum = std::fma(
-              mat_input_0[curr_matrix_input0_idx],
-              mat_input_1[curr_matrix_input1_idx],
-              sum);
+            sum = static_cast<T>(std::fma(
+              static_cast<float>(mat_input_0[curr_matrix_input0_idx]),
+              static_cast<float>(mat_input_1[curr_matrix_input1_idx]),
+              static_cast<float>(sum)));
 #else
             sum += 
               mat_input_0[curr_matrix_input0_idx] * mat_input_1[curr_matrix_input1_idx];

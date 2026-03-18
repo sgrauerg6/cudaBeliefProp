@@ -35,14 +35,14 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 
 /**
  * @brief Main() function that drives the optimized CPU
- * belief propgation implementation evaluation across multiple input
+ * belief propagation implementation evaluation across multiple input
  * stereo sets and run configurations.
  * Takes one input argument that corresponds to run name; recommended that run
  * name include architecture that implementation is run on...if no input
  * argument given run name is set to "CurrentRun"
  * 
- * @param argc 
- * @param argv 
+ * @param argc
+ * @param argv
  * @return 0 if successful, another number indicating error if not 
  */
 int main(int argc, char** argv)

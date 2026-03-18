@@ -20,7 +20,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  * @file DriverBpStereoCPU.cpp
  * @author Scott Grauer-Gray
  * @brief Contains the main() function that drives the optimized CPU
- * belief propgation implementation evaluation across multiple input
+ * belief propagation implementation evaluation across multiple input
  * stereo sets and run configurations.
  * 
  * @copyright Copyright (c) 2024
@@ -182,7 +182,7 @@ void runImp(int argc, char** argv, RunImpSetting impSetting)
 
 /**
  * @brief Main() function that drives the optimized CPU
- * belief propgation implementation evaluation across multiple input
+ * belief propagation implementation evaluation across multiple input
  * stereo sets and run configurations.
  * First input argument corresponds to run name; recommended that run name
  * include architecture that implementation is run on...if no input argument

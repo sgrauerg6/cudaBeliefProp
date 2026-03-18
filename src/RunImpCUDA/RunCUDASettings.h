@@ -80,7 +80,7 @@ inline RunData retrieveDeviceProperties(int num_device)
 
 //return whether or not there was an error in CUDA processing
 inline run_eval::Status ErrorCheck(
-  const char *file, int line, bool abort)
+  const char *file, int line, bool abort = false)
 {
   const auto code = cudaPeekAtLastError();
   if (code != cudaSuccess) {

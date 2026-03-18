@@ -213,10 +213,10 @@ void benchmarks_cpu::TwoDMatricesBnchmrkNoPackedInstructions(
         matrix_result[val_idx] = matrix_input_0[val_idx];
       }
       else if constexpr (BENCHMARK_RUN == benchmarks::BenchmarkRun::kGemm) {
-        T sum{0.0};
+        T sum{0};
         size_t curr_matrix_input0_idx{y * mtrx_width};
         size_t curr_matrix_input1_idx{x};
-        for (int k = 0; k < mtrx_width; k++) {
+        for (unsigned int k = 0; k < mtrx_width; k++) {
 #if defined(USE_FUSED_MULTIPLY_ADD)
           sum = std::fma(
             matrix_input_0[curr_matrix_input0_idx],
@@ -309,7 +309,7 @@ void benchmarks_cpu::TwoDMatricesBnchmrkSIMD(
         W sum = simd_processing::createSIMDVectorSameData<W>(0.0f);
         size_t curr_matrix_input0_idx{y * mtrx_width};
         size_t curr_matrix_input1_idx{x_val};
-        for (int k = 0; k < mtrx_width; k++) {
+        for (unsigned int k = 0; k < mtrx_width; k++) {
           W addend_0 = simd_processing::createSIMDVectorSameData<W>(
             util_functs::ConvertValToDifferentDataTypeIfNeeded<T, float>(
               matrix_input_0[curr_matrix_input0_idx]));

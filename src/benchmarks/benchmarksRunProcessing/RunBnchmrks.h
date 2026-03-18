@@ -41,6 +41,13 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #include "BnchmrksMtrx.h"
 #include "BnchmrksConstsEnumsAliases.h"
 
+//check if CUDA run defined and make any necessary additions to support it
+#if defined(OPTIMIZED_CUDA_RUN)
+#include <cuda_runtime.h>
+#include <cuda_fp16.h>
+#include <cuda_bf16.h>
+#endif //OPTIMIZED_CUDA_RUN
+
 namespace benchmarks {
 
 /**
@@ -176,8 +183,8 @@ protected:
   //print random value from output matrix
   unsigned seed = std::chrono::steady_clock::now().time_since_epoch().count();
   std::mt19937 mersenne_engine(seed); //Mersenne Twister engine
-  std::cout << out_mat_host[
-    std::uniform_int_distribution<int>(1, num_data_mat)(mersenne_engine)]
+  std::cout << static_cast<float>(out_mat_host[
+    std::uniform_int_distribution<int>(1, num_data_mat)(mersenne_engine)])
              << std::endl;
 
   //add runtime data to data to return with corresponding headers

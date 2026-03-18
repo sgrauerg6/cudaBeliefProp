@@ -21,12 +21,15 @@ CUDA_IMP_LIBS := -L$(CUDA_DIR)/lib64 -lcudart -lstdc++fs
 # compute capability 8.0
 BFLOAT_DATA_TYPE_SETTING = -DUSE_BFLOAT16_FOR_HALF_PRECISION
 
+USE_FUSED_MULT_ADD_DEFINE = -DUSE_FUSED_MULTIPLY_ADD
+#-DUSE_FUSED_MULTIPLY_ADD
+
 # defines to add for CUDA processing
 CUDA_IMP_RUN_DEFINES = -DOPTIMIZED_CUDA_RUN ${BFLOAT_DATA_TYPE_SETTING} ${COMMON_IMP_DEFINES}
 
 # set compile flags for CUDA implementation for gcc and nvcc
-CUDA_IMP_COMPILE_FLAGS_GCC = -DUNIX -O3 -std=c++20 -march=native -Wall ${COMPILE_FLAGS} ${CUDA_IMP_RUN_DEFINES} -MMD -MP
-CUDA_IMP_COMPILE_FLAGS_NVCC = -DUNIX -O3 -std=c++20 -arch=native ${COMPILE_FLAGS} ${CUDA_IMP_RUN_DEFINES} -MMD -MP
+CUDA_IMP_COMPILE_FLAGS_GCC = -DUNIX -O3 -std=c++20 -march=native -Wall ${COMPILE_FLAGS} ${CUDA_IMP_RUN_DEFINES} ${USE_FUSED_MULT_ADD_DEFINE} -MMD -MP
+CUDA_IMP_COMPILE_FLAGS_NVCC = -DUNIX -O3 -std=c++20 -arch=native ${COMPILE_FLAGS} ${CUDA_IMP_RUN_DEFINES} ${USE_FUSED_MULT_ADD_DEFINE} -MMD -MP
 CUDA_LINK_FLAGS = -O3 -march=native -std=c++20
 
 # define directory for compiled objects and object files to generate during compilation
@@ -38,13 +41,13 @@ ${OBJ_DIR}/RunImpMultInputsBnchmrks.o ${OBJ_DIR}/RunImpMultInputs.o \
 ${OBJ_DIR}/RunBnchmrksSingThreadCPU.o ${OBJ_DIR}/RunBnchmrks.o \
 ${OBJ_DIR}/DetailedTimings.o ${OBJ_DIR}/ProcessBnchmrksDevice.o \
 ${OBJ_DIR}/ProcessBnchmrksCUDA.o
-DRIVER_BENCHMARK_CUDA_OBJECT = ${OBJ_DIR}/DriverCudaBnchmrks.o
+DRIVER_BENCHMARK_CUDA_OBJECT = ${OBJ_DIR}/DriverBenchmarksCUDA.o
 
 # dependency files corresponding to each object
 DEPS := $(OBJECTS:.o=.d)
 
 # executables for belief propagation CUDA implementations
-DRIVER_BENCHMARK_CUDA = driverCUDABnchmrks
+DRIVER_BENCHMARK_CUDA = driverBenchmarksCUDA
 
 all: impDriverCUDA
 
