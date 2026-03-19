@@ -35,6 +35,10 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #include "RunImpCUDA/RunCUDASettings.h"
 #endif //OPTIMIZED_CUDA_RUN
 
+#if defined(OPTIMIZED_HIP_RUN)
+#include "RunImpHIP/RunHIPSettings.h"
+#endif //OPTIMIZED_HIP_RUN
+
 //set alias for data type used for half-precision
 #if defined(OPTIMIZED_CPU_RUN)
 #if defined(COMPILING_FOR_ARM)

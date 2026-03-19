@@ -43,6 +43,10 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #include "RunImpCUDA/RunCUDASettings.h"
 #endif //OPTIMIZED_CUDA_RUN
 
+#if defined(OPTIMIZED_HIP_RUN)
+#include "RunImpHIP/RunHIPSettings.h"
+#endif //OPTIMIZED_HIP_RUN
+
 /**
  * @brief Enum to define difference between "base" and "target" result sets
  * when evaluating speedup

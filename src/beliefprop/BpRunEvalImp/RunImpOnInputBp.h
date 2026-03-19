@@ -65,6 +65,15 @@ template <RunData_t T, unsigned int DISP_VALS, run_environment::AccSetting ACCEL
 using RunBpOptimized = RunBpImpCUDA<T, DISP_VALS, ACCELERATION>;
 #endif //OPTIMIZED_CUDA_RUN
 
+//check if HIP run defined and make any necessary additions to support it
+#if defined(OPTIMIZED_HIP_RUN)
+//needed to run the implementation a stereo set using HIP
+#include "BpHIP/RunBpImpHIP.h"
+//set RunBpOptimized alias to correspond to HIP implementation
+template <RunData_t T, unsigned int DISP_VALS, run_environment::AccSetting ACCELERATION>
+using RunBpOptimized = RunBpImpHIP<T, DISP_VALS, ACCELERATION>;
+#endif //OPTIMIZED_HIP_RUN
+
 /**
  * @brief Namespace with setting of whether or not to run single thread implementation
  * a single time for each input stereo set when running evaluation and storage of 

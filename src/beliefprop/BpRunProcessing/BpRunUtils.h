@@ -79,6 +79,24 @@ const half kHighValBp<half>{CUDART_MAX_NORMAL_FP16};
 
 #endif //OPTIMIZED_CUDA_RUN
 
+//define specialization for high value in half precision if using HIP
+#if defined(OPTIMIZED_HIP_RUN)
+
+//set data type used for half-precision with HIP
+#if defined(USE_BFLOAT16_FOR_HALF_PRECISION)
+#include <hip_bf16.h>
+//specialization for HIP bfloat16
+template<> inline
+const __nv_bfloat16 kHighValBp<__nv_bfloat16>{HIPART_MAX_NORMAL_BF16};
+#else
+#include <hip_fp16.h>
+//specialization for HIP bfloat16
+template<> inline
+const half kHighValBp<half>{HIPART_MAX_NORMAL_FP16};
+#endif //USE_BFLOAT16_FOR_HALF_PRECISION
+
+#endif //OPTIMIZED_HIP_RUN
+
 /**
  * @brief Get number of stereo runs when evaluating implementation
  * Perform less stereo runs if greater number of disparity values

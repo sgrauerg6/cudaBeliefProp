@@ -48,6 +48,13 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #include <cuda_bf16.h>
 #endif //OPTIMIZED_CUDA_RUN
 
+//check if HIP run defined and make any necessary additions to support it
+#if defined(OPTIMIZED_HIP_RUN)
+#include <hip_runtime.h>
+#include <hip_fp16.h>
+#include <hip_bf16.h>
+#endif //OPTIMIZED_HIP_RUN
+
 namespace benchmarks {
 
 /**

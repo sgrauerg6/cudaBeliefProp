@@ -46,6 +46,22 @@ concept RunData_t =
   std::is_same_v<T, double> ||
   std::is_same_v<T, halftype>;
 
+#elif defined(OPTIMIZED_HIP_RUN)
+
+//set data type used for half-precision with CUDA
+#if defined(USE_BFLOAT16_FOR_HALF_PRECISION)
+#include <hip_bf16.h>
+using halftype = __hip_bfloat16;
+#else
+#include <hip_fp16.h>
+using halftype = half;
+#endif //USE_BFLOAT16_FOR_HALF_PRECISION
+template <typename T>
+concept RunData_t = 
+  std::is_same_v<T, float> ||
+  std::is_same_v<T, double> ||
+  std::is_same_v<T, halftype>;
+
 #elif defined(OPTIMIZED_CPU_RUN) || defined(OPTIMIZED_METAL_RUN)
 
 #include "RunImpCPU/RunCPUSettings.h"
