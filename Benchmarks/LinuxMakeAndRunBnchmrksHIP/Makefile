@@ -51,14 +51,14 @@ ICPPFLAGS := -I $(COMMON_INCLUDE_DIR)
 ILDFLAGS  :=
 ILDLIBS   :=
 
-ifeq ($(GPU_RUNTIME), CUDA)
-	ICXXFLAGS += -x cu
-	ICPPFLAGS += -isystem $(HIP_INCLUDE_DIR)
-else ifeq ($(GPU_RUNTIME), HIP)
-	CXXFLAGS ?= -Wall -Wextra
-else
-	$(error GPU_RUNTIME is set to "$(GPU_RUNTIME)". GPU_RUNTIME must be either CUDA or HIP)
-endif
+#ifeq ($(GPU_RUNTIME), CUDA)
+#	ICXXFLAGS += -x cu
+#	ICPPFLAGS += -isystem $(HIP_INCLUDE_DIR)
+#else ifeq ($(GPU_RUNTIME), HIP)
+#	CXXFLAGS ?= -Wall -Wextra
+#else
+#	$(error GPU_RUNTIME is set to "$(GPU_RUNTIME)". GPU_RUNTIME must be either CUDA or HIP)
+#endif
 
 # dependency files corresponding to each object
 DEPS := $(OBJECTS:.o=.d)
