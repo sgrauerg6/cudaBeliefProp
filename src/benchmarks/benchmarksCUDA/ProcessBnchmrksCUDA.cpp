@@ -71,6 +71,3 @@ std::optional<DetailedTimings<benchmarks::Runtime_Type>> ProcessBnchmrksCUDA<T, 
 template class ProcessBnchmrksCUDA<float, run_environment::AccSetting::kCUDA, benchmarks::BenchmarkRun::kGemm, float>;
 template class ProcessBnchmrksCUDA<double, run_environment::AccSetting::kCUDA, benchmarks::BenchmarkRun::kGemm, double>;
 template class ProcessBnchmrksCUDA<halftype, run_environment::AccSetting::kCUDA, benchmarks::BenchmarkRun::kGemm, halftype>;
-template class ProcessBnchmrksCUDA<float, run_environment::AccSetting::kNone, benchmarks::BenchmarkRun::kGemm, float>;
-template class ProcessBnchmrksCUDA<double, run_environment::AccSetting::kNone, benchmarks::BenchmarkRun::kGemm, double>;
-template class ProcessBnchmrksCUDA<halftype, run_environment::AccSetting::kNone, benchmarks::BenchmarkRun::kGemm, halftype>;

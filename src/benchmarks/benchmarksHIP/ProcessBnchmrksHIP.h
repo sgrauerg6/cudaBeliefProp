@@ -33,15 +33,23 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #include "RunEval/RunTypeConstraints.h"
 #include "RunEval/RunEvalConsts.h"
 #include "RunEval/RunEvalEnumsStructs.h"
-#include "KernelBnchmrksHIP.cu"
+#include "RunImpHIP/RunHIPSettings.h"
 
 template<RunData_t T, run_environment::AccSetting ACCELERATION, benchmarks::BenchmarkRun BENCHMARK_RUN, typename U = T>
 class ProcessBnchmrksHIP : public ProcessBnchmrksDevice<T, ACCELERATION, BENCHMARK_RUN, U> {
 public:
+  /**
+   * @brief Constructor to initialize class to process benchmarks
+   * in HIP implementation
+   * 
+   * @param opt_cpu_params Parallel parameters to use in implementation
+   */
+  explicit ProcessBnchmrksHIP(const ParallelParams& opt_cpu_params) : 
+    ProcessBnchmrksDevice<T, ACCELERATION, BENCHMARK_RUN>(opt_cpu_params) {}
 
 private:
   /**
-   * @brief Function to run add matrices benchmark on device<br>
+   * @brief Function to run add matrices benchmark on device
    * 
    * @param mat_w_h
    * @param mat_input_0
@@ -53,41 +61,7 @@ private:
     const unsigned int mat_w_h,
     const U* mat_input_0,
     const U* mat_input_1,
-    U* mat_result) const override
-  {
-    if (ErrorCheck(__FILE__, __LINE__) != run_eval::Status::kNoError) {
-      return run_eval::Status::kError;
-    }
-
-    //set to prefer L1 cache for now since no shared memory is used
-    hipDeviceSetCacheConfig(hipFuncCachePreferL1);
-
-    //setup execution parameters
-    const auto kernel_thread_block_dims =
-      this->parallel_params_.OptParamsForKernel({0, 0});
-    const dim3 threads{kernel_thread_block_dims[0], kernel_thread_block_dims[1]};
-    //kernel run on full-sized image to retrieve data costs at the "bottom" level of the pyramid
-    const dim3 grid{
-      (unsigned int)ceil((float)mat_w_h / (float)threads.x),
-      (unsigned int)ceil((float)mat_w_h / (float)threads.y)};
-
-    auto add_mat_start_time = std::chrono::system_clock::now();
-    //process matrix addition on GPU using HIP
-    benchmarks_hip::TwoDMatricesBnchmrk<T, BENCHMARK_RUN> <<<grid, threads>>> (
-      mat_w_h, mat_w_h, mat_input_0, mat_input_1, mat_result);
-    hipDeviceSynchronize();
-    auto end_mat_start_time = std::chrono::system_clock::now();
-
-    if (ErrorCheck(__FILE__, __LINE__) != run_eval::Status::kNoError) {
-      return {};
-    }
-
-    DetailedTimings add_mat_timing(benchmarks::kTimingNames);
-    add_mat_timing.AddTiming(benchmarks::Runtime_Type::kTotalBnchmrkNoTransfer,
-      end_mat_start_time - add_mat_start_time);
-
-    return add_mat_timing;
-  }
+    U* mat_result) const override;
 };
 
 #endif //PROCESS_BNCHMRKS_HIP_H_

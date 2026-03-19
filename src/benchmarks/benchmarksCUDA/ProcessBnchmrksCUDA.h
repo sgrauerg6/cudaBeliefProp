@@ -49,7 +49,7 @@ public:
 
 private:
   /**
-   * @brief Function to run add matrices benchmark on device<br>
+   * @brief Function to run add matrices benchmark on device
    * 
    * @param mat_w_h
    * @param mat_input_0

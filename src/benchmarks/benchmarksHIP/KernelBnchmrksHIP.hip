@@ -69,7 +69,7 @@ namespace benchmarks_hip {
         matrix_result[val_idx] = matrix_0[val_idx];
       }
       else if constexpr (BENCHMARK_RUN == benchmarks::BenchmarkRun::kGemm) {
-        float sum = 0.0f;
+        T sum = 0.0f;
         size_t curr_matrix_input0_idx{y_val * mtrx_width};
         size_t curr_matrix_input1_idx{x_val};
         //compute dot product of the corresponding matrix_0 row and matrix_1 column
