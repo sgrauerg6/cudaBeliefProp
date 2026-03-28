@@ -696,7 +696,8 @@ void EvalImpResults::WriteRunOutput(
     EvalAcrossRuns().operator()(
       imp_results_fp,
       GetCombResultsTopText(),
-      GetInputParamsShow());
+      GetInputParamsShow(),
+      GetAddInSigHeaders());
   }
   else {
     std::cout << "Error, no runs completed successfully" << std::endl;
@@ -829,7 +830,9 @@ EvalImpResults::GetBaselineRuntimeData(
   const std::array<std::string_view, 2>& baseline_runtimes_path_desc,
   std::string_view key_runtime_data) const
 {
-  RunResultsSpeedups baseline_run_results(baseline_runtimes_path_desc.at(0));
+  RunResultsSpeedups baseline_run_results(
+    baseline_runtimes_path_desc.at(0),
+    GetAddInSigHeaders());
   return std::pair<std::string, std::map<InputSignature, std::string>>{
     std::string(baseline_runtimes_path_desc.at(1)),
     baseline_run_results.InputsToKeyVal(key_runtime_data)};

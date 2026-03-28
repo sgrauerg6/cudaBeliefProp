@@ -30,6 +30,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #include "RunEval/EvalImpResults.h"
 #include "RunEval/RunEvalConsts.h"
 #include "RunEval/RunEvalEnumsStructs.h"
+#include "benchmarksRunProcessing/BnchmrksConstsEnumsAliases.h"
 #include "BnchmrksEvaluationInputs.h"
 #include <filesystem>
 #include <vector>
@@ -73,7 +74,19 @@ private:
     return {
       std::string(run_eval::kDatatypeHeader),
       std::string(benchmarks::kMatWidthHeader),
-      std::string(benchmarks::kMatHeightHeader)};
+      std::string(benchmarks::kMatHeightHeader),
+      std::string(benchmarks::kBenchmarkHeader)};
+  }
+
+  /**
+   * @brief Get additional headers corresponding to input signature for
+   * implementation
+   * 
+   * @return Vector of strings corresponding to additional headers for input
+   * signature
+   */
+  std::vector<std::string> GetAddInSigHeaders() const override {
+    return {{std::string{benchmarks::kBenchmarkHeader}}};
   }
 };
 

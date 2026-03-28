@@ -138,6 +138,15 @@ private:
   virtual std::vector<std::string> GetInputParamsShow() const = 0;
 
   /**
+   * @brief Get additional headers corresponding to input signature for
+   * implementation
+   * 
+   * @return Vector of strings corresponding to additional headers for input
+   * signature
+   */
+  virtual std::vector<std::string> GetAddInSigHeaders() const { return {}; }
+
+  /**
    * @brief Get speedups across runs of all data types
    * 
    * @param run_results

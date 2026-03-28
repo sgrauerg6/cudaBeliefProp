@@ -39,6 +39,9 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  */
 namespace benchmarks {
 
+/** @brief header for benchmark name */
+constexpr std::string_view kBenchmarkHeader{"Benchmark"};
+
 /** @brief Define the benchmark options */
 enum class BenchmarkRun : size_t {
   kAddOneD, kAddTwoD, kDivideOneD, kDivideTwoD, kCopyOneD, kCopyTwoD, kGemm };

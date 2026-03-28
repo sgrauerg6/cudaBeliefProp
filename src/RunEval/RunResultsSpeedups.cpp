@@ -35,7 +35,8 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 //run results and speedup evaluation for the run if available
 RunResultsSpeedups::RunResultsSpeedups(
   const std::filesystem::path& imp_results_file_path,
-  const std::string& run_name) : run_name_{run_name}
+  const std::string& run_name,
+  const std::vector<std::string>& add_input_sig_headers) : run_name_{run_name}
 {  
   std::pair<std::map<std::string, std::vector<std::string>>,
             std::vector<std::string>>
@@ -68,13 +69,15 @@ RunResultsSpeedups::RunResultsSpeedups(
 
   //generate input signature to data mappings
   GenInputSignatureToDataMapping(
-    run_results_header_to_data_ordered_headers.first);
+    run_results_header_to_data_ordered_headers.first,
+    add_input_sig_headers);
 }
 
 //constructor that takes in run results path and processes run results
 //speedups not available when using this constructor
 RunResultsSpeedups::RunResultsSpeedups(
-  const std::filesystem::path& run_results_file_path)
+  const std::filesystem::path& run_results_file_path,
+  const std::vector<std::string>& add_input_sig_headers)
 {
   //get run results data from file if available
   std::pair<std::map<std::string, std::vector<std::string>>,
@@ -89,13 +92,15 @@ RunResultsSpeedups::RunResultsSpeedups(
 
   //generate input signature to data mappings
   GenInputSignatureToDataMapping(
-    run_results_header_to_data_ordered_headers.first);
+    run_results_header_to_data_ordered_headers.first,
+    add_input_sig_headers);
 }
 
 //generate input sig to run data mappings from run results as read from file
 void RunResultsSpeedups::GenInputSignatureToDataMapping(
   const std::optional<std::map<std::string,
-  std::vector<std::string>>>& run_results_header_to_data)
+  std::vector<std::string>>>& run_results_header_to_data,
+  const std::vector<std::string>& add_input_sig_headers)
 {
   if (run_results_header_to_data)
   {
@@ -110,14 +115,20 @@ void RunResultsSpeedups::GenInputSignatureToDataMapping(
     {
       //get unique input signature for evaluation run (evaluation data number,
       //data type, setting of whether to not to have loops with templated
-      //iteration counts)
-      const InputSignature run_input({
-        run_results_header_to_data->at(
-          std::string(run_eval::kRunInputSigHeaders[0])).at(num_run),
-        run_results_header_to_data->at(
-          std::string(run_eval::kRunInputSigHeaders[1])).at(num_run),
-        run_results_header_to_data->at(
-          std::string(run_eval::kRunInputSigHeaders[2])).at(num_run)});
+      //iteration counts, and potentially additional characteristics)
+      std::vector<std::pair<std::string, std::string>> add_in_sig_chars;
+      for (const std::string& header_str : add_input_sig_headers) {
+        add_in_sig_chars.push_back({header_str, run_results_header_to_data->at(
+          std::string(header_str)).at(num_run)});
+      }
+      const InputSignature run_input(
+        {run_results_header_to_data->at(
+            std::string(run_eval::kRunInputSigHeaders[0])).at(num_run),
+         run_results_header_to_data->at(
+            std::string(run_eval::kRunInputSigHeaders[1])).at(num_run),
+         run_results_header_to_data->at(
+            std::string(run_eval::kRunInputSigHeaders[2])).at(num_run)},
+        add_in_sig_chars);
 
       //retrieve all data for run corresponding to current input signature
       //and generate mapping between input signature and run data

@@ -41,7 +41,8 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 void EvalAcrossRuns::operator()(
   const std::filesystem::path& imp_results_file_path,
   const std::vector<std::string>& eval_across_runs_top_text,
-  const std::vector<std::string>& eval_across_runs_in_params_show) const
+  const std::vector<std::string>& eval_across_runs_in_params_show,
+  const std::vector<std::string>& add_input_sig_headers) const
 {
   //retrieve names of runs with results
   //run names usually correspond to architecture of run
@@ -52,7 +53,7 @@ void EvalAcrossRuns::operator()(
   std::map<std::string, RunResultsSpeedups> run_results_by_name;
   for (const auto& run_name : run_names) {
     run_results_by_name.insert(
-      {run_name, RunResultsSpeedups(imp_results_file_path, run_name)});
+      {run_name, RunResultsSpeedups(imp_results_file_path, run_name, add_input_sig_headers)});
   }
 
   //genereation data mappings for evaluation including run results and speedups
@@ -254,39 +255,6 @@ std::vector<std::string> EvalAcrossRuns::OrderedRunNames(
 
   //return run names ordered from greatest speedup to least speedup
   return ordered_run_names;
-
-  //write each evaluation run name and save order of runs with speedup
-  //corresponding to first speedup header
-  //order of run names is in speedup from largest to smallest
-  /*auto cmp_speedup = 
-    [](const std::pair<std::string, float>& a,
-       const std::pair<std::string, float>& b)
-       { return a.second > b.second; };
-  std::set<std::pair<std::string, float>, decltype(cmp_speedup)>
-    run_names_in_order_w_speedup;
-
-  //generate and add pairs of run name with corresponding "ordering" speedup
-  //for each run to set to get sorted order of runs from fastest to slowest
-  //based on "ordering" speedup
-  for (const auto& [run_name, speedup_results] :
-       eval_data.speedup_results_name_to_data)
-  {
-    run_names_in_order_w_speedup.insert(
-      {run_name, 
-       speedup_results.contains(speedup_ordering) ?
-       std::stof(std::string(speedup_results.at(speedup_ordering).at(0))) :
-       0});
-  }*
-
-  //generate ordered run names from fastest to slowest
-  std::vector<std::string> ordered_run_names;
-  std::transform(
-    run_names_in_order_w_speedup.cbegin(),
-    run_names_in_order_w_speedup.cend(),
-    std::back_inserter(ordered_run_names),
-    [](const auto& run_name_speedup) { return run_name_speedup.first; });
-  
-  return ordered_run_names;*/
 }
 
 //write output evaluation across runs to file
@@ -324,14 +292,16 @@ void EvalAcrossRuns::WriteEvalAcrossRunsToFile(
   }
   eval_results_across_run_str << std::endl;
 
-  //write evaluation stereo set info, bp parameters, and total runtime for
-  //optimized bp implementation across each run in the evaluation
+  //write params and total runtime for optimized implementation across each run
+  //in evaluation
   for (const auto& [input_sig, params_display_ordered] :
        eval_data.inputs_to_params_disp_ordered)
   {
+    //write params to display in specified order
     for (const auto& param_val_disp : params_display_ordered) {
       eval_results_across_run_str << param_val_disp << ',';
     }
+    //write runtime for each named run in specified order
     for (const auto& run_name : run_names_ordered)
     {
       if (eval_data.input_to_runtime_across_archs.at(

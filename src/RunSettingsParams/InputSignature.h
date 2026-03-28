@@ -34,6 +34,8 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #include <ostream>
 #include <limits>
 #include <optional>
+#include <map>
+#include <variant>
 #include "RunEval/RunEvalConsts.h"
 #include "RunEval/RunEvalEnumsStructs.h"
 
@@ -50,7 +52,9 @@ public:
    * 
    * @param in_sig_strings 
    */
-  explicit InputSignature(const std::array<std::string_view, 3>& in_sig_strings);
+  explicit InputSignature(
+    const std::array<std::string_view, 3>& in_sig_strings,
+    const std::vector<std::pair<std::string, std::string>>& additional_sig_key_vals = {});
 
   /**
    * @brief Constructor to generate evaluation input signature from parameters
@@ -63,7 +67,8 @@ public:
   explicit InputSignature(
     std::optional<size_t> data_type_size,
     std::optional<size_t> eval_set_num,
-    std::optional<bool> use_templated_loop_iters);
+    std::optional<bool> use_templated_loop_iters,
+    const std::vector<std::pair<std::string, std::string>>& additional_sig_key_vals = {});
 
   /**
    * @brief Less than operator for comparing evaluation input signatures
@@ -162,6 +167,29 @@ public:
   }
 
   /**
+   * @brief Remove other characteristic setting and change it to "any"
+   */
+  void RemoveOtherCharSetting(const std::string& char_name) {
+    other_characteristics_.at(char_name).reset();
+  }
+
+  void AddOtherCharacteristic(const std::string& char_name) {
+    other_characteristics_.insert({char_name, {}});
+  }
+
+  void AddOtherCharacteristic(const std::string& char_name, int val) {
+    other_characteristics_.insert({char_name, val});
+  }
+
+  void AddOtherCharacteristic(const std::string& char_name, bool val) {
+    other_characteristics_.insert({char_name, val});
+  }
+
+  void AddOtherCharacteristic(const std::string& char_name, const std::string& val) {
+    other_characteristics_.insert({char_name, val});    
+  }
+
+  /**
    * @brief Overloaded << operator to write InputSignature object to stream
    * 
    * @param os
@@ -176,6 +204,7 @@ private:
   std::optional<size_t> data_type_size_;
   std::optional<size_t> eval_set_num_;
   std::optional<bool> use_templated_loop_iters_;
+  std::map<std::string, std::optional<std::variant<int, bool, std::string>>> other_characteristics_;
 };
 
 //overloaded << operator to write InputSignature object to stream
@@ -185,6 +214,17 @@ inline std::ostream& operator<<(
 {
   os << eval_input_sig.DataTypeStr() << " "  << eval_input_sig.EvalSetNumStr()
      << " " << eval_input_sig.UseTemplatedLoopItersStr();
+  if (eval_input_sig.other_characteristics_.size() > 0) {
+    for (const auto& [characteristic_name, characteristic_value] :
+         eval_input_sig.other_characteristics_) {
+      os << characteristic_name;
+      if (characteristic_value) {
+        std::visit([&os](auto&& arg) {
+          os << arg << std::endl;
+        }, *characteristic_value);
+      }
+    }
+  }
   return os;
 }
 

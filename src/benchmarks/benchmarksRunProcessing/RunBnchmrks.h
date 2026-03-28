@@ -159,7 +159,7 @@ protected:
   DetailedTimings detailed_bnchmrks_timings(benchmarks::kTimingNames);
 
   run_data.AddDataWHeader(
-    std::string("Benchmark"),
+    std::string(benchmarks::kBenchmarkHeader),
     std::string(benchmarks::kBnchmrksNames.at(BENCHMARK_RUN)));
 
   //run benchmark(s) on device a specified number of times and use median

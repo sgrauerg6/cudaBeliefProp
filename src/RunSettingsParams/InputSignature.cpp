@@ -31,7 +31,10 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 
 //constructor to generate evaluation input signature from string array with
 //strings corresponding to each part
-InputSignature::InputSignature(const std::array<std::string_view, 3>& in_sig_strings) {
+InputSignature::InputSignature(
+  const std::array<std::string_view, 3>& in_sig_strings,
+  const std::vector<std::pair<std::string, std::string>>& additional_sig_key_vals)
+{
   const std::map<std::string_view, size_t> datatype_str_to_size{
     {run_environment::kDataSizeToNameMap.at(sizeof(float)), sizeof(float)},
     {run_environment::kDataSizeToNameMap.at(sizeof(double)), sizeof(double)},
@@ -45,7 +48,10 @@ InputSignature::InputSignature(const std::array<std::string_view, 3>& in_sig_str
   eval_set_num_ = num_from_string;
   use_templated_loop_iters_ = 
     (in_sig_strings[run_eval::kRunInputLoopItersTemplatedIdx] == 
-     run_eval::kBoolValFalseTrueDispStr[1]) ? true : false;      
+     run_eval::kBoolValFalseTrueDispStr[1]) ? true : false;
+  for (const auto& [key, val] : additional_sig_key_vals) {
+    other_characteristics_.insert({key, val});
+  }    
 }
 
 //constructor to generate evaluation input signature from parameters
@@ -53,10 +59,16 @@ InputSignature::InputSignature(const std::array<std::string_view, 3>& in_sig_str
 InputSignature::InputSignature(
   std::optional<size_t> data_type_size,
   std::optional<size_t> eval_set_num,
-  std::optional<bool> use_templated_loop_iters) :
+  std::optional<bool> use_templated_loop_iters,
+  const std::vector<std::pair<std::string, std::string>>& additional_sig_key_vals) :
   data_type_size_(data_type_size),
   eval_set_num_(eval_set_num),
-  use_templated_loop_iters_(use_templated_loop_iters) {}
+  use_templated_loop_iters_(use_templated_loop_iters)
+  {
+    for (const auto& [key, val] : additional_sig_key_vals) {
+      other_characteristics_.insert({key, val});
+    }
+  }
 
 //less than operator for comparing evaluation input signatures
 //so they can be ordered
@@ -89,6 +101,15 @@ bool InputSignature::operator<(const InputSignature& rhs) const {
     //order is using templated iter count followed by not using templated iter count
     if (*use_templated_loop_iters_ == true) { return true; /* a < b is true */ }
   }
+  else if (other_characteristics_.size() > 0) {
+    for (const auto& [char_name, _] : other_characteristics_) {
+      if (rhs.other_characteristics_.contains(char_name)) {
+        if ((other_characteristics_.at(char_name)) && (rhs.other_characteristics_.at(char_name))) {
+          return (*(other_characteristics_.at(char_name)) < *(rhs.other_characteristics_.at(char_name)));
+        }
+      }
+    }
+  }
   return false; /* a <= b is false */
 }
 
@@ -97,8 +118,9 @@ bool InputSignature::operator<(const InputSignature& rhs) const {
 //for part of input signature so only consider parts where both have valid
 //values
 bool InputSignature::operator==(const InputSignature& rhs) const {
-  return (std::tie(data_type_size_, eval_set_num_, use_templated_loop_iters_) ==
-          std::tie(rhs.data_type_size_, rhs.eval_set_num_, rhs.use_templated_loop_iters_));
+  return ((std::tie(data_type_size_, eval_set_num_, use_templated_loop_iters_) ==
+           std::tie(rhs.data_type_size_, rhs.eval_set_num_, rhs.use_templated_loop_iters_)) &&
+           (other_characteristics_ == rhs.other_characteristics_));
 }
 
 //alternate "equal" operator where an attribute is considered "equal"

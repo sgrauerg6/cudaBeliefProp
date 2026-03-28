@@ -50,7 +50,8 @@ public:
    */
   explicit RunResultsSpeedups(
     const std::filesystem::path& imp_results_file_path,
-    const std::string& run_name);
+    const std::string& run_name,
+    const std::vector<std::string>& add_input_sig_headers);
 
   /**
    * @brief Constructor that takes in run results path and processes run
@@ -59,7 +60,9 @@ public:
    * 
    * @param run_results_file_path 
    */
-  explicit RunResultsSpeedups(const std::filesystem::path& run_results_file_path);
+  explicit RunResultsSpeedups(
+    const std::filesystem::path& run_results_file_path,
+    const std::vector<std::string>& add_input_sig_headers);
 
   /**
    * @brief Return speedups from run results data with speedups
@@ -123,7 +126,8 @@ private:
    */
   void GenInputSignatureToDataMapping(
     const std::optional<std::map<std::string, std::vector<std::string>>>&
-      run_results_header_to_data);
+      run_results_header_to_data,
+    const std::vector<std::string>& add_input_sig_headers);
 
   /**
    * @brief Get mapping of headers to data as well as headers in order in csv

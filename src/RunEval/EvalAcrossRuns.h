@@ -68,7 +68,8 @@ public:
   void operator()(
     const std::filesystem::path& imp_results_file_path,
     const std::vector<std::string>& eval_across_runs_top_text,
-    const std::vector<std::string>& eval_across_runs_in_params_show) const;
+    const std::vector<std::string>& eval_across_runs_in_params_show,
+    const std::vector<std::string>& add_input_sig_headers) const;
 
 private:
   

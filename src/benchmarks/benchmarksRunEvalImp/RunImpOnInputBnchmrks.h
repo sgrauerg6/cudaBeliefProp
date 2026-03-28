@@ -189,7 +189,8 @@ MultRunData RunImpOnInputBnchmrks<T, OPT_IMP_ACCEL, NUM_INPUT, BENCHMARK_RUN>::o
   run_bnchmrks_opt_ = std::make_unique<RunBnchmrksOptimized<T, OPT_IMP_ACCEL, BENCHMARK_RUN>>();
   constexpr bool run_w_loop_iters_templated{false};
   InputSignature input_sig(
-    sizeof(T), NUM_INPUT, run_w_loop_iters_templated);
+    sizeof(T), NUM_INPUT, run_w_loop_iters_templated,
+    {{std::string(benchmarks::kBenchmarkHeader), std::string(benchmarks::kBnchmrksNames.at(BENCHMARK_RUN))}});
   run_results.insert(
     {input_sig,
       this->RunEvalBenchmark(
