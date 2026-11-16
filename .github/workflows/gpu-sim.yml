@@ -1,0 +1,90 @@
+name: CUDA on simulated H100
+
+# Optional, non-required check. The hosted runners have no GPU, so this builds
+# the CUDA implementation and runs it on a simulated NVIDIA H100
+# (https://github.com/pantheongpu/pantheonsim), then compares the disparity
+# maps with those of the optimized CPU implementation. A simulator cannot
+# reproduce hardware-specific behavior or timing, so it complements real-GPU
+# testing and does not replace it.
+
+on:
+  workflow_dispatch:
+  pull_request:
+    paths:
+      - "src/**"
+      - "common.mk"
+      - "BeliefProp/LinuxMakeAndRunBPCUDA/**"
+      - "BeliefProp/LinuxMakeAndRunBPOptCPU/**"
+      - ".github/workflows/gpu-sim.yml"
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  cuda-vs-cpu:
+    name: CUDA 13.0, simulated H100
+    runs-on: ubuntu-24.04
+    timeout-minutes: 120
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+
+    - name: Set up the simulated GPU and CUDA toolkit
+      uses: pantheongpu/setup-pantheonsim@656f502ef4782d94d34d8ddd368e333960609639 # v0.1.8
+      with:
+        gpu: nvidia/h100
+        cuda-toolkit: "13.0"
+
+    # The simulator JIT-compiles PTX and does not run SASS, and it needs a
+    # shared CUDA runtime, so -arch=native becomes the virtual compute_90.
+    - name: Build the CUDA driver
+      working-directory: BeliefProp/LinuxMakeAndRunBPCUDA
+      run: |
+        sed -i 's/-arch=native/-arch=compute_90 --cudart shared/' Makefile
+        mkdir -p obj
+        make -j3 impDriverCUDACustom CUDA_DIR=/usr/local/cuda-13.0
+
+    # AVX 256 so that this also works on runners without AVX-512
+    - name: Build the CPU driver
+      working-directory: BeliefProp/LinuxMakeAndRunBPOptCPU
+      run: |
+        mkdir -p obj
+        make -j3 impDriverCPUCustom CPU_VECTORIZATION_DEFINE=-DAVX_256_VECTORIZATION
+
+    - name: Run on the simulated H100 and compare with the CPU
+      run: |
+        mkdir -p "$RUNNER_TEMP/out"
+        cd BeliefProp
+        fail=0
+        for set in "tsukubaSetHalfSize 8" "tsukubaSet 16"; do
+          set -- $set
+          name=$1; disp=$2
+          in=BpStereoSets/$name
+          rm -f "$RUNNER_TEMP/out/gpu_$name.pgm"
+          vgpu run LinuxMakeAndRunBPCUDA/driverCudaBpCustom $in/refImage.pgm $in/testImage.pgm $disp "$RUNNER_TEMP/out/gpu_$name.pgm" 2>&1 | tee "$RUNNER_TEMP/gpu_$name.log"
+          grep -q 'virtual GPU platform initialized: 1 x nvidia/h100' "$RUNNER_TEMP/gpu_$name.log" \
+            || { echo "::error::$name: no simulated H100 was initialized"; fail=1; continue; }
+          LinuxMakeAndRunBPOptCPU/driverCPUBpCustom $in/refImage.pgm $in/testImage.pgm $disp "$RUNNER_TEMP/out/cpu_$name.pgm"
+          python3 - "$RUNNER_TEMP/out/gpu_$name.pgm" "$RUNNER_TEMP/out/cpu_$name.pgm" "$name" <<'PY' || fail=1
+        import sys
+        def read(p):
+            d = open(p, 'rb').read()
+            t = d.split(None, 4)
+            w, h = int(t[1]), int(t[2])
+            return w, h, d[-w * h:]
+        g, c, name = read(sys.argv[1]), read(sys.argv[2]), sys.argv[3]
+        assert g[:2] == c[:2], "size mismatch"
+        n = g[0] * g[1]
+        # a disparity map that is empty or constant means the kernels did not run
+        assert len(set(g[2])) > 2, name + ": GPU disparity map is constant"
+        bad = sum(1 for a, b in zip(g[2], c[2]) if a != b)
+        print(name + ": " + str(bad) + " of " + str(n) + " pixels differ between GPU and CPU")
+        sys.exit(1 if bad else 0)
+        PY
+        done
+        exit $fail
